@@ -1,0 +1,37 @@
+The program {\tt dmc.lsp} is designed to graphically illustrate and
+run a discrete finite state Markov Chain process. The user provides a
+transition matrix and an initial state. The program creates a
+graphical window with buttons to run the Markov Chain.  There are two
+kind of buttons: oval or circular buttons representing states and
+rectangular buttons that perform some actions. Several additional
+mouse controls are available.  Figure~\ref{fig:gambler} shows the
+the appearance of such windows. Many routine
+statistics are available, including sample path plots, number of
+visits to each state, etc. 
+
+We now describe the complete design of our objects and
+algorithms. The task of describing our code would be much easier and
+neater if we had a literate programming environment like Knuth's {\em
+WEB\/}\cite{wayne} for {\tt lisp} (although there is John~Ramsdell's
+SchemeWEB for scheme\cite{lispfaq}).  An alternative is to use Dorai~Sitaram's
+S\LaTeX{}\cite{dorai} package which is geared towards both Scheme
+and Common~Lisp; however, we were unable to get it going using the
+subset of Common 
+Lisp that {\tt Lisp-Stat} uses.  Therefore, we have  
+chosen to break up the code description into fragments that perform a
+particular function.  The indentation of the code is preserved to help
+the user follow the scope of variables; this is necessary in
+understanding the logic of a large chunk of code. Where necessary, an
+indentation level number is provided at the beginning of each such
+fragment for the benefit of the reader; if no indentation level number
+is provided, then the level is zero.  
+
+
+
+
+
+
+
+
+
+

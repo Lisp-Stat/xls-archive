@@ -1,0 +1,8 @@
+(load-example "addhandrotate")
+(load "reg1")
+(load "reg2")
+(load "overlay1")
+(load "overlay2")
+(load "overlay3")
+(load "rgraph1")
+(load "fun1")

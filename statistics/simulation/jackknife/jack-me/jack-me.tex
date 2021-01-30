@@ -1,0 +1,484 @@
+% Format BigLaTeX2e
+\documentclass{amsart}
+\usepackage{uclastat,verbatim,amssymb}
+%\input xypic
+%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+%
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+%
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+%
+\numberwithin{equation}{section}
+%
+\begin{document}
+\title[Jackknife]{Jackknifing in Xlisp-Stat}
+\author{Jan de Leeuw}
+\address{UCLA Statistics Program\\
+8118 Mathematical Sciences Building\\
+University of California at Los Angeles}
+\thanks{Written while visiting the National Institute
+of Statistical Sciences, Research Triangle Park, NC}
+\email{deleeuw@@stat.ucla.edu}
+\maketitle
+\begin{abstract}
+It is comparatively easy to write functions in Xlisp-Stat
+that perform the usual Jackknife computations 
+in any specific problem. It suffices to put a loop around
+the function we are studying, and to collect the results
+of the loop in an appropriate way. In this note we use the unique
+properties of Lisp to automate this process.
+\end{abstract}
+%
+\tableofcontents
+%
+\section{Introduction}\label{s:intro}
+%
+In Lisp it is common practice to write functions
+that return functions. See Tierney
+\cite{tierney}, Section 3.6.3, and Graham \cite{graham},
+Chapters 5 and 15. Applications of these techniques are,
+for instance, to produce memoized versions of functions,
+or versions of function that keep a record of the number
+of times they are called (which is useful in profiling).
+\par
+%
+In this paper we use Lisp, in particular Xlisp-Stat,
+to write functions implementing the Jackknife. This makes
+it possible to illustrate some basic Lisp techniques,
+and it produces a fairly routine way to associate
+a standard error and/or confidence interval with
+any statistic computed in Xlisp-Stat.
+%
+\section{The Jackknife}
+%
+The Jackknife \cite{miller, tukey} is a popular
+technique to compute bias corrections, standard errors,
+and confidence intervals for a wide class of statistics.
+Currently, it seems to be pushed to the background by
+Efron's Bootstrap \cite{efrtib} and related resampling
+techniques, but we feel that the simplicity and the
+straightforwardness of the Jackknife continue to
+make it valuable.\par
+%
+Here is a brief outline of the Jackknife. We no attempt to be either
+comprehensive or rigorous. The expansions and calculations we
+use can be made rigorous by using results such as those of Hurt
+\cite{hurt}. We underline random variables \cite{hemel}, and we
+use $\defi$ for definitions.\par
+%
+\subsection{Delta Method}
+%
+Suppose $\Phi$ is a
+possible vector-valued function of a sequence of $m-$vectors of
+multinomial proportions $\Rp_n.$ Define
+$\pi\defi\Exp{\Rp_n},$ and $V(\pi)\defi n\Var{\Rp_n}.$ We can write
+\begin{equation}
+\Phi(\Rp_n)=\Phi(\pi)+n^{-1/2}G(\pi)\Rz_n+o_p(n^{-1/2}),
+\end{equation}
+where
+\begin{equation}
+G(\pi)\defi\left. \frac{\partial\Phi}{\partial p}\right|_{p=\pi},
+\end{equation}
+and
+\begin{equation}
+\Rz_n\defi n^{1/2}(\Rp_n-\pi).
+\end{equation}
+Under suitable regularity conditions we have the following expression
+for the dispersion of $\Phi(\Rp_n).$ 
+\begin{equation}
+n\textbf{E}(\Phi(\Rp_n)-\Phi(\pi))(\Phi(\Rp_n)-\Phi(\pi))'=
+G(\pi)V(\pi)G'(\pi)+o(1).
+\end{equation}
+%
+For bias correction we need an extra term in the expansion. For 
+coordinate $s$
+\begin{equation}
+\phi_s(\Rp_n)=\phi_s(\pi)+n^{-1/2}g_s'(\pi)\Rz_n+
+\frac{1}{2}n^{-1}\Rz_n'H_s(\pi)z_n+o_p(n^{-1}),
+\end{equation}
+which implies, assuming sufficient smoothness, that
+\begin{equation}
+n\Exp{\phi_s(\Rp_n)-\phi_s(\pi)}=\frac{1}{2}\text{ tr }H_s(\pi)V(\pi)+o(1).
+\end{equation}
+%
+\subsection{Approximating the Derivatives}
+%
+The Jackknife can be thought of as a systematic and convenient way to
+approximate the first and second derivatives numerically. From the
+programming point of view, this has the major advantage that we
+do not have to write code to compute the derivatives analytically, 
+which will
+necessarily be specific to the problem at hand.\par
+%
+The $\Rp_n$ are averages of $n$ random variables, which take the
+unit vectors $e_j$ in $\mathbb{R}^m$ as their values. Define
+\begin{equation}
+\Rp_{n;j}\defi\frac{n\Rp_n-e_j}{n-1}=\Rp_n-\frac{1}{n-1}(e_j-\Rp_n),
+\end{equation}
+and the \emph{pseudo-values}
+\begin{equation}
+\tilde\Phi_{n;j}(\Rp_n)\defi n\Phi(\Rp_n)-(n-1)\Phi(\Rp_{n;j}).
+\end{equation}
+%
+Now 
+\begin{equation}
+\Phi(\Rp_{n;j})=\Phi(\Rp_n)-\frac{1}{n-1}G(\Rp_n)(e_j-\Rp_n)+o_p((n-1)^{-1}),
+\end{equation}
+and thus
+\begin{equation}
+\tilde\Phi_{n;j}(\Rp_n)=\Phi(\Rp_n)+G(\Rp_n)(e_j-\Rp_n)+o_p(1).
+\end{equation}
+For the average pseudovalue we find
+\begin{equation}
+\tilde\Phi_n(\Rp_n)\defi\sum_{j=1}^m \Rp_{nj}\tilde\Phi_{n;j}(\Rp_n)=
+\Phi(\Rp_n)+o_p(1),
+\end{equation}
+and for the variance of the pseudo-values
+\begin{multline}
+\sum_{j=1}^m \Rp_{nj}
+(\tilde\Phi_{n;j}(\Rp_n)-\tilde\Phi_n(\Rp_n))
+(\tilde\Phi_{n;j}(\Rp_n)-\tilde\Phi_n(\Rp_n))'=\\
+G(\Rp_n)V(\Rp_n)G'(\Rp_n)+o_p(1),
+\end{multline}
+which shows that the variance of the pseudo-values can be used to
+estimate the variance of $\Phi(\Rp_n).$ \par
+%
+To apply bias correction we again need an extra term in the
+expansion.
+%
+\begin{multline}
+\phi_s(\Rp_{n;j})=\phi_s(\Rp_n)-
+\frac{1}{n-1}g_s(\Rp_n)(e_j-\Rp_n)+\\
+\frac{1}{2}\frac{1}{(n-1)^2}(e_j-\Rp_n)'H_s(\Rp_n)(e_j-\Rp_n)+o_p((n-1)^{-2}),
+\end{multline}
+%
+and thus
+%
+\begin{multline}
+\{\tilde\Phi_{n;j}(\Rp_n)\}_s=\phi_s(\Rp_n)+g_s(\Rp_n)(e_j-\Rp_n)+\\
+\frac{1}{2}\frac{1}{n-1}(e_j-\Rp_n)'H_s(\Rp_n)(e_j-\Rp_n)+o_p((n-1)^{-1}).
+\end{multline}
+%
+This gives for the average pseudo-value
+\begin{equation}
+\tilde\phi_{ns}(\Rp_n)=\phi_s(\Rp_n)+\frac{1}{2}\frac{1}{n-1}
+\text{ tr }H_s(\Rp_n)V(\Rp_n)+o_p((n-1)^{-1}),
+\end{equation}
+Thus the average pseudo-value corrects for bias.
+%
+\section{Some Lisp}
+%
+\subsection{Symbols}
+%
+In Xlisp-Stat symbols are arrays, with four elements. The
+elements of the array are the \emph{print name}, the symbol's \emph{value}, 
+the symbol's \emph{function definition}, and the
+\emph{property list} of the symbol. All of the last three cells
+can be empty. The following small sessions illustrates how the
+various components of a symbol are filled. First
+we see that a \texttt{defun} defines a symbol and puts a closure in
+the function cell. There is nothing in the value cell.
+\begin{verbatim}
+> (defun aragon ())
+ARAGON
+> (symbol-function 'aragon)
+#<Closure-ARAGON: #492428>
+> (symbol-value 'aragon)
+Error: The variable ARAGON is unbound.
+Happened in: #<Subr-TOP-LEVEL-LOOP: #44e2a4>
+> (symbol-name 'aragon)
+"ARAGON"
+\end{verbatim}
+A \texttt{setq} also defines a symbol, and puts a value in the
+value cell.
+\begin{verbatim}
+> (setq bilbo 3)
+3
+> (symbol-value 'bilbo)
+3
+> (symbol-function 'bilbo)
+Error: The function BILBO is unbound.
+Happened in: #<Subr-TOP-LEVEL-LOOP: #44e2a4>
+> (symbol-name 'bilbo)
+"BILBO"
+\end{verbatim}
+We can also create symbols, in which both the value cell and
+the function cell are empty.
+\begin{verbatim}
+> (intern "FRODO")
+FRODO
+:INTERNAL
+> (symbol-function 'frodo)
+Error: The function FRODO is unbound.
+Happened in: #<Subr-TOP-LEVEL-LOOP: #44e2a4>
+> (symbol-value 'frodo)
+Error: The variable FRODO is unbound.
+Happened in: #<Subr-TOP-LEVEL-LOOP: #44e2a4>
+> (symbol-name 'frodo)
+"FRODO"
+\end{verbatim}
+%
+\subsection{Data Types and Function Types}
+%
+Xlisp-Stat has many data types. There are strings, characters,
+numbers, objects, arrays, structures, streams, packages, hash-tables,
+and lists. There are also various types of fuunctions. This is illustrated
+by the following session.
+\begin{verbatim}
+> (symbol-function 'mean)
+#<Subr-MEAN: #10b290>
+> (symbol-function 'standard-deviation)
+#<Byte-Code-Closure: #1b4620>
+> (defun cajun ()) 
+CAJUN
+> (symbol-function 'cajun)
+#<Closure-CAJUN: #1298a0>
+> (symbol-function 'setf)
+#<FSubr-SETF: #e91d0>
+\end{verbatim}
+%
+Subr's are built-in functions and fsubr's are built-in special
+forms, which are functions that do not evaluate their
+arguments.  Functions added as Lisp code are closures, and
+if the functions are byte-compiled they are byte-code-closures. 
+%
+\subsection{Evaluation}
+%
+To understand the use of symbols better, we look into how Xlisp
+evaluates its expressions (\cite{almy}, page 7).\par
+%
+The first rule is that strings, characters, numbers, objects,
+prototypes, structures, streams, subrs, fsubrs, and closures evaluate
+to themselves. Symbols evaluate to the value in their value cell, if
+there is any. If there is none, it's an error.\par
+%
+Lists are evaluated by looking at the car (first element) of the list
+first. If it is a symbol, the function cell is retrieved. If it
+is a lambda-expression, a closure is constructed. If it is a
+subr or fsubr or closure, it stand for itself. If it is
+anything else, it's an error.\par
+%
+We then look at the remaining elements of the list. If the car was a subr or
+closure, the elements are evaluated, and the subr or closure is
+applied to it. If the car was an fsubr, then the fsubr is called
+with the remaining elements as unevaluated arguments. It is a macro, then
+the macro is expanded, and the expanded macros is called with
+the remaining elements as unevaluated arguments.\par
+% 
+\begin{verbatim}
+> (make-symbol "BOZO")
+#:BOZO
+> bozo
+Error: The variable BOZO is unbound.
+> (bozo)
+Error: The function BOZO is unbound.
+> (setf (symbol-function 'bozo) 
+        #'(lambda (x) (* x x)))
+#<Closure: #4907d8>
+> (bozo 3)
+9
+> (setf (symbol-value 'bozo) 3)
+3
+> (+ bozo bozo)
+6
+> (bozo bozo)
+9
+\end{verbatim}
+%
+\section{The Jackknife Code}
+%
+\subsection{A Pseudovalue Closure}
+%
+The key function of our Jackknife system is the following.
+\begin{verbatim}
+(defun jack-pseudo-values (func)
+  #'(lambda (data)
+      (let* (
+             (n (length data))
+             (l (iseq n))
+             (f (symbol-function func))
+             (p (make-list n))
+             )
+(dotimes (i n)
+(setf (elt p i)
+      (funcall f (select data (which (/= i l))))))
+(- (* n (make-list n :initial-element (funcall f data)))
+   (* (1- n) p))
+))
+)
+\end{verbatim}
+%
+This function takes as its single argument a symbol \texttt{func},
+with a non-empty function cell. The function 
+\verb+(symbol-function 'func)+ takes a sequence of objects
+as an argument, and produces a function which
+computes all pseudo-values. Thus
+%
+\begin{verbatim}
+> (jack-pseudo-values 'max)
+#<Closure: #4b2404>
+> (funcall (jack-pseudo-values 'max) (normal-rand 5))
+(1.8794036049709275 2.123838484548437 1.8794036049709275 1.8794036049709275
+1.8794036049709275)
+\end{verbatim}
+%
+\subsection{Pseudovalue Means and Dispersion}
+%
+Two additional functions are defined, which return functions
+computing pseudo-value averages and dispersion. They call
+\texttt{jack-pseudo-values}.
+%
+\begin{verbatim}
+(defun jack-average (func)
+  #'(lambda (data)
+      (average (funcall (jack-pseudo-values func) data)))
+)
+
+(defun jack-dispersion (func)
+  #'(lambda (data)
+      (dispersion (funcall (jack-pseudo-values func) data)))
+)
+\end{verbatim}
+%
+We need utilities to actually compute averages and dispersions.
+The Xlisp-Stat functions \texttt{mean} and
+\texttt{standard-deviation} will not do, because they are
+\emph{vector reducing}. Thus they always return a single number,
+no matter if one applies them to lists, arrays, or lists of
+arrays.
+%
+\begin{verbatim}
+(defun average (x)
+"Args: list
+Takes the average of all elements in a list"
+(if (not (listp x)) (error "Argument for AVERAGE must be a list"))
+  (/ (apply #'+ x) (length x)))
+
+(defun dispersion (x)
+"Args: list
+Computes the dispersion of all elements in a list.
+The list must have either numbers or sequences or arrays
+of numbers"
+(if (not (listp x)) (error "Argument for DISPERSION must be a list"))
+  (let (
+        (n (length x))
+        (m (average x))
+        (s (apply #'+ (mapcar #'(lambda (z) (outer-product z z)) x)))
+        )
+    (- (/ s n) (outer-product m m))
+))
+\end{verbatim}
+%
+We can now investigate in detail what arguments the function that we
+are Jackknifing can handle,
+i.e. for what types of functions they produce reasonable results. Let us
+call the function \texttt{foo}, with argument \texttt{foo-arg}, returning
+resulty \texttt{foo-result}. Looking at \texttt{jack-me} first
+shows that \texttt{foo-arg} must be a sequence, because
+we apply \texttt{length}. It also shows that
+\texttt{foo-result} must be able to be multiplied by a scalar and to be
+added to itself. Thus \texttt{foo-result} can be a number, a vector,
+a list, an array, a list of arrays, an array of arrays, and so on.
+If we want to use \texttt{jackknife-dispersion}, we see that it
+uses the \texttt{outer-product} function to compute the dispersion.
+This means that \texttt{foo-result} can be an array, which is first
+displaced to a vector before \texttt{outer-product} is applied.\par
+%
+The function \texttt{sv-decomp}, for instance, returns a list of
+three arrays and a logical constant. If we want to Jackknife the
+singular value decomposition, we have to define a function which
+makes a list of vectors into a matrix, and which strips off the
+logical constant from the result. 
+%
+\begin{verbatim}
+(defun my-svd-decomp (list-of-vectors)
+  (select (sv-decomp (apply #'bind-rows list-of-vectors)) '(0 1 2))
+)
+\end{verbatim}
+%
+Then we can say \verb+(jackknife-pseudo-values 'my-svd-decomp)+.
+But we cannot say \verb+(jackknife-dispersion 'my-svd-decomp)+,
+because \texttt{outer-product} does not know what to do with
+lists of arrays.
+%
+\subsection{Tying it all together}
+%
+Finally, we have written a function which takes the symbol \texttt{func}
+and produces three new symbols in the current environment. They are
+\texttt{JACK-PSEUDO-VALUES-OF-FOO}, \texttt{JACK-AVERAGE-OF-FOO}, and 
+\texttt{JACK-DISPERSION-OF-FOO}. These three symbols have the 
+three closures discussed above in their function cells, so they can
+be called directly, without using \texttt{funcall}.
+%
+\begin{verbatim}
+(defun jack-me (func)
+(let* (
+      (ffunc (symbol-name func))
+      (pname (concatenate 'string "JACK-PSEUDO-VALUES-OF-" ffunc))
+      (aname (concatenate 'string "JACK-AVERAGE-OF-" ffunc))
+      (dname (concatenate 'string "JACK-DISPERSION-OF-" ffunc))
+      (pfunc (jack-pseudo-values func))
+      (afunc (jack-average func))
+      (dfunc (jack-dispersion func))
+      (psymb (intern pname))
+      (asymb (intern aname))
+      (dsymb (intern dname))
+      )
+  (setf (symbol-function psymb) pfunc)
+  (setf (symbol-function asymb) afunc)
+  (setf (symbol-function dsymb) dfunc)
+(values psymb asymb dsymb)
+))
+\end{verbatim}
+%
+Here is a final example. We define
+\begin{verbatim}
+(defun singular-values (list-of-vectors)
+  (elt (sv-decomp (apply #'bind-rows list-of-vectors)) 1)
+)
+\end{verbatim}
+and
+\begin{verbatim}
+(setq x (mapcar #'(lambda (n) (coerce (normal-rand n)'vector))
+  (repeat 4 100)))
+\end{verbatim}
+This makes a list with 100 vectors of 4 normal deviates, while 
+the function \texttt{singular-values} returns a vector of singular values.
+Thus
+\begin{verbatim}
+> (singular-values x)
+#(11.536806970914478 10.579640568812247 9.455345232286554 8.573864335865494)
+\end{verbatim}
+We then say 
+\begin{verbatim}
+> (jack-me 'singular-values)
+JACK-PSEUDO-VALUES-OF-SINGULAR-VALUES
+JACK-AVERAGE-OF-SINGULAR-VALUES
+JACK-DISPERSION-OF-SINGULAR-VALUES
+> (jack-average-of-singular-values x)
+#(16.84083238208193 15.911544545603567 14.182201645750206
+13.365352055410636)
+> (print-matrix (jack-dispersion-of-singular-values x))
+#2a(
+    (  52.7149      -1.44281      -4.59448       1.29799    )
+    ( -1.44281       52.5639      -7.75757      -2.77336    )
+    ( -4.59448      -7.75757       42.6533       2.54817    )
+    (  1.29799      -2.77336       2.54817       36.4671    )
+   )
+NIL
+\end{verbatim}
+Since in this case the population singular values are
+all 10, we are not too impressed with the actual performace
+of the jackknife (it is plausible, that in some cases the
+singular value decomposition has not converged, in which case
+the pseudo-values can behave very strangely).
+\bibliographystyle{amsplain}
+\bibliography{jack-me}
+\end{document}

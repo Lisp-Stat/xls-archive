@@ -1,0 +1,144 @@
+
+% shorthand for common symbols --- use three lower case letters
+
+\def\del{\delta}
+\def\gam{\gamma}
+\def\lbd{\lambda}
+\def\ome{\omega}
+\def\eps{\epsilon}
+\def\sig{\sigma}
+\def\alp{\alpha}
+\def\bet{\beta}
+
+\def\Del{\Delta}
+\def\Gam{\Gamma}
+\def\Lbd{\Lambda}
+\def\Ome{\Omega}
+\def\Eps{\Epsilon}
+\def\Sig{\Sigma}
+\def\Alp{\Alpha}
+
+\def\vat{\vartheta}
+\def\bul{\bullet}
+
+% and some calligraphy
+
+\def\cA{\mathcal{A}}
+\def\cB{\mathcal{B}}
+\def\cC{\mathcal{C}}
+\def\cD{\mathcal{D}}
+\def\cE{\mathcal{E}}
+\def\cF{\mathcal{F}}
+\def\cG{\mathcal{G}}
+\def\cH{\mathcal{H}}
+\def\cI{\mathcal{I}}
+\def\cJ{\mathcal{J}}
+\def\cK{\mathcal{K}}
+\def\cL{\mathcal{L}}
+\def\cM{\mathcal{M}}
+\def\cN{\mathcal{N}}
+\def\cO{\mathcal{O}}
+\def\cP{\mathcal{P}}
+\def\cQ{\mathcal{Q}}
+\def\cR{\mathcal{R}}
+\def\cS{\mathcal{S}}
+\def\cT{\mathcal{T}}
+\def\cU{\mathcal{U}}
+\def\cV{\mathcal{V}}
+\def\cW{\mathcal{W}}
+\def\cX{\mathcal{X}}
+\def\cY{\mathcal{Y}}
+\def\cZ{\mathcal{Z}}
+
+% and some blackboard bold
+
+\def\mR{\mathbb{R}}  % reals
+\def\mN{\mathbb{N}}  % natural numbers
+\def\mS{\mathbb{S}}  % unit simplex
+\def\mC{\mathbb{C}}  % complex numbers
+\def\mQ{\mathbb{Q}}  % rational numbers
+\def\mZ{\mathbb{Z}}  % integers
+
+% convenient mathematics
+
+\def\set#1{\lbrace #1\rbrace}
+\def\sumi{\sum_{i=1}^n}
+\def\sumj{\sum_{j=1}^m}
+\def\intf{\int_{-\infty}^{+\infty}}
+\def\det#1{\mid #1\mid}
+\def\tr{\text{tr}}
+
+\def\rec#1{\frac{1}{#1}}
+\def\half{\frac{1}{2}}
+\def\third{\frac{1}{3}}
+\def\quart{\frac{1}{4}}
+    
+\def\coin{\underline{\|}}
+\def\aps#1{``#1''}
+\def\defi{\mathop{=}\limits^{\Delta}}
+\def\argmin#1#2{\mathop{\text{argmin}}\limits_{#1\in #2}}
+
+% statistics notation
+
+\def\Rav#1{\underline #1}               % random variables are underlined
+\def\Exp#1{{\bf E}\,(#1)}               % expected values are bold
+\def\Var#1{{\bf V}\,(#1)}               % variances are bold
+\def\Cov#1#2{{\bf C}\,(#1,#2)}          % covariances are bold
+\def\Cor#1#2{{\bf R}\,(#1,#2)}          % correlations are bold
+
+\def\Rx{\Rav{x}} % random variables are underlined
+\def\Ry{\Rav{y}}
+\def\Rz{\Rav{z}}
+\def\Rp{\Rav{p}} % and so are random proportions
+\def\Rq{\Rav{q}}
+
+% probabilistic convergences
+
+\def\claw{\mathop{\Longrightarrow}\limits^{\cL}}
+\def\cprob{\mathop{\Longrightarrow}\limits^{\cP}}
+\def\isad{\mathop{=}\limits^{a.d.}}
+
+% standard densities
+
+\def\snordens#1{\frac{1}{\sqrt{2\pi}}\exp\{-\half #1^2\}}
+\def\nordens#1#2#3{\frac{1}{#2 \sqrt{2\pi}}
+        \exp\bigl[-\half \{{{(#3 - #1)}\over{#2}}\}^2\bigr]}
+\def\Exponential#1#2{#1\exp\{-#1 #2\}}
+
+% discrete distributions
+
+\def\Binomial#1#2#3{\binom{#1}{#2}#3^m(1-#3)^{#1-#2}}
+\def\Poisson#1#2{\frac{#1^#2}{#2!}\exp\{-#1\}}
+
+% statistics macros
+
+\def\ModC#1#2{f(#1\mid #2)}             % parametric model, discrete case
+\def\ModD#1#2{\pi_#1(#2)}               % parametric model, continuous case
+
+\def\ScoD#1#2{\bigl({{                  % score function, discrete case
+    \partial\log \ModD{#1}{#2}}\over{   % score function, discrete case
+    \partial #2}}\bigr)_{#2=#2_0}}      % score function, discrete case
+
+\def\ScoC#1#2{\bigl({{                  % score function, continuous case
+    \partial\log \ModC{#1}{#2}}\over{   % score function, continuous case
+    \partial #2}}\bigr)_{#2=#2_0}}      % score function, continuous case
+
+\def\InfD#1#2{\sum_{#1=1}^m             % Fisher information, discrete case
+    \bigl[\ScoD{#1}{#2}                 % Fisher information, discrete case
+    \ScoD{#1}{#2}^\prime                % Fisher information, discrete case
+    \bigr]\ \ModD{#1}{#2}_0}            % Fisher information, discrete case
+
+\def\InfC#1#2{\intf                     % Fisher information, continuous case
+    \bigl[\ScoC{#1}{#2}                 % Fisher information, continuous case
+    \ScoC{#1}{#2}^\prime                % Fisher information, continuous case
+    \bigr]\ \ModC{#1}{#2}_0\ d#1}       % Fisher information, continuous case
+
+% linear model
+
+\def\LinM{\Rav{y}=X\beta + \Rav{\eps}}  % Linear model, matrix notation
+\def\Resi{\Rav{y}-X\beta} % Linear model, residuals
+
+\def\LinE
+    {\Rav{\eps}\sim\cN (0 ,
+    \sigma^2 \cI)}                      % Linear model, errors
+    

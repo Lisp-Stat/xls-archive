@@ -1,0 +1,20 @@
+The titles of these directories are more or less self-eplanatory,
+except perhaps for nswc, lsqpack, and numrecipes. 
+
+nswc contains the code of a large numerical mathematics library,
+see: 
+          NSWC Library of Mathematics Subroutines
+          by Alfred H. Morris Jr.
+          January 1993 (610 pages)
+          Report NSWCDD/TR-92/425
+          Naval Surface Warfare Center
+          Dahlgren Division
+          Dahlgren, VA 22448-5000
+
+lsqpack is the code that goes with the book ... by Lawson and Hanson.
+
+numerecipes is code from Numerical Recipes.
+
+Code in these last three directories has been translated with
+f2cl, from the University of Waikato, NZ. Thanks to 
+Kevin Broughan (kab@waikato.ac.nz) for code and directions.

@@ -1,0 +1,26 @@
+(defun erfcc (x) (declare (type double-float x))
+ (prog ((erfcc 0.0d0) (t_ 0.0d0) (z 0.0d0)) (declare (type double-float erfcc))
+  (declare (type double-float t_)) (declare (type double-float z))
+  (setf z (abs x)) (setf t_ (/ 1.0 (+ 1.0 (* 0.5 z))))
+  (setf erfcc
+   (* t_
+    (exp
+     (+ (+ (* (* -1 z) z) (- 1.2655122))
+      (* t_
+       (+ 1.0000237
+        (* t_
+         (+ 0.37409195
+          (* t_
+           (+ 0.09678418
+            (* t_
+             (+ (- 0.18628806)
+              (* t_
+               (+ 0.27886808
+                (* t_
+                 (+ (- 1.135204)
+                  (* t_
+                   (+ 1.4885159 (* t_ (+ (- 0.82215226) (* t_ 0.17087276))))
+  )))))))))))))))))
+  (if (< x 0.0) (setf erfcc (+ 2.0 (- erfcc)))) (return erfcc)
+))
+

@@ -1,0 +1,1822 @@
+\input /home/comet/rga6711/xlisp/definition/lispdef.tex
+\hfuzz=5pt
+
+
+\beginProject{ Project Documentation Toolkit}
+\projectTitle{ Project Documentation Toolkit}
+\projectAuthor{ Russell Almond}{ Educational Testing Service}{ almond@acm.org}
+\projectAuthor{ Thomas S. Dye}{ International Archaeological Research Institute, Inc.}{ tdye@lava.net}
+\projectAuthor{ Andrew E. Long}{ }{ aelon@sph.umich.edu}
+\projectVersion{ Version 1.0.3 (Jan 11, 1999)}
+\beginMotivationDesc
+ This package is intended to solve two different
+  problems.  The first is to give us a database of XLS objects which
+  describe project written in XLS.  The second is to provide an
+  automatic way of documenting projects. 
+\endMotivationDesc
+\projectCopyright{ This work is public domain.  The authors make no
+warantee as to its suitability for any particular purpose.}
+\projectReviewer{ }{ }
+\beginFunctionalDesc
+ This package provides objects for
+  documenting projects, as well as objects for documenating functions,
+  generic functions, messages, variables, parameters, prototypes,
+  etc. which are part of a project.  There are a number of tools
+  provided for extracting the documentation automatically from the
+  source files (although project level documentation must still be
+  created manually.)  Two functions provide a printing mechanism into
+  either Plain TeX or HTML. 
+\endFunctionalDesc
+\beginStatDesc
+ Documenting software is critically
+  important to the dissemination of statistical ideas, but is an often
+  overlooked step in statistical programming.  This package attempts
+  to provide tools for automatically documenting projects in a hope to
+  eliminate some of that lag.   This is based on an earlier
+  implementation of a similar system in Common LISP by John McDonald
+  (McDonald[1991]) 
+\endStatDesc
+\beginRefs
+\projectRef{ McDonald, J.A. [1991] ``Definitions:  a
+  simple database for typesetting documentation.''  University of
+  Washington, Dept. of Statistics, Technical Report.}
+\projectRef{ Steele, G.L., Jr. [1990] ``Common LISP:  The
+Language, Second Edition.'' Digital Press.}
+\projectRef{ Tierney, L. [1990] ``LISP-STAT:  An Object
+  Oriented Environment for Statistical COmputing and Dynamic
+  Graphics''.  John Wiley and Sons.}
+\endRefs
+\beginInstructions
+ Docuementing a project under the
+  definitions system consists of four steps:  (1) writing your code
+  according to certain conventions which make it self documenting;
+  this includes using declarations where appropriate and including
+  documentation strings.  (2) Creating a documentation object for your
+  project; this can be done by filling out the template given in the
+  file doc.lsp.  (3) load the file 'definitions/system.lsp' and then 
+  the file containing your project documentation object. (4)  Run the
+  function df:print-tex-documentation or df:print-html-documentation
+  to generate the documentation.  TeX documenation comes out in Plain
+  TeX or LaTeX. 
+\endInstructions
+\beginExamples
+\projectEx{ See the file doc-doc.lsp in this distribution.}
+\endExamples
+\beginWarnings
+\projectWarn{ Unless you document your code, it will be
+  unreadable and these tools will be useless!}
+\projectWarn{ These tools will not work very well if all of
+  your code is left in the USER package; in particular, it relies on
+  which symbols are exported to know which objects are important.}
+\projectWarn{ TeX documents will still create overfull
+hboxes, especially if doc-strings contain lots of long symbol names.
+You can increase hfuzz to fix small problem.  Editing the TeX file is
+probably you best resort for big problems.}
+\endWarnings
+\beginSeeAlsos
+\projectSee{ Note Tierney [1990] is not really a complete
+  LISP reference manual.  For notes on documentation strings and
+  declaration syntax, look at Steele [1990]}
+\endSeeAlsos
+\projectXLSVersion{ Works with XLS 3.52.5 and later.}
+\projectOSVersion{ No known incompatabilities; tested on Unix
+  and Mac}
+\beginDepList \cd{ "Xlos" \hfudge "Lisp" \hfudge } \endProjectList
+\projectPackage{ "Definitions"}{"Df" \hfudge }
+\beginChanges
+\projectChange{ Version 1.0.3 Minor cleanups}
+\projectChange{ Version 1.0.2 Added minimal links and anchors to user
+level documentation.  Still a lot to do here.}
+\projectChange{ Version 1.0.2 Added Change Log feature.}
+\projectChange{ Version 1.0.1 Added Project Level
+Documenation Objects.}
+\endChanges
+\beginFileList \cd{"/Home/Comet/Rga6711/Xlisp/Definition/Package.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Exports.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Defs.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Definition.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Pack.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Global.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Fun.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Type.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Build.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Read.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Xls-Object.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Filter.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Sort.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Condition.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Tex-Print.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Html-Print.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Project-Doc.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Tex-Print-Doc.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Html-Print-Doc.Lsp" \hfudge } \endProjectList
+\beginObjectList \cd{Definitions:Author-Doc-Proto \hfudge Definitions:Class-Definition \hfudge Definitions:Condition-Definition \hfudge Definitions:Constant-Definition \hfudge Definitions:Definition \hfudge Definitions:Function-Definition \hfudge Definitions:Generic-Function-Definition \hfudge Definitions:Global-Variable-Definition \hfudge Definitions:Lambda-List-Definition \hfudge Definitions:Macro-Definition \hfudge Definitions:Message-Definition \hfudge Definitions:Method-Definition \hfudge Definitions:Package-Definition \hfudge Definitions:Parameter-Definition \hfudge Definitions:Project-Doc-Proto \hfudge Definitions:Prototype-Definition \hfudge Definitions:Setf-Definition \hfudge Definitions:Structure-Definition \hfudge Definitions:Type-Definition \hfudge Definitions:User-Type-Definition \hfudge Definitions:Variable-Definition \hfudge Definitions:Version-Doc-Proto \hfudge } \endProjectList
+\beginFunList \cd{Definitions:Build-Project-Definitions \hfudge Definitions:Declare-Check \hfudge (Setf Definitions:Definer-Class) \hfudge Definitions:Definer-Class \hfudge Definitions:Definition-Alpha\< \hfudge Definitions:Definition-Arg-Types \hfudge Definitions:Definition-Body \hfudge Definitions:Definition-Children \hfudge Definitions:Definition-Class-Nice-Name \hfudge Definitions:Definition-Declarations \hfudge Definitions:Definition-Definee \hfudge Definitions:Definition-Definer \hfudge Definitions:Definition-Documentation \hfudge Definitions:Definition-Form \hfudge Definitions:Definition-Initial-Value \hfudge Definitions:Definition-Lambda-List \hfudge Definitions:Definition-Method-Qualifier \hfudge Definitions:Definition-Name \hfudge Definitions:Definition-Name-\>String \hfudge Definitions:Definition-Parents \hfudge Definitions:Definition-Returns \hfudge Definitions:Definition-Slots \hfudge Definitions:Definition-Specializers \hfudge Definitions:Definition-Symbol \hfudge Definitions:Definition-Symbol-Name \hfudge Definitions:Definition-Type-Declarations \hfudge Definitions:Definition-Usage \hfudge Definitions:Definition\< \hfudge Definitions:Exported-Definition? \hfudge Definitions:Lambda-List-Arg-Names \hfudge Definitions:Lambda-List-Keyword-Arg-Names \hfudge Definitions:Lambda-List-Keyword-Args \hfudge Definitions:Lambda-List-Optional-Arg-Names \hfudge Definitions:Lambda-List-Optional-Args \hfudge Definitions:Lambda-List-Required-Arg-Names \hfudge Definitions:Lambda-List-Required-Args \hfudge Definitions:Lambda-List-Rest-Arg-Name \hfudge Definitions:Lambda-List-Specializers \hfudge Definitions:Lambda-List-Whole-Arg \hfudge Definitions:Make-Definitions \hfudge Definitions:Make-Slot-Accessor-Definitions \hfudge Definitions:Make-Subdefinitions \hfudge Definitions:Print-Html-Definition \hfudge Definitions:Print-Html-Definitions \hfudge Definitions:Print-Html-Documentation \hfudge Definitions:Print-Tex-Definition \hfudge Definitions:Print-Tex-Definitions \hfudge Definitions:Print-Tex-Documentation \hfudge Definitions:Read-Definitions-From-File \hfudge Definitions:Read-Definitions-From-Files \hfudge Definitions:Type-Check \hfudge Definitions:Version\> \hfudge } \endProjectList
+\beginVarList \cd{Definitions:*Definition-Hfuzz* \hfudge } \endProjectList
+\beginObjects
+
+\beginDefinition
+
+
+\DefNameBox{df:author-doc-proto}{Class}
+\beginDocumentation
+This object holds information about an author or reviewer of the code.\endDocumentation
+\Usage{35}{\cd{(send df:author-doc-proto :new  &key name affiliation email home-page)}}\endUsage
+\beginSlots
+\slot{\cd{name}}\initargsSlot\cd{(:Name)}\typeSlot{\cd{String}}\docSlot{Author's name.}\endSlot
+\slot{\cd{affiliation}}\initargsSlot\cd{(:Affiliation)}\typeSlot{\cd{String}}\docSlot{Author's Institution.}\endSlot
+\slot{\cd{email}}\initargsSlot\cd{(:Email)}\typeSlot{\cd{String}}\docSlot{Author's email address.}\endSlot
+\slot{\cd{home-page}}\initargsSlot\cd{(:Home-Page)}\typeSlot{\cd{String}}\docSlot{Author's home-page URL.}\endSlot
+\endSlots
+\beginMethods{\nextInList
+ :Home-Page\nextInList
+ :Email\nextInList
+ :Affiliation\nextInList
+ :Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/project-doc.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:class-definition}{Class}
+\beginDocumentation
+A definition class for \<defclass\>.\endDocumentation
+\Usage{35}{\cd{(send df:class-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:User-Type-Definition}\endParent
+\Children{\nextInList
+ Df:Class-Definition\nextInList
+ Df:Condition-Definition}\endChildren
+\beginMethods{\nextInList
+ Df::Print-Html-Definition-Slot-Types\nextInList
+ Df::Print-Tex-Definition-Slot-Types\nextInList
+ Df:Make-Subdefinitions\nextInList
+ Df:Make-Slot-Accessor-Definitions\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Children\nextInList
+ Df:Definition-Parents\nextInList
+ Df::Definition-Methods\nextInList
+ Df:Definition-Slots\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Definee\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/type.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:condition-definition}{Class}
+\beginDocumentation
+A definition class for \<define-condition\>.\endDocumentation
+\Usage{39}{\cd{(send df:condition-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Class-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ Df:Definition-Children\nextInList
+ Df:Definition-Parents\nextInList
+ Df:Definition-Slots\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Definee\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/condition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:constant-definition}{Class}
+\beginDocumentation
+A definition class for \<defconstant\>.\endDocumentation
+\Usage{38}{\cd{(send df:constant-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Global-Variable-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/global.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition}{Class}
+\beginDocumentation
+Abstract root class for definition objects.\endDocumentation
+\Usage{29}{\cd{(send df:definition :new  &key definition-form definition-path)}}\endUsage
+\beginSlots
+\slot{\cd{definition-form}}\initargsSlot\cd{(:Definition-Form)}\typeSlot{\cd{List}}\docSlot{The Lisp form that results from reading the definition.}\endSlot
+\slot{\cd{definition-path}}\initargsSlot\cd{(:Definition-Path)}\typeSlot{\cd{(Or Pathname String)}}\docSlot{Pathanme of the file from which the definition was read.}\endSlot
+\endSlots
+\Children{\nextInList
+ Df:Class-Definition\nextInList
+ Df:Generic-Function-Definition\nextInList
+ Df:Global-Variable-Definition\nextInList
+ Df:Method-Definition\nextInList
+ Df:User-Type-Definition\nextInList
+ Df:Type-Definition\nextInList
+ Df:Prototype-Definition\nextInList
+ Df:Setf-Definition\nextInList
+ Df:Condition-Definition\nextInList
+ Df:Structure-Definition\nextInList
+ Df:Class-Definition\nextInList
+ Df:Message-Definition\nextInList
+ Df:Macro-Definition\nextInList
+ Df:Parameter-Definition\nextInList
+ Df:Package-Definition\nextInList
+ Df:Variable-Definition\nextInList
+ Df:Constant-Definition\nextInList
+ Df:Function-Definition\nextInList
+ Df:Lambda-List-Definition}\endChildren
+\beginMethods{\nextInList
+ Df:Print-Html-Definition\nextInList
+ Df::Print-Html-Definition-Signals\nextInList
+ Df::Print-Html-Definition-Methods\nextInList
+ Df::Print-Html-Definition-Source-Path\nextInList
+ Df::Print-Html-Definition-Documentation\nextInList
+ Df::Print-Html-Definition-Children\nextInList
+ Df::Print-Html-Definition-Parents\nextInList
+ Df::Print-Html-Definition-Returns\nextInList
+ Df::Print-Html-Definition-Slot-Types\nextInList
+ Df::Print-Html-Definition-Arg-Types\nextInList
+ Df::Print-Html-Definition-Usage\nextInList
+ Df::Print-Html-Definition-Headline\nextInList
+ Df:Print-Tex-Definition\nextInList
+ Df::Print-Tex-Definition-Signals\nextInList
+ Df::Print-Tex-Definition-Methods\nextInList
+ Df::Print-Tex-Definition-Source-Path\nextInList
+ Df::Print-Tex-Definition-Documentation\nextInList
+ Df::Print-Tex-Definition-Children\nextInList
+ Df::Print-Tex-Definition-Parents\nextInList
+ Df::Print-Tex-Definition-Returns\nextInList
+ Df::Print-Tex-Definition-Slot-Types\nextInList
+ Df::Print-Tex-Definition-Arg-Types\nextInList
+ Df::Print-Tex-Definition-Usage\nextInList
+ Df::Print-Tex-Definition-Headline\nextInList
+ :Print\nextInList
+ Df:Definition\<\nextInList
+ Df:Make-Subdefinitions\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ Df::Definition-Methods\nextInList
+ Df:Definition-Children\nextInList
+ Df:Definition-Parents\nextInList
+ Df:Definition-Slots\nextInList
+ Df:Definition-Declarations\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Arg-Types\nextInList
+ Df:Definition-Lambda-List\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Symbol\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ Df:Definition-Name-\>String\nextInList
+ Df:Definition-Name\nextInList
+ Df:Definition-Definee\nextInList
+ Df::Definition-Path\nextInList
+ Df:Definition-Form\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:function-definition}{Class}
+\beginDocumentation
+A definition class for \<defun\>.\endDocumentation
+\Usage{38}{\cd{(send df:function-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Lambda-List-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:generic-function-definition}{Class}
+\beginDocumentation
+A definition class for \<defgeneric\>.\endDocumentation
+\Usage{46}{\cd{(send df:generic-function-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Lambda-List-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition\<\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:global-variable-definition}{Class}
+\beginDocumentation
+An abstract super class for global variable definitions.\endDocumentation
+\Usage{45}{\cd{(send df:global-variable-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Definition}\endParent
+\Children{\nextInList
+ Df:Parameter-Definition\nextInList
+ Df:Variable-Definition\nextInList
+ Df:Constant-Definition}\endChildren
+\beginMethods{\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/global.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-definition}{Class}
+\beginDocumentation
+An abstract super class for definitions that include lambda lists.\endDocumentation
+\Usage{41}{\cd{(send df:lambda-list-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Definition}\endParent
+\Children{\nextInList
+ Df:Generic-Function-Definition\nextInList
+ Df:Method-Definition\nextInList
+ Df:Type-Definition\nextInList
+ Df:Setf-Definition\nextInList
+ Df:Message-Definition\nextInList
+ Df:Macro-Definition\nextInList
+ Df:Function-Definition}\endChildren
+\beginMethods{\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Arg-Types\nextInList
+ Df:Definition-Declarations\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Lambda-List\nextInList
+ Df:Definition-Body\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:macro-definition}{Class}
+\beginDocumentation
+A definition class for \<defmacro\>.\endDocumentation
+\Usage{35}{\cd{(send df:macro-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Lambda-List-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Arg-Types\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:message-definition}{Class}
+\beginDocumentation
+A definition class for defmeth.  Note call Message to avoid name
+  class with CLOS method.\endDocumentation
+\Usage{37}{\cd{(send df:message-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Method-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Specializers\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ Df:Definition-Name-\>String\nextInList
+ Df:Definition-Lambda-List\nextInList
+ Df:Definition-Name\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Body\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/xls-object.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:method-definition}{Class}
+\beginDocumentation
+A definition class for \<defmethod\>.\endDocumentation
+\Usage{36}{\cd{(send df:method-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Lambda-List-Definition}\endParent
+\Children{\nextInList
+ Df:Message-Definition}\endChildren
+\beginMethods{\nextInList
+ Df:Definition\<\nextInList
+ Df:Definition-Specializers\nextInList
+ Df:Definition-Body\nextInList
+ Df:Definition-Lambda-List\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ Df:Definition-Name-\>String\nextInList
+ Df:Definition-Name\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:package-definition}{Class}
+\beginDocumentation
+A definition class for \<defpackage\>.\endDocumentation
+\Usage{37}{\cd{(send df:package-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Symbol\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ Df:Definition-Name-\>String\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/pack.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:parameter-definition}{Class}
+\beginDocumentation
+A definition class for \<defparameter\>.\endDocumentation
+\Usage{39}{\cd{(send df:parameter-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Global-Variable-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/global.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:project-doc-proto}{Class}
+\beginDocumentation
+This is the basic object for documenting a project.  This object
+can be used to produce printed documentation (via TeX) or on-line
+documentation (via HTML).\endDocumentation
+\Usage{36}{\cd{(send df:project-doc-proto :new  &key title authors version package nicknames package-dependencies motivation functional-description stat-description exported-objects exported-functions global-vars instructions examples xls-version os-dependencies warnings change-history see-also references copyright reviewed-by files source-home)}}\endUsage
+\beginSlots
+\slot{\cd{title}}\initargsSlot\cd{(:Title)}\typeSlot{\cd{String}}\docSlot{Title of the code.}\endSlot
+\slot{\cd{authors}}\initargsSlot\cd{(:Authors)}\typeSlot{\cd{List}}\docSlot{A list of author-doc-proto describing the author(s) of the code.}\endSlot
+\slot{\cd{version}}\initargsSlot\cd{(:Version)}\typeSlot{\cd{Definitions:Version-Doc-Proto}}\docSlot{Version of the code.}\endSlot
+\slot{\cd{package}}\initargsSlot\cd{(:Package)}\typeSlot{\cd{(Or String T)}}\docSlot{Name of the package these
+functions live in.  Warning:  leaving your module in the user package
+could result in name conflicts with other packages and will make it
+more difficult for the automatic documentation process to work.}\endSlot
+\slot{\cd{nicknames}}\initargsSlot\cd{(:Nicknames)}\typeSlot{\cd{List}}\docSlot{A list of package nicknames.}\endSlot
+\slot{\cd{package-dependencies}}\initargsSlot\cd{(:Package-Dependencies)}\typeSlot{\cd{List}}\docSlot{List of package dependencies.}\endSlot
+\slot{\cd{motivation}}\initargsSlot\cd{(:Motivation)}\typeSlot{\cd{String}}\docSlot{Explanation why the code was written.}\endSlot
+\slot{\cd{functional-description}}\initargsSlot\cd{(:Functional-Description)}\typeSlot{\cd{String}}\docSlot{What the code is supposed to accomplish.}\endSlot
+\slot{\cd{stat-description}}\initargsSlot\cd{(:Stat-Description)}\typeSlot{\cd{String}}\docSlot{Description of the statistical idea behind the code}\endSlot
+\slot{\cd{exported-objects}}\initargsSlot\cd{(:Exported-Objects)}\typeSlot{\cd{List}}\docSlot{A list of objects exported by the package.}\endSlot
+\slot{\cd{exported-functions}}\initargsSlot\cd{(:Exported-Functions)}\typeSlot{\cd{List}}\docSlot{A list of functions exported by the package.}\endSlot
+\slot{\cd{global-vars}}\initargsSlot\cd{(:Global-Vars)}\typeSlot{\cd{List}}\docSlot{A list of var-doc-proto that describe global variables used by the package.}\endSlot
+\slot{\cd{instructions}}\initargsSlot\cd{(:Instructions)}\typeSlot{\cd{String}}\docSlot{User instructions for the package.}\endSlot
+\slot{\cd{examples}}\initargsSlot\cd{(:Examples)}\typeSlot{\cd{List}}\docSlot{A list of strings containing examples of common uses for the package.}\endSlot
+\slot{\cd{xls-version}}\initargsSlot\cd{(:Xls-Version)}\typeSlot{\cd{String}}\docSlot{A list of version-doc-proto containing information on versions of xls that are compatible and incompatible with the package.}\endSlot
+\slot{\cd{os-dependencies}}\initargsSlot\cd{(:Os-Dependencies)}\typeSlot{\cd{String}}\docSlot{Description of operating system dependencies.}\endSlot
+\slot{\cd{warnings}}\initargsSlot\cd{(:Warnings)}\typeSlot{\cd{List}}\docSlot{A list of strings, each with a caveat for the well-intentioned but possibly naive user.}\endSlot
+\slot{\cd{change-history}}\initargsSlot\cd{(:Change-History)}\typeSlot{\cd{List}}\docSlot{A list of strings, each
+describing the changes since the last version.}\endSlot
+\slot{\cd{see-also}}\initargsSlot\cd{(:See-Also)}\typeSlot{\cd{List}}\docSlot{A list of strings, each containing a helpful alternative to the package.}\endSlot
+\slot{\cd{references}}\initargsSlot\cd{(:References)}\typeSlot{\cd{List}}\docSlot{A list of strings, each with a reference to a book, article, paper, etc. of likely interest.}\endSlot
+\slot{\cd{copyright}}\initargsSlot\cd{(:Copyright)}\typeSlot{\cd{String}}\docSlot{String describing
+copyright information and licence to include in library including any
+restrictions on use (i.e., educational and research only, or no
+redistribution without permission.}\endSlot
+\slot{\cd{reviewed-by}}\initargsSlot\cd{(:Reviewed-By)}\typeSlot{\cd{Definitions:Author-Doc-Proto}}\docSlot{Who reviewed the package for the archive.}\endSlot
+\slot{\cd{files}}\initargsSlot\cd{(:Files)}\typeSlot{\cd{List}}\docSlot{A list of strings each with the name of a file 
+	    	(relative to documentation file) contained in the project.  
+	    	Autodocumentation feature uses these files for definitions.}\endSlot
+\slot{\cd{source-home}}\initargsSlot\cd{(:Source-Home)}\typeSlot{\cd{Pathname}}\docSlot{This should automatically capture the location of a project so we 
+	    	can do the appropriate source grabbing for the definitions.  Users 
+	    	should not need to set this, it should automatically be set when the
+	    	project-doc instance object is created.  This in rather assumes the the 
+	    	project-doc is created while reading a file in the top level 
+	    	directory of the project.}\endSlot
+\endSlots
+\Children{\nextInList
+ Df:Project-Doc-Proto\nextInList
+ Df:Project-Doc-Proto\nextInList
+ Df:Project-Doc-Proto}\endChildren
+\beginMethods{\nextInList
+ Df::Print-Html-Documentation-Var-Docs\nextInList
+ Df::Print-Html-Documentation-Vars\nextInList
+ Df::Print-Html-Documentation-Fun-Docs\nextInList
+ Df::Print-Html-Documentation-Funs\nextInList
+ Df::Print-Html-Documentation-Object-Docs\nextInList
+ Df::Print-Html-Documentation-Objects\nextInList
+ Df::Print-Html-Documentation-Files\nextInList
+ Df::Print-Html-Documentation-Package\nextInList
+ Df::Print-Html-Documentation-Dependencies\nextInList
+ Df::Print-Html-Documentation-Os\nextInList
+ Df::Print-Html-Documentation-Xls\nextInList
+ Df::Print-Html-Documentation-See\nextInList
+ Df::Print-Html-Documentation-Changes\nextInList
+ Df::Print-Html-Documentation-Warnings\nextInList
+ Df::Print-Html-Documentation-Examples\nextInList
+ Df::Print-Html-Documentation-Instructions\nextInList
+ Df::Print-Html-Documentation-Refs\nextInList
+ Df::Print-Html-Documentation-Stat\nextInList
+ Df::Print-Html-Documentation-Motivation\nextInList
+ Df::Print-Html-Documentation-Reviewers\nextInList
+ Df::Print-Html-Documentation-Copyright\nextInList
+ Df::Print-Html-Documentation-Functional\nextInList
+ Df::Print-Html-Documentation-Version\nextInList
+ Df::Print-Html-Documentation-Authors\nextInList
+ Df::Print-Html-Documentation-Title\nextInList
+ Df:Print-Html-Documentation\nextInList
+ Df::Print-Tex-Documentation-Var-Docs\nextInList
+ Df::Print-Tex-Documentation-Vars\nextInList
+ Df::Print-Tex-Documentation-Fun-Docs\nextInList
+ Df::Print-Tex-Documentation-Funs\nextInList
+ Df::Print-Tex-Documentation-Object-Docs\nextInList
+ Df::Print-Tex-Documentation-Objects\nextInList
+ Df::Print-Tex-Documentation-Files\nextInList
+ Df::Print-Tex-Documentation-Package\nextInList
+ Df::Print-Tex-Documentation-Dependencies\nextInList
+ Df::Print-Tex-Documentation-Os\nextInList
+ Df::Print-Tex-Documentation-Xls\nextInList
+ Df::Print-Tex-Documentation-See\nextInList
+ Df::Print-Tex-Documentation-Changes\nextInList
+ Df::Print-Tex-Documentation-Warnings\nextInList
+ Df::Print-Tex-Documentation-Examples\nextInList
+ Df::Print-Tex-Documentation-Instructions\nextInList
+ Df::Print-Tex-Documentation-Refs\nextInList
+ Df::Print-Tex-Documentation-Stat\nextInList
+ Df::Print-Tex-Documentation-Motivation\nextInList
+ Df::Print-Tex-Documentation-Reviewers\nextInList
+ Df::Print-Tex-Documentation-Copyright\nextInList
+ Df::Print-Tex-Documentation-Functional\nextInList
+ Df::Print-Tex-Documentation-Version\nextInList
+ Df::Print-Tex-Documentation-Authors\nextInList
+ Df::Print-Tex-Documentation-Title\nextInList
+ Df:Print-Tex-Documentation\nextInList
+ Df:Build-Project-Definitions\nextInList
+ :Source-Home\nextInList
+ :Files\nextInList
+ :Reviewed-By\nextInList
+ :Copyright\nextInList
+ :References\nextInList
+ :See-Also\nextInList
+ :Change-History\nextInList
+ :Warnings\nextInList
+ :Os-Dependencies\nextInList
+ :Xls-Version\nextInList
+ :Examples\nextInList
+ :Instructions\nextInList
+ :Global-Vars\nextInList
+ :Exported-Functions\nextInList
+ :Exported-Objects\nextInList
+ :Stat-Description\nextInList
+ :Functional-Description\nextInList
+ :Motivation\nextInList
+ :Package-Dependencies\nextInList
+ :Nicknames\nextInList
+ :Package\nextInList
+ :Version\nextInList
+ :Authors\nextInList
+ :Title\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/project-doc.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:prototype-definition}{Class}
+\beginDocumentation
+A definition class for defproto\endDocumentation
+\Usage{39}{\cd{(send df:prototype-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:User-Type-Definition}\endParent
+\beginMethods{\nextInList
+ Df::Print-Html-Definition-Slot-Types\nextInList
+ Df::Print-Tex-Definition-Slot-Types\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ Df:Definition-Usage\nextInList
+ Df:Definition-Children\nextInList
+ Df:Definition-Parents\nextInList
+ Df::Definition-Methods\nextInList
+ Df:Definition-Slots\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Definee\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/xls-object.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:setf-definition}{Class}
+\beginDocumentation
+A definition class for \<defsetf\>.\endDocumentation
+\Usage{34}{\cd{(send df:setf-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Lambda-List-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Declarations\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Arg-Types\nextInList
+ Df:Definition-Lambda-List\nextInList
+ Df:Definition-Name\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:structure-definition}{Class}
+\beginDocumentation
+A definition class for \<defstruct\>.\endDocumentation
+\Usage{39}{\cd{(send df:structure-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:User-Type-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Make-Subdefinitions\nextInList
+ Df:Make-Slot-Accessor-Definitions\nextInList
+ Df:Definition-Slots\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Name\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/type.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:type-definition}{Class}
+\beginDocumentation
+A definition class for \<deftype\>.\endDocumentation
+\Usage{34}{\cd{(send df:type-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:User-Type-Definition\nextInList Df:Lambda-List-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Documentation\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/type.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:user-type-definition}{Class}
+\beginDocumentation
+An abstract super class for user defined types.\endDocumentation
+\Usage{39}{\cd{(send df:user-type-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Definition}\endParent
+\Children{\nextInList
+ Df:Class-Definition\nextInList
+ Df:Type-Definition\nextInList
+ Df:Prototype-Definition\nextInList
+ Df:Condition-Definition\nextInList
+ Df:Structure-Definition\nextInList
+ Df:Class-Definition}\endChildren
+\beginMethods{\nextInList
+ Df:Definition\<\nextInList
+ Df:Definition-Usage\nextInList
+ Df::Definition-Name-\>Tag\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/type.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:variable-definition}{Class}
+\beginDocumentation
+A definition class for \<defvar\>.\endDocumentation
+\Usage{38}{\cd{(send df:variable-definition :new )}}\endUsage
+
+\Parents{\nextInList Df:Global-Variable-Definition}\endParent
+\beginMethods{\nextInList
+ Df:Definition-Class-Nice-Name\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/global.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:version-doc-proto}{Class}
+\beginDocumentation
+This object holds information on
+versions.  It is used to hold the version information for the code and
+for xls.  The meaning of the release slot changes with the context.\endDocumentation
+\Usage{36}{\cd{(send df:version-doc-proto :new  &key major minor rev-level date release)}}\endUsage
+\beginSlots
+\slot{\cd{major}}\initargsSlot\cd{(:Major)}\typeSlot{\cd{Integer}}\docSlot{The 1 in version 1.0.2.}\endSlot
+\slot{\cd{minor}}\initargsSlot\cd{(:Minor)}\typeSlot{\cd{Integer}}\docSlot{The 0 in version 1.0.2.}\endSlot
+\slot{\cd{rev-level}}\initargsSlot\cd{(:Rev-Level)}\typeSlot{\cd{Integer}}\docSlot{The 0 in version 1.0.2.}\endSlot
+\slot{\cd{date}}\initargsSlot\cd{(:Date)}\typeSlot{\cd{String}}\docSlot{The date of the release.}\endSlot
+\slot{\cd{release}}\initargsSlot\cd{(:Release)}\typeSlot{\cd{String}}\docSlot{a = alpha, b = beta, c = gamma for code 
+version; perhaps some
+other scheme for xls-version, say: x = code should work with this
+xls version ; y = code tested and works with this xls version ; z =
+code doesn't work with this xls version }\endSlot
+\endSlots
+\beginMethods{\nextInList
+ Df:Version\>\nextInList
+ :Print\nextInList
+ :Release\nextInList
+ :Date\nextInList
+ :Rev-Level\nextInList
+ :Minor\nextInList
+ :Major\nextInList
+ :Isnew\nextInList
+ Xlos:Shared-Initialize}\endMethods
+
+\Source{ /home/comet/rga6711/xlisp/definition/project-doc.lsp}
+\endDefinition
+
+\beginProjectFuns
+
+\beginDefinition
+
+
+\DefNameBox{df:build-project-definitions}{Generic Function}
+\beginDocumentation
+This automatically extracts the exported object definitions from
+the source files for a project and fills in the appropriate
+documenation fields\endDocumentation
+\Usage{30}{\cd{(df:build-project-definitions doc)}}\endUsage
+\beginArguments
+\argument{\cd{doc}}\typeArg{\cd{Definitions:Project-Doc-Proto}}\endArg
+\endArguments
+\beginReturn
+\itemReturn \simpleReturn{\cd{doc}}\endsReturn
+\itemReturn \simpleReturn{\cd{defs}}\endsReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/project-doc.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:declare-check}{Macro}
+\beginDocumentation
+This macro generates type checking forms and has a syntax like \<declare\>.
+Unfortunately, we can't easily have it also generate the declarations.\endDocumentation
+\Usage{18}{\cd{(df:declare-check
+ &rest decls)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/definition/defs.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{setf df:definer-class}{Setf}
+\beginDocumentation
+Assign a definer class name to a definer symbol.\endDocumentation
+\Usage{24}{\cd{(setf (df:definer-class definer) class-name)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/definition/build.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definer-class}{Function}
+\beginDocumentation
+Returns the name of the definition class for the \<definer\> symbol.
+
+The predefined definer classes are: 
+Class-Definition for defclass,
+Constant-Definition for defconstant,
+Function-Definition for defun,
+Generic-Function-Definition for defgeneric,
+Macro-Definition for defmacro,
+Method-Definition for defmethod,
+Package-Definition for defpackage,
+Parameter-Definition for defparameter,
+Setf-Definition for defsetf,
+Structure-Definition for defstruct,
+Type-Definition for deftype,
+and
+Variable-Definition for defvar.\endDocumentation
+\Usage{18}{\cd{(df:definer-class definer)}}\endUsage
+\beginArguments
+\argument{\cd{definer}}\typeArg{\cd{Symbol}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{class-name}}\midReturn{\cd{Symbol}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/build.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-alpha\<}{Function}
+\beginDocumentation
+Order definitions alphabetically by name.
+If the names are the same, call \<definition\<\>
+to resolve the ambiguity.\endDocumentation
+\Usage{22}{\cd{(df:definition-alpha< def0 def1)}}\endUsage
+\beginArguments
+\argument{\cd{def0}}\typeArg{\cd{Definitions:Definition}}\endArg
+\argument{\cd{def1}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{(Member T Nil)}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/sort.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-arg-types}{Generic Function}
+\beginDocumentation
+Returns a list of arg --- type pairs for the definition.\endDocumentation
+\Usage{25}{\cd{(df:definition-arg-types def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-body}{Generic Function}
+\beginDocumentation
+This generic function extracts the body from a
+  lambda list definition.  It is used by a number of other methods to
+  provide for different \&body syntaxes.\endDocumentation
+\Usage{20}{\cd{(df:definition-body def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Lambda-List-Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{form}}\midReturn{\cd{List}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-children}{Generic Function}
+\beginDocumentation
+Returns a list of names of children (eg. direct
+subclasses) of the definition.  For new Definition classes, it may
+return anything that is reasonably thought of as a name of a ``child''
+of the definition.  
+  If package is non-nil, will only search for definitions in a given
+(exported) package.\endDocumentation
+\Usage{24}{\cd{(df:definition-children def &optional package)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\argument{\cd{package}}\typeArg{\cd{(Or Symbol String Package)}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-class-nice-name}{Generic Function}
+\beginDocumentation
+Returns a short string for the type of the definition,
+eg. ``Class'' for \<Class-Definition\>.\endDocumentation
+\Usage{31}{\cd{(df:definition-class-nice-name def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{String}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-declarations}{Generic Function}
+\beginDocumentation
+Returns all the decl-specs associated with the entire definition.
+A decl-spec is a list like (type Fixnum x).  By associated with the
+entire definition, we mean, for example, the declarations with scope
+over an entire function body, excluding those local to a particular
+\<let\>. At present, global declarations (from \<proclaim\> or \<declaim\>)
+are ignored.\endDocumentation
+\Usage{28}{\cd{(df:definition-declarations def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-definee}{Generic Function}
+\beginDocumentation
+Returns the lisp object that was created when the
+definition was loaded (which is assumed to have happen before the
+definition object was created), or nil if it is not possible to
+retrieve a lisp object corresponding to the definition. For example,
+one can get the appropriate class object by calling find-class on the
+\<definition-symbol\>, but, there is in general no portable way a lisp
+object associated with the result of evaluating a defstruct.\endDocumentation
+\Usage{23}{\cd{(df:definition-definee def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{T}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-definer}{Function}
+\beginDocumentation
+Returns the definer symbol, eg. \<defun\> or \<defclass\>.\endDocumentation
+\Usage{23}{\cd{(df:definition-definer def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{Symbol}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-documentation}{Generic Function}
+\beginDocumentation
+Return the documentation string associated with \<def\>.
+Return a string of length zero if there is no documentation string.\endDocumentation
+\Usage{29}{\cd{(df:definition-documentation def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{String}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-form}{Function}
+\beginDocumentation
+CLOS style reader for definition-form\endDocumentation
+\Usage{20}{\cd{(df:definition-form def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{T}}\endArg
+\endArguments
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-initial-value}{Function}
+\beginDocumentation
+The initial value supplied for a global variable (or constant) definition.\endDocumentation
+\Usage{29}{\cd{(df:definition-initial-value def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{T}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/global.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-lambda-list}{Generic Function}
+\beginDocumentation
+Returns an arglist for the definition, or nil.\endDocumentation
+\Usage{27}{\cd{(df:definition-lambda-list def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-method-qualifier}{Function}
+\beginDocumentation
+The method qualifier, eg., \<after\>. Returns \<:primary\> if no
+qualifier present.\endDocumentation
+\Usage{32}{\cd{(df:definition-method-qualifier def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Method-Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{Symbol}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-name}{Generic Function}
+\beginDocumentation
+Returns the name of a definition object, which is
+usually either a symbol, eg. \<foo\> from (defun foo ...), (defclass Foo
+...), etc., or a list, eg. (setf foo) from (defmethod (setf foo) ...)
+or (defsetf foo ...).\endDocumentation
+\Usage{20}{\cd{(df:definition-name def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{(Or Symbol List)}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-name-\>string}{Generic Function}
+\beginDocumentation
+Returns a string containing the name of a definition
+object, appropriately capitalized.\endDocumentation
+\Usage{28}{\cd{(df:definition-name->string def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{String}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-parents}{Generic Function}
+\beginDocumentation
+Returns a list of the names of the parents (eg. direct
+superclasses) of the definition.  For new Definition classes, it may
+return anything that is reasonably thought of as a name of a
+``parent'' of the definition.\endDocumentation
+\Usage{23}{\cd{(df:definition-parents def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-returns}{Function}
+\beginDocumentation
+Returns the :returns decl-spec or nil if there isn't one.\endDocumentation
+\Usage{23}{\cd{(df:definition-returns def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-slots}{Generic Function}
+\beginDocumentation
+Returns a list of slot specs, which need to be
+interpreted in a Definition class specific manner (structure slot
+specs are different from class slot specs).\endDocumentation
+\Usage{21}{\cd{(df:definition-slots def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-specializers}{Generic Function}
+\beginDocumentation
+This function finds the list of specializers for a method
+  function.\endDocumentation
+\Usage{28}{\cd{(df:definition-specializers def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Method-Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{specializers}}\midReturn{\cd{List}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-symbol}{Generic Function}
+\beginDocumentation
+Returns a symbol naming the definition.  For definitions
+whose \<definition-name\> is a symbol, \<definition-symbol\> is the same.
+For definitions whose \<definition-name\> is a list like (setf foo),
+\<definition-symbol\> is \<foo\>.\endDocumentation
+\Usage{22}{\cd{(df:definition-symbol def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{Symbol}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-symbol-name}{Function}
+\beginDocumentation
+Returns the symbol-name of the \<definition-symbol\>.\endDocumentation
+\Usage{27}{\cd{(df:definition-symbol-name def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{String}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-type-declarations}{Function}
+\beginDocumentation
+Returns a list of the type decl specs. At the moment, a type decl
+spec must have the symbol \<type\> as it's first item.  In the future
+this may be extended to cover decl specs whose first entry is, for
+example, \<Fixnum\>.\endDocumentation
+\Usage{33}{\cd{(df:definition-type-declarations def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition-usage}{Generic Function}
+\beginDocumentation
+Returns a string showing how to ``call'' the definition.
+              Second value is indentation to use if it goes to
+              multiple lines.\endDocumentation
+\Usage{21}{\cd{(df:definition-usage def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\itemReturn \complexReturn{\cd{usage}}\midReturn{\cd{String}}\endcReturn
+\itemReturn \complexReturn{\cd{indent}}\midReturn{\cd{Fixnum}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/definition.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:definition\<}{Generic Function}
+\beginDocumentation
+Resolve the ambiguity in alphabetic ordering for
+multiple definitions with the same name.\endDocumentation
+\Usage{16}{\cd{(df:definition< def0 def1)}}\endUsage
+\beginArguments
+\argument{\cd{def0}}\typeArg{\cd{Definitions:Definition}}\endArg
+\argument{\cd{def1}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{(Member T Nil)}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/sort.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:exported-definition?}{Function}
+\beginDocumentation
+Has the \<definition-symbol\> of \<def\> been exported?\endDocumentation
+\Usage{25}{\cd{(df:exported-definition? def)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{(Member T Nil)}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/filter.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-arg-names}{Function}
+\beginDocumentation
+A list of all the arg names.\endDocumentation
+\Usage{26}{\cd{(df:lambda-list-arg-names lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-keyword-arg-names}{Function}
+\beginDocumentation
+A list of the names only of the \&keyword args.\endDocumentation
+\Usage{34}{\cd{(df:lambda-list-keyword-arg-names lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-keyword-args}{Function}
+\beginDocumentation
+A list of the \&keyword args, with default values, etc.\endDocumentation
+\Usage{29}{\cd{(df:lambda-list-keyword-args lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-optional-arg-names}{Function}
+\beginDocumentation
+A list of the names only of the \&optional args.\endDocumentation
+\Usage{35}{\cd{(df:lambda-list-optional-arg-names lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-optional-args}{Function}
+\beginDocumentation
+A list of the \&optional args, with default values, etc.\endDocumentation
+\Usage{30}{\cd{(df:lambda-list-optional-args lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-required-arg-names}{Function}
+\beginDocumentation
+a list of the name oif the required args (specializers are stripped off.)\endDocumentation
+\Usage{35}{\cd{(df:lambda-list-required-arg-names lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-required-args}{Function}
+\beginDocumentation
+A list of the required args (with specializers when given).\endDocumentation
+\Usage{30}{\cd{(df:lambda-list-required-args lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-rest-arg-name}{Function}
+\beginDocumentation
+The name of the \&rest or \&body arg.\endDocumentation
+\Usage{30}{\cd{(df:lambda-list-rest-arg-name lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{Symbol}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-specializers}{Function}
+\beginDocumentation
+A list of the specializers for the required args, with T given for any
+unspecialized args.\endDocumentation
+\Usage{29}{\cd{(df:lambda-list-specializers lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:lambda-list-whole-arg}{Function}
+\beginDocumentation
+The name of the \&whole arg in a (macro's) lambda list.\endDocumentation
+\Usage{26}{\cd{(df:lambda-list-whole-arg lambda-list)}}\endUsage
+\beginArguments
+\argument{\cd{lambda-list}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{Symbol}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/fun.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:make-definitions}{Function}
+\beginDocumentation
+Make and return a list of the definition objects corresponding to
+the result of evaluating \<form\> (which was read from the file
+corresponding to \<path\>.\endDocumentation
+\Usage{21}{\cd{(df:make-definitions form path)}}\endUsage
+\beginArguments
+\argument{\cd{form}}\typeArg{\cd{List}}\endArg
+\argument{\cd{path}}\typeArg{\cd{Pathname}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{definitions}}\midReturn{\cd{List}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/build.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:make-slot-accessor-definitions}{Generic Function}
+\beginDocumentation
+Make definition objects corresponding to automatically
+generated accessor functions.\endDocumentation
+\Usage{35}{\cd{(df:make-slot-accessor-definitions def slot-spec path)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:User-Type-Definition}}\endArg
+\argument{\cd{slot-spec}}\typeArg{\cd{List}}\endArg
+\argument{\cd{path}}\typeArg{\cd{Pathname}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{definitions}}\midReturn{\cd{List}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/build.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:make-subdefinitions}{Generic Function}
+\beginDocumentation
+Make definition objects for definitions automatically generated
+by the evaluation of the form corresponding to \<def\>.
+An example of a subdefinition is a slot accessor function
+automatically generated by a class definition.\endDocumentation
+\Usage{24}{\cd{(df:make-subdefinitions def path)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\argument{\cd{path}}\typeArg{\cd{Pathname}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{definitions}}\midReturn{\cd{List}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/build.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:print-html-definition}{Generic Function}
+\beginDocumentation
+Print-Html a definition object in html.\endDocumentation
+\Usage{26}{\cd{(df:print-html-definition def &key stream)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\argument{\cd{stream}}\typeArg{\cd{Stream}}\endArg
+\endArguments
+
+\Source{ /home/comet/rga6711/xlisp/definition/html-print.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:print-html-definitions}{Function}
+\beginDocumentation
+Print-Html a html representation of the definition objects in \<defs\>
+on the file corresponding to \<path\>. 
+  Title is used as the title of the page.\endDocumentation
+\Usage{27}{\cd{(df:print-html-definitions defs path &key title)}}\endUsage
+\beginArguments
+\argument{\cd{defs}}\typeArg{\cd{List}}\endArg
+\argument{\cd{path}}\typeArg{\cd{(Or String Pathname)}}\endArg
+\argument{\cd{title}}\typeArg{\cd{String}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \simpleReturn{\cd{defs}}\endsReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/html-print.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:print-html-documentation}{Generic Function}
+\beginDocumentation
+Print an html representation of the project documentation \<do\>
+on the file corresponding to \<path\>.\endDocumentation
+\Usage{29}{\cd{(df:print-html-documentation def path &key brief include-user-manual)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{T}}\endArg
+\argument{\cd{path}}\typeArg{\cd{(Or String Pathname)}}\endArg
+\argument{\cd{brief}}\typeArg{\cd{(Or T Null)}}\endArg
+\argument{\cd{include-user-manual}}\typeArg{\cd{(Or T Null)}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \simpleReturn{\cd{defs}}\endsReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/html-print-doc.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:print-tex-definition}{Generic Function}
+\beginDocumentation
+Print a definition object in TeX.\endDocumentation
+\Usage{25}{\cd{(df:print-tex-definition def &key stream)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{Definitions:Definition}}\endArg
+\argument{\cd{stream}}\typeArg{\cd{Stream}}\endArg
+\endArguments
+
+\Source{ /home/comet/rga6711/xlisp/definition/tex-print.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:print-tex-definitions}{Function}
+\beginDocumentation
+Print a TeX representation of the definition objects in \<defs\>
+on the file corresponding to \<path\>.  \<Mode\> should be either :tex for
+Plain TeX or :latex for LaTeX.\endDocumentation
+\Usage{26}{\cd{(df:print-tex-definitions defs path &key mode)}}\endUsage
+\beginArguments
+\argument{\cd{defs}}\typeArg{\cd{List}}\endArg
+\argument{\cd{path}}\typeArg{\cd{(Or String Pathname)}}\endArg
+\argument{\cd{mode}}\typeArg{\cd{(Member (Quote (:Tex :Latex)))}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \simpleReturn{\cd{defs}}\endsReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/tex-print.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:print-tex-documentation}{Generic Function}
+\beginDocumentation
+Print a TeX representation of the project documenation \<do\>
+on the file corresponding to \<path\>.  \<Mode\> should be either :tex for
+Plain TeX or :latex for LaTeX.\endDocumentation
+\Usage{28}{\cd{(df:print-tex-documentation def path &key mode brief include-user-manual)}}\endUsage
+\beginArguments
+\argument{\cd{def}}\typeArg{\cd{T}}\endArg
+\argument{\cd{path}}\typeArg{\cd{(Or String Pathname)}}\endArg
+\argument{\cd{mode}}\typeArg{\cd{(Member (Quote (:Tex :Latex)))}}\endArg
+\argument{\cd{brief}}\typeArg{\cd{(Or T Null)}}\endArg
+\argument{\cd{include-user-manual}}\typeArg{\cd{(Or T Null)}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \simpleReturn{\cd{defs}}\endsReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/tex-print-doc.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:read-definitions-from-file}{Function}
+\beginDocumentation
+Read all the forms in the file corresponding to \<path\>, and create
+and return a list of definition objects corresponding to the result of
+evaluating those forms (for which \<definer-class\> does not return
+\<nil\>).\endDocumentation
+\Usage{31}{\cd{(df:read-definitions-from-file path)}}\endUsage
+\beginArguments
+\argument{\cd{path}}\typeArg{\cd{(Or String Pathname)}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/read.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:read-definitions-from-files}{Function}
+\beginDocumentation
+Call \<read-definitions-from-file\> on each path in \<paths\>,
+concatenating together the results.\endDocumentation
+\Usage{32}{\cd{(df:read-definitions-from-files paths)}}\endUsage
+\beginArguments
+\argument{\cd{paths}}\typeArg{\cd{T}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{List}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/definition/read.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:type-check}{Macro}
+\Usage{15}{\cd{(df:type-check
+ type &rest args)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/definition/defs.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{df:version\>}{Generic Function}
+\beginDocumentation
+Returns T if \<ver1\> is more recent than \<ver2\>\endDocumentation
+\Usage{13}{\cd{(df:version> ver1 ver2)}}\endUsage
+\beginArguments
+\argument{\cd{ver1}}\typeArg{\cd{Definitions:Version-Doc-Proto}}\endArg
+\argument{\cd{ver2}}\typeArg{\cd{Definitions:Version-Doc-Proto}}\endArg
+\endArguments
+
+\Source{ /home/comet/rga6711/xlisp/definition/project-doc.lsp}
+\endDefinition
+
+\beginProjectVars
+
+\beginDefinition
+
+
+\DefNameBox{df:*definition-hfuzz*}{Parameter}
+\beginDocumentation
+Amount of slop, or Hfuzz (in points), in TeX line breaking
+  algorithm.  Increasting this value will encourage TeX to stop
+  complaining about overfull hboxes.\endDocumentation
+\Usage{0}{\cd{df:*definition-hfuzz*}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/definition/tex-print.lsp}
+\endDefinition
+
+\endProject
+

@@ -1,0 +1,20 @@
+(defun pcshft (a b d n) (declare (type double-float a))
+ (declare (type double-float b))
+ (declare (type (simple-array double-float (*)) d)) (declare (type fixnum n))
+ (prog ((k 0) (j 0) (fac 0.0d0) (const 0.0d0)) (declare (type fixnum k))
+  (declare (type fixnum j)) (declare (type double-float fac))
+  (declare (type double-float const)) (setf const (/ 2.0 (+ b (- a))))
+  (setf fac const)
+  (fdo ((j 2 (+ j 1))) ((> j n) nil)
+   (tagbody (fset (fref d j) (* (fref d j) fac)) (setf fac (* fac const)))
+  )
+  (setf const (* 0.5 (+ a b)))
+  (fdo ((j 1 (+ j 1))) ((> j (+ n (- 1))) nil)
+   (tagbody
+    (fdo ((k (+ n (- 1)) (+ k (- 1)))) ((> k j) nil)
+     (tagbody
+      (fset (fref d k) (+ (fref d k) (* (* -1 const) (fref d (+ k 1)))))
+  ))))
+  (return (values a b d n))
+))
+

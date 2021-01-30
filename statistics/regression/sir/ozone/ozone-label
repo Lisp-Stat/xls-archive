@@ -1,0 +1,21 @@
+        date.lsp  contains the following variables :
+        1      Month: 1 = January, ..., 12 = December.
+        2      Day of month.
+        3      Day of week: 1 = Monday, ..., 7 = Sunday.
+        4      Day of year
+
+        ozoneall.lsp  contains the following variables :
+        1      Daily maximum one-hour-average ozone reading (parts   
+                per million)  at Upland, CA.
+        2      Temperature (degrees F) measured at Sandburg, CA.
+        3      Inversion base height (feet) at LAX.
+        4      Pressure gradient (mm Hg) from LAX to Daggett, CA.
+        5      Visibility (miles) measured at LAX.
+        6      500 millibar pressure height (m) measured at Vandenberg
+                AFB.
+        7      Humidity (%) at LAX.
+        8      Inversion base temperature (degrees F) at LAX.
+        9      Wind speed (mph) at Los Angeles International Airport
+                 (LAX).
+
+                                            

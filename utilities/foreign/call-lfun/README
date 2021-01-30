@@ -1,0 +1,18 @@
+The following are some very simple C functions I wrote about a year ago
+trying to discover how to use "call-lfun".  I had the C code lying
+around and I'd completely forgotten what they did. In trying to
+rediscover things for something I needed, I thought it might be 
+useful to write up some commentary as well.  Of course, all this
+is based on contributions from Tierney, Prothero, and Almy.
+
+I make no claims to the correctness or appropriateness of these
+code fragments, so don't blame me.  But do let me know of any
+howlers.
+
+It would be nice to write all of this in CWEB.....
+
+CAUTION: Some of the interfaces could change in future releases.
+        But don't we all love experimenting with nonstandard stuff.... 
+--
+B. Narasimhan            naras@euler.bd.psu.edu
+

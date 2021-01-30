@@ -1,0 +1,24 @@
+
+Hi Jan,
+
+Seems that we are doing much the same thing.  I have an interface
+designed to protect students in intro courses from Lisp (mostly)
+as well as add some useful methods for regression diagnostics and
+bootstrap resampling.
+
+The files are available anynymous ftp from
+
+ 	hilbert.wharton.upenn.edu
+
+within the pub/xlispstat/AXIS subdirectory.  The application
+is quite similar to yours, only it builds three menu items
+which are used to load data, open statistics dialogs, and
+manipulate variable icons.
+
+Alas, it is in much the same state as yours with almost 
+daily changes.
+
+Bob
+
+
+

@@ -1,0 +1,826 @@
+The file {\tt dmc-proto.lsp} contains the code that creates the markov
+chain object.  It also includes the associated methods for the markov
+chain object. 
+ 
+\begin{verbatim} 
+(require "dmc-opts")
+(require "buttons")
+(require "stochast")
+(require "states")
+(provide "dmc")
+\end{verbatim}
+
+These first few lines lines make sure that the auxilliary code in {\tt
+  dmc-opts.lsp} (see section~\ref{subsec:dmc-opts}), {\tt states}
+(see section~\ref{subsec:states}), {\tt buttons.lsp} (see
+section~\ref{subsec:buttons}), and {\tt stochast.lsp} (see
+section~\ref{subsec:stochast}) , which is necessary for {\tt
+  dmc.lsp} to work sanely, is loaded and available when {\tt dmc.lsp} is
+loaded.
+\begin{verbatim}
+(defproto dmc-proto '(initial-state state-objs button-objs
+                                    current-state time history
+                                    sample-paths)
+  nil graph-window-proto)
+\end{verbatim}
+We define a new object {\tt dmc-proto} with some slots for holding its
+data. The slots are described below. 
+\begin{description}
+\item[{\tt initial-state}] Holds the state in which the process will
+  start, 
+\item[{\tt state-objs}] Holds a list of all the state button objects
+  which are manipulated by the {\tt dmc-proto} object,
+\item[{\tt button-objs}] Holds a list of control buttons objects for
+  the state-object,
+\item[{\tt current-state}] Holds the state in which the markov chain
+  is currently,
+\item[{\tt time}]  Holds the current time, in ticks,
+\item[{\tt history}]  Holds the name of a file into which history is
+  recorded. It is {\tt nil} if no such recording is requested, which
+  is the default.
+\end{description}
+This object inherits from the {\tt Lisp-Stat} prototype {\tt
+  graph-window-proto} and therefore has all the methods of {\tt
+  graph-window-proto} available to it. Some of these inherited methods
+enable us to paint particular areas of a window, draw lines, points,
+etc. Thus, we are spared from dealing with these tedious details---a
+good example of the power of object-oriented paradigm.  
+
+\subsubsection{The {\tt :isnew} method}
+\label{subsubsec:dmc-isnew}
+When any object is designed, an {\tt :isnew} method needs to be
+defined for the object outlining the tasks to be done when an instance
+of the object is created. Note that many instances of an object
+prototype can be created in one session. We now describe the {\tt
+  :isnew} method for {\tt dmc-proto}.  
+\begin{verbatim}
+(defmeth dmc-proto :isnew (transition-matrix initial &optional 
+                           title)
+  "Method args: (transition-matrix initial &optional title)
+  Returns an instance of the dmc-proto object given a 
+  transition matrix.  Initial state is initial. Title 
+  is used for title if given."
+\end{verbatim}
+The mandatory arguments to the {\tt :isnew} method are a
+transition-matrix of object type {\tt matrix} and an integer for the
+initial state. An optional {\tt title} may be specified to distinguish
+various instances of the {\tt dmc-proto} object.  The string that is
+specified as the last argument provides some basic help for the user who
+wishes to know more the {\tt :isnew} method.  In particular, it tells
+the user what arguments are necessary for the method to be invoked. 
+For example, in {\tt Lisp-Stat}, after one loads the file {\tt
+  dmc.lsp}, the help facility may be used as follows:
+\begin{verbatim}
+> (send dmc-proto :help :isnew)
+:ISNEW
+Method args: (transition-matrix initial &optional title)
+  Returns an instance of the dmc-proto object given a 
+  transition matrix.  Initial state is initial. Title
+  is used for title if given.
+NIL
+\end{verbatim}
+We shall be content with this one example and refrain from discussing
+the help string hereafter. To save space, we have omitted these help
+strings in the otherwise verbatim reproduction of our code.
+\begin{verbatim}
+;;; Indentation level 1
+  (unless (stochastic-matrixp transition-matrix)
+          (error 
+           "Transition matrix is not a stochastic matrix!"))
+  (setf (slot-value 'time) 0)
+  (if title
+      (send self :title title)
+    (send self :title "Discrete Markov Chain"))
+  (setf (slot-value 'initial-state) initial)
+  (setf (slot-value 'current-state) initial)
+\end{verbatim}
+The first line  above checks whether the transition matrix is a
+stochastic matrix using a function defined in the file {\tt
+  stochast.lsp}.  If the matrix is not so, an error is signalled.  
+Otherwise, the values for {\tt
+  initial-state} and {\tt current-state} are recorded in the
+appropriate slots. The clock is reset to zero.  If a title is given,
+it is used; otherwise, a default title {\sc Discrete Markov Chain} is
+given. 
+\begin{verbatim}
+;;; Indentation level 1
+  (let* ((n (select (array-dimensions transition-matrix) 0))
+         (rows (row-list transition-matrix))
+         (tmp nil))
+    (dotimes (j n)
+             (setf tmp (append tmp 
+                               (list 
+                                (send state-proto :new 
+                                      (format nil "~d" j) j
+                                      (select rows j))))))
+    (setf (slot-value 'state-objs) tmp))
+\end{verbatim}
+Once the transition-matrix is available, the above code creates a list
+of $n$ state objects, where $n$ is the number of states.  Each state
+stores its own probability vector which means that the transition
+matrix can be discarded after this point.  Note that a {\tt :new}
+message is sent to the prototype {\tt state-proto} (see
+section \ref{subsec:states}) $n$ times to create $n$ individual instances
+of the {\tt state-proto} object.  The list of state objects is finally 
+stored in the slot {\tt state-objs}. 
+\begin{verbatim}
+;;; Indentation level 1
+  (let* ((n (send self :no-of-states))
+         (ta (send self :text-ascent))
+         (td (send self :text-descent))
+         (col-sep (send self :text-width "mm"))
+         (row-sep (+ ta td))
+         (bh (round (* 1.5 (+ ta td))))
+         (bw1 (send self :text-width " Reset "))
+         (bw2 (send self :text-width " run-dmc "))
+         (bw2a (send self :text-width " # "))
+         (bw3 (send self :text-width  " Time: mmmmmmmmmm "))
+         (state-width (send self :text-width 
+                            (format nil "m~dm" n)))
+         (c (floor (sqrt n)))
+         (r (floor (/ n c)))
+         (wx (+ (* 4 col-sep) bw1 bw2 bw2a bw3))
+         (cols-width (+ (* c (+ col-sep state-width)) 
+                        col-sep)))
+    (when (< cols-width wx)
+          (setf c (floor (/ (- wx col-sep) 
+                            (+ col-sep state-width))))
+          (setf r (floor (/ n c))))
+    (setf wx (max wx cols-width))
+\end{verbatim}
+It may be wise to look at figure~\ref{fig:gambler} to 
+understand this piece of code. The size of our graph-window and
+the layout of the state-buttons are calculated. Thus, it is necessary
+to have information about the ascent and descent of the characters in
+the font currently being used in the window. The idea is
+that the window should be as square as possible, thus occupying
+minimum area of the screen, but at the same time, it should accomodate
+the control buttons that sit on the first row of window. The variables
+{\tt c} and {\tt r} are the number of columns, number of rows
+respectively, in which the state buttons will be arrayed. The variable
+{\tt wx} is the window width. Some amount of row and column separation
+is provided for better appearance. 
+\begin{verbatim}
+;;; Indentation level 2    
+    (setf (slot-value 'button-objs)
+          (list 
+           (send button-obj-proto :new 
+                 "Reset" 
+                 (list col-sep row-sep bw1 bh)
+                 #'(lambda () (send self :reset)))
+           (send button-obj-proto :new 
+                 "run-dmc" 
+                 (list (+ col-sep bw1 col-sep) row-sep bw2 bh)
+                 #'(lambda () (send self :run-dmc)))
+           (send button-obj-proto :new 
+                 " # " 
+                 (list (+ col-sep bw1 col-sep bw2) 
+                       row-sep bw2a bh)
+                 #'(lambda () 
+                     (let ((k (get-value-dialog 
+                               "Number of steps to run?" 
+                               :initial 1)))
+                       (if k 
+                           (send self :run-dmc 
+                                 (select k 0))))))
+           (send button-obj-proto :new 
+                 (format nil "Time: ~d" (slot-value 'time))
+                 (list (- wx col-sep bw3) row-sep bw3 bh)
+                 #'(lambda ()))))
+\end{verbatim}
+The positions of each of the control buttons is determined and objects
+are created for those buttons.  The first two buttons {\tt Reset} and
+{\tt run-dmc} perform the tasks suggested by their names. There is
+also a mini-button created that goes with the {\tt run-dmc} button.
+This button can be used to run the markov chain for a specified number
+of steps instead of just once.  The user is queried for the number of
+steps in a dialog box. A default of 1 step is supplied. The {\tt
+  time} button is somewhat special. It has no action to perform and
+its title is dynamic; that is, as time ticks by, its title keeps
+changing to display the new time.  At present, it can display a
+maximum of a billion time ticks, which is not altogether inadequate.
+\begin{verbatim}
+;;; Indentation level 2
+    (let* ((state-height (round (* 3 (+ ta td))))
+           (controls-height (+ row-sep 
+                               (round (* 1.5 (+ ta td)))))
+           (wy (+ (if (eql (* c r) n)
+                      (* r (+ row-sep state-height))
+                    (* (+ r 1) 
+                       (+ row-sep state-height))) row-sep))
+           (tmp (slot-value 'state-objs)))
+      (send self :size wx (+ wy controls-height))
+      (call-next-method)
+      (send self :delete-method :do-motion)
+\end{verbatim}
+Next, the height of the window is determined and the window is
+informed of its new size. Since we wouldn't want anything done when
+the mouse is moved over the window, we trash the {\tt :do-motion}
+method. The {\tt call-next-method} makes sure that the inherited {\tt
+  :isnew} method of {\tt graph-window-proto} gets executed when the
+{\tt :isnew} method is invoked for {\tt dmc-proto}. This is 
+what actually creates the window (recall that our prototype inherited
+from {\tt graph-window-proto}). 
+\begin{verbatim}    
+;;; Indentation level 2
+      (dotimes (i n)
+               (let* ((y (+ 
+                          (* (floor (/ i c)) 
+                             (+ state-height row-sep)) 
+                          row-sep))
+                      (x (+ (* (mod i c) 
+                               (+ state-width col-sep)) 
+                            col-sep)))
+                 (send (select tmp i) 
+                       :loc-and-size 
+                       (list x (+ y controls-height) 
+                             state-width state-height))))))
+\end{verbatim}
+It is time now to determine the locations for the state buttons. The
+state buttons, which are available as a list in the variable {\tt tmp}
+are given their locations which they store in their own respective
+slots. Later, we shall see that by defining a {\tt :redraw} method
+(see section \ref{subsubsec:state-redraw}) for
+the state buttons, we can let it draw itself in the window, thus
+freeing ourselves from those decisions for now. 
+\begin{verbatim}
+;;; Indentation level 1
+  (send (select (slot-value 'state-objs) initial)
+        :you-are-current-state self)
+  (send self :add-some-menu-items))
+\end{verbatim}
+The initial state object is sent a message that it is the current
+state which makes it take the appropriate action.  Finally, some
+additional items are installed in the menu for the window; see the
+description of the {\tt :add-some-menu-items} for details.
+This concludes the {\tt :isnew} method for our {\tt dmc-proto}. 
+
+\subsubsection{The {\tt :current-state-obj} method}
+\label{subsubsec:current-state-obj}
+\begin{verbatim}
+(defmeth dmc-proto :current-state-obj ()
+  (select (slot-value 'state-objs) 
+          (slot-value 'current-state)))
+\end{verbatim}
+This method returns the object representing the current state. Note
+that the current state number and the current state object are
+different. 
+
+\subsubsection{The {\tt :resize} method}
+\label{subsubsec:resize}
+\begin{verbatim}
+(defmeth dmc-proto :resize ()
+  (let* ((but-objs (slot-value 'button-objs))
+         (wsize (send self :size))
+         (n (send self :no-of-states))
+         (ta (send self :text-ascent))
+         (td (send self :text-descent))
+         (col-sep (send self :text-width "mm"))
+         (row-sep (+ ta td))
+         (bh (round (* 1.5 (+ ta td))))
+         (bw1 (send self :text-width " Reset "))
+         (bw2 (send self :text-width " run-dmc "))
+         (bw2a (send self :text-width " # "))
+         (bw3 (send self :text-width  " Time: mmmmmmmmmm "))
+         (state-width (send self :text-width 
+                            (format nil "m~dm" n)))
+         (wx (max (first wsize) (+ (* 4 col-sep) 
+                                   bw1 bw2 bw2a bw3)))
+         (c (floor (/ (- wx col-sep) 
+                      (+ col-sep state-width))))
+         (r (floor (/ n c))))
+
+    (send (select but-objs 0) :loc-and-size 
+          (list col-sep row-sep bw1 bh))
+    (send (select but-objs 1) :loc-and-size 
+          (list (+ col-sep bw1 col-sep) row-sep bw2 bh))
+    (send (select but-objs 2) :loc-and-size
+          (list (+ col-sep bw1 col-sep bw2) row-sep bw2a bh))
+    (send (select but-objs 3) :loc-and-size
+          (list (- wx col-sep bw3) row-sep bw3 bh))
+\end{verbatim}
+Whenever a window is resized, the window layout would need to be
+adjusted.  Otherwise, the same layout that we initially created would be
+used everytime the resizing occurs.  The {\tt :resize} method adjusts
+the number of rows and columns in which the state buttons are arrayed
+while making sure that the window does not become too small or too
+large. This {\tt :resize} method has a lot in common with the {\tt
+  :isnew} method (see section~\ref{subsubsec:dmc-isnew}).  The main
+difference is that now we don't have to determine the window size
+ourselves;  the resizing of the window by the user forces a window
+dimension on us. However, we have to guard against the window being
+too narrow for the control buttons to fit. Therefore, there is a
+minimum size beyond which the window cannot be made any smaller.  We
+ensure this when we define the variable {\tt wx} representing the
+window width. Once the window width is known, the number of columns
+{\tt c} and the number of rows {\tt r} are determined for the layout.
+The control buttons may now have new locations in the window, and so
+they must be sent a {\tt :loc-and-size} message with the appropriate
+coordinates.  
+\begin{verbatim}
+;;Indentation level 1
+    (let* ((state-height (round (* 3 (+ ta td))))
+           (controls-height (+ row-sep 
+                               (round (* 1.5 (+ ta td)))))
+           (wy (+ (if (eql (* c r) n)
+                      (* r (+ row-sep state-height))
+                    (* (+ r 1) (+ row-sep state-height))) 
+                  row-sep))
+           (tmp (slot-value 'state-objs)))
+      (send self :size wx (+ wy controls-height))
+      (dotimes (i n)
+               (let* ((y (+ 
+                          (* (floor (/ i c)) 
+                             (+ state-height row-sep)) 
+                          row-sep))
+                      (x (+ (* (mod i c) 
+                               (+ state-width col-sep)) 
+                            col-sep)))
+                 (send (select tmp i) 
+                       :loc-and-size 
+                       (list x (+ y controls-height) 
+                             state-width state-height)))))))
+\end{verbatim}
+After the control button locations have been determined, the state
+button locations are calculated.  Then each of the state objects is
+also sent a {\tt :loc-and-size} message with the new locations.  Note
+that the window also cannot be reduced to a very small height either
+since the size is reset to a value that will accomodate both the
+control buttons and the state buttons. 
+
+\subsubsection{The {\tt :do-click} method}
+\label{subsubsec:dmc-do-click}
+\begin{verbatim}
+(defmeth dmc-proto :do-click (x y m1 m2)
+  (catch 'done
+    (dolist (obj (slot-value 'button-objs))
+	    (when (send obj :my-click x y m1 m2)
+		  (send obj :do-click)
+		  (throw 'done nil)))
+    (dolist (obj (slot-value 'state-objs))
+	    (when (send obj :my-click x y m1 m2)
+		  (send obj :do-click self)
+		  (throw 'done nil)))))
+\end{verbatim}
+Once the window is created, the user may click on certain buttons
+installed in the window to invoke various actions.  When such a click
+occurs, the code has to determine which button was the focus of the
+click. This {\tt :do-click} method is invoked whenever such a click
+occurs; the {\tt Lisp-stat} system provides this. It is the
+responsibility of the programmer to pack into this {\tt :do-click}
+method whatever needs to be done.  In our case, we have to determine
+two things: was the click on a control button? or was it on on a state
+button?  The code first polls the control buttons and then the state
+buttons to see if any one of them owns up to the click.  If so, that
+object is sent a message to perform the click-action.  If none of the
+objects owns up to the click, nothing is done. Notice that if any of
+the  buttons owns up to the click, none of the remaining ones are
+polled. The {\tt catch} and {\tt throw} construct ensure this fact.
+
+\subsubsection{The {\tt :no-of-states} method}
+\label{subsubsec:no-of-states}
+\begin{verbatim}
+(defmeth dmc-proto :no-of-states ()
+  (length (slot-value 'state-objs)))
+\end{verbatim}
+This is just an accessor method that returns the number of states in
+the markov chain. An accessor method for a slot is one that returns
+the value stored in that particular slot. 
+
+\subsubsection{The {\tt print-transition-matrix} method}
+\label{subsubsec:print-transition-matrix}
+\begin{verbatim}
+(defmeth dmc-proto :print-transition-matrix ()
+  (print-matrix (send self :transition-matrix)))
+\end{verbatim}
+Using the {\tt Lisp-stat} function {\tt print-matrix}, the transition
+matrix is printed in a nice form.  However, it should be remarked that
+when a markov chain has a large number of states, it is hard to make
+sense of this printout. 
+
+\subsubsection{The {\tt :transition-matrix} method}
+\label{subsubsec:transition-matrix}
+\begin{verbatim}
+(defmeth dmc-proto :transition-matrix ()
+  (let ((n (send self :no-of-states))
+        (tmp nil))
+    (dolist (obj (slot-value 'state-objs))
+            (setf tmp 
+                  (append tmp 
+                          (coerce 
+                           (send obj :prob-vec) 'list))))
+    (matrix (list n n) (coerce tmp 'list))))
+\end{verbatim}
+This method returns the transition matrix.  Recall that the transition
+matrix is not stored as a matrix anywhere.  However, since each state
+object has a copy of its transition probability vector, the transition
+matrix can be recreated.  This method collects all such probability
+vectors and builds them into a matrix.  We don't envision this method
+to be used with great frequency. 
+
+\subsubsection{The {\tt :run-dmc} method}
+\label{subsubsec:run-dmc}
+\begin{verbatim}
+(defmeth dmc-proto :run-dmc (&optional k)
+  (if k
+      (dotimes (j k)
+               (send self :goto-next-state)
+               (pause *run-step-delay*))
+    (send self :goto-next-state)))
+\end{verbatim}
+This method runs the Markov Chain $k$ steps, or if $k$ is not supplied
+as an optional argument, one step.  In the latter case, the markov chain
+merely goes to the next state. It uses the {\tt :goto-next-state}
+method (see section~\ref{subsubsec:goto-next-state}) to accomplish the
+transition.  
+
+\subsubsection{The {\tt :run-dmc-silently} method}
+\label{subsubsec:run-dmc-silently}
+\begin{verbatim}
+(defmeth dmc-proto :run-dmc-silently (k)
+  (let* ((state-objs (slot-value 'state-objs))
+         (cs (slot-value 'current-state))
+         (obj (select state-objs cs))
+         (next-obj nil))
+    (case (slot-value 'history)
+         (nil (dotimes (j k)
+                       (setf (slot-value 'time)
+                             (+ (slot-value 'time) 1))
+                       (setf next-obj 
+                             (select state-objs 
+                                     (send obj :next-state)))
+                       (send next-obj :slot-value 
+                             'no-of-visits 
+                             (+ 
+                              (send next-obj 
+                                    :slot-value 'no-of-visits)
+                              1))
+                       (setf obj next-obj)))
+         (t (dotimes (j k)
+                     (setf (slot-value 'time)
+                           (+ (slot-value 'time) 1))
+                     (format *history-file-handle* "~d~%" 
+                             (send obj :next-state))
+                     (setf next-obj 
+                           (select state-objs 
+                                   (send obj :next-state)))
+                     (send next-obj :slot-value 'no-of-visits 
+                           (+ 
+                            (send next-obj 
+                                  :slot-value 'no-of-visits)
+                            1))
+                     (setf obj next-obj))))
+    (setf (slot-value 'current-state) 
+          (send obj :slot-value 'state-no)))
+  (send (select (slot-value 'button-objs) 3)
+        :title (format nil "Time: ~d" (slot-value 'time)))
+  (send self :redraw))
+\end{verbatim}
+This method runs the markov chain for $k$ steps silently.  This is
+useful when the user wants to run the markov chain for a large number
+of steps without watching its complete history.  If history recording
+is on, then all the intermediate state visits are recorded in the
+appropriate file.  Each state object dutifully increments the {\tt
+  no-of-visits} slot whenever it is visited. Finally, when the loop is
+over, the window is redrawn to show the new time and the new current
+state. This method is truly silent in that if sample paths window is
+on, it is not updated. 
+
+\subsubsection{The {\tt :goto-next-state} method}
+\label{subsubsec:goto-next-state}
+\begin{verbatim}
+(defmeth dmc-proto :goto-next-state ()
+  (let* ((time (slot-value 'time))
+         (state-objs (slot-value 'state-objs))
+         (cs (slot-value 'current-state))
+         (obj (select state-objs cs))
+         (next-state (send obj :next-state))
+         (next-obj (select state-objs next-state))
+         (w (slot-value 'sample-paths)))
+    (when w 
+          (send w :add-lines 
+                (list (list time 
+                            (+ time 1)) (list cs next-state)))
+          (if (> *time-window* 0)
+              (send w :range 0 
+                    (max 0 (- time *time-window* -1)) 
+                    (max 50 (+ time 1)))
+            (send w :adjust-to-data)))
+          
+    (setf (slot-value 'current-state) next-state)
+    (send self :tick-time)
+
+    (send obj :you-are-not-current-state self)
+    (send next-obj :you-are-current-state self))
+  (when (slot-value 'history)
+        (format *history-file-handle* "~d~%" 
+                (slot-value 'current-state))))
+\end{verbatim}
+This method sends the Markov chain to the next state.  There are a few
+things that need to be done: the clock has to be incremented, the
+next state has to be determined and finally the markov chain has to be
+sent to the next state.  The user might have requested sample paths be
+drawn, in which case the sample paths window must be updated. The
+sample paths window can display a fixed time-frame at a time, or
+accumulate the complete history of the process, which is the case if
+the global variable {\tt *time-window*} is zero.  In the latter
+situation, the user can use a scroll-bar in the bottom of the window
+to view the whole history.  If {\tt *time-window} is non-zero, then
+the history for the last {\tt *time-window*} units of time is
+displayed. This is accomplished by adjusting the range for the
+abscissa to give the appearance of new lines appearing on the right
+and old ones disappearing from the left. If  history recording was
+requested, the code above makes sure it records the transitions in the
+specified file. 
+
+\subsubsection{The {\tt :time} method}
+\begin{verbatim}
+(defmeth dmc-proto :time (&optional value)
+  (if value
+      (let ((obj (select (slot-value 'button-objs) 3)))
+        (setf (slot-value 'time) 0)
+        (send obj :title 
+              (format nil "Time: ~d" (slot-value 'time)))
+        (send obj :redraw self))
+    (slot-value 'time)))
+\end{verbatim}
+This method retrieves the current time, or sets it if {\tt
+  value} is supplied.  When time is set, it must be ensured that the
+clock button in the window is displaying the correct time.  Therefore,
+this method send the button a new title with the current time included
+in it.
+
+\subsubsection{The {\tt :tick-time} method}
+\label{subsubsec:tick-time}
+\begin{verbatim}
+(defmeth dmc-proto :tick-time ()
+  (setf (slot-value 'time) (+ (slot-value 'time) 1))
+  (let ((obj (select (slot-value 'button-objs) 3)))
+    (send obj :title 
+          (format nil "Time: ~d" (slot-value 'time)))
+    (send obj :redraw self)))
+\end{verbatim}
+This method increments the time by 1. Again, it makes certain the the
+new time is shown on the clock button in the window.
+
+\subsubsection{The {\tt :current-state} method}
+\label{subsubsec:current-state}
+\begin{verbatim}
+(defmeth dmc-proto :current-state ()
+  (slot-value 'current-state))
+\end{verbatim}
+This is just an accessor method for the slot {\tt current-state}.
+The returned value is an integer between $0$ and $n-1$, where $n$ is
+the number of states.
+
+\subsubsection{The {\tt :describe} method}
+\label{subsubsec:dmc-describe}
+\begin{verbatim}
+(defmeth dmc-proto :describe ()
+  (let ((time (slot-value 'time)))
+    (format t "-------------------------------------------~%")
+    (format t "~%State         No of visits     Proportion~%")
+    (format t "-------------------------------------------~%")
+    (dolist (obj (slot-value 'state-objs))
+            (if (> time 0) 
+                (send obj :describe time)
+              (send obj :describe)))
+  (format t "-------------------------------------------~%")))
+\end{verbatim}
+This method prints the statistics for each state in the Markov chain.
+It prints how many times each state has been visited and the
+proportion of visits if the time is greater than 0. To make the
+summary compact, the number of visits is not printed for those states
+yet unvisited. 
+
+\subsubsection{The {\tt :reset} method}
+\label{subsubsec:reset}
+\begin{verbatim}
+(defmeth dmc-proto :reset ()
+  (send self :time 0)
+  (dolist (obj (slot-value 'state-objs))
+          (send obj :reset))
+  (if (slot-value 'sample-paths)
+      (send (slot-value 'sample-paths) :clear))
+  (when (slot-value 'history)
+        (send self :record-history nil))
+  (let ((obj (send self :current-state-obj)))
+    (setf (slot-value 'current-state)
+          (slot-value 'initial-state))
+    (send (send self :current-state-obj) 
+          :you-are-current-state self)
+    (send obj :you-are-not-current-state self)))
+\end{verbatim}
+The Markov chain is reset by this method.  Time is set to zero.  The 
+statistics for each state are reset by the {\tt :reset} method for state 
+items.  If the {\tt sample-paths} window is currently displayed, it is 
+reset with the {\tt :clear} method.  If the {\tt history} slot is
+open, it is  closed.  Otherwise it is set to {\tt nil}.
+The value of the current state is returned to the value of the initial
+state, which is then highlighted by {\tt :you-are-current-state}.  The
+former current state is returned to its normal colors by {\tt
+  :you-are-not-current-state}. 
+
+\subsubsection{The {\tt :redraw} method}
+\label{subsubsec:dmc-redraw}
+\begin{verbatim}
+(defmeth dmc-proto :redraw ()
+  (dolist (obj (slot-value 'button-objs))
+          (send obj :redraw self))
+  (dolist (obj (slot-value 'state-objs))
+            (send obj :redraw self)))
+\end{verbatim}
+Whenever a window is covered and uncovered, the window is sent a {\tt
+  :redraw} message, which is responsible for ensuring the the window
+is redrawn correctly.  If no such method is defined, then the window
+contents will not be current.  The {\tt :redraw} method defined above
+send each control button object and each state object
+the {\tt :redraw} method along with a pointer to the window
+itself.  Those methods, which are described later, redraw themselves
+appropriately in the window. 
+
+\subsubsection{The {\tt :add-some-menu-items} method}
+\label{subsubsec:add-some-menu-items}
+\begin{verbatim}
+(defmeth dmc-proto :add-some-menu-items ()
+  (let (
+        (run-item 
+         (send menu-item-proto :new "Run Quietly"
+               :action 
+               #'(lambda ()
+                   (let ((tmp (get-value-dialog
+                               "How many steps?" :initial 1)))
+                     (when tmp
+                           (send self :run-dmc-silently 
+                                 (select tmp 0)))))))
+
+        (sample-paths-item 
+         (send menu-item-proto :new "Sample Paths"
+               :action 
+               #'(lambda ()
+                   (send self :sample-paths
+                         (not 
+                          (slot-value 'sample-paths))))))
+
+        (desc-item 
+         (send menu-item-proto :new "Describe"
+               :action
+               #'(lambda () (send self :describe))))
+        
+        (s-color 
+         (send menu-item-proto :new "Normal State Color"
+               :action
+               #'(lambda () (send self :set-state-color))))
+
+        (c-color 
+         (send menu-item-proto :new "Current State Color" 
+               :action 
+               #'(lambda () 
+                   (send self :set-c-state-color))))
+        
+        (s-text-color 
+         (send menu-item-proto :new "State Text Color"
+               :action 
+               #'(lambda ()
+                   (send self :set-state-text-color))))
+
+        (c-text-color 
+         (send menu-item-proto 
+               :new "Current State Text Color"
+               :action 
+               #'(lambda ()
+                   (send self :set-c-state-text-color))))
+
+        (hist-item 
+         (send menu-item-proto :new "History"
+               :action 
+               #'(lambda ()
+                   (send self :record-history
+                         (not (send self :history)))))))
+
+    (send self :menu (send menu-proto :new "Menu"))
+    (send (send self :menu) :append-items run-item 
+          sample-paths-item hist-item desc-item 
+          (send dash-item-proto :new)
+          s-color c-color s-text-color c-text-color)))
+\end{verbatim}
+
+This method adds some items to the window menu.  Those items include
+the following:
+\begin{description}
+\item[Run Quietly] This item allows the user to invoke the {\tt
+    :run-dmc-silently} method silently using the mouse. The user is
+  queried for the number of steps in a pop-up dialog box. A default of
+  1 step is supplied. 
+\item[Sample Paths]  This item enables and disables sample paths
+  window. If enabled, a line plot of the sample paths is displayed
+  against time. 
+\item[Describe]  This item enables the user to get a summary of the
+  number of visits to each state in xlispstat command window.
+\item[Normal State Color] This item enables the user to change the
+  normal state color to suit his/her preference.
+\item[Current State Color]  This item enables the user to change the
+  current state color to suit his/her preference.
+\item[State Text Color]  This item enables the user to change the
+  color of the text in the normal state buttons.
+\item[Current State Text Color]  This item enables the user to change
+  the text in current state button.
+\end{description}
+The color changing items are separated from the other items by a
+dashed line and all these items are installed in the menu.
+
+\subsubsection{The {\tt :history} method}
+\label{subsubsec:history}
+\begin{verbatim}
+(defmeth dmc-proto :history (&optional val)
+  (if val 
+      (setf (slot-value 'history) val)
+    (slot-value 'history)))
+\end{verbatim}
+This method sets and retrieves the value in the history slot. The
+value is set if {\tt val}, which should be boolean, is supplied.
+
+\subsubsection{The {\tt :record-history} method}
+\label{subsubsec:record-history}
+\begin{verbatim}
+(defmeth dmc-proto :record-history (on)
+  (let ((hist-item 
+         (select (send (send self :menu) :items) 2)))
+    (case on
+          (nil (setf (slot-value 'history) nil)
+               (format *history-file-handle*
+                       "End Time: ~d~%" (slot-value 'time))
+               (close *history-file-handle*)
+               (send hist-item :mark nil))
+          (t (let ((fname (get-string-dialog 
+                           "Name of output file: " 
+                           :initial *history-file*)))
+               (when fname
+                     (setf (slot-value 'history) t)
+                     (setf *history-file-handle* 
+                           (open fname :direction :output))
+                     (format *history-file-handle* 
+                             "Start Time: ~d~%" 
+                             (slot-value 'time))
+                     (send hist-item :mark t)))))))
+\end{verbatim}
+This method disables or enables the recording of history. When it is
+enabled, the user is prompted for a file name into which the state
+visits can be recorded. A default name of ``history.mc'' is provided.
+When the file is opened for output, the current time is recorded and
+the history item in the menu is marked with a check mark.  When the
+history recording is disabled, the check mark is removed and the
+output file is closed. The ending time is also recorded. 
+
+\subsubsection{The {\tt :sample-paths} method}
+\label{subsubsec:sample-paths}
+\begin{verbatim}
+(defmeth dmc-proto :sample-paths (on)
+  (let ((menu-item (select (send (send self :menu) :items) 1))
+        (boss self))
+    (case on
+          (nil (send (slot-value 'sample-paths) :close))
+          (t (let ((w (plot-lines 
+                       (list (slot-value 'time))
+                       (list (slot-value 'current-state))))
+                   (y-lim 
+                    (select (get-nice-range 
+                             0 (send self :no-of-states) 
+                             5) 1)))
+               (send w :range 1 0 y-lim)
+               (send w :title 
+                     (concatenate 'string 
+                                  (send boss :title)
+                                  ": Sample Paths"))
+               (if (eql *time-window* 0)
+                   (send w :has-h-scroll 1000)
+                 (send w :range 0 0 *time-window*))
+               (send menu-item :mark t)
+               (setf (slot-value 'sample-paths) w)
+               (defmeth w :close ()
+                 (send menu-item :mark nil)
+                 (send boss :slot-value 'sample-paths nil)
+                 (send self :remove)))))))
+\end{verbatim}
+This method turns the display of the sample paths on or off. When the
+display is enabled, the sample paths window is given a title which if
+formed by concatenating the title of the {\tt dmc-proto} instance with
+the string ``: Sample Paths''. The $x$ and $y$ range are adjusted so
+that the sample paths window need not be resized all the time. The
+menu item is marked with a check and the identity of the sample paths
+window is recorded in the slot {\tt sample-paths}. The sample paths
+window's {\tt :close} method is redefined so that when it is closed
+with a mouse, the check against the menu item is removed and the
+slot value {\tt sample-paths} is also set back to {\tt nil}. This
+ensures a sane exit. When sample paths is disabled, then all we need
+to do is to send the sample paths window a {\tt :close} message.  
+
+\subsubsection{The {\tt :set-color} methods}
+\label{subsubsec:set-color}
+We shall not discuss the color methods because they are not fully
+implemented. It is hoped at some future date that users will be able
+to set the color interactively using a package like the first author's
+{\tt color.lsp}.
+
+
+

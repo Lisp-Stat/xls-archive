@@ -1,0 +1,15 @@
+(defun factln (n) (declare (type fixnum n))
+ (prog ((a (make-array '(100) :element-type 'double-float)) (factln 0.0d0))
+  (declare (type (simple-array double-float (*)) a))
+  (declare (type double-float factln)) (fill a (- 1.0) :end 99)
+  (if (< n 0) (error "negative factorial"))
+  (cond
+   ((<= n 99)
+    (if (< (fref a (+ n 1)) 0.0) (fset (fref a (+ n 1)) (gammln (+ n 1.0))))
+    (setf factln (fref a (+ n 1)))
+   )
+   (t (setf factln (gammln (+ n 1.0))))
+  )
+  (return factln)
+))
+

@@ -1,0 +1,13 @@
+These are a few routines that will allow you to do kernel density
+estimation.  I know that Tierney has these very same capabilities
+available, but this version will be developed further when I get
+time.  This one allows you to use  weights. I use it as a base for my
+importance sampling routines that I shall post later. .
+
+Besides, there is also an example of how to use "call-lfun",
+as well as an overlay package that can be used for many purposes.
+
+
+Feel free send me any bug reports or comments. 
+
+B. Narasimhan     naras@euler.bd.psu.edu

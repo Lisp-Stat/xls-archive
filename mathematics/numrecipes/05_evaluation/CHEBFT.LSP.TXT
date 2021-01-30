@@ -1,0 +1,32 @@
+(defun chebft (a b c n func &key (nmax 50) (pi_ 3.141592653589793d0))
+ (declare (type double-float a)) (declare (type double-float b))
+ (declare (type (simple-array double-float (*)) c)) (declare (type fixnum n))
+ (declare (type fixnum nmax)) (declare (type float pi_))
+ (prog
+  ((f (make-array '(nmax) :element-type 'double-float)) (sum 0.0d0) (pi_ 0.0d0)
+   (j 0) (fac 0.0d0) (y 0.0d0) (k 0) (bpa 0.0d0) (bma 0.0d0)
+  )
+  (declare (type (simple-array double-float (*)) f)) (declare (type float sum))
+  (declare (type float pi_)) (declare (type fixnum j))
+  (declare (type double-float fac)) (declare (type double-float y))
+  (declare (type fixnum k)) (declare (type double-float bpa))
+  (declare (type double-float bma)) (setf bma (* 0.5 (+ b (- a))))
+  (setf bpa (* 0.5 (+ b a)))
+  (fdo ((k 1 (+ k 1))) ((> k n) nil)
+   (tagbody (setf y (cos (/ (* pi_ (+ k (- 0.5))) n)))
+    (fset (fref f k) (funcall (func (+ (* y bma) bpa))))
+  ))
+  (setf fac (/ 2.0 n))
+  (fdo ((j 1 (+ j 1))) ((> j n) nil)
+   (tagbody (setf sum 0.0d0)
+    (fdo ((k 1 (+ k 1))) ((> k n) nil)
+     (tagbody
+      (setf sum
+       (+ sum
+        (* (fref f k) (cos (* (* pi_ (+ j (- 1))) (/ (+ k (- 0.5d0)) n))))
+    ))))
+    (fset (fref c j) (* fac sum))
+  ))
+  (return (values a b c n func))
+))
+

@@ -1,0 +1,53 @@
+ORIGINAL HEADER
+
+---------------------------------------------------------------------------
+SAPA, Version 1.0; Copyright 1993, Donald B. Percival, All Rights Reserved
+
+Use and copying of this software and preparation of derivative works
+based upon this software are permitted.  Any distribution of this
+software or derivative works must comply with all applicable United
+States export control laws.
+
+This software is made available AS IS, and no warranty -- about the
+software, its performance, or its conformity to any
+specification -- is given or implied.
+
+Comments about this software can be addressed to dbp@apl.washington.edu
+----------------------------------------------------------------------------
+
+PORTING HEADER
+
+----------------------------------------------------------------------------
+XLisp port by Dmitry Zinoviev, 1997
+dmitry@pavel.physics.sunysb.edu
+----------------------------------------------------------------------------
+
+LOADING SAPA
+
+----------------------------------------------------------------------------
+In your shell, make sure that SAPA is in your XLPATH:
+
+shell> setenv XLPATH your-sapa-dir:${XLPATH}
+
+or:
+
+shell> setenv XLPATH your-sapa-dir
+
+To load SAPA from XLisp, type:
+
+Xlisp> (LOAD "sapa")
+
+The file 'sapa.lsp' loads all other necessary files and makes the
+package available to the user by executing (USE-PACKAGE :SAPA).
+
+It is HIGHLY recommended to byte-compile the package before running it,
+because the compilation increases the execution speed up to 10 times.
+
+----------------------------------------------------------------------------
+
+FUNCTION THAT DOES NOT WORK
+
+----------------------------------------------------------------------------
+For whatever reason, the function DPSS-TAPERS-THOMSON-APPROX does not
+work. Please avoid using it in your programs, or try to locate the bug.
+

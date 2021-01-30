@@ -1,0 +1,149 @@
+This software may be freely redistributed for non-commercial uses.
+In case of problems, please contact 
+
+              B. Narasimhan 
+              Division of Science
+              Penn State Erie, The Behrend College
+              Erie, PA 16563-0203.
+              Email: naras@euler.bd.psu.edu
+
+General Remarks and Steps for installation.               94/07/29
+___________________________________________
+
+This file contains some general remarks and steps for installation.
+In addition, there is a brief description of the contents at the
+end. 
+
+This code has been tested on Suns and SGI workstations and should work
+exactly as described in the Tech Report. If it doesn't, I want
+to know about it, so please COMPLAIN.  Next, the code works
+best on the new xlispstat. The unfortunate thing is that the
+new beta release needs a few fixes before you can do that. You
+should probably not bother Tierney---he knows about it and has 
+fixed them all. However, he will most likely make the fixes 
+available only in the next beta release.
+
+I have included instructions here for the old release. When a new
+beta is released, I will be posting an update and announcing it
+to everybody on the xlispstat mailing list.  Actually, the code will
+remain the same, only the installation process will be a little 
+different since some new header files for the kde package will be
+needed and the dynamic loading will be a little different.
+
+YOU MUST HAVE DYNAMIC LOADING ENABLED FOR THESE PROGRAMS TO WORK.
+
+The following instructions suppose that % is your Unix prompt. 
+
+1. Type make:
+
+	% make
+
+This should create some .o files for you.
+
+2. Decide how big a data set you wish to use. We would suggest 
+   beginning with a modest sample size of 50 and increasing it
+   as you see fit. (The speed of the dynamic graphics depends on
+   your machine.) So type,
+
+   % chop_ship 50
+ 
+   If you want to get the exact same results as those shown in the 
+   technical report, you'll have to type 
+
+   % chop_ship 500
+
+3. Either follow the instructions in the tech report for the 
+   user-friendly interface, or for a quick(er) launch, type 
+
+   % xlispstat ship 
+
+4. If you want to duplicate our results on the Pump Data exactly, type
+
+   % chop_pump 500 
+   % xlispstat pump
+   
+   Otherwise, we suggest you use a smaller sample size.
+
+Enjoy!
+
+Hani Doss and B. Narasimhan
+Email address for correspondence:  naras@euler.bd.psu.edu
+
+Brief Description of Contents:
+______________________________
+
+Makefile                        : Makefile for installation.
+
+README                          : Instructions.
+
+graphical-interface.lsp         : The user-friendly interface.
+
+hyper-ranges.dat                : Ranges between which the hyperparameters
+                                  will be varied for the ship data.
+hyper1.dat                      : File of hyperparameter values for
+                                  Markov chain 1 for ship data.
+hyper2.dat                      : File of hyperparameter values for
+                                  Markov chain 2 for ship data.
+hyper3.dat                      : File of hyperparameter values for
+                                  Markov chain 3 for ship data.
+hyper4.dat                      : File of hyperparameter values for
+                                  Markov chain 4 for ship data.
+kde-dyn.lsp                     : The dynamic loading code for Kde.
+
+kde-opts.lsp                    : Options for kde.
+
+kde-ovls.lsp                    : Overlays for kde.
+
+kde.c                           : C program for kde calculation.
+
+kde.h                           : Header file for kde.c
+
+kde.lsp                         : The lisp code for the kde object.
+
+master-dyn.lsp                  : Dynamic loading code for master object.
+
+master-opts.lsp                 : Options for the master object.
+
+master.lsp                      : The implementation of the master object.
+
+pump.lsp                        : Pump Data analysis program.
+
+pump1_big.out                   : Output of Markov chain 1 for pump data.
+
+pump2_big.out                   : Output of Markov chain 2 for pump data.
+
+pump3_big.out                   : Output of Markov chain 3 for pump data.
+
+pump_constants.lsp              : The Lisp program that estimates the 
+                                  constants of proportionality.
+pump_hmix.c                     : The C program that calculates the mixture
+                                  distribution for pump data.
+pump_weights.c                  : The C program that calculates the importance
+                                  weights for the pump data.
+ship.lsp                        : Ship Data analysis program.
+
+ship1_big.out                   : Output of Markov chain 1 for ship data.
+
+ship2_big.out                   : Output of Markov chain 2 for ship data.
+
+ship3_big.out                   : Output of Markov chain 3 for ship data.
+
+ship4_big.out                   : Output of Markov chain 4 for ship data.
+
+ship_constants.lsp              : The Lisp program that estimates the 
+                                  constants of proportionality.
+ship_hmix.c                     : The C program the calculates the mixture
+                                  distribution for the pump data.
+ship_weights.c                  : The C program the calculates the importance
+                                  weights for the pump data.
+slave-opts.lsp                  : Options for the slave object.
+
+slave-stats.lsp                 : Routines for calculating statistics.
+
+slave.lsp                       : The implementation of the slave object.
+
+utils.lsp                       : Miscellaneous utils---you might find some
+                                  useful..
+xldmem.h                        : Header file from xlispstat release 2.1.3
+
+xlisp.h                         : Header file from xlispstat release 2.1.3

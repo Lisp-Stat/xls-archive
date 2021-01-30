@@ -1,0 +1,20 @@
+(defun gser (gamser a x gln &key (itmax 100) (eps 3.0E-7))
+ (declare (type double-float gamser)) (declare (type double-float a))
+ (declare (type double-float x)) (declare (type double-float gln))
+ (declare (type fixnum itmax)) (declare (type double-float eps))
+ (prog ((n 0) (del 0.0d0) (sum 0.0d0) (ap 0.0d0)) (declare (type fixnum n))
+  (declare (type double-float del)) (declare (type double-float sum))
+  (declare (type double-float ap)) (setf gln (gammln a))
+  (cond
+   ((<= x 0.0) (if (< x 0.0) (error nil)) (setf gamser 0.0) (go end_label))
+  )
+  (setf ap a) (setf sum (/ 1.0 a)) (setf del sum)
+  (fdo ((n 1 (+ n 1))) ((> n itmax) nil)
+   (tagbody (setf ap (+ ap 1.0)) (setf del (/ (* del x) ap))
+    (setf sum (+ sum del)) (if (< (abs del) (* (abs sum) eps)) (go label1))
+  ))
+  (error "A too large, ITMAX too small") label1
+  (setf gamser (* sum (exp (+ (+ (- x) (* a (log x))) (- gln)))))
+  (go end_label) end_label (return (values gamser a x gln))
+))
+

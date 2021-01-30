@@ -1,0 +1,90 @@
+This submission to the lispstat contributed archieve is released by me
+to the public domain.  The submission is intended to replace an
+earlier submission in September 1991.  The following files are included:
+
+	ansimode	- switch wyse 160 terminal to ansi text mode
+	lsppub		- insert troff macros in lisp code for publication
+			  with table of contents listing functions by file
+	lspsum		- extract lisp function summaries, insert troff macros
+			  for publication of summaries with table of contents
+	n.lsp		- statistical functions
+	s.lsp		-     "        "
+	t.lsp		- digital filtering
+	t2.lsp		- infinite impulse response digital filtering
+	t3.lsp		-   "        "
+	t4.lsp		-   "        "
+	t5.lsp		-   "        "
+	t6.lsp		- convolution and correlation of 2 finite, 
+			   discrete sequences
+	tekmode		- switch wyse 160 terminal to tek graphics mode
+
+I have used several coding conventions in an attempt to produce readable,
+maintainable lisp code.  These are:
+
+	1. The first executable statement in each function is a multi-line
+	   string (enclosed in double quotes) which describes the function.
+	   This string is picked up by the xlisp interpreter for use by
+	   the help function.  The above described lspsum script uses this
+	   to extract the function summaries.
+
+	2. Descriptivly named local variables and comments are used to
+	   document the function logic.
+
+	3. Some of the files include a test function that exercises all of
+	   the functions in that file.  Ideally each lisp function file
+	   should contain a such a test function.
+
+	4. Each function should validate relevant assertions on the calling
+	   arguments (and globals referenced if any). This has been done in
+	   most of the functions that i have recently coded.
+
+	5. Descriptive function names are used. For example 
+	   "plot-smooth-psd"  rather than "pspsd"
+
+I welcome any suggestions or comments on the above or on other recommended 
+lisp coding practices.
+
+In my digital filter design code, i have only implemented an infinite
+impulse response (iir) filter.  I start with an analog, low pass prototype
+with a cutoff frequency of 1 radian per second.  This analog prototype
+is then transformed to an analog low pass, high pass, band pass or band
+stop filter.  The bilinear transform is then used to transform the analog
+filter into the desired digital filter.  At present, the only low pass,
+analog prototype implemented is the Butterworth filter and each serial
+section of the filter is of order 2 or 4.  
+
+Functions are included for evaluating the transfer function magnitudes for
+both analog prototypes and digital filters.  The function "iir-filter" 
+filters the given time series forward and backward to eliminate any phase
+shift or time delay.  The function "digital-filter-design-test" in file t5.lsp
+demonstrates that this filter design approach can produce very sharp
+cutoff characteristics.
+
+References on digital filtering - i have used all of the following references
+and independently derived/verified the formulations for this specific digital
+filter design approach.  If anyone notes mistakes in the code/formulation,
+i would appreciate e-mail describing the mistake and your fix.  
+
+1. Rader and Gold, Digital Filter Design Techniques in the Frequency
+   Domain, Proc. IEEE, vol 55, pp 149-171, Feb 1967
+
+2. Parks and Burrus, Digital Filter Design, Wiley, 1987
+
+3. Rabner and Gold, Theory and Application of Digital Signal Processing,
+   Prentice-Hall, 1975
+
+4. Hamming, Digital Filters, Prentice-Hall, 1977 (2d edition is available)
+
+5. Antoniou, Digital Filter Analysis and Design, McGraw Hill, 1979
+
+Future Releases - as i add code to this xlispstat tool kit, i will,
+at random intervals, forward the updated tool kit to statlib.  I will
+try to answer any questions received via e-mail.  I have recently
+compiled the Xwindows version of xlispstat under Intel/ISC Unix V4
+on an HP-Vectra 80386 and look forward to working with the graphical
+interface features.
+
+Disclaimer: this code is released to the public domain on an "as is" basis.
+Users are warned that i am not liable for any errors or damages that ocur
+as a result of using this code.  
+

@@ -1,0 +1,24 @@
+(defun qgaus (func a b ss) (declare (type double-float a))
+ (declare (type double-float b)) (declare (type double-float ss))
+ (prog
+  ((x (make-array '(5) :element-type 'double-float))
+   (w (make-array '(5) :element-type 'double-float)) (dx 0.0d0) (j 0)
+   (xr 0.0d0) (xm 0.0d0)
+  )
+  (declare (type (simple-array double-float (*)) x))
+  (declare (type (simple-array double-float (*)) w))
+  (declare (type double-float dx)) (declare (type fixnum j))
+  (declare (type double-float xr)) (declare (type double-float xm))
+  (replace x '(0.14887434 0.4333954 0.67940956 0.86506337 0.9739065) :end 4)
+  (replace w '(0.29552424 0.26926672 0.21908636 0.14945135 0.06667134) :end 4)
+  (setf xm (* 0.5 (+ b a))) (setf xr (* 0.5 (+ b (- a)))) (setf ss 0)
+  (fdo ((j 1 (+ j 1))) ((> j 5) nil)
+   (tagbody (setf dx (* xr (fref x j)))
+    (setf ss
+     (+ ss
+      (* (fref w j)
+       (+ (funcall (func (+ xm dx))) (funcall (func (+ xm (- dx)))))
+  )))))
+  (setf ss (* xr ss)) (return (values func a b ss))
+))
+

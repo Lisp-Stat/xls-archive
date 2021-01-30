@@ -1,0 +1,13 @@
+(defun bessk (n x) (declare (type fixnum n)) (declare (type double-float x))
+ (prog ((bessk 0.0d0) (bkp 0.0d0) (j 0) (bk 0.0d0) (bkm 0.0d0) (tox 0.0d0))
+  (declare (type double-float bessk)) (declare (type double-float bkp))
+  (declare (type fixnum j)) (declare (type double-float bk))
+  (declare (type double-float bkm)) (declare (type double-float tox))
+  (if (< n 2) (error "bad argument N in BESSK")) (setf tox (/ 2.0 x))
+  (setf bkm (bessk0 x)) (setf bk (bessk1 x))
+  (fdo ((j 1 (+ j 1))) ((> j (+ n (- 1))) nil)
+   (tagbody (setf bkp (+ bkm (* (* j tox) bk))) (setf bkm bk) (setf bk bkp))
+  )
+  (setf bessk bk) (return bessk)
+))
+

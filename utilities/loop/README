@@ -1,0 +1,41 @@
+This is the loop macro from Peter Norvig's
+
+     Paradigms of Artificial Intelligence Programming
+               Case Studies in Common Lisp
+                  Morgan Kaufmann, 1992
+
+described in section 24.5, pages 840-852. It
+only needed one change for Xlisp.
+
+A defstruct in Xlisp cannot handle a documentation
+string, it seems, so I commented it out.
+
+What does it do ? If loaded, it allows you to say
+such wonderful things as
+
+(loop repeat 25 ...)
+(loop for i from -5 to 47 by 6 ...)
+(loop for (loop for v in '(1 2 #(2 3) "aa") ...)
+(loop until (< i 4) ...)
+
+where ... is some body of lisp.
+
+(loop for x from 1 to 10
+      when (oddp x)
+           collect x
+      else collect (- x))
+
+which returns (1 -2 3 -4 5 -6 7 -8 9 -10)
+
+You need auxfns.lsp and auxmacs.lsp. In auxfns.lsp
+I commented out the part that deals with the
+pathnames and the requires functions, because
+it assumes that set-dispatch-macro-character
+exists. I simply put a require in loop.lsp.
+
+I also commented out the parts that deal with
+fill-pointers, which Xlisp also does not have.
+
+There is much more good stuff in auxfns.lsp and
+auxmacs.lsp, but you were planning to read Norvig's
+book anyway (it's only 900+ pages).

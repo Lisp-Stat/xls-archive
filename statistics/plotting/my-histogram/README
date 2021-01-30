@@ -1,0 +1,32 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; This module has a complicated history. The first version was written
+;; by Jan de Leeuw, mid 1994, to provide an Xlisp-Stat version of the
+;; S-routines in Haerdle's book, and to provide a histogram-proto that
+;; inherits from the scatterplot-proto.
+;;
+;; The second version was done begin 1995 by Jason Bond, who added a
+;; slider for the binwidth.
+;;
+;; Version 3.0 was done by Jan de Leeuw in March 1995. It involved a
+;; complete overhaul of the code. XOR drawing was eliminated, menu
+;; support improved, slider support improved, code made more modular,
+;; my-histogram-proto and my-polygon-proto separated.
+;;
+;; 3.0     ** March 22 1995 ** Still no support for warping and fitting
+;;         a normal.
+;; 3.1     ** March 23 1995 ** Support for fitting a normal.
+;;
+;; 3.2     ** March 26 1995 ** Make sure the menu-items toggle in the
+;;         correct way. Improved updating of plots, much greater
+;;         efficiency. Created menu items for options. Wrote my-histogram
+;;         function. Foundations put in for warping and overlays.
+;;         Optimized normal-density fitting.
+;;
+;; 3.3     ** May 22, 1995 ** Support for different bin-widths.  Function
+;;         call for different bin-widths is:
+;;         (my-histogram data :my-cutpoints cut-points) where cutpoints
+;;         is a list of cutoff points.  Of course, changing the bin-widths
+;;         using the slider makes everything go back to a single bin-width.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

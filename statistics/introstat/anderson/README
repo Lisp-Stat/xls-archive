@@ -1,0 +1,28 @@
+
+I would like to contribute some introductory statistics modules to the
+archive.  They relate to three activities in the Activity-Based Statistics
+material of Scheaffer et al.  
+
+Three modules have been created to display a capture/recapture experiment,
+a randomized response survey, and a demonstration of confidence intervals.
+All of the modules are pretty crude at the moment, but people should be
+able to get the idea, and I (or someone else) may be willing to make these
+modules more elegant in the future.
+
+
+I can send them to you by email or you can access the *.lsp files at
+
+URL http://cda/mrs.umn.edu/~anderson/modules/confint.lsp 
+URL http://cda/mrs.umn.edu/~anderson/modules/randresp.lsp
+URL http://cda/mrs.umn.edu/~anderson/modules/recapt.lsp
+
+
+Let me know if you don't think they are ready to be posted, or if you have
+trouble accessing them.
+
+
+Regards,
+
+Jon Anderson
+University of Minnesota, Morris
+

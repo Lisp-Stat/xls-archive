@@ -1,0 +1,27 @@
+
+For function x^3 - 2*x - 5
+in [0,1] min found is at	8.164965811e-01
+Min function value found	-6.0887e+00
+No. of iterations		12
+Exact min is at		0.81650
+
+For function (x^3 - 2*x - 5)^2
+in [2,3] min found is at	2.094551483e+00
+Min function value found	2.7186e-16
+No. of iterations		15
+Exact root is 		2.0945514815
+
+For function (cos(x)-x)^2 - 2
+in [2,3] min found is at	2.000000048e+00
+Min function value found	3.8378e+00
+No. of iterations		36
+
+For function (cos(x)-x)^2 - 2
+in [-1,3] min found is at	7.390851269e-01
+Min function value found	-2.0000e+00
+No. of iterations		18
+
+For function (sin(x)-x)^2 + 1
+in [-1,3] min found is at	-3.815499176e-03
+Min function value found	1.0000e+00
+No. of iterations		60

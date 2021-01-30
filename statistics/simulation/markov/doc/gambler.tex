@@ -1,0 +1,152 @@
+This scenario deals with a gambler who has a probability $p$ of winning one 
+more dollar with each play of the game, and a probability $q$ of losing a 
+dollar.  If successive plays of the game are independent, then, the
+collection of random variables $\{X_n,\ n>0\}$, where $X_n$ is the
+gambler's fortune at time $n$, is a Markov Chain.
+Given a starting amount of $i$ dollars, we can calculate the
+probability that the gambler will win $N$ dollars before going broke.
+The following code will give a visual representation of the gambler's
+fortune.  Starting with $i$ dollars, the probability $P_{i}$ that the
+gambler will eventually have $N$ dollars is given by: 
+\[ P_{i}= \left\{
+   \begin{array}{ll}
+   \frac{1-(q/p)^{i}}{1-(q/p)^{N}}, & \mbox{if $p\not=\frac{1}{2}$} \\
+   \frac{i}{N}, & \mbox{if $p=\frac{1}{2}$}
+   \end{array}
+\right. \]
+For a detailed explanation of the derivation of this formula, see
+Ross\cite{rosstext}.  
+
+This can be illustrated by means of our code.  The file {\tt
+  gambler.lsp} contains the following. 
+\begin{verbatim}
+(defvar n 26)
+(defvar *prob-win* .5)
+\end{verbatim}
+These two lines define the gambler's maximum fortune, $26-1=\$25$, and
+the probability of winning each game, $p$, is  $0.45$. 
+
+Next, since we are going to be playing a lot of games, we would like
+to speed up things as much as possible.  One easy candidate for the
+speedup is the {\tt :next-state} method for the {\tt state-proto}
+object. We do that as follows.
+\begin{verbatim}
+(defmeth state-proto :next-state ()
+  (let ((cs (slot-value 'state-no)))
+    (if (or (eql cs 0) (eql cs (- n 1)))
+	cs
+      (let ((u (select (uniform-rand 1) 0)))
+	(if (< u *prob-win*)
+	    (+ cs 1)
+	  (- cs 1))))))
+\end{verbatim}
+This method takes into account the fact that the transition matrix is
+sparse.  Note that the value of {\tt n} is used in the code, which means
+that {\tt n} should not be changed in the course of the run. 
+
+Now, we are ready to create the Markov Chain. 
+\begin{verbatim}
+(defvar m (identity-matrix n))
+(dotimes (i (- n 1))
+         (when (> i 0)
+               (setf (aref m i i) 0)
+               (setf (aref m i (+ i 1)) *prob-win*)
+               (setf (aref m i (- i 1)) (- 1 *prob-win*))))
+(def initial-state 12)
+(setf z (send dmc-proto :new m initial-state))
+\end{verbatim}
+The transition matrix for our Markov Chain is:
+\[ \begin{array}{ll}
+	P_{00}=P_{NN}=1 & \\
+   	P_{i,i+1}=p=1-P_{i,i-1}=1-q, & i=1,2,\ldots,N-1.
+   \end{array} \]
+In other words, the probability of the Markov chain moving to the next
+state, or, of the gambler winning this play of the game, is $p$, as
+was mentioned earlier.  Similarly, the probability of the Markov chain
+moving back one state, or, of the gambler losing a dollar, is $q=1-p$.
+By defining the initial state of the Markov chain to be 12, we are giving
+the gambler twelve dollars to start with.
+
+The last line above creates a new instance of the {\tt dmc-proto}
+object using the transition matrix that was just defined, beginning in
+our chosen initial state.  Note that although the transition matrix is
+used in creating the Markov Chain, it is not used afterwards, since we
+have overriden the {\tt :next-state} method for {\tt state-proto}. 
+
+Upon executing the code, the user gets a window as shown in
+figure~\ref{fig:gambler}.  Figure~\ref{fig:gambler} also shows the
+state and control buttons.  The sample path window is not enabled
+automatically, but we have requested sample paths from the menu in the
+Markov Chain window.
+
+Now, how do we run the Markov Chain a large number of times?  The
+following code will help us do that.
+\begin{verbatim}
+(defun test-gambler (number)
+  (let ((w 0)
+	(l 0)
+	(tmp nil))
+    (dotimes (j number)
+             (format t "Game: ~d~%" j)
+	     (send z :reset)
+	     (send z :run-dmc-silently 500)
+	     (setf tmp (send z :current-state))
+	     (if (eql tmp (- n 1))
+		 (setf w (+ w 1))
+	       (if (eql tmp 0)
+		   (setf l (+ l 1)))))
+    (format t "Wins: ~d, Losses: ~d, ~
+               Decided games: ~d, ~
+               Proportion wins: ~d~%"
+	    w l (+ w l) (/ w (+ w l)))))
+\end{verbatim}
+This function will play {\tt number} games, where {\tt number} is
+given as an argument to this function.  Note that after each game, we
+determine the current state, so that we may detect whether the gambler
+won or lost, or whether the game did not end.  When the games are all
+over, the number of wins and losses is printed along with the
+proportion of wins. 
+
+\begin{figure}[tbhp]
+  \caption{The Markov Chain window created by {\tt gambler.lsp}}
+  \label{fig:gambler}
+    \epsffile{gambler.ps}
+     \psellipse[fillstyle=solid,fillcolor=white](2,7)(1.5,0.5)
+     \rput(2,7){Control Buttons}
+     \psline{->}(3.5,7)(4.5,7)
+     \psellipse[fillstyle=solid,fillcolor=white](2,5)(1.5,0.5)
+     \rput(2,5){State Buttons} 33 
+     \psline{->}(3.5,5)(4.5,5)     
+\end{figure}
+In a test run, we called the function {\tt test-gambler} with an
+argument 1000. After 1000 games, the gambler's fortune reached \$25
+474 times in 976 decided games, yielding a winning percentage of
+48.57\%.  According to the formula, since the probability of winning
+each turn was 0.5, the gambler's winning percentage was expected to be
+$12/25$, or 48\%.  The computer-generated Markov chain has yielded
+results very close to the ones predicted theoretically.
+It must be remarked that this simulation took quite a while even on a 
+loaded workstation.  We can think of many things that can be
+optimized, but that is a subject that doesn't concern us now. 
+
+Now suppose, the probability of winning is not $.5$, but say, $0.45$,
+and the gambler's initial fortune is \$15. 
+All one needs to do is to change the values of {\tt *prob-win*} and 
+repeat the whole process using $15$ as the initial state. A run of
+1000 games yielded  126 wins in 997 
+decided games, a winning percentage of $0.126379$.  This is close to
+the the theoretical value of 
+$$
+\frac{1-(0.55/0.45)^{15}}{1-(0.55/0.45)^{25}}= 0.128657.
+$$	
+
+
+
+
+
+
+
+
+
+
+

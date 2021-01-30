@@ -1,0 +1,308 @@
+On the Cost of Data Analysis - Paper and lisp source code
+=========================================================
+
+		by Julian J. Faraway
+	Department of Statistics, University of Michigan
+
+			ABSTRACT
+			========
+
+A regression analysis usually consists of several stages such as
+variable selection, transformation and residual diagnosis. Inference
+is often made from the selected model without regard to the model
+selection methods that proceeded it. This can result in overoptimistic
+and biased inferences.  We first characterize data analytic actions as
+functions acting on regression models.  We investigate the extent of
+the problem and test bootstrap, jacknife and sample splitting methods
+for ameliorating it. We also demonstrate an interactive LISP-STAT
+system for assessing the cost of the data analysis while it is taking
+place.
+			FILES
+			=====
+
+rat.lsp is the lisp code for parallel boostrap/jacknife regression
+method discussed in the paper.
+
+simul.lsp is the lisp code for the simulations described
+in the paper
+
+chicago.lsp is the data for the example in the paper.
+
+regmodel.lsp contains the additional methods (eda for regression)
+
+auxil.lsp contains some auxiliary functions
+
+			XLISP-STAT
+			==========
+
+You will need XLISPSTAT to run these programs. Here is an excerpt from
+the documentation for  XLISPSTAT:
+
+This note is to announce the availability of Version 2.1 of
+XLISP-STAT, an extensible system for statistical computing and dynamic
+graphics.
+
+XLISP-STAT is based on a dialect of Lisp called XLISP. It is available
+for the Apple Macintosh, for workstations running the X11 window
+system under BSD UNIX (and perhaps System V with BSD enhancements),
+and for Sun workstations running SunView. A version for the Commodore
+Amiga is available as well.
+
+The system is based on David Betz' XLISP 2.1, which is written in C.
+To facilitate statistical computations I have modified standard Lisp
+functions for addition, logarithms, etc., to operate on lists and
+arrays of numbers, and have also added a number of basic statistical
+functions. About two thirds of the additions are written in C; the
+rest are written in Lisp. Several basic forms of plots, including
+histograms, scatterplots, 3-dimensional rotatable plots and
+scatterplot matrices are provided.  These plots support various forms
+of interactive highlighting operations and can be linked so points
+highlighted in one plot will be highlighted in all linked plots.
+Interactions with the plots are controlled by the mouse, menus and
+dialog boxes. An object-oriented programming system is used to make it
+possible to customize menus, dialogs, and the way plots respond to
+mouse actions.
+
+Source code for the UNIX version, which can be compiled without
+graphics, for X11 graphics, or for SunView graphics, is available by
+anonymous ftp from
+
+	umnstat.stat.umn.edu (128.101.51.1)
+
+It is in the file xlispstat2.1R1.tar.Z in the directory pub/xlispstat.
+(The version and release numbers will be updated as changes are
+made/bugs are fixed).  This system has been compiled on a VAX, DEC
+3100 (pmax), Sun 3, Encore Multimax and (with a modified Makefile) a
+Cray XMP.
+
+The Macintosh version is also available by anonymous ftp from the
+address given above. The Macintosh distribution consists of two parts,
+contained in the files
+
+	XLISP-STAT2.1R1.Disk1.sit.Hqx
+	XLISP-STAT2.1R1.Disk2.sit.Hqx
+
+in the directory pub/xlispstat. These files contain archives created
+with StuffIt 1.5.1 that have been binhexed with BinHex 4.0. The
+Macintosh distribution includes two versions of the system, one for
+macs with a math coprocessor and one for generic macs. Source code for
+the Macintosh version is included in the UNIX sources.
+
+For reasonable operation the Mac version requires 2MB of memory. It
+may be possible to use it on very small problems with only 1MB. The
+program is fairly slow on a Mac Plus or SE.
+
+A tutorial introduction to the system is available. It is written
+primarily for the Macintosh version, but the differences to the UNIX
+version are minor. The tutorial is available as a set of LaTeX files
+in xlispstat.doc.tar.Z in the directory pub/xlispstat at the ftp
+address above.
+
+If you do not have access to anonymous ftp, you can obtain the source
+code and documentation from the statlib archive. To find out how to do
+this, send a mail message to
+
+	statlib@lib.stat.cmu.edu
+
+containing the line
+
+	send index from xlispstat
+
+More complete documentation will be published as a book that should be
+available from Wiley in October 1990. The title of the book is
+"Lisp-Stat: An object-oriented environment for statistical computing
+and dynamic graphics."
+
+For further information contact
+
+	Luke Tierney
+	School of Statistics
+	University of Minnesota
+	Minneapolis, Mn. 55455
+
+	luke@umnstat.stat.umn.edu
+
+
+			COPYRIGHT INFORMATION
+				   
+******************************************************************************
+* XLISP-STAT 2.1 Copyright (c) 1990, by Luke Tierney
+* XLISP version 2.1, Copyright (c) 1989, by David Betz.
+*
+* Permission to use, copy, modify, distribute, and sell this software and its
+* documentation for any purpose is hereby granted without fee, provided that
+* the above copyright notice appear in all copies and that both that
+* copyright notice and this permission notice appear in supporting
+* documentation, and that the name of Luke Tierney and David Betz not be
+* used in advertising or publicity pertaining to distribution of the software
+* without specific, written prior permission.  Luke Tierney and David Betz
+* make no representations about the suitability of this software for any
+* purpose. It is provided "as is" without express or implied warranty.
+*
+* LUKE TIERNEY AND DAVID BETZ DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+* SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS,
+* IN NO EVENT SHALL LUKE TIERNEY NOR DAVID BETZ BE LIABLE FOR ANY SPECIAL,
+* INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+* LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+* OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+* PERFORMANCE OF THIS SOFTWARE.
+* 
+* XLISP-STAT AUTHOR:
+*               Luke Tierney
+*               School of Statistics
+*               University of Minnesota
+*               Minneapolis, MN 55455
+*               (612) 625-7843
+* 
+*       Email Address:
+*               internet: luke@umnstat.stat.umn.edu
+*
+* XLISP AUTHOR:
+*              David Betz
+*              P.O. Box 144
+*              Peterborough, NH 03458
+*              (603) 924-4145
+******************************************************************************
+
+Note that a version for the PC running Windows is also now available (JF)
+
+
+			EXAMPLES
+			========
+
+> (load "rat")
+; loading "rat.lsp"
+; loading "auxil.lsp"
+; loading "regmodel.lsp"
+T
+> (load "chicago")
+; loading "chicago.lsp"
+T
+> (rat (list minority fire theft age income) volact 
+       :predictor-names varnames :response-name "volact")
+;; At this point a dialog box asks the user to choose between
+;; a bootstrap or jacknife analysis of the data. 
+;;
+;; Another dialog box now asks for the number of resamples.
+;; The default number is 50.
+;;
+;; The user is now prompted to select which predictors are of
+;; specific interest in the analysis. Resampling distributions
+;; of the estimates of selected parameters can be provided and 
+;; variable selection will not eliminate the selected variables.
+;; All, some or none of the variables may be selected.
+;;
+;; The user is now prompted to enter the point(s) at which predictions
+;; are to be made. Hit cancel if not required.
+;;
+;; If any variables had been selected earlier for resampling distributions
+;; of the parameter effects, the user will be prompted to select the
+;; point at which the parameters should be interpreted. (see the paper
+;; for further details)
+;;
+;; At this point, a menu bar will appear entitled "RAT", but no
+;; selection can be made until all the resampled regression models
+;; have been constructed. When the break prompt appears you can make
+;; a selection from the menu. The output will thus will look like this:
+
+Bootstrap method
+No. of resamples= 50
+break: **BREAK**
+if continued: return from BREAK
+1> 
+
+;; Clicking on the "RAT" menu provides several alternatives
+;; "Display model" prints out the currently fitted model for the original 
+;;                 data.
+;; "History" prints out an audit of the current regression analysis
+;; "Summary" prints out some numerical summaries for the quantities
+;;           of interest using the resampled models
+;; "Effect density" will display a kernel density estimate of the 
+;;                  effect of interest. The user will be prompted if
+;;                  more than one effect is of interest. The bandwidth of
+;;                  the estimate may be changed from the menu. The estimated
+;;                  effect from the original data is displayed as a point
+;;                  on the x-axis.
+;; "Prediction density" same as above but for the predictions of interest.
+;; "Effect history" displays the changing distribution of the estimated
+;;                  distribution of the effects over the history of
+;;                  the analysis. Data may be displayed in boxplots or
+;; 		    in a 3-D succession of density estimates called a
+;;                  density slice. The estimated effects from the original data 
+;;                  is displayed as points on the boxplots and as a line under
+;;                  the surface in the density slices. There will be a 
+;;                  distribution for each action plus one for the initial state.
+;;                  Refer to "History" to identify each.
+;; "Prediction history" same as above but for the predictions of interest.
+;; "Effect slice" displays the distribution of an effect across a range
+;;                an interpretation points. The user is prompted for two
+;;                points in the prediction space and the number of distributions
+;;                to be calculated equally spaced between these two points.
+;; "Prediction slice" same as above but for the predictions of interest.
+;; "Continue" brings up a menu to select the next data analytic action
+;; "Remove menu" removes the menu - don't do this unless you are finished.
+;;
+;; It is also possible to enter written commands at the prompt. The model
+;; for the original data is called "nr" and the list of resampled models is
+;; called "nrl" so for example
+;;                 (send nr :display)
+;; has the same effect as "Display" above and
+;;                 (mapcar #'(lambda (x) (caar (send x :tran-list))) nrl)
+;; will display a list of the transforms on the response in the resampled models.
+;; Other quantities of interest are stored in the object "rat-info".
+;; See rat.lsp for details.
+;;
+;; SIMULATION CODE
+;;
+;; The calling sequences for the models described in the paper are
+;; given in simul.lsp. Other models may be chosen by varying the
+;; calling sequence or changing the function generate-data.
+> (load "simul")
+; loading "simul.lsp"
+; loading "auxil.lsp"
+; loading "regmodel.lsp"
+T
+> (help 'simul)
+SIMUL                                                           [function-doc]
+Args: (sample-size no-reps no-boots no-jacks &key
+			(true-coefs (cons 0 (repeat 1 no-preds)))
+			(x-generators (repeat #'normal-rand no-preds))
+			(y-transform #'identity)
+			(y-transform-d (lambda (x) 1))
+			(x-transforms (repeat #'identity no-preds))
+			(x-transforms-d (repeat (lambda (x) 1) no-preds))
+			(p-point (repeat 1 no-preds))
+			(par-int-point (repeat 0 no-preds))
+			(hetero nil)
+			(sim-error 1.0)
+			(contam-prob 1)
+			(contam-amt 1)
+			(smf #'median)
+			(vb-select (cons nil (repeat t (1- no-preds)))))
+Sample size - sample-size
+No. of replications - no-reps
+No. of Bootstrap resamples - no-boots
+No. of Jacknife resamples - no-jacks (use 0 for delete-one method)
+True values of regression coefficients - true coefs
+Functions to generate predictors - x-generators
+Transform on the response - y-transform
+Derivative of the above - y-transform-d
+Transforms on the predictors - x-transforms
+Derivatives of the above - x-transforms-d
+Point at which prediction should be made - p-point 
+Point at which parameter should be interpreted - par-int-point
+Multiplier on the response for heteroscedastic error - hetero 
+Error SD - sim-error 
+Probability of contamination is 1 in contam-prob
+Amount of contamination - contam-amt 
+Summary function if multiple interpretation points - smf
+Variables that should not be eliminated (true) - vb-select
+NIL
+> 
+
+			DISCLAIMER
+			==========
+
+This system is experimental and no guarantee can be made
+as to its reliability. This code is distributed under the
+same terms as XLISP-STAT.

@@ -1,0 +1,65 @@
+(defun spline (x y n yp1 ypn y2 &key (nmax 100))
+ (declare (type (simple-array double-float (*)) x))
+ (declare (type (simple-array double-float (*)) y)) (declare (type fixnum n))
+ (declare (type double-float yp1)) (declare (type double-float ypn))
+ (declare (type (simple-array double-float (*)) y2))
+ (declare (type fixnum nmax))
+ (prog
+  ((u (make-array '(nmax) :element-type 'double-float)) (k 0) (un 0.0d0)
+   (qn 0.0d0) (p 0.0d0) (sig 0.0d0) (i 0)
+  )
+  (declare (type (simple-array double-float (*)) u)) (declare (type fixnum k))
+  (declare (type double-float un)) (declare (type double-float qn))
+  (declare (type double-float p)) (declare (type double-float sig))
+  (declare (type fixnum i))
+  (cond ((> yp1 9.9E29) (fset (fref y2 1) 0.0) (fset (fref u 1) 0.0))
+   (t (fset (fref y2 1) (- 0.5))
+    (fset (fref u 1)
+     (* (/ 3.0 (+ (fref x 2) (- (fref x 1))))
+      (+ (/ (+ (fref y 2) (- (fref y 1))) (+ (fref x 2) (- (fref x 1))))
+       (- yp1)
+  )))))
+  (fdo ((i 2 (+ i 1))) ((> i (+ n (- 1))) nil)
+   (tagbody
+    (setf sig
+     (/ (+ (fref x i) (- (fref x (+ i (- 1)))))
+      (+ (fref x (+ i 1)) (- (fref x (+ i (- 1)))))
+    ))
+    (setf p (+ (* sig (fref y2 (+ i (- 1)))) 2.0))
+    (fset (fref y2 i) (/ (+ sig (- 1.0)) p))
+    (fset (fref u i)
+     (/
+      (+
+       (/
+        (* 6.0
+         (+
+          (/ (+ (fref y (+ i 1)) (- (fref y i)))
+           (+ (fref x (+ i 1)) (- (fref x i)))
+          )
+          (/ (* -1 (+ (fref y i) (- (fref y (+ i (- 1))))))
+           (+ (fref x i) (- (fref x (+ i (- 1)))))
+        )))
+        (+ (fref x (+ i 1)) (- (fref x (+ i (- 1)))))
+       )
+       (* (* -1 sig) (fref u (+ i (- 1))))
+      )
+      p
+  ))))
+  (cond ((> ypn 9.9E29) (setf qn 0.0) (setf un 0.0))
+   (t (setf qn 0.5)
+    (setf un
+     (* (/ 3.0 (+ (fref x n) (- (fref x (+ n (- 1))))))
+      (+ ypn
+       (/ (* -1 (+ (fref y n) (- (fref y (+ n (- 1))))))
+        (+ (fref x n) (- (fref x (+ n (- 1)))))
+  ))))))
+  (fset (fref y2 n)
+   (/ (+ un (* (* -1 qn) (fref u (+ n (- 1)))))
+    (+ (* qn (fref y2 (+ n (- 1)))) 1.0)
+  ))
+  (fdo ((k (+ n (- 1)) (+ k (- 1)))) ((> k 1) nil)
+   (tagbody (fset (fref y2 k) (+ (* (fref y2 k) (fref y2 (+ k 1))) (fref u k)))
+  ))
+  (return (values x y n yp1 ypn y2))
+))
+

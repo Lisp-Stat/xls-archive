@@ -1,0 +1,72 @@
+
+Hi there,
+
+Really xlisp-stat is closer and closer to common lisp, and that's good news. 
+Look at this:
+
+In the Common Lisp The Language book (now electronically available!)
+there is a set of lisp function to draw graphs of complexs functions.
+One of them is in the book cover, the other are in pages 317ff. 
+
+I took the lisp sources and with a few modifications it run in
+xlisp-stat. I think  that it's interesting by itself and also as a
+good example of how to generate postscript coded graphs form xlisp.
+
+The main function is 
+picture &optional (function 'sqrt)
+
+For example, (picture 'identity) will dump to a file named identity.ps
+a postscript description of the identity function graph, that is
+actually the mesh that is used in this kind of complex graphs.
+
+
+PROBLEMS:
+
+I think there is an error in the declaration of the function picture,
+as it must be 
+picture &optional (function 'sqrt)
+and not 
+picture &optional (function #'sqrt)
+but I don't know if correcting CLTL is a sacrilege.
+
+Strangely, there are a few lines missing at random in the electronic
+version of the listing. I added them manually from the hardpaper
+version of the book.
+
+
+xlisp-stat does not conform to CL in function signum.
+According CL, signum over a complex must give a complex with the same
+phase and unit length. My quick-hack for it has been:
+(defun my-signum (num)
+  (if (complexp num)
+      (if (= #C(0 0) num)
+	  num
+	(/ num 
+	   (sqrt (* num (conjugate num)))))
+    (signum num)))
+
+
+some CL global constants are not defined, I took the values that gcl
+has:
+
+(defparameter most-positive-single-float 1.797693134862316E308)
+(defparameter least-positive-single-float 4.9406564584124654E-324)
+
+I have modified also the postscript header and added a 'showpage' at
+the end of the generated file.
+
+Enjoy it, try (picture 'cos), it's nice.
+
+
+
+-- 
+
+Frederic Udina
+_______________________________________________________________________
+                                    |     voice: 34 - 3 - 542 17 56
+Facultat de Ciencies Economiques    |       fax: 34 - 3 - 542 17 46
+Universitat Pompeu Fabra            |    e-mail: udina@upf.es      
+       Balmes 132                   | appleLink: spa0172           
+       08008 Barcelona              |  Servicom: sva00484
+       SPAIN                        |   W W Web: http://libiya.upf.es/
+___________________________________/_\_________________________________

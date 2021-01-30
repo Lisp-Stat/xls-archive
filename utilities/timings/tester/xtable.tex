@@ -1,0 +1,88 @@
+\magnification\magstep1
+\parskip 10pt
+\parindent 0pt
+\input uclastat
+\input stables
+\centerline{\bf BENCHMARKS}
+
+{\sl EIGEN:} This computes the eigenvalue-
+eigenvector decomposition of a symmetric matrix of order $nord,$
+and it does this $ntim$ times. For our computations $ntim=10,$
+while $nord=\{10,20,30,40,50,100\}.$ 
+\listing{tester.lsp}
+\vfill\eject
+\centerline{\bf UNIX WORKSTATIONS}
+
+\vskip 1cm\begintable
+name\vt make\vt model\vt clock\vt MIPS\vt RAM\eltt
+nicco|Sun|690MP/4 CPU|40|28.5|128\el
+laplace|Sun|470|33||64\el
+playfair|Sun|Sparc II|40|28.5|48\el
+gifi|Sun|IPC|25|15.8|8\elt
+stephen|Sun|Sparc I|||\el
+eagle|IBM|ES/9000|||\el
+hawk|IBM|ES/9000|||\elt
+shinn|IBM|RS/6000-530|25|30.3|64\el
+denali|IBM|RS/6000-520|25|30.3|32\elt
+mike|Dec|DecStation 3100|25||16\el
+tao|HP|9000/730|50|76.7|16\endtable
+\vskip 1cm\begintable
+name\vt OS\vt compiler\eltt
+nicco|SunOS 4.1.1|native cc + as + ld\el
+laplace-cc|SunOS 4.1.1|native cc + as + ld\el
+laplace-gcc|SunOS 4.1.1|gcc 2.2.1 + gas 1.92.3 + gld BFD 1.94\el
+playfair|SunOS 4.1.1|native cc + as + ld\el
+gifi|SunOS 4.1.2|native cc + as + ld\elt
+stephen|SunOS 4.1.1|native cc + as + ld\elt
+eagle|AIX/ESA|Metaware High C R2.4j\el
+hawk|PAIX|Metaware High C R2.1t\elt
+shinn|AIX 3.1|xlc\el
+denali|AIX|xlc\elt
+mike|Ultrix 4.1|native cc + as + ld\el
+tao|HP/UX 8.05|native cc + as + ld\endtable
+\vfill\eject\begintable
+machine\vt $n=10$\vt $n=20$\vt $n=30$\vt $n=40$\vt $n=50$\vt $n=100$\eltt
+nicco|\hfill 0.32|\hfill 1.60|\hfill 3.95|\hfill 8.27|\hfill 14.37|\hfill 95.02\el
+laplace-gcc|\hfill 0.27|\hfill 1.53|\hfill 4.05|\hfill 8.17|\hfill 14.23|\hfill 95.97\el
+laplace-cc|\hfill 0.37|\hfill 1.77|\hfill 4.63|\hfill 9.65|\hfill 17.35|\hfill 110.62\el
+playfair|\hfill 0.35|\hfill 1.77|\hfill 4.38|\hfill 9.25|\hfill 16.25|\hfill 103.07\el
+gifi|\hfill 0.70|\hfill 3.35|\hfill 8.48|\hfill 17.73|\hfill 31.22|\hfill 198.70\el
+stephen|\hfill 0.83|\hfill 3.95|\hfill 10.32|\hfill 21.27|\hfill 38.15|\hfill 241.32\elt
+eagle|\hfill 0.33|\hfill 1.10|\hfill 2.43|\hfill 5.27|\hfill 8.70|\hfill 64.28\el
+hawk|\hfill 0.10|\hfill 0.33|\hfill 0.85|\hfill  1.68|\hfill 2.92|\hfill 22.23\elt
+shinn|\hfill|\hfill|\hfill|\hfill|\hfill|\hfill\el
+denali|\hfill 0.26|\hfill 1.13|\hfill 2.63|\hfill 5.18|\hfill 8.33|\hfill 73.83\elt
+mike|\hfill 0.52|\hfill 2.45|\hfill 6.35|\hfill 13.32|\hfill 23.22|\hfill 169.55\el
+tao|\hfill 0.20|\hfill 0.97|\hfill 2.43|\hfill 4.80|\hfill 8.15|\hfill 50.95\endtable
+\vfill\eject
+\centerline{\bf PERSONAL COMPUTERS}
+\vskip 1cm\begintable
+name\vt make\vt model\vt CPU\vt clock\vt RAM\eltt
+A|Apple|Quadro 900|68040|25|20\el
+B|Apple|IIfx|68030/68882|40|5\el
+C|Apple|PowerBook 170|68030/68882|25|5\el
+D|Apple|II|68020/68881/68851|16|5\el
+E|Apple| SE/30|68030/68881|16|4\elt
+F|IBM|PS2/70|80386/||\el
+G|Royal||80486|50|16\endtable
+\vskip 1cm\begintable
+name\vt OS\vt compiler\vt program memory\eltt
+A|MacOS 7.0.1|MPW 3.0|5MB\el
+B|MacOS 7.0.1|MPW 3.0|2MB\el
+C|MacOS 7.0.1|MPW 3.0|2MB\el
+D|MacOS 7.0.1|MPW 3.0|2MB\el
+E|MacOS 6.0.7|MPW 3.0|2MB\elt
+F|||\el
+G|DOS 5.0/Windows 3.1|BCC 2.0|\endtable
+\vfill\eject
+\begintable
+machine\vt $n=10$\vt $n=20$\vt $n=30$\vt $n=40$\vt $n=50$\eltt
+A|\hfill 1.10|\hfill 5.12|\hfill 12.12|\hfill 24.35|\hfill 45.52\el
+B|\hfill 2.28|\hfill 10.83|\hfill 31.62|\hfill 69.53|\hfill 132.18\hfill \el
+C|\hfill 3.73|\hfill 18.45|\hfill 52.97|\hfill 113.92|\hfill 219.80\hfill \el
+D|\hfill 8.33|\hfill 40.32|\hfill 114.75|\hfill 253.52|\hfill 484.42\el
+E|\hfill 5.28|\hfill 26.93|\hfill 77.55|\hfill 170.07|\hfill 324.32\elt
+F|||||\el
+G|\hfill 1.05|\hfill 5.00|\hfill 12.92|\hfill 23.78|\hfill 43.58\endtable
+\vskip .1cm
+\bye

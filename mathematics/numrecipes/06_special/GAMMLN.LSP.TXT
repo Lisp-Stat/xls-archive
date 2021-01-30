@@ -1,0 +1,25 @@
+(defun gammln (xx) (declare (type double-float xx))
+ (prog
+  ((cof (make-array '(6) :element-type 'float)) (stp 0.0d0) (half 0.0d0)
+   (one 0.0d0) (fpf 0.0d0) (x 0.0d0) (tmp 0.0d0) (ser 0.0d0) (gammln 0.0d0)
+   (j 0)
+  )
+  (declare (type (simple-array float (*)) cof)) (declare (type float stp))
+  (declare (type float half)) (declare (type float one))
+  (declare (type float fpf)) (declare (type float x))
+  (declare (type float tmp)) (declare (type float ser))
+  (declare (type double-float gammln)) (declare (type fixnum j))
+  (replace cof
+   '(76.18009173d0 (- 86.50532033d0) 24.01409822d0 (- 1.231739516d0)
+     (+ |0.120858003D| (- 2)) (+ (- |0.536382D|) (- 5)) 2.50662827465d0
+    )
+   :end 6
+  )
+  (setq half 0.5d0) (setf x (+ xx (- one))) (setf tmp (+ x fpf))
+  (setf tmp (+ (* (+ x half) (log tmp)) (- tmp))) (setf ser one)
+  (fdo ((j 1 (+ j 1))) ((> j 6) nil)
+   (tagbody (setf x (+ x one)) (setf ser (+ ser (/ (fref cof j) x))))
+  )
+  (setf gammln (+ tmp (log (* stp ser)))) (return gammln)
+))
+

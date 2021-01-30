@@ -1,0 +1,114 @@
+From sdm7g@virginia.edu Thu Sep  5 13:23 PDT 1996
+Return-Path: <sdm7g@virginia.edu>
+Received: from julia.math.ucla.edu by laplace.math.ucla.edu 
+	(Sendmail 5.0/1.13) id AA22940; Thu, 5 Sep 1996 13:23:28 -0700
+Received: from virginia.edu (mars.itc.Virginia.EDU) by julia.math.ucla.edu 
+	(Sendmail 4.1/1.13) id AA18303; Thu, 5 Sep 96 13:23:24 PDT
+Received: from elvis.med.virginia.edu by mail.virginia.edu id aa07880;
+          5 Sep 96 16:09 EDT
+Received: from localhost by elvis.med.Virginia.EDU (5.65c/1.34)
+	id AA22522; Thu, 5 Sep 1996 16:09:22 -0400
+Date: Thu, 5 Sep 1996 16:09:21 -0400 (EDT)
+From: "Steven D. Majewski" <sdm7g@virginia.edu>
+X-Sender: sdm7g@elvis.med.Virginia.EDU
+To: Jan Deleeuw <deleeuw>
+Subject: Re: UCLA Xlisp-Stat Archive
+In-Reply-To: <9609041818.AA21048@galton.math.ucla.edu>
+Message-Id: <Pine.A32.3.92.960905145511.3302A-100000@elvis.med.Virginia.EDU>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 4166
+Status: RO
+
+
+I was visiting the archive, and noticed a couple of my files in
+the contrib directory. To save you some effort in cataloging
+them:
+
+
+<http://www.stat.ucla.edu/archive/xlispstat/code/incoming/majewski.lsp>
+
+Is C code, not .lsp - and is the code to implement Common Lisp
+'directory' listing function. ( It's been well used on Mac -- but
+I haven't tried to use it to cross volumes, and I've seen some
+other unix-to-mac ported code that has problems with that case.
+It's not been tested on other platforms, but it's using the posix-y
+directory function on the Mac port (that is used internally in
+xlisp-stat), so it should be portable. )
+
+I would *really* like to see this function merger into the xlisp
+source distribution ( and next set of binaries )!  It's really
+essential if you want to do any batch operations, like analyze
+all of the data files in a particular directory. ( It may only
+have managed to escape for so long because unix users can always
+us the system call to 'ls' )
+
+
+<http://www.stat.ucla.edu/archive/xlispstat/code/incoming/majowski.lsp>
+
+Is Lisp code that tried to manage sets of directories from a menu,
+however, the Mac open-file-dialog code uses it's own marker for the
+last visited directory, and doesn't use the current-working-directory
+set or retrieved by the lisp working-directory functions.
+
+ I asked about this on the mailing list, and got that answer, but I
+haven't had time to search for a solution. I don't know if it works
+on non mac platforms. If it doesn't, I would suggest you just toss
+that file until I can figure out a better method. If it does work on
+non Mac platforms, I can't support it, as I'm currently working only
+on Mac version. ( I've been passing my code to some other folks in
+the dept. using MS-Win and Linux, so this may change in the future. )
+
+
+---
+
+ I'm currently refactoring and further documenting my framework
+classes for my X-ray Energy Spectroscopy application. I'll be
+sending out more info on this Real Soon, but briefly, there
+are three sets or suites of modules:
+
+ * data classes and functions:
+    Functions to extend COMPOUND-DATA-SEQ's into more "first class"
+    lisp sequences, so that you can use them in place of vectors
+    or lists.
+   DATA-SEQ-PROTO -- a pretty basic COMPOUND-DATA-SEQ
+   XY-SEQ-PROTO -- a general Y sequence with an implied X sequence.
+   SPEC-SEQ-PROTO and various descendents - A spectrum of some
+      sort ( XES, EELS ) including reference spectra for fit.
+     ( This is the part I'm trying to refactor, to make some elements into
+      mixin's, to make it easier to generalize new types. )
+
+ * utility classes and functions:
+     some miscellaneous utility functions and
+     STATEFUL-PROTO
+     XLINKABLE-PROTO
+        mixin's to implement objects with state, which can propagate
+        state changes to other linked objects, and a more general
+        linking scheme that can link points to non-point objects,
+        or objects to each other.
+   ( I use it to link graphic overlay objects to points in a namelist,
+     and to link data/observation points in a scatterplot to the
+     original data -- for example, you should be able to click on
+     an outlier point in a scatterplot of Calcium concentrations, and
+     bring up a plot of the spectrum and the fit which produced that
+     number to check it visually for anything odd. This last bit isn't
+     implemented yet -- it's why I wanted the directory management
+     functions so that I could set up several data directories to be
+     searched automatically. )
+
+
+ * graphics classes
+      color graphics hierarchical overlay objects
+ 	( real-graph, rect, poly, oval, etc. & group )
+      jitterplots ( & boxplots & oval-plots as overlays )
+      & various mods to scatterplot-proto to handle overlays,
+       color-backgrounds, color-grids, etc.
+
+
+---|  Steven D. Majewski   (804-982-0831)  <sdm7g@Virginia.EDU>  |---
+---|  Computer Systems Engineer          University of Virginia  |---
+---|  Department of Molecular Physiology and Biological Physics  |---
+---|  Box 449 Health Science Center    Charlottesville,VA 22908  |---
+ [ "The grass is always greener, except at t=0" - Stan Kelly-Bootle ]
+
+

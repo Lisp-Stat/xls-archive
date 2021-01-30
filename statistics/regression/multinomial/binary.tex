@@ -1,0 +1,30 @@
+\magnification\magstep1
+\parskip 10pt
+\parindent 0pt
+\input uclastat
+The problem we study in this note is to maximize a function of the form
+$$\cL(\beta)=\sum_{i=1}^n\log\pi_i(\beta),$$
+where
+$$\pi_i(\beta)=\Phi(x_i'\beta)-\Phi(z_i'\beta).$$
+Here $\Phi(\bullet)$ is a given cdf, and the $x_i$ and $z_i$ are known
+vectors of numbers. The elements of $\beta$ are the unknown parameters
+that we have to estimate. Of course we have to restrict the $\beta$ by requiring
+$$(x_i-z_i)'\beta\geq 0$$
+for all $i,$ but as long as these inequalities are indeed
+solvable, it is clear that the fact that we are maximizing will keep
+us away from the boundary, and will keep us feasible.
+
+Let us look at the derivatives. We find
+$${{\partial\cL}\over{\partial\beta}}=
+\sum_{i=1}^n{{1}\over{\pi_i}}
+\{\phi(x_i'\beta)x_i-\phi(z_i'\beta)z_i\}.$$
+Also
+$$\eqalign{
+{{\partial^2\cL}\over{\partial\beta^2}}&=
+\sum_{i=1}^n{{1}\over{\pi_i}}
+\{\phi'(x_i'\beta)x_ix_i'-\phi'(z_i'\beta)z_iz_i'\}\cr
+&-\sum_{i=1}^n{{1}\over{\pi_i^2}}
+\{\phi(x_i'\beta)x_i-\phi(z_i'\beta)z_i\}
+\{\phi(x_i'\beta)x_i-\phi(z_i'\beta)z_i\}'.}$$
+
+\bye

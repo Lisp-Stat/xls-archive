@@ -1,0 +1,214 @@
+#!/bin/sh
+# This is a shell archive (produced by shar 3.49)
+# To extract the files from this archive, save it to a file, remove
+# everything above the "!/bin/sh" line above, and type "sh file_name".
+#
+# made 06/09/1994 01:12 UTC by naras@euler
+# Source directory /disk3/people/naras/p1
+#
+# existing files will NOT be overwritten unless -c is specified
+#
+# This shar contains:
+# length  mode       name
+# ------ ---------- ------------------------------------------
+#    543 -rw-r--r-- README
+#      0 -rw-r--r-- kde
+#    362 -rw-r--r-- kde-dyn.lsp
+#   1968 -rw-r--r-- kde-ndyn.lsp
+#    587 -rw-r--r-- kde-opts.lsp
+#   2292 -rw-r--r-- kde-ovls.lsp
+#      0 -rw-r--r-- kde.01
+#   4239 -rw-r--r-- kde.c
+#   8324 -rw-r--r-- kde.lsp
+#    112 -rw-r--r-- myxlisp.h
+#   5749 -rw-r--r-- utils.lsp
+#   7322 -rw-r--r-- xldmem.h
+#  12035 -rw-r--r-- xlisp.h
+#
+# ============= README ==============
+if test -f 'README' -a X"$1" != X"-c"; then
+	echo 'x - skipping README (File already exists)'
+else
+echo 'x - extracting README (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,5-"4F5,&1!@Y!<.`,%/F#@@Y;^K02>-F(`@Z:,+0`7$G#1LV!C^^<9@G
+MXL4W(,B@7%-&3D609,JXF9.&3AX%`R>VT9CFC1L7($`D`;'&S<B+&3=22=.R
+M8AX0&><@'5C03LNG<\*T*3@F#)PP8CS69#I'01@[83R"95.&!0@Q$I&FD6I5
+M#DV?'#V"%%,PIE4V;^"4(;.PCAR,+3D*=",4Q)DR=!3H+`,41,"Y('PF%'E'
+M:LDZ)T'4(1CT3IDT9]#0F0-TZ.B"-0U*52@F#&DS;^2`:',S31LXN>F$<3.F
+M8-;?;"B>>1AQ8D6I&#4VGI/Q(PC@<S:RT=@2J`L%"H0,3!-SCEO$"$%@#L-F
+M#LKA(,K@T0J';68S4(_20?D:A(BN'[7`AAEUN"$""V9)99IUMAG$V!MU;??4
+M5V.L$<9C2$G7%6-\B4808;CIMI,;$QJ&W4#?@6=$&66`9`9"QLE$V%8./@77
+M<@@!=YA4N8$PQAMM;.7&:D"!)P103AQDFV\9,1944&XH.0<09=3!EAPNB$&&
+*"W#,48<+@]6A`!MM
+`
+end
+SHAR_EOF
+echo 'uncompressing file README' &&
+compress -d < _shar_cmp_.tmp > 'README' && rm -f _shar_cmp_.tmp &&
+chmod 0644 README ||
+echo 'restore of README failed'
+Wc_c="`wc -c < 'README'`"
+test 543 -eq "$Wc_c" ||
+	echo 'README: original size 543, current size' "$Wc_c"
+fi
+# ============= kde ==============
+if test -f 'kde' -a X"$1" != X"-c"; then
+	echo 'x - skipping kde (File already exists)'
+else
+echo 'x - extracting kde (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+#'YV,
+`
+end
+SHAR_EOF
+echo 'uncompressing file kde' &&
+compress -d < _shar_cmp_.tmp > 'kde' && rm -f _shar_cmp_.tmp &&
+chmod 0644 kde ||
+echo 'restore of kde failed'
+Wc_c="`wc -c < 'kde'`"
+test 0 -eq "$Wc_c" ||
+	echo 'kde: original size 0, current size' "$Wc_c"
+fi
+# ============= kde-dyn.lsp ==============
+if test -f 'kde-dyn.lsp' -a X"$1" != X"-c"; then
+	echo 'x - skipping kde-dyn.lsp (File already exists)'
+else
+echo 'x - extracting kde-dyn.lsp (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,*.#(>6,G#9DR($2L.=B"3!XW(E(HV$%QQ\2*(*B@23,'A)DT;!".>>.&
+M3I@T;CJ./`B"#IHP=$",">,&A!B$=>:4(0/B#IHR-1VZ"=,FS1@0;-Z$(8/R
+MS$6*(#B""&/G))LP8D*Z`)'QYU0R54N&.8-0ZAPX97:Z>&I1`0JA+9(N3;BP
+MC(LW$16X/6BF31F7(.JV$/B&SAL0.NJ"0"&1*XJ9;-C$-5.GIL*#(A;K=,-3
+M)QLSB,G`#)-",]#.93XC7E-&CIO4+>CD02LQ`=?;*#:C5IVX]6O)<-Z@I#.G
+M=.[3(#R#[NT:]AV49-[<:?&<C,O:MQWK3IYZ^9TR:<Z@(9ZBO(($MKGJ19\=
+"A%[3
+`
+end
+SHAR_EOF
+echo 'uncompressing file kde-dyn.lsp' &&
+compress -d < _shar_cmp_.tmp > 'kde-dyn.lsp' && rm -f _shar_cmp_.tmp &&
+chmod 0644 kde-dyn.lsp ||
+echo 'restore of kde-dyn.lsp failed'
+Wc_c="`wc -c < 'kde-dyn.lsp'`"
+test 362 -eq "$Wc_c" ||
+	echo 'kde-dyn.lsp: original size 362, current size' "$Wc_c"
+fi
+# ============= kde-ndyn.lsp ==============
+if test -f 'kde-ndyn.lsp' -a X"$1" != X"-c"; then
+	echo 'x - skipping kde-ndyn.lsp (File already exists)'
+else
+echo 'x - extracting kde-ndyn.lsp (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,*.#(>6,G#9DR($2L.=C"#9D\;D2D4+"CX@Z*%D%009-F#@@S:=@@'//&
+M#9TP:=QX)'D0!!TT8>B`&!/&#0@Q".O,*4,&Q!TT96P^=!.F39HQ(-B\"4,F
+MY1F,%4%T!.'FC<PP=E"R"2-&I`L06=[42?IF)UDZ<\*`F`.G#$^?:5ZZY#C'
+MA0(%*`Z::5-&[L(R+01:?0-"!]^:(%!,!)%8I$P4>6.J1;'3X=HR;,P4)B,Y
+MQ<0$*.Z@35RYY\[,A>^427,&#5K/BQF3KM,FL0H0G$_Z?`W[;MXR>_NB`?$W
+M\$`ZA'7,H4/FH)W$L5$XO@TY]^32EU'KL.Y908+$HCU2#FH:LV8=JEF[GM/]
+M>][$+7!+MBU?=WC8L1E3CB/G\1S:](5'7T]DX-<=7GKQY1=#@B%7V%_0*:"?
+M8XE%IMMXEIUV'G>?A38:AN5IEUYKO'F'@AMPD$9>=N>M488<;F`6V!LIE0C:
+M'08E]@((,:B8H7D/OA@C&RV(D5(+.)+Q4F^@N0@C9CZ&V**0,M*11UOMH8`'
+M52%UF`>7;'0GFXIT:+8E"G+L%$=B1@G5&9MA;,D=57"(*1L*-)GEY)#>Z7?"
+M$8F902%DFH66`@C>)0#:H"C0T4:**%`7WQWUA7$H#2[``%>![2FJWVTTS%9;
+MI(F5@0>DM[4`@PLUN/2HJW4>>I^L.2;ZW9@H[-CC?OW1)P,(<*1A8*>X[E0F
+M"%^BT$88<-`D!P@CG&`FL7>RT9%,6^8!&Z*WHG!"%8$R6N@=A]HJ75\5.@II
+M&F:T@)E9MMZJ'P^)<26>I#Y5>J@+-[2:I&<@L%JNHI[*)B`,3!9,ZJHV-.SP
+MPS;<L*FHL!J8:+%]:9;LLLV&\6RTTWXF;V/7@I`MDWY2$2ZZA((WL*+GTD%=
+MH[OB2^F<_XH\\IUT_(H"N^ZR818*/KC48PLQ'-HCPCJ/R?,,B0']+D(HT$O'
+MTDJ#P+2M3NM'1Z@_MSMU8D63VK-+,QR*<&(QK&"TVIWN[+7/4@M-M0\]&*UU
+MUEL3W'5B=$`==M!#6]UCTCSNW737C;8Z^-A$TW=VX'##E_C5<,?]Z<24`4@J
+M"FY_[5(-LO*&W\5W&JLQG!U_+*W)U$Y8\LGM^5G$RH^A,.[+B_8U\]7TH3"I
+MOB#\FC/7C)]-JH"/VYT8O2C8^S9I_,E$NLY^ZQ=?S0'_"CSFF6L>_'^U]7RH
+M\0:=7K!^JB/+NK/0OHY'["0O9S*R*`..>X6[<RMW8[Y+%_>$EZ\YH8]3R,.5
+M\F[#O+K!BV`*@Y[T,,<C['7+"Y;CWO>2=K[P->USY'.)#-3F@AS,H%^;4I^\
+8QG.LC3$+?B"#G<BJ-3O\66Q]=UD?8^X"
+`
+end
+SHAR_EOF
+echo 'uncompressing file kde-ndyn.lsp' &&
+compress -d < _shar_cmp_.tmp > 'kde-ndyn.lsp' && rm -f _shar_cmp_.tmp &&
+chmod 0644 kde-ndyn.lsp ||
+echo 'restore of kde-ndyn.lsp failed'
+Wc_c="`wc -c < 'kde-ndyn.lsp'`"
+test 1968 -eq "$Wc_c" ||
+	echo 'kde-ndyn.lsp: original size 1968, current size' "$Wc_c"
+fi
+# ============= kde-opts.lsp ==============
+if test -f 'kde-opts.lsp' -a X"$1" != X"-c"; then
+	echo 'x - skipping kde-opts.lsp (File already exists)'
+else
+echo 'x - extracting kde-opts.lsp (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,.W8H0`%'SAL[:<B4`2%BC<(6;^#0F2,BA0(%`4%005-FSL(P<A8J-!.F
+M#ALZ(.R$85.G(X@Z'LF`2.,&!!V.(,:\4>@"1!`V;&QR])@S3$TQ93#N`,$4
+M1!@R:F#2*2,3)LTS0A=&I)/FC9LY(-BDF8/2:!ZN;<JXN)AQH\@R)$VB7%)&
+MCILR0>F\>>E1!X@C)>?,26-T+8J1*N6`4#&RY,D6:^K>9:,"Q(DC%I5JQ-E8
+M[DPW4^6H#`J3*@@S;Q3/$:M0L4[0!H%>!1'9+EX08FB"N)/PIF'$(!=W?EQ[
+M<@O>;LB\N7.\-YH6JQ/6;4$S].C*)U#``"$C10H0;)>Z!3$<I9LZ;9`J?F,&
+M1/36[O7"`:O[9AB4U>N._@TWL7"XCM$!F61X-9?<<LV1<1-TK$U'5D1S5%9#
+M#)FUQ1F`GIV77ET@L`<"'&]4!]9]NZ&1QAAH9$6;0C.!I1=N"^G4!AQU3$4&
+M?V;XQQB&Q!'(1@MNO`&1&2U(%"$(,\"0V6']!:<"&F'8448+9.3A1@MLO/%4
+$9718!!B&
+`
+end
+SHAR_EOF
+echo 'uncompressing file kde-opts.lsp' &&
+compress -d < _shar_cmp_.tmp > 'kde-opts.lsp' && rm -f _shar_cmp_.tmp &&
+chmod 0644 kde-opts.lsp ||
+echo 'restore of kde-opts.lsp failed'
+Wc_c="`wc -c < 'kde-opts.lsp'`"
+test 587 -eq "$Wc_c" ||
+	echo 'kde-opts.lsp: original size 587, current size' "$Wc_c"
+fi
+# ============= kde-ovls.lsp ==============
+if test -f 'kde-ovls.lsp' -a X"$1" != X"-c"; then
+	echo 'x - skipping kde-ovls.lsp (File already exists)'
+else
+echo 'x - extracting kde-ovls.lsp (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,*.#(>6,G#9DR($2L.=B"()LY(E(H4(#BH!F!;^B\`;&P3$,[9>2P"9.G
+M!4:-($Z@8/-F3!@Z:=ZX`0&3#AN$;<K,F1/F#,(Y:-[<20$"!5$%($"<D1,&
+M#IJ/(4>6/+D1:4(J:!`2C$H2!%4Z>>"4<0&"2<N7,6>FF0/B3E8Y",.`$/,&
+M3]LW==B0F8N0I4LZ9?;*5$`GJU*F3D&$<;,7*%Z]?!6#8+.6#H@W9D#0`)'&
+M#6"?<N:P`(%G=)[1=PP65LP81-8T9]#0<:&`2AJ;"-=*GD-'3N<S--&\;)N&
+M#9O(9)C>F>FF#![+*`LCI(N'+(@F.GGZY#R'L.&<.WLB+#P\M?'(<\IXIKE1
+MNE>6EMVJ#SZ]+G<08RB/61.8]I2@=]QGV1MR@.!&<:.%,<88!)+Q&WMM925=
+M@>YM)5)7NJ4W'X$&9N1"1!-55(89.:W6$5073C402CJLU5R`*-1TTV1GP203
+M".!I5X9$28F`76%O[!6&'&?,H0--M\WH%UHWYBA>;4GFQI9<O/GFQAFC+6FC
+M6E-.5MEEF6W6V6<AB<;:7DYNMY9W.&4G7G##-1<86RB)\9-ZT+5GV%)-H4$<
+M8T)%.%]^:>S7GPA6H9`>'9DI"E\+=H3!1AT(G:!E6D1=*A./12W:Z!R/1CII
+MI3+NB"1NG"I:!J.=ABHII2FE::JLJ7K::D:0OEJI8T/1E*I+QK70W',ME!@4
+M&2E(1)%%QG+$D(52F;3B1CIH.A,*)KP!QY:2TC@&ISZN>JQB1!H)0K;;IM6M
+M7PH$L6!V'!H;)`AF<.@>J!FE9.V'B::1&;M)!=SIJI^Z.JJ^-6+J+:=).8JK
+MJ+!:FO"FR8;(K+C.>@0M2=)F1*U&9YQQ4PN\%@7NC^,.6>21;L@T5FUOA'P3
+M6_)-2-]E(*4(`J]L<=CR;(@V;*O#=.1Z\`F\$H7"S[<6#?&N`"9;JWI[J=I:
+M>FQDI@.?3A&E`US)A3&4LB*2B/&)&ZOH,0A?!Z:<R5:%"Z20Y;+L,FU8Z2;O
+M7F`K1Z=A:?/;L'S7XNNTKBDEK4`"*ZVJ0E$KM33PU65DS;:U%2<@<,`HV*7J
+M36-8YA<(,&2^><-Y#`RZZ)+'8/KI*%"G>AFA>PN"#*]OKFAOO[7@.=:TLSX&
+M"#/D+C`*7/MI=6.5:YV\U(L+3?5A?;)M!E,YM0!7[9ZW`$+JU!$E>_C13[Y7
+M\FR'?0?)O%_9M-$1ETI4E;W;E8?49%]LXK,Y1TM5^F]H`:'V4Q3[X2@&.,)=
+MW%`V+Y69RX!M0&`;9%`;-.A-7/,:0U;V0S,)O>5F;<!+>MH2!K8,D#][Z<S-
+MTC:7NM`F"9F9PQM&<YN=4>UO"$&?>V3EK9<$AC-JH0-;>&@XP17%7T593-4,
+M!S^H"45I3'Q:K-SDDXK![B9T>!P*(C>\Y=G0<M6:F!N,5Q39Q<B"<MB+7\C8
+M.#-8!@5F2$-HA,=&C<"A*-Y3%8-:L\86XH&-OHG-&U<PF1%9)GP2T=SQZ$('
+MC;2A*(2THQ_9B#XO8LUYB$$#]!A'N"2V!@4\**0;20."0,I&::&4)/@RXD@R
+?FN^+6@.9R#RB.$4>+SVMJ604$7<"6B7R='3`WT0F`@."
+`
+end
+SHAR_EOF
+echo 'uncompressing file kde-ovls.lsp' &&
+compress -d < _shar_cmp_.tmp > 'kde-ovls.lsp' && rm -f _shar_cmp_.tmp &&
+chmod 0644 kde-ovls.lsp ||
+echo 'restore of kde-ovls.lsp failed'
+Wc_c="`wc -c < 'kde-ovls.lsp'`"
+test 2292 -eq "$Wc_c" ||
+	echo 'kde-ovls.lsp: original size 2292, current size' "$Wc_c"
+fi
+# ============= kde.01 ==============

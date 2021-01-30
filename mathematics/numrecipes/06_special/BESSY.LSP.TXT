@@ -1,0 +1,13 @@
+(defun bessy (n x) (declare (type fixnum n)) (declare (type double-float x))
+ (prog ((bessy 0.0d0) (byp 0.0d0) (j 0) (bym 0.0d0) (by 0.0d0) (tox 0.0d0))
+  (declare (type double-float bessy)) (declare (type double-float byp))
+  (declare (type fixnum j)) (declare (type double-float bym))
+  (declare (type double-float by)) (declare (type double-float tox))
+  (if (< n 2) (error "bad argument N in BESSY")) (setf tox (/ 2.0 x))
+  (setf by (bessy1 x)) (setf bym (bessy0 x))
+  (fdo ((j 1 (+ j 1))) ((> j (+ n (- 1))) nil)
+   (tagbody (setf byp (+ (* (* j tox) by) (- bym))) (setf bym by) (setf by byp)
+  ))
+  (setf bessy by) (return bessy)
+))
+

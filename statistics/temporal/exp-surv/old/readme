@@ -1,0 +1,37 @@
+This archive contains two folders (Mac version) or subdirectories (Unix
+version) and this README file. Each folder contains the XLISP-STAT programs
+required to demonstrate a technique for interactive dynamic exploration of
+survival (time-to-failure) data. The programs were written by Meg Gelder
+based on specs and prototypes provided by E. Neely Atkinson. The two
+folders provided are km-scat and cut. The programs may be run as follows.
+
+      1. km-scat. Load program "demo-km-scat." The program will generate
+survival data and covariates and then display a scatterplot matrix of the
+covariates linked to a plot of the Kaplan-Meier estimate of the survival 
+function for the cases selected in the scatterplots. Using brushing mode
+permits an exploration of the effects of the covariates on survival, as well
+as an examination of the relations between the covariates.
+
+      2. cut. Load program "demo-cut." The purpose of this program is to
+aid the researcher in determining whether a continuous covariate can 
+reasonably be recoded into a dichotomous one and to aid in selecting
+an appropriate cut point for making such a division. The demonstration
+program will generate survival data and a continuous covariate. It will
+provided a slider which determines the cutoff point for the covariate and
+display the survival curves for those cases with values of the covariate
+above and below the cutoff value. Optionally, you can get a display of
+a density estimate of the covariate with a mocing vertical line marking
+the location of the cutoff.
+
+These programs are provided to encourage people to experiment with the
+graphical capabilities provided by LISP-STAT. If you make any extensions
+or improvements, please let me know about them - better yet, post them to the
+networks. I find these very useful techniques; I'm sure that people smarter
+than me will be able to come up with really spectacular stuff.
+
+             E. Neely Atkinson
+             Department of Biomathematics
+             M. D. Anderson Cancer
+             Houston, Tx.
+             (713) 792-2619
+             neely@biomath.mda.uth.tmc.edu

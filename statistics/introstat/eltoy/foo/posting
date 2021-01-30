@@ -1,0 +1,127 @@
+Newsgroups: lists.statlisp,sci.math.stat,comp.lang.lisp.x,comp.ai
+Subject: Announcing ElToY
+Distribution: world
+--text follows this line--
+
+I have just released a new Bayesian Elicitation tool called ElToY.  It
+demonstrates several elementary statistical concepts, and may
+eventually form the basis of a more sophisticated elicitation tool.
+
+I have included the rather unusual cross posting to comp.ai, because I
+view this a knowledge caputuring tool.  If an "expert" is asked to
+encode her knowledge in the form of a probability distribution, then
+she must also understand the implications of her choice of
+distribution.  ElToY provides an interactive environment for
+exploring the implications of such judgements.
+
+ElToY is written in XLISP-STAT; instructions for obtaining it are
+below.  It is released into the public domain under the GNU library
+copyleft (I hope it may be useful as part of some other more complex
+software).  I am willing to offer limited support over email (my
+addresses are below).
+
+
+
+Short Description:
+
+ElToY is an XLISP-STAT program which does one parameter elicitation
+for univariate conjugate priors through dynamic graphics.  It contains
+a tool for interactively displaying a univariate distribuiton and a
+central limit theorem demonstration.  [Russell Almond: almond@statsci.com]
+
+Long Description:
+
+ElToY is a collection of three program written in XLISP-STAT.
+
+Dist-toy displays a univarate distribution dynamically linked to its
+parameters.  
+
+CLT-toy provides an illustration of the central limit theorem for
+univariate distributions.
+
+ElToY provides a mechanism for displaying the prior and posterior
+distributions for a conjugate family dynamically linked so that
+changes to the prior affect the posterior and visa versa.
+
+ElToY is coded relatively cleanly in XLISP-STAT and serves as an
+illustration of object oriented programming style in statistics.
+
+
+OBTAINING A COPY:
+
+	1) Via FTP:  ElToY is available via anonymous ftp from
+stat.washington.edu (128.95.17.34).  To get a copy, log in with user
+name anonymous (password <your-name>@<your-host>) and copy the file
+ElToY.tar.Z in binary mode.  This can then be uncompressed and untared
+on your computer.  Then follow the directions in the file
+INSTALLATION.
+
+	2) Via Email:  ElToY is available via automatic email from
+statlib@stat.cmu.edu.  To obtain a copy, send mail to
+statlib@stat.cmu.edu with the single line "send index" (no subject
+line).  This will give you instructions on how to use the automatic
+mail server.
+
+
+DISTRIBUTION CONTENTS:
+
+ElToY is rather large and is broken into several pieces.
+
+Documentation:
+
+doc        --- Plain TeX documentation.  Is useful without the
+		    rest of ElToY
+COPYRIGHT  --- GNU COPYLEFT, must be copied if other files are
+		    copied. 
+README, INSTALLATION, OBJECTS --- misc documentation.
+
+General Stuff (may be useful without the rest of ElToY):
+
+utils	--- Various utilities which may be useful including
+		extensions to LISP-STAT, common lisp functions not
+	 	provided in XLISP and a cleaned-up slider.
+
+fam     --- Protocol for probability distribution objects and
+		Graphical User Interfaces. 
+
+params	--- Parameter object protocols and Graphical User
+	        Interfaces. 
+
+Dist-Lib--- Library of univariate distribution objects
+
+Required for both Dist-Toy and ElToY:
+
+toys	--- Top level graphical tools and menus.
+
+clt	--- Central Limit Theorem Stuff
+
+load	--- Loading scripts
+
+Required only for ElToY:
+
+conj	--- Conjugate distribution and Data-Link protocols and
+		objects. 
+
+Conj-Lib--- Library of Conjuage Distributions.
+
+This software is proteted by a GNU Library Copyleft which allows:
+	1) Unlimited redistribution at cost and
+	2) Inclusion as part of a larger system which is sold.
+The file COPYING.shar for the exact terms and conditions.
+
+I am willing to provide limited support via email, and am happy to
+hear your suggestions for improvements or bug fixes.  I can be reached
+at either of the addresses below.
+
+
+			Russell Almond			   
+Statistical Sciences, Inc.		U. Washington
+1700 Westlake Ave., N Suite 500		Statistics, GN-22
+Seattle, WA  98109			Seattle, WA  98195
+(206) 283-8802				
+almond@statsci.com			almond@stat.washington.edu
+
+	"This is lightly tricky; one wrong calculation and the whole
+analysis results in different answers."  ---From a Stat 390 lab
+report.
+

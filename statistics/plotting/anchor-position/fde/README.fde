@@ -1,0 +1,116 @@
+This is file README in directory fde.
+
+fde is a set of XLisp-Stat objects aimed to implement some of the
+newest ideas about histograms and other frequency-based density
+estimators.
+
+__________________
+Files in this dir:
+
+fde.lsp         The main file. Contains code for fde-proto and wfde-proto
+                objects. Also contains some data set examples, and some demo
+                function.
+fde.fsl         Is the byte-compiled version of the previous file.
+plotline.lsp    Contains code to improve the original plot-line
+                function.
+superscale.lsp  Implementation of the scale estimator described in
+                Janssen, Marron, Veraverbeke and Sarle (1995).
+                Original Fortran code from Jeff Simonoff.
+
+________________
+To run the code:
+
+You need Xlisp-Stat release 3 to run this code. To get it:
+               ftp://umnstat.stat.umn.edu/pub/xlispstat/...
+(there are versions for Mac, MSWin, X11-Unix...)
+
+If in a Macintosh or a MS-Windows machine, start XLisp-Stat 
+and then load fde by means of the 'Load' menu item, File menu.
+In a X11-Unix, start xlispstat from the directory where the fde files 
+live and just type
+> (load "fde")
+
+To see a full example of the capabilities of fde objects, just type
+> (fde-demo)
+in the Xlisp-Stat (listener) window.
+
+To build a fde window for your own data
+
+Load your data into Xlisp-Stat, posibly using some command like
+> (def my-var (read-data-file "my-file.dat"))
+and then type
+> (make-histogram  my-var)
+
+Then the Fde menu can be used, see below.
+
+____________________________________
+To just compute the stability index:
+
+If you don't care about graphics, animations and all this stuff...
+you can be still interested in the stability index.
+
+Load your data as before and type
+(stability-index my-data some-bin-width)
+and you will get a pair of numbers: the index values for the histogram
+and for the mean-frequency polygon.
+
+If you type
+(stability-index my-data from-bin-width to-bin-width number-of-values)
+you will get (be patient) a list of the bin-widths used and a pair of
+indices for each bin-width as befor.
+
+Examples:
+> (def steel-data (read-data-file "steel.dat"))
+> (stability-index steel-data 0.8)
+(0.8920656007886265 0.9776921989568647)
+> (stability-index steel-data 0.5 1 3)
+((0.5 0.75 1.0) ((0.9318351691815604 0.9739948570006544) (0.8654855987065783 0.9436863409477898) (0.7915075702622196 0.87492649305404)))
+
+_________________
+To run it faster:
+
+Put also in the directory the .fsl files. XLisp-Stat will always load
+the newer of the files xxx.lsp or xxx.fsl. If when copying the files,
+the .lsp get newer modificatoin date than the .fsl, you can
+-- copy again the .fsl or
+-- recompile the .lsp file by typing
+   (compile-file "fde" :load t) at the XLisp-Stat prompt.
+
+__________________
+Items in Fde menu:
+
+'Mouse mode', 'Rescale plot', 'Options': just the standard XLisp-stat ones.
+
+'Stability index' and 'Stability index plot' refer to the index described
+in Simonoff-Udina (1995). In brief, it is a Gini-like index to measure
+the stability of the shape of a histogram when the anchor point or
+origin is shifted.
+
+'Bin control' opens a dialog with a slider to control the bin width of
+the histogram, and a slider for controling the anchor position
+(measured in percentage of the bin-width).
+
+'What to show' offer the choices: Histogram, Hollow histogram,
+Frequency polygon, Mean-frequency polygon and linearly binned
+polygon. See Jones et al. (1994) for details on the mean-frequency
+polygon, the f_{L1} in his notation.
+
+'Animate anchor moving' does just that.
+
+
+
+___________
+References:
+
+Janssen, P., Marron, J.S., Veraverbeke, N., and Sarle, W. (1995),
+          "Scale measures for bandwidth selection," Journal of
+          Nonparametric Statistics, to appear.
+
+Jones, M.C., Samiuddin, M., Al--Harbey, A.H.\ and Maatouk, T.A.H.,
+          "Simple smoothed histograms", unpublished manuscript (1994).
+
+Simonoff, J.S. and Udina F. (1995) "Measuring the stability of
+          histogram appearance when the anchor position is changed".
+          Unpublished postscript file:
+          ftp://halley.upf.es/stat/anchor-position/paper.ps
+

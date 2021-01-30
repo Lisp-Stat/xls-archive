@@ -1,0 +1,5 @@
+#!/bin/sh
+case $# in
+1) head -$1 pump1_big.out > pump1.out; head -$1 pump2_big.out > pump2.out; head -$1 pump3_big.out > pump3.out;;
+*) echo "Usage: chop_pump <number of lines>";;
+esac

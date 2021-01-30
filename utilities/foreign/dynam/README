@@ -1,0 +1,75 @@
+Remarks:
+********
+
+This little contribution contains two Classical routines:
+
+  1) The Zeroin univariate root finder of Forsythe, et. al. 
+
+  2) Brent's Univariate minimum finder.
+
+See the programs for references.
+
+I use at least zeroin on a very frequent basis and I hope Tierney will
+make it available in the new beta, since it comes xlisp-ready.
+
+Note. I have only used this with xlispstat-3-37.
+
+I also wanted to take this opportunity to show how to use dynamic
+loading with shared libraries.  Actually, I am not saying anything
+new since the documentation contained in the distribution says how
+to do this.  However, sufficient mail has reached my mailbox so
+as to elicit this demo.
+
+Note that I have only tested this program on my SGI and a Sun running
+4.1.x.  
+
+First, you must find out EXACTLY the flags you used to build the
+new xlispstat distribution.  The easiest way to do this is to copy the
+Makefile that you used to build xlispstat to the current directory and
+make the following changes to it.
+
+Search for the variable UCFLAGS and add
+-I<your-directory-for-xlispstat-source> to it.
+
+For example, if it was
+
+    CFLAGS = -O -Olimit 2000 -mips2
+
+change it to something like
+
+    CFLAGS = -I/usr/local/src/xlispstat-3-37 -O -Olimit 2000 -mips2
+
+Yeah, you need the source for the header files.
+
+Then search for the target all: and replace the whole entry with
+
+all:    zeroin.o fminbr.o
+        ld -o libzero.so -shared zeroin.o fminbr.o
+
+On SunOS 4.1.1, you should drop the -shared option for ld.  Other
+systems may also differ, see your local ld man page.
+
+(Actually, when I distribute something for the new xlispstat that 
+uses Dynamic loading using call-lfun, I shall use the same 
+configure script that comes with the distribution and this will 
+all be automatic.)
+
+Then type make. 
+
+Finally, to use these routines, you should be able to just say
+
+xlispstat zerotest
+
+and 
+
+xlispstat mintest
+
+The results you get should match those shown in zeroin.dat and min.dat
+respectively. 
+
+Enjoy!
+
+B. Narasimhan                              naras@euler.bd.psu.edu
+
+
+

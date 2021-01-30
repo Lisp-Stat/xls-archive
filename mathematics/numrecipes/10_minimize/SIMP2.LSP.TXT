@@ -1,0 +1,45 @@
+(require "f2cl_macros")
+
+(defun simp2 (a m n mp np l2 nl2 ip kp q1 &key (eps 1.0E-6))
+ (declare (type (simple-array double-float (* *)) a)) (declare (type fixnum m))
+ (declare (type fixnum n)) (declare (type fixnum mp))
+ (declare (type fixnum np)) (declare (type (simple-array fixnum (*)) l2))
+ (declare (type fixnum nl2)) (declare (type fixnum ip))
+ (declare (type fixnum kp)) (declare (type double-float q1))
+ (declare (type double-float eps))
+ (prog ((q0 0.0d0) (qp 0.0d0) (k 0) (q 0.0d0) (ii 0) (i 0))
+  (declare (type double-float q0)) (declare (type double-float qp))
+  (declare (type fixnum k)) (declare (type double-float q))
+  (declare (type fixnum ii)) (declare (type fixnum i)) (setf ip 0)
+  (if (< nl2 1) (go end_label))
+  (fdo ((i 1 (+ i 1))) ((> i nl2) nil)
+   (tagbody (if (< (fref a (+ (fref l2 i) 1) (+ kp 1)) (- eps)) (go label2)))
+  )
+  (go end_label) label2
+  (setf q1
+   (/ (* -1 (fref a (+ (fref l2 i) 1) 1)) (fref a (+ (fref l2 i) 1) (+ kp 1)))
+  )
+  (setf ip (fref l2 i)) (if (> (+ i 1) nl2) (go end_label))
+  (fdo ((i (+ i 1) (+ i 1))) ((> i nl2) nil)
+   (tagbody (setf ii (fref l2 i))
+    (cond
+     ((< (fref a (+ ii 1) (+ kp 1)) (- eps))
+      (setf q (/ (* -1 (fref a (+ ii 1) 1)) (fref a (+ ii 1) (+ kp 1))))
+      (cond ((< q q1) (setf ip ii) (setf q1 q))
+       ((= q q1)
+        (tagbody
+         (fdo ((k 1 (+ k 1))) ((> k n) nil)
+          (tagbody
+           (setf qp
+            (/ (* -1 (fref a (+ ip 1) (+ k 1))) (fref a (+ ip 1) (+ kp 1)))
+           )
+           (setf q0
+            (/ (* -1 (fref a (+ ii 1) (+ k 1))) (fref a (+ ii 1) (+ kp 1)))
+           )
+           (if (/= q0 qp) (go label6))
+         ))
+         label6 (if (< q0 qp) (setf ip ii))
+  )))))))
+  (go end_label) end_label (return (values a m n mp np l2 nl2 ip kp q1))
+))
+

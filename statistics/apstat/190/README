@@ -1,0 +1,9 @@
+This is a brutal translation of AS190 fortran program.
+
+AS190 calculates the quantiles and probabilities associated with
+the studentized range.
+
+Send bugs or comments to 
+
+B. Narasimhan    naras@euler.bd.psu.edu
+

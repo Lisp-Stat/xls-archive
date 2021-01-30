@@ -1,0 +1,5 @@
+This is an f2cl translation, very incomplete, of the NSWC mathematics
+library. The fortran, plus a great manual, can be obtained for
+free from the Naval Surface Warfare Center, Dahlgren, Virginia 22448-5000.
+The report is NSWCDD/TR-92/425, by Alfred H. Morris, Jr. dated January
+1993.

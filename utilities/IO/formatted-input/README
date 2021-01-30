@@ -1,0 +1,8 @@
+The version documented orignally in format.tex is old (1992). The current
+version has been made compatible with Xlisp 2.1g, and incorporates
+a number of speed-ups by Luke Tierney. Functionality is the same,
+however.
+
+Byte-compile if you can.
+
+--- Jan

@@ -1,0 +1,8 @@
+(defun erfc (x) (declare (type double-float x))
+ (prog ((erfc 0.0d0)) (declare (type double-float erfc))
+  (cond ((< x 0.0) (setf erfc (+ 1.0 (gammp 0.5 (expt x 2)))))
+   (t (setf erfc (gammq 0.5 (expt x 2))))
+  )
+  (return erfc)
+))
+

@@ -1,0 +1,99 @@
+\documentclass[12pt]{amsart}
+\begin{document}
+\title{Brief Intro to Model Selection}
+\author{Jan de Leeuw}
+\address{UCLA Statistics Program, 405 Hilgard Avenue,
+Los Angeles, CA 90095}
+\email{deleeuw@stat.ucla.edu}
+\maketitle
+%
+\section{Setup}
+%
+Suppose we have a sequence of random vectors
+$\underline{x}_n$ in $\mathbb{R}^m$ which
+is mean-like, in the sense that there is a 
+$\mu\in\mathbb{R}^m$ such that the $2p^{th}$ absolute moments
+of $\underline{x}_n-\mu$ are of order
+$\mathcal{O}(n^{-p}).$\par
+%
+We also have a mapping $\Phi$ of $\mathbb{R}^m$
+into $\mathbb{R}^m$, which presumably is some
+estimate of the \emph{truth} $\mu$.\par
+%
+\section{Geometry}
+%
+Now consider two independent realizations of our
+(sequence of) statistics
+$\underline{x}_n$ and $\underline{y}_n$, their
+transforms $\Phi(\underline{x}_n)$
+and $\Phi(\underline{y}_n)$, the \emph{truth} $\mu$,
+and its transform $\Phi(\mu)$. This defines
+six points in Statistics Space.\par
+%
+Also suppose there is some convenient distance 
+$\Delta$ on $\mathbb{R}^m\times\mathbb{R}^m$.
+We are intested in the distances between the
+six points we have defined. Obviously they are
+random variables, and we shall look at their
+expected values first. We will not bore you
+with regularity conditions.\par
+%
+\section{Distances}
+%
+We give some examples of such statistics, with ``interpretations''
+of their expected values.
+\begin{description}
+\item[$\Delta(\underline{x}_n,\underline{y}_n))$]
+This is a measure of dispersion.
+\item[$\Delta(\Phi(\underline{x}_n),\Phi(\underline{y}_n))$]
+This shows if and in how far estimation reduces dispersion.
+\item[$\Delta(\mu,\Phi(\mu))$]
+In how far does estimation distort the truth.
+\item[$\Delta(\underline{x}_n,\mu)$]
+How far are we from the truth ?
+\item[$\Delta(\underline{x}_n,\Phi(\underline{x}_n))$]
+This is the chi-square type measure we usually work with
+in statistical practice.
+\item[$\Delta(\mu,\Phi(\underline{x}_n))$]
+Does estimation bring us closer to the truth ?
+\item[$\Delta(\underline{y}_n,\Phi(\underline{x}_n))$]
+Does estimation help in prediction ?
+\end{description}
+%
+And so on. The most interesting ones seem to be
+\begin{description}
+\item[Specification error]
+This is the non-random quantity $\Delta(\mu,\Phi(\mu))$.
+\item[Prediction Error]
+The expected value $\mathbf{E}\{\Delta(\underline{y}_n,
+\Phi(\underline{x}_n))\}$.
+\item[Overall Error]
+The expected value $\mathbf{E}\{\Delta(\mu,\Phi(\underline{x}_n))\}$.
+\end{description}
+Generally these expected values are difficult to estimate, because the
+transformations (such as maximum likelihood estimation) can be
+very complicated.\par
+%
+It turns out they are quite easy to estimate using the Jackknife.
+%
+\section{Xlisp-Stat Code}
+%
+The function \texttt{multinomial-model-selection} takes as its
+arguments the function $\Phi$, the vector of proportions $p$,
+the distance $\Delta$, and the sample-size $n$. It then estimates
+and returns estimates of the specification error, the overall
+error, and the prediction error.\par
+The function \texttt{cross-product-model-selection} does the
+same for cross product models (functions of the moments). It 
+takes as arguments the function $\Phi$,
+the data $X$ from which cross products are
+computed (where $X$ can have a column of ones, and columns 
+with product terms, and so on), and the distance $\Delta$.\par
+%
+The file \texttt{model-selection.lsp} contains some mappings
+and some distance functions which can be used as examples.
+
+
+
+
+\end{document}

@@ -1,0 +1,21 @@
+This directory contains:
+
+paper.ps and paper.ps.gz Postscript and gziped copies of the paper by
+            Jeff Simonoff and Frederic Udina
+            "Measuring the stability of histogram appearance 
+              when the anchor position is changed".
+
+fde is a directory containing Xlisp-Stat code to compute and visualize
+            the stability index developed in the paper. There is a
+            README.fde file in the directory with detailed directions
+            to run the code.
+
+fde.tar.gz is a gziped and tar'ed copy of the fde directory.
+
+anchor-movies is a directory containing some mpeg movies showing the
+            effect of changing the anchor position of a histogram or a
+            frequency polygon, in the count binning or the linear
+            binning settings.
+
+Frederic Udina, June 1995.
+udina@upf.es

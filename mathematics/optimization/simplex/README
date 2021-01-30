@@ -1,0 +1,8 @@
+;; Simplex Algorithm and its demonstration
+;; Bruno Haible 25.09.1986, 30.5.1991, 22.4.1992
+;; Common Lisp version
+;; English version
+
+;; Copyright (c) Bruno Haible 1991, 1992..
+;; This file may be copied under the terms of the GNU General Public License.
+

@@ -1,0 +1,2 @@
+# ansimode : echo the escape sequence to place terminal in character mode
+echo '\033[?38l'

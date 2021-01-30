@@ -1,0 +1,99 @@
+
+<html>
+<head>
+<title>Project Documentation Toolkit</title>
+</head>
+<center><h1>Project Documentation Toolkit</h1></center>
+<center><h3><it><a href="http://bayes.stat.washington.edu/almond/almond.html">Russell Almond,</a> Educational Testing Service</it> <code><a href="mailto:almond@acm.org">almond@acm.org</a></code></h3></center>
+<center><h3><it><a href="http://www.lava.net/~tdye">Thomas S. Dye,</a> International Archaeological Research Institute, Inc.</it> <code><a href="mailto:tdye@lava.net">tdye@lava.net</a></code></h3></center>
+<center><h3><it>Andrew E. Long, </it> <code><a href="mailto:aelon@sph.umich.edu">aelon@sph.umich.edu</a></code></h3></center>
+<center><h4>Version 1.0.3 (Jan 11, 1999)</h4></center>
+<p><b>Motivation:</b>
+This package is intended to solve two different
+  problems.  The first is to give us a database of XLS objects which
+  describe project written in XLS.  The second is to provide an
+  automatic way of documenting projects.<p>
+<p><b>Copyright and Licence:</b>
+This work is public domain.  The authors make no
+warantee as to its suitability for any particular purpose.<p>
+<p><b>Reviewed by:</b>
+ (<code></code>)<p>
+<p><b>Functional Description:</b>
+This package provides objects for
+  documenting projects, as well as objects for documenating functions,
+  generic functions, messages, variables, parameters, prototypes,
+  etc. which are part of a project.  There are a number of tools
+  provided for extracting the documentation automatically from the
+  source files (although project level documentation must still be
+  created manually.)  Two functions provide a printing mechanism into
+  either Plain TeX or HTML.<p>
+<p><b>Statistical Description:</b>
+Documenting software is critically
+  important to the dissemination of statistical ideas, but is an often
+  overlooked step in statistical programming.  This package attempts
+  to provide tools for automatically documenting projects in a hope to
+  eliminate some of that lag.   This is based on an earlier
+  implementation of a similar system in Common LISP by John McDonald
+  (McDonald[1991])<p>
+<p><b>References:</b><p><ol>
+<li><a href="jamdoc.pdf">McDonald, J.A. [1991]</a> ``Definitions:  a
+  simple database for typesetting documentation.''  University of
+  Washington, Dept. of Statistics, Technical Report.</li>
+<li><a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html">Steele, G.L., Jr. [1990]</a> ``Common LISP:  The
+Language, Second Edition.'' Digital Press.</li>
+<li>Tierney, L. [1990] ``LISP-STAT:  An Object
+  Oriented Environment for Statistical COmputing and Dynamic
+  Graphics''.  John Wiley and Sons.</li>
+</ol><p>
+<p><b>Instructions:</b>
+Docuementing a project under the
+  definitions system consists of four steps:  (1) writing your code
+  according to certain conventions which make it self documenting;
+  this includes using declarations where appropriate and including
+  documentation strings.  (2) Creating a documentation object for your
+  project; this can be done by filling out the template given in the
+  file doc.lsp.  (3) load the file 'definitions/system.lsp' and then 
+  the file containing your project documentation object. (4)  Run the
+  function df:print-tex-documentation or df:print-html-documentation
+  to generate the documentation.  TeX documenation comes out in Plain
+  TeX or LaTeX.<p>
+<p><b>Examples:</b><p><ol>
+<li>See the file doc-doc.lsp in this distribution.</li>
+</ol><p>
+<p><b>Warnings:</b><p><bl>
+<li>Unless you document your code, it will be
+  unreadable and these tools will be useless!</li>
+<li>These tools will not work very well if all of
+  your code is left in the USER package; in particular, it relies on
+  which symbols are exported to know which objects are important.</li>
+<li>TeX documents will still create overfull
+hboxes, especially if doc-strings contain lots of long symbol names.
+You can increase hfuzz to fix small problem.  Editing the TeX file is
+probably you best resort for big problems.</li>
+</bl><p>
+<p><b>See Also:</b><p><ol>
+<li>Note Tierney [1990] is not really a complete
+  LISP reference manual.  For notes on documentation strings and
+  declaration syntax, look at Steele [1990]</li>
+</ol><p>
+<p><b>XLISP-STAT Compatibility Issues:</b><p> Works with XLS 3.52.5 and later.<p>
+<p><b>Platform Compatibility Issues:</b><p> No known incompatabilities; tested on Unix
+  and Mac<p>
+<p><b>Project depends on the following
+additional packages:</b><p>
+"Xlos" "Lisp" <p>
+<p><b>Package:</b>
+ "Definitions" ("Df")<p>
+<p><b>Change History:</b><p><ol>
+<li>Version 1.0.3 Minor cleanups</li>
+<li>Version 1.0.2 Added minimal links and anchors to user
+level documentation.  Still a lot to do here.</li>
+<li>Version 1.0.2 Added Change Log feature.</li>
+<li>Version 1.0.1 Added Project Level
+Documenation Objects.</li>
+</ol><p>
+<p><b>Project source files:</b>
+"/Home/Comet/Rga6711/Xlisp/Definition/Package.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Exports.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Defs.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Definition.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Pack.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Global.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Fun.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Type.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Build.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Read.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Xls-Object.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Filter.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Sort.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Condition.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Tex-Print.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Html-Print.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Project-Doc.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Tex-Print-Doc.Lsp", "/Home/Comet/Rga6711/Xlisp/Definition/Html-Print-Doc.Lsp"<p>
+<p><b>Exported Objects:</b><p> Definitions:Author-Doc-Proto, Definitions:Class-Definition, Definitions:Condition-Definition, Definitions:Constant-Definition, Definitions:Definition, Definitions:Function-Definition, Definitions:Generic-Function-Definition, Definitions:Global-Variable-Definition, Definitions:Lambda-List-Definition, Definitions:Macro-Definition, Definitions:Message-Definition, Definitions:Method-Definition, Definitions:Package-Definition, Definitions:Parameter-Definition, Definitions:Project-Doc-Proto, Definitions:Prototype-Definition, Definitions:Setf-Definition, Definitions:Structure-Definition, Definitions:Type-Definition, Definitions:User-Type-Definition, Definitions:Variable-Definition, Definitions:Version-Doc-Proto<p>
+<p><b>Exported Functions and Messages:</b><p> Definitions:Build-Project-Definitions, Definitions:Declare-Check, (Setf Definitions:Definer-Class), Definitions:Definer-Class, Definitions:Definition-Alpha&lt;, Definitions:Definition-Arg-Types, Definitions:Definition-Body, Definitions:Definition-Children, Definitions:Definition-Class-Nice-Name, Definitions:Definition-Declarations, Definitions:Definition-Definee, Definitions:Definition-Definer, Definitions:Definition-Documentation, Definitions:Definition-Form, Definitions:Definition-Initial-Value, Definitions:Definition-Lambda-List, Definitions:Definition-Method-Qualifier, Definitions:Definition-Name, Definitions:Definition-Name-&gt;String, Definitions:Definition-Parents, Definitions:Definition-Returns, Definitions:Definition-Slots, Definitions:Definition-Specializers, Definitions:Definition-Symbol, Definitions:Definition-Symbol-Name, Definitions:Definition-Type-Declarations, Definitions:Definition-Usage, Definitions:Definition&lt;, Definitions:Exported-Definition?, Definitions:Lambda-List-Arg-Names, Definitions:Lambda-List-Keyword-Arg-Names, Definitions:Lambda-List-Keyword-Args, Definitions:Lambda-List-Optional-Arg-Names, Definitions:Lambda-List-Optional-Args, Definitions:Lambda-List-Required-Arg-Names, Definitions:Lambda-List-Required-Args, Definitions:Lambda-List-Rest-Arg-Name, Definitions:Lambda-List-Specializers, Definitions:Lambda-List-Whole-Arg, Definitions:Make-Definitions, Definitions:Make-Slot-Accessor-Definitions, Definitions:Make-Subdefinitions, Definitions:Print-Html-Definition, Definitions:Print-Html-Definitions, Definitions:Print-Html-Documentation, Definitions:Print-Tex-Definition, Definitions:Print-Tex-Definitions, Definitions:Print-Tex-Documentation, Definitions:Read-Definitions-From-File, Definitions:Read-Definitions-From-Files, Definitions:Type-Check, Definitions:Version&gt;<p>
+<p><b>Global Variables and Parameters:</b><p>Definitions:*Definition-Hfuzz*<p>

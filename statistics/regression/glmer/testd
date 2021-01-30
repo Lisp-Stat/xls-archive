@@ -1,0 +1,34 @@
+;;  Simulations on using Deleeuw's mehtod.
+
+(defun link (x) x)
+(defun invlink (x) x)
+(defun d-link (x) (repeat 1 (length x)))
+(def x1 (repeat 1 40))
+(def x2 (iseq 40))
+(def x (bind-columns x1 x2))
+(def c1 '(10 4))
+
+(load 'glmerd)   ;; Load xlispstat program.
+
+(def nn 100)
+(def out (make-array (list nn 8) :initial-element 0))
+
+(dolist (kk (iseq nn))
+   (def u1 (combine (normal-rand 20) (repeat 0 20)))
+   (def u2 (combine (repeat 0 20) (normal-rand 20)))
+   (def e (normal-rand 40))
+   (def u (bind-columns u1 u2))
+   (def c2 '(4 4))
+   (def y (+ (%* x c1) (%* u c2) e) )    ;;  Obs: y=10+4*x+ Ub +e.
+   (def qv '(2))
+   (glmerd y x u qv 'link 'invlink 'd-link :print nil :output nil :count-limit 200)   
+   (setf (select out kk 0) (if convergence 1 0))
+   (setf (select out kk 1) iteration)
+   (setf (select out kk 2) (nth 0 b1))
+   (setf (select out kk 3) (nth 1 b1))
+   (setf (select out kk 4) (nth 0 b2))
+   (setf (select out kk 5) (nth 1 b2))
+   (setf (select out kk 6) sigx2)
+   (setf (select out kk 7) (nth 0 sigu2))
+)
+(print-matrix out)   ;; Print the simulation results.

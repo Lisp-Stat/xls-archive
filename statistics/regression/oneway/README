@@ -1,0 +1,17 @@
+This is only a bunch of additions to Tierney's one way ANOVA.
+
+It is still under development.  TWOWAY and other general stuff will
+be added as time permits.
+
+Files
+-----
+
+as190.lsp	Studentized range distribution
+oneway.lsp	Tierney's oneway.lsp with some additions.
+ex1.lsp		Example with unequal sample sizes.
+ex2.lsp		Example with equal cell sizes.
+
+
+Send bugs or comments to:
+
+B. Narasimhan               naras@euler.bd.psu.edu

@@ -1,0 +1,23 @@
+(require "f2cl_macros")
+
+(defun rtbis (func x1 x2 xacc &key (jmax 40)) (declare (type double-float x1))
+ (declare (type double-float x2)) (declare (type double-float xacc))
+ (declare (type fixnum jmax))
+ (prog ((xmid 0.0d0) (j 0) (dx 0.0d0) (xrtbis 0.0d0) (f 0.0d0) (fmid 0.0d0))
+  (declare (type double-float xmid)) (declare (type fixnum j))
+  (declare (type double-float dx)) (declare (type double-float xrtbis))
+  (declare (type double-float f)) (declare (type double-float fmid))
+  (setf fmid (funcall func x2)) (setf f (funcall func x1))
+  (if (>= (* f fmid) 0.0) (error "Root must be bracketed for bisection."))
+  (cond ((< f 0.0) (setf xrtbis x1) (setf dx (+ x2 (- x1))))
+   (t (setf xrtbis x2) (setf dx (+ x1 (- x2))))
+  )
+  (fdo ((j 1 (+ j 1))) ((> j jmax) nil)
+   (tagbody (setf dx (* dx 0.5)) (setf xmid (+ xrtbis dx))
+    (setf fmid (funcall func xmid)) (if (< fmid 0.0) (setf xrtbis xmid))
+    (if (or (< (abs dx) xacc) (= fmid 0.0)) (go end_label))
+  ))
+  end_label
+  (return xrtbis)
+))
+

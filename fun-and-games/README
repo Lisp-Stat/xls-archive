@@ -1,0 +1,3 @@
+hanoi.lsp, queens.lsp, and queens2.lsp are the Tower of Hanoi plus
+the Queens program explained in Winston and Horn. Code is from
+the Xlisp distribution.

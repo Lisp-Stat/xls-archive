@@ -1,0 +1,97 @@
+;;;;
+;;;;     Example 1.  Scalar location estimator
+;;;;
+
+
+;;  Begin by defining the blocking factors.  These define how
+;;  each block of data is to be built from the input noise process.
+;;  Here the two factors control the size and population shape.
+
+(def size-list
+     (list (cons 'small  #'(lambda (x) (select x (iseq 10))))
+           (cons 'medium #'(lambda (x) (select x (iseq 20))))
+           (cons 'large  #'(lambda (x) x))  ))
+(def size-factor (make-function-dictionary size-list
+                                           :name 'size))
+
+(def dist-list
+     (list (cons 'normal    #'(lambda (x) x))
+           (cons 'slash     #'(lambda (x) (/ x (uniform-rand (length x))))) ))
+(def dist-factor (make-function-dictionary dist-list
+                                           :name 'dist))
+
+;;  Now define the estimator and the set of associated options.
+;;  The options must agree with those used internally by the function.
+;;  The leading colon in the name of the option set conforms to the
+;;  optional argument convention used in Lisp-Stat (X-Lisp). The options
+;;  set must be a subset of those options handled by the estimator.
+
+
+(defun TRIMMED-MEAN (data &key (pct .1))
+  "Trims a pct from data each tail."
+  (let* ((n      (length data))
+         (lo     (floor   (* pct n)))
+         (hi     (ceiling (* (- 1 pct) n)))
+         (sorted (sort-data data))  )
+    (mean (select sorted (iseq lo hi)))   ))
+
+(def estimator-options
+     (make-set '(mean trim median)  :name ':estOpt))
+
+(defun center (x &key estOpt)
+  (case estOpt
+    (mean     (mean x))
+    (median   (median x))
+    (trim     (trimmed-mean x))
+    (midrange (mean (list (min x) (max x))) (min x))))
+
+;;  Build the simulation.  The first argument defines the maximum sample
+;;  size, the second is the estimator function, followed by blocking and
+;;  option factors. The optional argument directs the software to record
+;;  all of the simulation results rather than just record summary stats.
+
+(def sim (make-simulator 30 #'center
+                         (list dist-factor size-factor)
+                         (list estimator-options)
+                         :generator #'normal-rand
+                         :proto memorizer-proto))
+
+;;  Run the simulation. Subsequent calls to this method append the
+;;  additional trials to the recorder elements of the simulation.
+
+(send sim :run 11)
+
+;;  Browse the simulation results interactively.  First create a view of
+;;  the simulation object.  Then interact with the associated menus
+;;  provided by this viewer object.  See the "SimView" menu item for
+;;  options.  An occasionally useful option is to explore the samples
+;;  that lead to odd simulated values.
+
+(def simView (new-simulator-view sim))
+
+
+;;  One can always recover the data from a block directly rather than via
+;;  the simulation view; the following command to find the data of the 
+;;  10th trial.
+
+(def b (send sim :recover-block-data 10 '((DIST . NORMAL) (SIZE . SMALL))))
+(def mb (mean b))
+
+
+;;  Examine the contents of a cell by asking it to print a summary of its
+;;  results to the X-Lisp window.
+
+(def cells (send sim :cell-list))
+(def cell  (select cells 6))
+(send  cell :print-summary)
+
+
+;;  Write the simulation results out to a file for input 
+;;  to a statistics package for further analysis; ANOVA.
+
+(send sim :write-analysis-file "simres.loc")
+
+
+
+
+

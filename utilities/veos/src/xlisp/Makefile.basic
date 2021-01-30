@@ -1,0 +1,26 @@
+#
+#	Xlisp compilation control
+#
+
+
+# The directory you installed the xlisp fileset in:
+XLISPROOT= /u1/lisp/veos/src/xlisp
+XLISP_LIB_DIR= $(XLISPROOT)/lib
+
+VEOS_LIB_DIR= /u1/lisp/veos/lib
+VEOS_EXEC_DIR= /u1/lisp/veos/bin
+
+
+include $(XLISPROOT)/Makefile.machine_specific
+
+CFLAGS= ${XLISPCFLAGS}
+
+.c.o:
+	${CC} -o -c ${CFLAGS} $< ${INCLUDES}
+
+clean:
+	- /bin/rm -f *.o *~
+	- /bin/rm -f $(XLISP_LIB_DIR)/*.a *~
+    	
+
+

@@ -1,0 +1,184 @@
+Notes about the structure of the source code.
+
+Legenda:
+
+    An '*' in front of the name of a class means the class is abstract, that is
+  you may not create an instance of the class directly but should use it as a base
+  class for a more specialized object. 
+
+    An '*' in front of the name of a class member function means the function
+  must be overridden in subclasses. 
+
+    The '->' is the inheritance relation sign.
+
+Class interfaces:
+ 
+  * class dist -> *object*
+
+      This is the abstract distribution class, it just provides common behaviour
+      to the various kind of distribution classes derived from it.
+
+    data member accessors:
+
+      :graph                //  histogram window object.
+
+      :sample               //  randomly generated data displayed as a histogram.
+
+    methods:
+
+    * :make-x               //  generates an array of equally spaced points.
+                            //  on the independent variable axis.
+
+    * :make-y               //  generates an array of points.
+                            //  on the dependent variable axis.
+
+      :close-all-windows    //  just closes the windows.
+
+      :do-command(command)  //  handle the commands
+                            //      'going-away',
+                            //      that is the user chose to close
+                            //      a window of the simulation; it might be the
+                            //      histogram window or one of the sliders.
+                            //      in response to the command
+                            //      it calls the method :close-all-windows.
+                            //
+                            //      'update-graph',
+                            //      the user modified the state of one of the sliders
+                            //      so update the graph accordingly calling
+                            //      the method :update-graph.
+
+      :update-graph         //  just updates the graph.
+
+      :isnew                //  isnew is overridden to perform further initialization.
+
+  end class dist
+
+  The classes normal, log-n, t-dist, chi-sq have the same interface as dist;
+  so it suffice to show their inheritance relation.
+ 
+  class normal  -> dist
+                -> mu-si2
+
+  class log-n   -> dist
+                -> mu-si2
+
+  class t-dist  -> dist
+                -> v12-par
+                -> v12-sld
+
+  class chi-sq  -> dist
+                -> v12-par
+                -> v12-sld
+
+  The F, beta and gamma distribution are implemented using an abstract base class
+  which inherits from dist (and other as you may see) and a more specialized
+  descendant; this is the template:
+
+  * class z -> dist
+            -> v12-par
+
+  where only the 'make-x' and 'isnew' member functions are overridden,
+  and the classes
+
+  class z-mu-si2  -> z
+                  -> mu-si2
+
+  class z-v1-v2   -> z
+                  -> v12-par
+
+  where the member functions 'isnew', 'make-y', 'update-graph', 'close-all-windows'
+  and 'do-command' are overridden to perform additional work specific to each class.
+  Note that descendants of class dist declare no additional member functions and
+  data member.
+
+  class v12-par
+
+      This is a mix in class; it provides symbols, accessor methods and utility
+      functions to objects of class derived from dist whose histogram data is fitted
+      using v1 or (v1 && v2) parameters.
+
+    data member accessors:
+
+      :v1-param
+      :v2-param
+      :guessed-v1
+      :guessed-v2
+
+    methods:
+
+      :show-solution
+      :show-solution-v1
+
+  end class v12-par
+
+  class v12-sld
+
+      This is a mix in class; it provides sliders symbols and
+      accessors methods to objects of class derived from dist whose
+      histogram data is fitted using v1 or (v1 && v2) parameters.
+
+    data member accessors:
+
+      :v1-slider
+      :v2-slider
+
+  end class v12-sld
+
+  class mu-si2
+
+      This is a mix in class; it provides sliders symbols, accessors methods
+      and utility functions to objects of class derived from dist
+      whose histogram data is fitted using mu && si2 parameters.
+
+    data member accessors:
+
+      :real-mu
+      :real-si2
+      :guessed-mu
+      :guessed-si2
+      :estimated-mu
+      :estimated-si2
+      :mu-slider
+      :si2-slider
+
+    methods:
+
+      :show-solution
+
+  end class mu-si2
+
+  class dist-win
+
+    An object of class dist usually owns an histogram window object
+    and one or more slider windows. The purpose of this class is to signal
+    (overriding the 'close' member function)
+    an object of class dist when the user clicks the mouse on the histogram window
+    close box; this allows class dist to close all the window objects it has at once.
+
+    data member accessors:
+
+      :commander
+
+    methods:
+
+      :close(&optional is-commander-calling)
+
+  end class dist-win
+
+  class slid-win
+
+    An object of class dist usually owns an histogram window object
+    and one or more slider windows. The purpose of this class is to signal
+    (overriding the 'close' member function)
+    an object of class dist when the user clicks the mouse on a slider window's
+    close box; this allows class dist to close all the window objects it has at once.
+
+    data member accessors:
+
+      :commander
+
+    methods:
+
+      :close(&optional is-commander-calling)
+
+  end class slid-win

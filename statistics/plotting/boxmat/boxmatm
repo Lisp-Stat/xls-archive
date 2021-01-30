@@ -1,0 +1,24 @@
+.BG
+.FN boxmatm
+.TL
+Boxplot Matrix of a numeric data matrix
+.CS
+boxmatm(matrix, ...)
+.AG matrix
+Any matrix of numeric data.
+.AG ...
+Any arguments appropriate for the `boxmat' function (except `boxf').
+.RT
+Returns the result of the `boxmat' function.
+.SA
+`boxmat', `boxplot', `bxp'.
+.EX
+boxmatm(data.matrix) # display boxes with height proportional
+                     # to the values in the data.matrix
+
+# The function is currently defined as
+function(matrix, ...)
+invisible(boxmat(twlist = nwaylist.c0a(matrix), boxf = boxplotm, ...))
+.KW boxplot
+.KW boxmat
+.WR

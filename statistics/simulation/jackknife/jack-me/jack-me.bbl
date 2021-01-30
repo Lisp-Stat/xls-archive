@@ -1,0 +1,37 @@
+\ifx\undefined\bysame
+\newcommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\,}
+\fi
+\begin{thebibliography}{1}
+
+\bibitem{almy}
+T.~Almy, {\em {XLISP-PLUS: Another Object-oriented Lisp}}, 1993, Version 2.1f.
+
+\bibitem{efrtib}
+B.~Efron and R.~J. Tibshirani, {\em {Introduction to the Bootstrap}}, Chapman
+  \& Hall, New York, NY, 1993.
+
+\bibitem{graham}
+P.~Graham, {\em {On Lisp. Advanced Techniques for Common Lisp}}, Prentice Hall,
+  Englewood Cliffs, NJ, 1994.
+
+\bibitem{hemel}
+J.~Hemelrijk, {\em {Underlining Random Variables}}, Statistica Neerlandica {\bf
+  20} (1966), 1--7.
+
+\bibitem{hurt}
+J.~Hurt, {\em {Asymptotic Expansions of Functions of Statistics}}, Aplikace
+  Matematiky {\bf 21} (1976), 444--456.
+
+\bibitem{miller}
+R.~G. Miller, {\em {The Jackknife -- A Review}}, Biometrika {\bf 61} (1974),
+  1--17.
+
+\bibitem{tierney}
+L.~Tierney, {\em {LISP-STAT. An Object-Oriented Environment for Statistical
+  Computing and Dynamic Graphics}}, Wiley, New York, NY, 1990.
+
+\bibitem{tukey}
+J.~W. Tukey, {\em {Bias and Confidence in not Quite Large Samples}}, Annals of
+  Mathematical Statistics {\bf 29} (1958), 614--614, Abstract.
+
+\end{thebibliography}

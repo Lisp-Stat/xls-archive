@@ -1,0 +1,189 @@
+Adapted from CL-S, Common Lisp to S and back routines by
+R.W. Oldford, January 1989 rwoldford@water.waterloo.edu  
+Martin B. Maechler, June 1990, maechler@stat.washington.edu
+
+Modified for Xlisp and Lisp-Stat by
+Steve McKinney, October 1991, kilroy@biostat.washington.edu
+Version 1.1 February 1992 - Much faster output from S
+
+
+S-functions & files needed:	
+---------------------------
+[all the files are currently in belgica.stat.washington.edu:~kilroy/xlisp.S]
+[or uhura.biostat.washington.edu:~kilroy/xlisp.S]
+
+From your home directory, make a subdirectory called xlisp.S - i.e.
+
+% cd ~
+% mkdir xlisp.S
+
+Also make ~/xlisp.S/.Data              - to store S functions 
+and       ~/xlisp.S/.Data/.CL.data     - to store working data
+
+From the ~/xlisp.S directory, start up S and use the S "source()"
+function to source the necessary S functions - i.e. in S
+
+> source("S2cl.S")
+
+The Cl <-> S interface   first excutes in  S 
+
+	attach("<your home directory>/xlisp.S/.Data")  
+    #- ~/xlisp.S/.Data  doesn't work ('sh')
+
+This directory, i.e. ~/xlisp.S/.Data, has to contain all the S <-> CL
+interface functions, e.g., CL.write.val(..).
+
+
+Temporary files are stored in /tmp/username
+
+XLisp functions:
+----------------
+
+In the file xlisp-s.lsp, find the variable definition for
+"S-program-name" and change it to the appropriate command that invokes
+S on your computer.  e.g.
+
+(def S-program-name "S")	;-- default --
+(def S-program-name "Splus")	;  on belgica.stat.wa..
+
+
+In Lisp-Stat, load the xlisp functions using the xlisp load function
+
+	(load "<pathway>xlisp-s")
+
+e.g. on my machine belgica I use
+      
+        (load "/belgica-2g/kilroy/xlisp.S/xlisp-s")
+
+The xlisp-s.lsp file includes a    (load userhome)    command.  The
+userhome.lsp   file should contain a definition for the global variable
+*HOME* such as
+
+(defparameter *HOME* "/belgica-2g/kilroy/")
+
+i.e. the pathway to your home directory.  Set up a userhome.lsp file
+in the directory in which you will be running Xlisp or LispStat.
+
+
+Initialize the necessary system variables with
+
+	(S-CL-initialize   {&optional S-Data-directory})
+
+e.g.
+
+        (S-CL-initialize)   
+
+uses default directory ~/xlisp.S/.Data/.CL.data 
+
+and    
+
+        (S-CL-initialize "/belgica-2g/kilroy/.Data")
+
+uses the specified directory "/belgica-2g/kilroy/.Data"
+to store S results.
+
+There are quite a few TESTED examples in
+
+	 ~kilroy/xlisp.S/xlispstat-s-script.lsp
+
+
+Main functions are
+~~~~~~~~~~~~~~~~~~
+
+	(S-CL-initialize   {&optional S-Data-directory})  
+	
+		To initialize the interface.
+
+		Defines the 'special' var.s 
+			*S-process-running*	(nil / T)
+			*HOME*			<string of $HOME - directory>
+			*tmp-dir*		<string of directory where 
+						 communication files are put>
+			*CL.Data*		<string of dir. where the
+						 S-objects should be put into>
+
+	(eval-in-S-running  fun-name-string 
+			    arglist	
+			      {	:new-S-process	      (null *S-process-running*)
+				:S-process-sleep-seconds  1
+				:tmp-directory-name	*tmp-dir*
+				:cmd-fname		"CL.to.S"
+				  :if-exists-cmd 	':supersede
+				:input-fname		"S.bg-input"
+				  :if-exists-input	':supersede
+				:new-fname		"S.bg-new"
+				:stop-fname		"S.bg-stop"
+				:S-out-fname		"S.to.CL"
+				:S-ready-fname		"S.ready"
+				:transcript-fname	"S.to.CL.transcript" } )
+
+		Starts (the first time, or when :new-s-process T) a running
+		S process in the background with an infinite loop,
+		waiting for input from Common LISP.
+		Therefore different files are used for communication.
+		
+		'arglist': list  [could be checked by (check-arglist arglist)]
+			of the arguments to the S-functions.
+			The list elements must either be CL - atoms
+				(e.g. a vector !), or a cons of the form
+				(cons <string> <CL-atom>),  a "2-cons".
+			The 2-cons is used either to pass NAMED arguments to S,
+			as the 2nd in 'ls("ts*", pos=2)' , or,
+			iff ( <string> = "S-....." )
+			to use existing S-objects or to NEST S-functions,
+			as in  'var( runif(100) )'.
+
+			An atom == NIL will  be printed as EMPTY
+			argument (which works fine with S).
+		
+		The S-result as list object is 'usually' an array,
+		even scalars are given as vectors of length 1.
+		If the S-result is a list, or "structure" with named
+		components, the corresponding LISP result is a
+		'association list', i.e., a list with elements
+		'(<symbol> . <obj>). The function  (names ..) gives
+		back the symbol-names.
+
+		>>>>> See examples in  'xlispstat-s-script.lsp' <<<<<<<
+
+			
+	(assign-in-S-running  S-symbol-function-arglist-list
+			      { :.Data-path 			*CL.Data*
+				:new-S-process   (null *S-process-running*)
+				:S-process-sleep-seconds	1
+				:tmp-directory-name		*tmp-dir*
+				:cmd-fname			"CL.to.S"
+				
+ 				.... }
+	
+		This is to assign several S-variables (from CL).
+		"No Feedback" : Does NOT wait until completion !
+		'S-symbol-function-arglist-list' is a list of small-lists
+		where small-list =	
+			(list <S-variable-string> <S-function-string> <arglist>)
+		and <arglist> is the same as in  (eval-in-S-running).
+
+	(get-S-value  S-expression-string)		
+
+		Calling 'eval-in-S-running' :
+		Gives back the evaluated S-expression (as CL-obj).
+		Useful for  S-variables & simple expressions
+
+	(stop-S-running  {:stop-file 		"S.bg-stop"
+			  :tmp-directory-name	*tmp-dir* })
+
+		to stop a (actually only one !) running S process
+
+
+Remarks:
+~~~~~~~
+
+- By using different file names, it is possible to have more than one
+  S-job running (which is possible anyway) AND specifically assign S- tasks
+  to them.
+
+
+"Exact documentation":
+ ===================
+			 Source is in 	~kilroy/xlisp.S/xlisp-s.lsp
+

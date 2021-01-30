@@ -1,0 +1,5 @@
+#!/bin/sh
+case $# in
+1) head -$1 ship1_big.out > ship1.out; head -$1 ship2_big.out > ship2.out; head -$1 ship3_big.out > ship3.out; head -$1 ship4_big.out > ship4.out;;
+*) echo "Usage: chop_ship <number of lines>";;
+esac

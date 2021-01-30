@@ -1,0 +1,94 @@
+\magnification\magstep1
+\parskip 10pt
+\parindent 0pt
+\input eplain 
+\centerline{\bf INTRODUCTION}
+
+The {\tt XLISP-STAT} package lacks a number of procedures 
+which would make it more
+suitable for routine data handling and data analysis. 
+As examples we mention recoding variables, making cross tables, 
+printing nice tables and publication-quality graphics, and the reading of
+formatted input (as in {\tt FORTRAN} format strings and the
+{\tt scanf} function in {\tt C.} On can argue, of course, that this
+is not necessarily a bad thing. The {\tt UNIX} philosophy tells us that tools
+should be highly specialized. Tools which
+can do everything, don't do anything right.
+
+On the other hand there is not reason not to use {\tt XLISP-STAT}
+as a convenient interface to other special-purpose {\tt UNIX} tools,
+or to add {\tt LISP} functions that people can either use or ignore. 
+
+Making tables and graphs will be discussed in another note. Here we
+discuss some {\tt XLISP-STAT} functions to read formatted input.
+Code is listed below, and will also be available on {\tt statlib}
+in {\tt ftp.stat.cmu.edu.}
+\vskip .5cm\centerline{\bf EXAMPLE}
+
+Consider the following small input file, which is called {\tt foo.dat.}
+\hfill\break
+{\tt 001aap -1.235555}\hfill\break
+{\tt 002mens +.154444}\hfill\break
+We read this into a list of lists, each list containing one record,
+each record haveing the same number of data items. For this we use
+the function\hfill\break
+{\tt (read-file "foo.dat" ffor),}\hfill\break
+with {\tt ffor} a format string. In this case the most obvious format 
+string is\hfill\break
+{\tt '("i3" "a4" "f5.2" "4i1")}\hfill\break
+which creates\hfill\break
+{\tt ((1 "aap " -1.23 5 5 5 5) (2 "mens" 0.15 4 4 4 4))}\hfill\break
+If we want to, we can also use {\tt "f3.0"} for {\tt "i3",}
+but generally i-formats are somewhat more efficient.
+
+Other formats are possible as well. We can use
+\hfill\break
+{\tt '("i3" "a4" "x5" "4i1")}\hfill\break
+which creates\hfill\break
+{\tt ((1 "aap " 5 5 5 5) (2 "mens" 4 4 4 4))}\hfill\break
+or
+\hfill\break
+{\tt '("i3" "x4" "f5.2" "t9" "a4" "x5" "4i1")}\hfill\break
+which creates\hfill\break
+{\tt ((1 -1.23 "aap " 5 5 5 5) (2 0.15 "mens" 4 4 4 4))}\hfill\break
+Thus using x-formats allows us to skip characters, while the t-format
+allows us to back up. Combining x-formats and t-formats makes it
+possible to read the data on a record in arbitrary order. To 
+conclude the example:\hfill\break
+{\tt '("f3.0" "3a1"  "x3" "f3.2" "2i2")}\hfill\break
+gives\hfill\break
+{\tt ((1 "a" "a" "p" 0.23 55 55) (2 "m" "e" "n" 0.15 44 44))},\hfill\break
+and\hfill\break 
+{\tt '("a8" "f2.0" "i6")}\hfill\break
+gives
+{\tt (("001aap -" 1 235555) ("002mens " 0 154444))}.\hfill\break
+This seems to indicate a considerable level of flexibility.
+\vskip .5cm\centerline{\bf SYNTAX}
+
+\unorderedlist
+\li The i-formats, a-formats, and f-formats can have repeat factors
+(as in {\tt "4f7.5"}), the x-format (skip next n places) and
+the t-format (go n places back) do not have repeats (in a sense,
+they are repeats). 
+\li We do not allow {\tt "4(f10.4,x2)"} etc.
+\li The string read by the a-format can contain all {\tt ascii}
+characters. 
+\li The i-format can read characters 0-9, spaces, and signs,
+with the spaces first, then either a $+$ or a $-$, and then
+a string of digits (which can have leading zeroes). Spaces
+and signs can be missing.
+\li The f-format can read characters 0-9, point, spaces, and signs,
+with the spaces first, then either a $+$ or a $-$, and then
+a string of digits (which can have leading zeroes), then the
+decimal point, and then another string of digits (which can have
+trailing zeroes). Spaces and signs can be missing. The decimal
+point and the digit string following it can be missing. The
+decimal string before the decimal point can be missing. We even
+allow both decimal strings to be missing, in which case the number
+is interpreted as zero.
+\endunorderedlist
+\vfill\eject
+\centerline{\bf LISTING}
+
+\listing{read-format.lsp}
+\bye

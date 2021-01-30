@@ -1,0 +1,90 @@
+UTILITIES
+
+Logarithms and Powers
+Algebraic Operations on Sequencies
+Structural Operations on Sequencies
+Differences and Sums
+Reductions
+Search and Compare
+Sequence Generation
+Function Sampling
+Nyquist Frequency, etc
+
+BASIC MATHEMATICS
+
+Factorials and Gamma-functions
+Polynomials
+Root Finding
+Integration
+
+MATRIX OPERATIONS
+
+Visual Presentation
+Basic Linear Algebra
+Factorization
+
+BASIC STATISTICS
+
+Mean, Variance, and Median
+Correlations
+Histograms and Other Plots
+Quantiles
+Normal Gaussian Distribution
+Robust Statistics
+
+LINEAR REGRESSION ANALYSIS
+
+PDF Estimation
+
+DFT AND FFT
+
+Discrete Fourier Transform
+Fast Fourier Transform
+
+TAPERING TIME SERIES
+
+FILTERING
+
+Filtering Time Series
+Ideal Filters
+Filter Operations
+Specialized LP Filters
+
+RANDOM NUMBERS
+
+Normal Distribution
+White Noise
+Moving Average and Autoregressive Processes
+SDF and Autocovariance Sequences
+
+AUTOCORRELATION SEQUENCES
+
+PARAMETRIC SPECTRAL ESTIMATION
+
+Fitting AR Models
+Converting between AR Quantities
+Computing AR SDF Estimates
+SDF Peaks and Valleys
+Prediction Errors
+Linear Regression
+
+NONPARAMETRIC SPECTRAL ESTIMATION
+
+Spectral Estimates
+Spectral Estimate for Prewhitening
+Spectral and Smoothing Windows
+Bandwidths and Degrees of Freedom
+Choosing Lag Window Parameter
+Periodogram Test Statistics
+One- and Two-sided Representations
+Specific Lag Windows
+
+MULTITAPER SPECTRAL ESTIMATION
+
+DPSS Data Tapers
+Approximation to DPSS Data Tapers
+Multitaper Spectral Estimates
+Confidence Intervals
+Miscellaneous
+
+HARMONIC ANALYSIS

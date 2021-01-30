@@ -1,0 +1,24 @@
+(defun betai (a b x) (declare (type double-float a))
+ (declare (type double-float b)) (declare (type double-float x))
+ (prog ((betai 0.0d0) (bt 0.0d0)) (declare (type double-float betai))
+  (declare (type double-float bt))
+  (if (or (< x 0.0) (> x 1.0)) (error "bad argument X in BETAI"))
+  (cond ((or (= x 0.0) (= x 1.0)) (setf bt 0.0))
+   (t
+    (setf bt
+     (exp
+      (+
+       (+ (+ (+ (gammln (+ a b)) (- (gammln a))) (- (gammln b))) (* a (alog x))
+       )
+       (* b (alog (+ 1.0 (- x))))
+  )))))
+  (cond
+   ((< x (/ (+ a 1.0) (+ (+ a b) 2.0)))
+    (setf betai (/ (* bt (betacf a b x)) a)) (go end_label)
+   )
+   (t (setf betai (+ 1.0 (/ (* (* -1 bt) (betacf b a (+ 1.0 (- x)))) b)))
+    (go end_label)
+  ))
+  end_label (return betai)
+))
+

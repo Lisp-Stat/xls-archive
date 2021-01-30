@@ -1,0 +1,8 @@
+#! /bin/sh
+# Usage: runga
+#
+echo '(load "ga")
+(load "run")
+(load "myeval")
+(run 100 10 "log" 10)
+(quit)' | lisp 

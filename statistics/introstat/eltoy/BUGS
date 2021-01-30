@@ -1,0 +1,32 @@
+BUGS
+
+There is no clean way to get rid of a clt plot.  If you press
+the close button, the plot goes away, but there is no easy way to get
+it back.
+
+There is currently no "help" button.
+
+The behavior when you select an item from one of the main menus a
+second time is inconsistent.  In particular, the behavior of the CLT
+ToY and ElToY menus should mimic DIST-TOY.  As a side effect, it is
+difficult to restart a ElToY or CLT ToY.
+
+The throw to 'ElToY-return on exit from an ElToY doesn't seem to work
+right.  
+
+The "Close" button should cleanly close all related windows instead of
+just the one window.  It should also reset the state of the
+corresponding menu.
+
+FEATURES
+
+Xlispstat has a very stupid algorithm for placing windows.  They
+usually wind up on top of each other.
+
+Xlispstat doesn't update the parameters immediately if you edit the
+text items on the sliders.  Press the corresponding "update" button to
+register the change.
+
+Xlispstat doesn't update the scale of the graph when the contents
+change.  You must select "Rescale Plot" from the graph's menu.
+

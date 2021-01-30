@@ -1,0 +1,17 @@
+;;;;
+;;;;  Dataset directory
+;;;;
+
+abort.dat        State abortion rates 1973, 1980, 1988.
+BaltDens.t55     Baltimore population density as function of distance.
+ces.621          Elasticity of substitution of labor.
+chickens.719     Substitution and price for meat consumption.
+coffee.dat       Annual coffee consumption and price.
+defense.718      US defense outlays pre/post Vietnam.
+duncan.dat       Duncan occupation data for SMR issue.
+gasoline.t48     Annual us gasoline consumption and vehicle characteristics.
+lsat.dat         Efron law school data.
+skelage.dat      Age and skeletal age for adolescent Phila blacks.
+UKalcohol.dat    UK alcohol consumption, per capita.
+UKtrans.dat      Move from rails to cars in the UK.
+wildcats.717     US domestic oil production and wildcat activity.

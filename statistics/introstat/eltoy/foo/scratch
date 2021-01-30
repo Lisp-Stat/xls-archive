@@ -1,0 +1,48 @@
+Entering: :VALUE-N, Argument list: (MEAN 2.66667)
+ Entering: :PARAMETERS, Argument list: (MEAN 2.66667)
+	  Object #<DIST-TOOL (NORMAL4)>
+  Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+   Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+    Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+	Object: #<DIST-TOOL (NORMAL4)>
+	:update (ElToY-object) sending local signal :PARAMETERS
+     Entering: :PARAMETERS, Argument list: (:LOCAL MEAN 2.66667)
+		Object #<DIST-TOOL (NORMAL4)>
+	Exiting: :PARAMETERS, Value: 2.66667
+    Exiting: :UPDATE, Value: 2.66667
+	:update (family-mixin) send to family
+    Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+	Object: #<NORMAL4-family: (X) ((MEAN STDEV))>
+    Exiting: :UPDATE, Value: NIL
+   Exiting: :UPDATE, Value: NIL
+	:update (mirror-parent-proto) send to subtool
+   Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+    Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+	Object: #<Dist-disp: "Normal Distribution" (NORMAL4)>
+	:update (ElToY-object) sending local signal :PARAMETERS
+     Entering: :PARAMETERS, Argument list: (:LOCAL MEAN 2.66667)
+		Object #<Dist-disp: "Normal Distribution" (NORMAL4)>
+     Exiting: :PARAMETERS, Value: NIL
+    Exiting: :UPDATE, Value: NIL
+		:update (dist-disp-proto) sending to para-disp and dist-graph
+    Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+		Object: #<para-disp: "Normal Distribution Parameters" #<parameters: ((MEAN STDEV)) (2.66667 1)>>
+		:update (ElToY-object) sending local signal :PARAMETERS
+     Entering: :PARAMETERS, Argument list: (:LOCAL MEAN 2.66667)
+		Object #<para-disp: "Normal Distribution Parameters" #<parameters: ((MEAN STDEV)) (2.66667 1)>>
+      Entering: :VALUE-N, Argument list: (MEAN 2.66667)
+      Exiting: :VALUE-N, Value: NIL
+     Exiting: :PARAMETERS, Value: 2.66667
+    Exiting: :UPDATE, Value: 2.66667
+    Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+     Entering: :UPDATE, Argument list: (:PARAMETERS MEAN 2.66667)
+		Object: #<pdf-graph: "Normal Distribution" (NORMAL4)>
+		:update (ElToY-object) sending local signal :PARAMETERS
+      Entering: :PARAMETERS, Argument list: (:LOCAL MEAN 2.66667)
+      Exiting: :PARAMETERS, Value: NIL
+     Exiting: :UPDATE, Value: NIL
+    Exiting: :UPDATE, Value: NIL
+   Exiting: :UPDATE, Value: NIL
+  Exiting: :UPDATE, Value: NIL
+ Exiting: :PARAMETERS, Value: 2.66667
+Exiting: :VALUE-N, Value: 2.66667

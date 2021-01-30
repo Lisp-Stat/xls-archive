@@ -1,0 +1,17 @@
+The file {\tt but-opts.lsp} contains the options for the control
+buttons. 
+
+\begin{verbatim}
+(provide "but-opts")
+(case (screen-has-color)
+      (nil
+       (defvar *button-text-color* 'white)
+       (defvar *button-back-color* 'black))
+      (t
+       (defvar *button-text-color* 'black)
+       (defvar *button-back-color* 'cyan)))
+\end{verbatim}
+The variables {\tt *button-text-color*} and {\tt *button-back-color*}, 
+refer to the text color and the background color of the control
+buttons respectively.
+

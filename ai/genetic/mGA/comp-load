@@ -1,0 +1,4 @@
+(defun compile-and-load ()
+  (compile-file "./test.lisp")
+  (load "./test.o")
+  (testfile))

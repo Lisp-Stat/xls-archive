@@ -1,0 +1,12 @@
+(defun gammp (a x) (declare (type double-float a))
+ (declare (type double-float x))
+ (prog ((gammp 0.0d0)) (declare (type double-float gammp))
+  (if (or (< x 0.0) (<= a 0.0)) (error nil))
+  (cond
+   ((< x (+ a 1.0)) (multiple-value-setq (gammp a x gln) (gser gammp a x gln)))
+   (t (multiple-value-setq (gammcf a x gln) (gcf gammcf a x gln))
+    (setf gammp (+ 1.0 (- gammcf)))
+  ))
+  (return gammp)
+))
+

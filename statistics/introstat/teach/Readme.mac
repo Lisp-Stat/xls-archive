@@ -1,0 +1,19 @@
+How to obtain 'Teach.sea.hqx' by anonymous ftp.
+
+Teach.sea.hqx is a binhexed, self-extracting archive available
+via anonymous ftp from las2.iastate.edu using 'anonymous.mervyn' as the
+username and your complete email address as the password.
+
+Unbundle the Teach files.
+
+1. Copy Teach.sea.hqx to the directory where you want to place Teach
+modules.
+
+2. De-binhex the file with, for example, Stuffit Expander or DeHQX.
+
+3. If you have a working version of Stuffit, just click twice on
+Teach.sea icon to extract Teach module folder.
+
+See the readme file in the folder for instructions on running the
+modules. 
+

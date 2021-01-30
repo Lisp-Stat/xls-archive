@@ -1,0 +1,104 @@
+AXIS NEEDS LIST..... with posted date
+
+   2 Feb 94 ... Add subset analysis.
+
+  30 Jan 94 ... Add smoother transformation as a function to make a variable,
+                as in log transformation.  Some sort of transformation 
+                guide in the documentation. lowess exists...
+
+  23 Jan 94 ... Adopt the principle that all internal items are kept
+                as symbols wherever possible.
+
+   6 Jan 94 ... Add principal components.
+
+   6 Jan 94 ... Add ridge regression with ridge trace plot as a slider.
+
+   9 Jan 94 ... Add ability to export from the current frame to global scope.
+
+   6 Jan 94 ... Add interface for logistic regression and Tierney GLIM code.
+
+   6 Jan 94 ... Add generalized additive models.
+   
+   6 Jan 94 ... Add automatic conversion of symbol collections to
+                dummy variables.  Something like the S model.
+
+  30 Jun 93 ... Protocol for handling closing of window and activating
+                another if available. FIND the BUG that kills AXIS.
+                Happens around density plots, closing datasets.
+
+  29 Jun 93 ... Better error processing (eg- 3 vars for spin plot)
+
+  29 Jun 93 ... Icon jump when clicked.
+
+  26 Jun 93 ... How to manipulate bootstrap data, as in ratio of two
+                regression coefficients.
+
+  26 Jun 93 ... Data viewer, spreadsheet editor.
+
+  26 Jun 93 ... Missing data handling with listwise deletion given the
+                current recursive evaluator method.  (Dont see the missing
+                until the end...)   Improved filtering, as in partial
+                regression plots.
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Completed Tasks.....
+
+    Done          Item and closure... (posted date)
+  ----------    --------------------------------------
+
+  10 Feb 94 ... Add spinner to regression model with 2 covariates.
+
+   7 Feb 94 ... Add correlation window with more than two variables.
+                Use the built-in covariance-matrix func. Revised corr code 
+                and calling dialog in axis.  30 Apr 93.
+
+   5 Feb 94 ... Replace send-it by some sort of message/more button.   
+                Add send-it/messenger to scatterplot menu item. Messenger
+                class created.  Available from plot menu. 2 Feb 94
+
+   2 Feb 94 ... BUG in parsing transformation from covariates in regr.
+                Now use two types of form items in the command dialogs.
+                List form items parse multiple, others dont.  Also killed
+                the bug that the dependent var was not correctly labelled
+                when it had been transformed. 2 Feb 94
+
+  23 Jan 94 ... Interactions of plots feeding back to dataset, such
+                as exporting filters requires global and does not feed
+                back to the filter icon for rendering... Globals
+                remain unavoidable, but at least with some fixing the
+                feature icons can look at the dataset.  23 Jan 94.
+
+  23 Jan 94 ... Add a unified transformation slider to the univariate
+                display option... Kluged from the density plot rather than
+                from an item list.  NEED systematic way to handle multiple
+                linked plots.  3 Jan 94.
+
+  15 Jan 94 ... Bug in the sequence plot feature...Double () in     
+                variable-icon-proto :BUILD-MENU function. 6 Jan 94.
+
+  15 Jan 94 ... Add symmetry plot... Added as option (ala QQ) with density
+                plot.  Labelled plots modified with this change and 
+                menu item renamed "univariate". 6 Jan 94.
+
+   9 Jan 94 ... Saving standardized, studentized residuals, resids, leverage,
+                influence fit as a list that can be augmented by other 
+                decendant routines, like robust regression...
+                Added to commando code to read aList and save data. 6 Jan 94
+          
+   8 Jan 94 ... Anova table and p-values for regression in output...
+                Anova added to patch file, Pvals in axisRegr. 6 Jan 94.
+
+  30 Apr 93 ... Data directory default.
+
+  29 Jun 93 ... Data filter operation as axis had to allow subsetting on
+                some type of criterion. 30 Apr 93
+
+  26 Jun 93 ... Open file dialog using operating system/Lisp rather
+                than a text file listing.  30 Apr 93
+
+  26 Jun 93 ... Redesign menu to add browse and send buttons, as well
+                as something to add in more of the box-cox and other "old"
+                features.  30 Apr 93 ... sendit evaluation.
+
+

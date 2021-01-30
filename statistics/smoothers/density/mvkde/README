@@ -1,0 +1,19 @@
+Below is some xlispstat code for doing mvkde's ala Wand.  I've generalized it
+to n-dimensions, rather than the 2 or 3 dimensions of Wand.  It also uses a
+single routine for all dimensions as opposed to his separate routines for each
+dimension.
+
+There are some useful parts to this code.  To get this working I had to:
+
+  1.  Write a macro for iterating over arrays.
+  2.  Write an n-dimensional outer product.
+  3.  Write an n-dimensional FFT.
+
+and of course generalize Wand's routines.
+
+This code has only been tested in a very simple 2-dimensional case.  Would
+anyone on your end be interested in testing it further?  I am a bit weary of
+looking at it right now, and would like to turn my attention to something
+else.
+
+David Betz (dbetz@stat.ucla.edu)

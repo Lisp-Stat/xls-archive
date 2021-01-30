@@ -1,0 +1,116 @@
+I. Requirements
+
+ElToY will run on either a Unix X-windows workstation or a Macintosh
+running XLISP-STAT.  (It will run on a Mac Plus or SE, but it will be
+abysmally slow, a Mac II is stronly recommended.)  
+
+
+In order to run ElToY, you will first need a copy of XLISP-STAT.  If
+you don't have a copy of XLISP-STAT, don't worry, its free.  You can
+obtain a copy via electronic mail.  Send mail to 
+
+statlib@temper.stat.cmu.edu
+
+	continuing the single line 
+
+send index from xlispstat
+
+This mail should contain no subject headerand no extraneous
+information because it will be processed by the computer and not by a
+human.  Follow the instructions there to install XLISP-STAT on your
+system.
+
+II) Unbundle the ElToY files.
+
+
+1) If you got ElToY through Statlib (or other mail server)
+
+1a) Create a Directory ElToY (if you haven't already) for the new 
+files.
+
+1b) Run sh on each file to unbundle, e.g.:
+	sh NOTES.shar
+	
+
+2) If you got ElToY through anonymous ftp, uncompress and untar it.
+
+	zcat ElToY.tar.Z | tar xfv - ElToY
+
+
+III) Edit the loading files to point to where ElToY is located on your
+system. 
+
+After you have gotten XLISP-STAT installed, copy the ElToY files to
+their home.  The only part that should require customization is the
+``loadall'' files.  These are in the top level directory of the
+distribution.   Each of them contains a line of the form:
+
+(def ElToY-directory "/home0/almond/ElToY/" )
+
+Edit this to reflect the location of ElToY on your system.
+
+#+MacIntosh:  MacIntosh pathnames are sort of like Unix pathnames,
+except that they use ``{\tt :}'' instead of ``{\tt /}'' to separate
+the directories.  Thus for your system it will look something like:
+
+(def ElToY-directory ":Hard Drive:Free Software:ElToY:" )
+
+Once you've edited this line in all three ``loadall'' files, you
+should be ready to run.
+
+#+Unix:  There are three more files you need to modify, the startup
+files.  These are also in the top level directory and are named ``eltoy'',
+``dist-toy'' and ``debug-toy.''  They look something like:
+
+#!/bin/csh
+xlispstat \~almond/ElToY/loadall.lsp
+
+Edit them to reflect the placement of the ElToY directory on your
+system.  If you have system privileges, you will probably want to copy
+the files eltoy and dist-toy to  /usr/local/bin so that they can be
+accessed by everybody.   Debug-toy is meant for serious programmers
+and should probably be left where it is. 
+
+
+IV) Printing the documentation.
+
+
+If you have access to the rga figure macros, uncomment the appropriate
+lines to include the figures.  Otherwise, print the file overview.tex
+found in the documentation via the following steps:
+
+	tex overview.tex
+	dvi2ps overview.dvi |lpr
+
+Note1:  This is Plain TeX, not LaTeX (yetch!)
+
+Note2: Check with your system administrator, the command dvi2ps may be dvips
+or dvitps on your system.
+
+Now print the postscript file: overview.eps  This is Figure~1.
+
+
+V) You should now be ready to go.
+
+VI) Debugging problems with installation.
+
+The ``loadall'' file loadall-debug.lsp (and the command file debug-toy
+which loads it) is identical to loadeltoy, except that the LISP
+debugger is turned on before the first file is loaded.  If you can
+program in LISP, this will help you tract down specific problems.
+Hopefully, there won't be any problems unless you change something.
+(This assumes that you know how to use the LISP debugger).
+
+Good Luck.
+
+Please report any problems and or suggestions to me:
+
+
+			Russell Almond			   
+Statistical Sciences, Inc.		U. Washington
+1700 Westlake Ave., N Suite 500		Statistics, GN-22
+Seattle, WA  98109			Seattle, WA  98195
+(206) 283-8802				
+almond@statsci.com			almond@stat.washington.edu
+
+

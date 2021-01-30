@@ -1,0 +1,3846 @@
+%!PS-Adobe-2.0
+%%Title: qp-tr.mss
+%%DocumentFonts: (atend)
+%%Creator: Scott Fahlman and Scribe 7(1700)
+%%CreationDate: 29 August 1991 20:52
+%%Pages: (atend)
+%%EndComments
+% PostScript Prelude for Scribe.
+/BS {/SV save def 0.0 792.0 translate .01 -.01 scale} bind def
+/ES {showpage SV restore} bind def
+/SC {setrgbcolor} bind def
+/FMTX matrix def
+/RDF {WFT SLT 0.0 eq 
+  {SSZ 0.0 0.0 SSZ neg 0.0 0.0 FMTX astore}
+  {SSZ 0.0 SLT neg sin SLT cos div SSZ mul SSZ neg 0.0 0.0 FMTX astore}
+  ifelse makefont setfont} bind def
+/SLT 0.0 def
+/SI { /SLT exch cvr def RDF} bind def
+/WFT /Courier findfont def
+/SF { /WFT exch findfont def RDF} bind def
+/SSZ 1000.0 def
+/SS { /SSZ exch 100.0 mul def RDF} bind def
+/AF { /WFT exch findfont def /SSZ exch 100.0 mul def RDF} bind def
+/MT /moveto load def
+/XM {currentpoint exch pop moveto} bind def
+/UL {gsave newpath moveto dup 2.0 div 0.0 exch rmoveto
+   setlinewidth 0.0 rlineto stroke grestore} bind def
+/LH {gsave newpath moveto setlinewidth
+   0.0 rlineto
+   gsave stroke grestore} bind def
+/LV {gsave newpath moveto setlinewidth
+   0.0 exch rlineto
+   gsave stroke grestore} bind def
+/BX {gsave newpath moveto setlinewidth
+   exch
+   dup 0.0 rlineto
+   exch 0.0 exch neg rlineto
+   neg 0.0 rlineto
+   closepath
+   gsave stroke grestore} bind def
+/BX1 {grestore} bind def
+/BX2 {setlinewidth 1 setgray stroke grestore} bind def
+/PB {/PV save def newpath translate
+    100.0 -100.0 scale pop /showpage {} def} bind def
+/PE {PV restore} bind def
+/GB {/PV save def newpath translate rotate
+    div dup scale 100.0 -100.0 scale /showpage {} def} bind def
+/GE {PV restore} bind def
+/FB {dict dup /FontMapDict exch def begin} bind def
+/FM {cvn exch cvn exch def} bind def
+/FE {end /original-findfont /findfont load def  /findfont
+   {dup FontMapDict exch known{FontMapDict exch get} if
+   original-findfont} def} bind def
+/BC {gsave moveto dup 0 exch rlineto exch 0 rlineto neg 0 exch rlineto closepath clip} bind def
+/EC /grestore load def
+/SH /show load def
+/MX {exch show 0.0 rmoveto} bind def
+/W {0 32 4 -1 roll widthshow} bind def
+/WX {0 32 5 -1 roll widthshow 0.0 rmoveto} bind def
+/RC {100.0 -100.0 scale
+612.0 0.0 translate
+-90.0 rotate
+.01 -.01 scale} bind def
+/URC {100.0 -100.0 scale
+90.0 rotate
+-612.0 0.0 translate
+.01 -.01 scale} bind def
+/RCC {100.0 -100.0 scale
+0.0 -792.0 translate 90.0 rotate
+.01 -.01 scale} bind def
+/URCC {100.0 -100.0 scale
+-90.0 rotate 0.0 792.0 translate
+.01 -.01 scale} bind def
+%%EndProlog
+%%Page: 0 1
+BS
+0 SI
+13 /Times-Bold AF
+19783 17759 MT
+(An Empirical Study of Learning Speed)SH
+22005 20905 MT
+(in Back-Propagation Networks)SH
+10 SS 
+26891 24166 MT
+(Scott E. Fahlman)SH
+27170 26326 MT
+(September 1988)SH
+27017 28486 MT
+(CMU-CS-88-162)SH
+28739 40474 MT
+(Abstract)SH
+/Times-Roman SF
+8200 43046 MT
+(Most connectionist or "neural network" learning systems use some)
+209 W( form of the back-propagation algorithm.)208 W
+7200 44332 MT
+(However, back-propagation learning is too slow)
+147 W( for many applications, and it scales up poorly as tasks become)148 W
+7200 45618 MT
+(larger and more complex.  The factors governing learning speed)
+44 W( are poorly understood.  I have begun a systematic,)43 W
+7200 46904 MT
+(empirical study of learning speed in)
+69 W( backprop-like algorithms, measured against a variety of benchmark problems.)70 W
+7200 48190 MT
+(The goal is twofold:)
+89 W( to develop faster learning algorithms and to contribute to the development of a methodology)88 W
+7200 49476 MT
+(that will be of value in future studies of this kind.)SH
+8200 51864 MT
+(This paper)
+40 W( is a progress report describing the results obtained during the first six months of this study.  To date I)41 W
+7200 53150 MT
+(have looked only at)
+20 W( a limited set of benchmark problems, but the results on these are encouraging: I have developed)19 W
+7200 54436 MT
+(a new learning algorithm that is faster than standard)
+26 W( backprop by an order of magnitude or more and that appears to)27 W
+7200 55722 MT
+(scale up very well as the problem size increases.)SH
+8200 61886 MT
+(This research was sponsored in part by)
+90 W( the National Science Foundation under Contract Number EET-8716324)89 W
+7200 62991 MT
+(and by the Defense Advanced Research Projects Agency \050DOD\051, ARPA Order No. 4976 under Contract)
+4 W( F33615-87-)5 W
+7200 64096 MT
+(C-1499 and monitored)
+221 W( by the Avionics Laboratory, Air Force Wright Aeronautical Laboratories, Aeronautical)220 W
+7200 65201 MT
+(Systems Division \050AFSC\051, Wright-Patterson AFB, OH 45433-6543.)SH
+8200 67408 MT
+(The views and conclusions contained in this)
+75 W( document are those of the authors and should not be interpreted as)76 W
+7200 68513 MT
+(representing the official policies, either expressed or implied, of these agencies or of the U.S.  Government.)SH
+ES
+%%Page: 1 2
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(1)SH
+12 /Times-Bold AF
+7200 8004 MT
+(1. Introduction)SH
+10 /Times-Italic AF
+8200 9290 MT
+(Note: In this paper I will not)
+87 W( attempt to review the basic ideas of connectionism or back-propagation learning.)86 W
+7200 10576 MT
+(See [3])
+SH( for a brief overview of this area and)
+3 W( [10],)
+SH( chapters 1 -)
+3 W( 8, for a detailed treatment.  When I refer to "standard)4 W
+7200 11862 MT
+(back-propagation" in this paper, I mean the back-propagation algorithm with momentum, as described in [9].)SH
+/Times-Roman SF
+8200 14250 MT
+(The greatest single obstacle to the widespread use of connectionist learning)
+19 W( networks in real-world applications is)18 W
+7200 15536 MT
+(the slow speed at which the current algorithms learn.  At present, the)
+26 W( fastest learning algorithm for most purposes is)27 W
+7200 16822 MT
+(the algorithm that is)
+196 W( generally known as "back-propagation" or "backprop")
+195 W( [6, 7, 9, 18].)
+SH( The)
+640 W( back-propagation)195 W
+7200 18108 MT
+(learning algorithm runs faster than)
+20 W( earlier learning methods, but it is still much slower than we would like.  Even on)21 W
+7200 19394 MT
+(relatively simple problems,)
+128 W( standard back-propagation often requires the complete set of training examples to be)127 W
+7200 20680 MT
+(presented hundreds or thousands of times.  This means that we are limited to investigating)
+106 W( rather small networks)107 W
+7200 21966 MT
+(with only a few thousand trainable weights.  Some problems of real-world importance can)
+2 W( be tackled using networks)1 W
+7200 23252 MT
+(of this size, but most of)
+68 W( the tasks for which connectionist technology might be appropriate are much too large and)69 W
+7200 24538 MT
+(complex to be handled by our current learning-network technology.)SH
+8200 26926 MT
+(One solution is to run)
+17 W( our network simulations on faster computers or to implement the network elements directly)16 W
+7200 28212 MT
+(in VLSI chips.  A number of groups are working on faster implementations, including a)
+26 W( group at CMU that is using)27 W
+7200 29498 MT
+(the 10-processor Warp machine)
+19 W( [13].)
+SH( This)
+288 W( work is important, but even if we)
+19 W( had a network implemented directly in)18 W
+7200 30784 MT
+(hardware our slow learning algorithms would still limit the range of problems we could attack.  Advances in)201 W
+7200 32070 MT
+(learning algorithms and in implementation technology are complementary.)
+84 W( If)
+417 W( we can combine hardware that runs)83 W
+7200 33356 MT
+(several orders of magnitude faster and)
+30 W( learning algorithms that scale up well to very large networks, we will be in a)31 W
+7200 34642 MT
+(position to tackle a much larger universe of possible applications.)SH
+8200 37030 MT
+(Since January of 1988 I have been)
+14 W( conducting an empirical study of learning speed in simulated networks.  I have)13 W
+7200 38316 MT
+(studied the standard backprop)
+16 W( algorithm and a number of variations on standard back-propagation, applying these to)17 W
+7200 39602 MT
+(a set of moderate-sized benchmark problems.  Many of the variations that I)
+16 W( have investigated were first proposed by)15 W
+7200 40888 MT
+(other researchers, but)
+9 W( until now there have been no systematic studies to compare these methods, individually and in)10 W
+7200 42174 MT
+(various combinations, against a standard set)
+117 W( of learning problems.  Only through such systematic studies can we)116 W
+7200 43460 MT
+(hope to understand which methods work best in which situations.)SH
+8200 45848 MT
+(This paper is a report on the results)
+101 W( obtained in the first six months of this study.  Perhaps the most important)102 W
+7200 47134 MT
+(result is the identification of a new learning method)
+59 W( -- actually a combination of several ideas -- that on a range of)58 W
+7200 48420 MT
+(encoder/decoder problems is faster than standard back-propagation by an order)
+111 W( of magnitude or more.  This new)112 W
+7200 49706 MT
+(method also appears)
+42 W( to scale up much better than standard backprop as the size and complexity of the learning task)41 W
+7200 50992 MT
+(grows.)SH
+8200 53380 MT
+(I must emphasize that this is a progress report.  The learning-speed)
+34 W( study is far from complete.  Until now I have)35 W
+7200 54666 MT
+(concentrated most of my effort)
+86 W( on a single class of benchmarks, namely the encoder/decoder problems.  Like any)85 W
+7200 55952 MT
+(family of benchmarks taken)
+178 W( in isolation, encoder/decoder problems have certain peculiarities that may bias the)179 W
+7200 57238 MT
+(results of the study.)
+1 W( Until)
+250 W( a more comprehensive set of benchmarks has been run, it would be premature to draw any)SH
+7200 58524 MT
+(sweeping conclusions or make any strong claims about the widespread applicability of these techniques.)SH
+ES
+%%Page: 2 3
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(2)SH
+12 /Times-Bold AF
+7200 8004 MT
+(2. Methodology)SH
+11 SS 
+7200 11621 MT
+(2.1. What Makes a Good Benchmark?)SH
+10 /Times-Roman AF
+8200 12907 MT
+(At present there is no widely accepted methodology for measuring and comparing)
+311 W( the speed of various)312 W
+7200 14193 MT
+(connectionist learning algorithms.  Some researchers have proposed new algorithms based only on a)
+155 W( theoretical)154 W
+7200 15479 MT
+(analysis of the problem.  It)
+112 W( is sometimes hard to determine how well these theoretical models fit actual practice.)113 W
+7200 16765 MT
+(Other researchers implement their ideas and run one or)
+89 W( two benchmarks to demonstrate the speed of the resulting)88 W
+7200 18051 MT
+(system. Unfortunately,)
+654 W( no two researchers ever seem to choose the same)
+202 W( benchmark or, if they do, they use)203 W
+7200 19337 MT
+(different parameters)
+29 W( or adopt different criteria for success.  This makes it very hard to determine which algorithm is)28 W
+7200 20623 MT
+(best for a given application.)SH
+8200 23011 MT
+(The measurement problem is compounded by widespread confusion about the speed of standard back-)372 W
+7200 24297 MT
+(propagation. Selection)
+836 W( of the back-propagation learning parameters is something of a)
+293 W( black art, and small)292 W
+7200 25583 MT
+(differences in these parameters can lead to large differences in learning times.  It is not uncommon to see)
+66 W( learning)67 W
+7200 26869 MT
+(times reported in)
+232 W( the literature that differ by an order of magnitude or more on the same problem and with)231 W
+7200 28155 MT
+(essentially the same learning method.)SH
+8200 30543 MT
+(The net effect of all this confusion)
+232 W( is that we are faced with a vast, uncharted space of possible learning)233 W
+7200 31829 MT
+(algorithms in which only)
+62 W( a few isolated points have been explored, and even for those points it is hard to compare)61 W
+7200 33115 MT
+(the claims of)
+56 W( the various explorers.  What we need now is a careful, systematic effort to fill in the rest of the map.)57 W
+7200 34401 MT
+(The primary goal of this study is to develop faster learning algorithms for connectionist networks, but I also)
+22 W( hope to)21 W
+7200 35687 MT
+(contribute to the development of a new, more coherent methodology for studies of this kind.)SH
+8200 38075 MT
+(One good way to begin is)
+58 W( to select a family of benchmark problems that learning-speed researchers can use in a)59 W
+7200 39361 MT
+(standard way to evaluate their algorithms.  We should try to choose benchmarks that will give us good insight into)54 W
+7200 40647 MT
+(how various learning algorithms will perform on the real-world tasks we eventually want to tackle.)SH
+8200 43035 MT
+(At present,)
+185 W( the benchmark that appears most often in the literature is the exclusive-or problem, often called)186 W
+7200 44321 MT
+("XOR" : we are given a network with)
+14 W( two input units, one or two hidden units, and one output unit, and the problem)13 W
+7200 45607 MT
+(is to train the weights in this network so that the output unit will turn on if one)
+55 W( or the other of the inputs is on, but)56 W
+7200 46893 MT
+(not both.  Some)
+86 W( researchers, notably Tesauro and Janssens)
+85 W( [16],)
+SH( generalize this to the N-input parity problem: the)85 W
+7200 48179 MT
+(output is to be on if an odd number of inputs are on.)SH
+8200 50567 MT
+(The XOR/parity problem looms large in the history and theory of connectionist)
+24 W( models \050see)
+25 W( [11])
+SH( for an important)25 W
+7200 51853 MT
+(piece of this history\051, but if our goal is to develop good learning algorithms for real-world)
+139 W( pattern-classification)138 W
+7200 53139 MT
+(tasks, XOR/parity is the wrong problem to concentrate on.)
+227 W( Classification)
+706 W( tasks take advantage of a learning)228 W
+7200 54425 MT
+(network's ability to generalize from the input patterns it has seen during)
+59 W( training to nearby patterns in the space of)58 W
+7200 55711 MT
+(possible inputs.  Such networks must occasionally make sharp distinctions between very similar input patterns,)
+59 W( but)60 W
+7200 56997 MT
+(this is the exception rather than the rule.  XOR and parity, on the other hand, have exactly the opposite)
+78 W( character:)77 W
+7200 58283 MT
+(generalization is actually punished, since the nearest neighbors)
+10 W( of an input pattern must produce the opposite answer)11 W
+7200 59569 MT
+(from the pattern itself.)SH
+8200 61957 MT
+(Other popular benchmark problems, such as the "Penzias" or cluster-counting task have some of this)
+218 W( same)217 W
+7200 63243 MT
+(anti-generalizing quality.  Here again, the change of any one bit will almost always make a big)
+SH( change in the answer.)1 W
+7200 64529 MT
+(As part of a)
+38 W( suite of benchmarks, such tasks are valuable, but if used in isolation they may encourage us to develop)37 W
+7200 65815 MT
+(learning algorithms that do not generalize well.)SH
+8200 68203 MT
+(In my view, we would do better to concentrate on what I will call "noisy)
+78 W( associative memory" benchmarks: we)79 W
+7200 69489 MT
+(select a set of input patterns, perhaps binary strings chosen at random, and expand each of these)
+99 W( into a cluster of)98 W
+7200 70775 MT
+(similar inputs by adding random noise or flipping some of the input bits; we then train the network to produce)
+104 W( a)105 W
+ES
+%%Page: 3 4
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(3)SH
+7200 7886 MT
+(different output pattern for each of these input clusters.  We might occasionally ask the network to)
+133 W( map several)132 W
+7200 9172 MT
+(different clusters into the same output.  Some of the noise-modified input patterns are not)
+9 W( used during training; these)10 W
+7200 10458 MT
+(can be used later)
+268 W( to determine whether the network is capturing the "central idea" of the cluster or is just)267 W
+7200 11744 MT
+(memorizing the specific input patterns it has seen.  I believe that performance of a learning algorithm on this type of)14 W
+7200 13030 MT
+(problem will correlate very well with performance on real-world pattern classification tasks.)SH
+8200 15418 MT
+(This family of benchmarks can be scaled in various ways.)
+172 W( We)
+593 W( can vary the number of pattern-clusters, the)171 W
+7200 16704 MT
+(number of input and output units, and the amount of noise added to the inputs.)
+165 W( We)
+581 W( can treat this as a digital)166 W
+7200 17990 MT
+(problem, in which the inputs are either 0 or 1, or we can use analog input)
+108 W( patterns.  We can vary the number of)107 W
+7200 19276 MT
+(hidden units and the number of layers.  Obviously, it will take some time before we have accumulated a)
+29 W( solid set of)30 W
+7200 20562 MT
+(baseline results against which new algorithms can be measured.)SH
+11 /Times-Bold AF
+7200 24179 MT
+(2.2. The Encoder/Decoder Task)SH
+10 /Times-Roman AF
+8200 25465 MT
+(In the coming months I intend to concentrate on "noisy associative memory" benchmarks, plus some)
+29 W( benchmarks)28 W
+7200 26751 MT
+(adapted from real-world applications in domains such as speech understanding and road following.)
+89 W( However,)
+429 W( for)90 W
+7200 28037 MT
+(the early stages of the study it seemed wise to stick)
+78 W( with encoder/decoder problems.  This family of problems has)77 W
+7200 29323 MT
+(been popular in the connectionist community)
+89 W( for some years, so we have a base of shared experience in applying)90 W
+7200 30609 MT
+(older learning algorithms to them.)SH
+8200 32997 MT
+(The encoder/decoder problems,)
+130 W( often called simply "encoders", will be familiar to most readers of this report.)129 W
+7200 34283 MT
+(When I speak of an "N-M-N encoder",)
+106 W( I mean a network with three layers of units and two layers of modifiable)107 W
+7200 35569 MT
+(weights. There)
+281 W( are N units in the input layer, M hidden units, and N units in the output layer.  There is a connection)15 W
+7200 36855 MT
+(from every input unit to every hidden unit and)
+2 W( a connection from every hidden unit to every output unit.  In addition,)3 W
+7200 38141 MT
+(each unit has a modifiable threshold.  There are no direct connections from the input units)
+161 W( to the output units.)160 W
+7200 39427 MT
+(Normally, M is smaller than than N, so the network has a bottleneck through which information must flow.)SH
+8200 41815 MT
+(This network is presented with N distinct)
+52 W( input patterns, each of which has only one of the input units turned on)53 W
+7200 43101 MT
+(\050set to 1.0\051; the other input bits are turned off \050set to 0.0\051.  The)
+86 W( task is to duplicate the input pattern in the output)85 W
+7200 44387 MT
+(units. Since)
+418 W( all information must)
+84 W( flow through the hidden units, the network must develop a unique encoding for)85 W
+7200 45673 MT
+(each of the N patterns in)
+105 W( the M hidden units and a set of connection weights that, working together, perform the)104 W
+7200 46959 MT
+(encoding and decoding operations.)SH
+8200 49347 MT
+(If an encoder network has)38 W
+/Times-Italic SF
+19025 XM
+(M)SH
+/Times-Roman SF
+20008 XM
+(=)
+150 MX(log)SH
+/Times-Italic SF
+22550 XM
+(N)SH
+/Times-Roman SF
+(, I will speak of it as a "tight" encoder.  For example, the)
+38 W( 8-3-8 and 16-4-16)39 W
+8 SS 
+22000 49692 MT
+(2)SH
+10 SS 
+7200 50633 MT
+(encoders are tight in this sense.  If the hidden units)
+51 W( assume only two values, 1 and 0, then the network must assign)50 W
+7200 51919 MT
+(every input pattern to one of)
+12 W( the N possible binary codes in the hidden layer, wasting none of the codes.  In practice,)13 W
+7200 53205 MT
+(a backprop network will often use three or more distinct analog values in some of the hidden units, so "tight")169 W
+7200 54491 MT
+(encoder networks are not really forced to search for optimal binary encodings.  It is even)
+SH( possible to learn to perform)1 W
+7200 55777 MT
+(the encoder/decoder)
+56 W( task in an "ultra-tight" network such as 8-2-8, though this takes much longer than learning the)55 W
+7200 57063 MT
+(same task in an 8-3-8 network.)SH
+8200 59451 MT
+(In a)
+89 W( real-world pattern classification task, we will usually give the network enough hidden units to perform the)90 W
+7200 60737 MT
+(task easily.  We do not want to provide too many hidden units -- that allows the)
+65 W( network to memorize the training)64 W
+7200 62023 MT
+(examples rather than extracting the general features that will allow it to handle cases it has not seen during training)44 W
+7200 63309 MT
+(-- but neither do we want to force the network to spend a lot of)
+56 W( extra time trying to find an optimal representation.)55 W
+7200 64595 MT
+(This suggests that relatively "loose")
+141 W( encoder problems, such as 10-5-10 or 64-8-64, might be more realistic and)142 W
+7200 65881 MT
+(informative benchmarks than tight or ultra-tight encoders.  Much of the)
+13 W( work reported here was done on the 10-5-10)12 W
+7200 67167 MT
+(encoder, which is not too tight and not too small.  This made it possible to run a large number)
+49 W( of experiments with)50 W
+7200 68453 MT
+(this same problem, including some using very slow learning algorithms.)SH
+8200 70841 MT
+(The standard encoder problem has one unusual feature that is not seen in typical pattern classification)
+95 W( tasks: in)94 W
+ES
+%%Page: 4 5
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(4)SH
+7200 7886 MT
+(each learning example, only one of the connections)
+120 W( on the input side carries a non-zero activation for any given)121 W
+7200 9172 MT
+(training pattern.  In the standard back-propagation algorithm, only this one input-side)
+68 W( weight is modified by errors)67 W
+7200 10458 MT
+(due to that pattern.  This separation)
+34 W( of effects makes the standard encoder/decoder somewhat easier than the typical)35 W
+7200 11744 MT
+(pattern-classification task, and therefore perhaps unrealistic as a benchmark.  In an effort)
+17 W( to understand what kind of)16 W
+7200 13030 MT
+(bias this may be introducing, I have also looked at)106 W
+/Times-Italic SF
+28619 XM
+(complement encoder)107 W
+/Times-Roman SF
+37386 XM
+(problems, in which the input and output)107 W
+7200 14316 MT
+(patterns are all ones)
+58 W( except for a single zero in some position.  As we will see, complement encoders require more)57 W
+7200 15602 MT
+(learning time than standard encoders, but the difference can be minimized if the right learning techniques are used.)SH
+8200 17990 MT
+(In all)
+49 W( of the encoder and complement encoder problems, learning times are reported in)50 W
+/Times-Italic SF
+43752 XM
+(epochs)SH
+/Times-Roman SF
+(. An)
+350 W( epoch is one)50 W
+7200 19276 MT
+(presentation of the entire set of N training patterns.  All of the algorithms that)
+134 W( I have studied to date perform a)133 W
+7200 20562 MT
+(forward pass and a backward pass on each pattern, collecting error data; the weights are updated at the)
+78 W( end of the)79 W
+7200 21848 MT
+(epoch, after the entire set of N patterns has been seen.)SH
+11 /Times-Bold AF
+7200 25465 MT
+(2.3. When is the Learning Complete?)SH
+10 /Times-Roman AF
+8200 26751 MT
+(One source of confusion in the learning-speed studies done to date)
+61 W( is that each researcher has chosen a different)60 W
+7200 28037 MT
+(criterion for "successful" learning of a task.  In complex pattern-classification tasks, this is a hard)
+171 W( problem for)172 W
+7200 29323 MT
+(several reasons.  First, if the inputs are noisy, it may be impossible to perform)
+7 W( a perfect classification.  Second, if the)6 W
+7200 30609 MT
+(outputs are analog in nature, the accuracy required will depend on the demands of the specific task.)
+SH( Finally,)
+251 W( in many)1 W
+7200 31895 MT
+(tasks one)
+50 W( can manipulate the learning parameters to trade off speed and accuracy against generalization; again, any)49 W
+7200 33181 MT
+(reasonable criterion for success will depend on the demands)
+43 W( of the particular problem.  I believe that researchers in)44 W
+7200 34467 MT
+(this field need to discuss these)
+53 W( issues and arrive at some consensus about how various benchmark problems should)52 W
+7200 35753 MT
+(be run and evaluated.)SH
+8200 38141 MT
+(On something like an encoder/decoder)
+192 W( problem there should be little difficulty in agreeing upon criteria for)193 W
+7200 39427 MT
+(success, but no such agreement exists at present.  Some researchers accept any)
+9 W( output over 0.50000 as a one and any)8 W
+7200 40713 MT
+(output below that threshold as a zero.  However, if we)
+47 W( were to apply this criterion to real analog hardware devices,)48 W
+7200 41999 MT
+(the slightest bit of additional noise could drive some bits to the other)
+6 W( side of the threshold.  Other researchers require)5 W
+7200 43285 MT
+(that each output be very close to the specified target)
+12 W( value.  For networks performing a task with binary outputs, this)13 W
+7200 44571 MT
+(seems unnecessarily strict; some learning algorithms may produce useful outputs quickly, but take much)
+76 W( longer to)75 W
+7200 45857 MT
+(adjust the output)
+61 W( values to within the specified tolerances.  Still other researchers declare success when the sum of)62 W
+7200 47143 MT
+(the squared)
+136 W( error for all the outputs falls below some fixed value.  This seems an odd choice, since in a binary)135 W
+7200 48429 MT
+(application we want each of the individual outputs to be correct; we don't want to)
+79 W( trade more error on one output)80 W
+7200 49715 MT
+(against less error on another.)SH
+8200 52103 MT
+(Another possibility is to consider a network to have learned the problem when, for each input pattern,)
+48 W( the output)47 W
+7200 53389 MT
+(of the "correct" unit is)
+4 W( larger than any other output.  This criterion is sometimes met much earlier in the training than)5 W
+7200 54675 MT
+(any criterion based upon a fixed threshold.  However, if we were to)
+16 W( use this criterion for training an actual hardware)15 W
+7200 55961 MT
+(network, we would need some additional)
+132 W( circuitry to select the largest output; it seems better to let the learning)133 W
+7200 57247 MT
+(network itself do this job, if possible.  In)
+31 W( addition, this criterion is not applicable in problems with multiple one-bits)30 W
+7200 58533 MT
+(in the output pattern.)SH
+8200 60921 MT
+(I suggest that for problems with binary outputs,)
+62 W( we adopt a "threshold and margin" criterion similar to that used)63 W
+7200 62207 MT
+(by digital logic designers: if the total range of the output units is 0.0 to 1.0, any value)
+6 W( below 0.4 is considered to be a)5 W
+7200 63493 MT
+(zero and any)
+24 W( value above 0.6 is considered to be a one; values between 0.4 and 0.6 are considered to be "marginal",)25 W
+7200 64779 MT
+(and are not counted as correct during training.)
+185 W( If)
+619 W( the output range is different, we scale these two thresholds)184 W
+7200 66065 MT
+(appropriately. By)
+438 W( creating a "no man's)
+94 W( land" between the two classes of outputs, we produce a network that can)95 W
+7200 67351 MT
+(tolerate a small amount of noise in the outputs.)SH
+8200 69739 MT
+(All of the examples in this paper use this 0.4 - 0.6 criterion)
+56 W( to measure success.  Training continues until, for an)55 W
+7200 71025 MT
+(entire epoch, we observe that every output is correct; then we stop and declare learning to have been successful.)113 W
+ES
+%%Page: 5 6
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(5)SH
+7200 7886 MT
+(Since back-propagation networks are deterministic, we will get the same successful results in all future)
+15 W( trials as long)14 W
+7200 9172 MT
+(as we do not change the weights.)SH
+11 /Times-Bold AF
+7200 12789 MT
+(2.4. How Should We Report Learning Times?)SH
+10 /Times-Roman AF
+8200 14075 MT
+(The)SH
+/Times-Italic SF
+10055 XM
+(epoch)SH
+/Times-Roman SF
+(, defined as a single presentation of each of the I/O patterns in)
+50 W( the training set, is a convenient unit by)51 W
+7200 15361 MT
+(which to measure learning time for the benchmarks reported)
+47 W( here.  An alternative is to use the)46 W
+/Times-Italic SF
+45815 XM
+(pattern presentation)46 W
+/Times-Roman SF
+7200 16647 MT
+(as the basic unit of learning time.  This is the presentation of a single I/O pattern, with the associated forward)157 W
+7200 17933 MT
+(propagation of results and)
+1 W( back-propagation of error, and \050sometimes\051 the modification of weights.  The presentation)SH
+7200 19219 MT
+(is a more natural measure to use in problems that)
+61 W( do not have a finite training set, or that do not cycle through the)62 W
+7200 20505 MT
+(entire training)
+133 W( set between weight-updates.  As long as it is made clear what units are being reported, it is easy)132 W
+7200 21791 MT
+(enough to convert from epochs to presentations, so researchers can)
+57 W( choose whatever units they like without fear of)58 W
+7200 23077 MT
+(confusion.)SH
+8200 25465 MT
+(In measuring a new learning algorithm against a particular benchmark problem, it is desirable to run a)
+162 W( large)161 W
+7200 26751 MT
+(number of trials with the weights initialized to different random values in each case.  Any single trial)
+171 W( may be)172 W
+7200 28037 MT
+(misleading: the choice)
+122 W( of initial weights might have a greater influence on the time required than any difference)121 W
+7200 29323 MT
+(between two algorithms.  Most of the results reported in this paper are averages over 25)
+25 W( or 100 trials; for some very)26 W
+7200 30609 MT
+(large or very slow problems, I have been forced to use fewer trials.)SH
+8200 32997 MT
+(Reporting of learning times is a simple enough matter when all of the)
+9 W( trials succeed.  That is the case for all of the)8 W
+7200 34283 MT
+(encoder examples I have run.)
+32 W( In)
+315 W( this case, it is useful to report the average learning time over all the trials, the best)33 W
+7200 35569 MT
+(and worst results, and the standard deviation or some other measure of the variation in results.)
+99 W( Unfortunately,)
+446 W( in)98 W
+7200 36855 MT
+(some problems such as XOR, the)
+27 W( network will occasionally become stuck in a local minimum from which it cannot)28 W
+7200 38141 MT
+(escape. These)
+602 W( learning trials)
+176 W( never converge, so the learning time is infinite.  A few other trials may take an)175 W
+7200 39427 MT
+(anomalously long time; mixing these long trials into an average may give a distorted picture of the data.)SH
+8200 41815 MT
+(How should such results be reported?  One)
+71 W( option, used by Robert Jacobs)
+72 W( [5],)
+SH( is simply to report the failures in)72 W
+7200 43101 MT
+(one column and the average)
+108 W( of the successful trials in another.  The problem with this is that it becomes hard to)107 W
+7200 44387 MT
+(choose between a learning method with fewer failures and one with a better average.)
+3 W( In)
+257 W( addition, it becomes unclear)4 W
+7200 45673 MT
+(whether the average has been polluted by a few very long near-failures.)SH
+8200 48061 MT
+(A second option is adopted by)
+30 W( Tesauro and Janssens)
+29 W( [16].)
+SH( Instead)
+308 W( of averaging the times for N trials in the usual)29 W
+7200 49347 MT
+(way, they define the "average" training time to be the inverse of the average training rate.  The training rate for)
+17 W( each)18 W
+7200 50633 MT
+(trial is defined as the inverse of the time required for that trial.  This method gives us)
+23 W( a single, well defined number,)22 W
+7200 51919 MT
+(even if the set of trials)
+94 W( includes some trials that are very long or infinite; the learning rate for these trials goes to)95 W
+7200 53205 MT
+(zero. However,)
+346 W( this kind of average emphasizes short trials)
+48 W( and de-emphasizes long ones, so results computed this)47 W
+7200 54491 MT
+(way look much faster than if a conventional average were used.  Note also that if two algorithms are)
+89 W( equally fast)90 W
+7200 55777 MT
+(when measured by a conventional average, the training-rate average)
+230 W( will rate the more consistent of the two)229 W
+7200 57063 MT
+(algorithms as slower.  Algorithms that take risky, unsound steps to get very short convergence times on a few trials)38 W
+7200 58349 MT
+(are favored, even if these algorithms do very poorly by other measures.)SH
+8200 60737 MT
+(The option I favor, for lack of a better idea, is to allow the learning program to restart a trial,)
+71 W( with new random)70 W
+7200 62023 MT
+(weights, whenever the network has failed to converge after a certain number of epochs.  The time reported for that)53 W
+7200 63309 MT
+(trial must include the time spent before the restart and after it.)
+132 W( We)
+512 W( can consider these restarts to be part of the)131 W
+7200 64595 MT
+(learning algorithm;)
+86 W( the restart threshold is just another parameter that the experimenter can adjust for best results.)87 W
+7200 65881 MT
+(This seems realistic: when faced with a method that usually converges in 20 epochs)
+96 W( or less, but that occasionally)95 W
+7200 67167 MT
+(gets stuck, it seems only)
+61 W( natural to give up and start over at some point.  The XOR results reported below use this)62 W
+7200 68453 MT
+(method of reporting.)SH
+ES
+%%Page: 6 7
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(6)SH
+11 /Times-Bold AF
+7200 7937 MT
+(2.5. Implementation)SH
+10 /Times-Roman AF
+8200 9223 MT
+(All of the experiments reported here were run on a back-propagation simulator that I developed specifically)
+82 W( for)81 W
+7200 10509 MT
+(this purpose.  The simulator was written in CMU Common Lisp and runs on the IBM RT PC workstation)
+33 W( under the)34 W
+7200 11795 MT
+(Mach operating system and the X10.4 window system.  The machines that were)
+184 W( used in this study have been)183 W
+7200 13081 MT
+(provided by IBM as part of a joint research agreement with the Computer Science Department of)
+54 W( Carnegie-Mellon)55 W
+7200 14367 MT
+(University.)SH
+8200 16755 MT
+(The simulator will)
+207 W( soon be converted to use the X11 window system via the CLX interface.  It should be)206 W
+7200 18041 MT
+(relatively easy to port this code to any other implementation of Common Lisp, though I have not)
+58 W( taken the time to)59 W
+7200 19327 MT
+(make the code 100% portable.)SH
+8200 21715 MT
+(Because it is coded in Common Lisp, the simulator is very flexible.  It is easy to try)
+207 W( out several program)206 W
+7200 23001 MT
+(variations in a few hours.  With the displays turned off, the simulator runs the back-propagation algorithm for)
+125 W( a)126 W
+7200 24287 MT
+(10-5-10 encoder at roughly 3 epochs per second, a processing rate)
+184 W( of about 3500 connection-presentations per)183 W
+7200 25573 MT
+(second. This)
+288 W( is fast enough for)
+19 W( experimentation on small benchmarks, especially with the new algorithms that learn)20 W
+7200 26859 MT
+(such tasks in relatively few epochs.  For)
+48 W( larger problems and real applications, we will need a faster simulator.  By)47 W
+7200 28145 MT
+(hand-coding the inner loops in assembler, it should be possible to speed up my simulator considerably, perhaps by)62 W
+7200 29431 MT
+(as much as a factor of ten.)
+142 W( Beyond)
+532 W( that point, we will have to move the inner loops to a faster machine.  For)141 W
+7200 30717 MT
+(comparison, the Warp machine is now running standard)
+220 W( back-propagation at a rate of 17 million connection-)221 W
+7200 32003 MT
+(presentations per second)
+169 W( [13],)
+SH( almost 5000)
+169 W( times faster than my simulator, but it is a very difficult machine to)168 W
+7200 33289 MT
+(program.)SH
+8200 35677 MT
+(My simulator is designed to make it easy for the)
+60 W( experimenter to see what is going on inside of the network.  A)61 W
+7200 36963 MT
+(set of windows displays the changing values of)
+2 W( the unit outputs and other per-unit statistics.  Another set of windows)1 W
+7200 38249 MT
+(displays the weights, weight changes, and)
+14 W( other per-weight statistics.  A control panel is provided through which the)15 W
+7200 39535 MT
+(operator can alter the learning parameters in real time or single-step the processing to see more clearly what is)
+12 W( going)11 W
+7200 40821 MT
+(on. These)
+268 W( displays have been of immense value in helping me to)
+9 W( understand what problems were developing during)10 W
+7200 42107 MT
+(the learning procedure and what might be done about them.)SH
+ES
+%%Page: 7 8
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(7)SH
+12 /Times-Bold AF
+7200 8004 MT
+(3. Experiments and Results)SH
+11 SS 
+7200 11621 MT
+(3.1. Tuning of Backprop Learning Parameters)SH
+10 /Times-Roman AF
+8200 12907 MT
+(The first task undertaken in this study was to understand how the learning parameters affected learning time in a)48 W
+7200 14193 MT
+(relatively small benchmark, the 10-5-10 encoder.  There are three parameters of interest:)44 W
+/Symbol SF
+43457 XM
+(e)SH
+/Times-Roman SF
+(, the learning rate;)45 W
+/Symbol SF
+51602 XM
+(a)SH
+/Times-Roman SF
+(, the)45 W
+7200 15479 MT
+(momentum factor; and)SH
+/Times-Italic SF
+16560 XM
+(r)SH
+/Times-Roman SF
+(, the range of the random initial weights.)SH
+8200 17867 MT
+(At the start of each learning trial, each of the weights and thresholds in the network is initialized to a)
+114 W( random)113 W
+7200 19153 MT
+(value chosen from the range -)SH
+/Times-Italic SF
+(r)SH
+/Times-Roman SF
+19752 XM
+(to +)SH
+/Times-Italic SF
+(r)SH
+/Times-Roman SF
+(.)SH
+8200 21541 MT
+(The formula for)
+70 W( updating the weights is)71 W
+/Symbol SF
+24832 XM
+(D)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051)
+150 MX(=)SH
+/Symbol SF
+27919 XM
+(-e)
+150 MX(\266)SH
+/Times-Italic SF
+(E)SH
+/Times-Roman SF
+30312 XM
+(/)SH
+/Symbol SF
+30740 XM
+(\266)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051)
+150 MX(+)SH
+/Symbol SF
+33709 XM
+(a)
+150 MX(D)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Symbol SF
+(-)SH
+/Times-Roman SF
+(1\051, where)71 W
+/Symbol SF
+41097 XM
+(\266)SH
+/Times-Italic SF
+(E)SH
+/Times-Roman SF
+42352 XM
+(/)SH
+/Symbol SF
+42780 XM
+(\266)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051 is the error derivative)71 W
+7200 22827 MT
+(for that weight, accumulated over the whole epoch.  Sometimes I refer to this derivative the "slope" of that weight.)SH
+8200 25215 MT
+(Because standard back-propagation learning is rather slow, I)
+92 W( did not exhaustively scan the 3-dimensional space)91 W
+7200 26501 MT
+(defined by)48 W
+/Times-Italic SF
+11795 XM
+(r)SH
+/Times-Roman SF
+(,)SH
+/Symbol SF
+12732 XM
+(a)SH
+/Times-Roman SF
+(, and)48 W
+/Symbol SF
+15653 XM
+(e)SH
+/Times-Roman SF
+(. A)
+346 W( cursory exploration was done, with only a few trials at each point tested, in order)
+48 W( to find)49 W
+7200 27787 MT
+(the regions that were most promising.  This suggested that an)21 W
+/Times-Italic SF
+32207 XM
+(r)SH
+/Times-Roman SF
+32867 XM
+(value of 1.0, an)21 W
+/Symbol SF
+39394 XM
+(a)SH
+/Times-Roman SF
+40296 XM
+(value between 0.0 and 0.5,)
+21 W( and an)20 W
+/Symbol SF
+7200 29073 MT
+(e)SH
+/Times-Roman SF
+7909 XM
+(value somewhere around 1.0 would produce the fastest learning for this problem.)
+20 W( Many)
+292 W( researchers have reported)21 W
+7200 30359 MT
+(good results at)48 W
+/Symbol SF
+13427 XM
+(a)SH
+/Times-Roman SF
+14356 XM
+(values of 0.8)
+48 W( or 0.9, but on this problem I found that such a high)47 W
+/Symbol SF
+41061 XM
+(a)SH
+/Times-Roman SF
+41989 XM
+(led to very poor results, often)47 W
+7200 31645 MT
+(requiring a thousand epochs or more.)SH
+8200 34033 MT
+(The promising area was)
+30 W( then explored more intensively, with 25 trials at each point tested.  Surprisingly, the best)31 W
+7200 35319 MT
+(result was obtained with)SH
+/Symbol SF
+17199 XM
+(a)SH
+/Times-Roman SF
+(=0.0, or no momentum at all:)SH
+11313 37328 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27686 XM
+(a)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 37946 LH BX1
+-1703 50 17007 37946 LV BX1
+-1703 50 21405 37946 LV BX1
+-1703 50 25803 37946 LV BX1
+-1703 50 30201 37946 LV BX1
+-1703 50 34599 37946 LV BX1
+-1703 50 38997 37946 LV BX1
+-1703 50 43395 37946 LV BX1
+-1703 50 47793 37946 LV BX1
+11425 39031 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(1.7)SH
+27377 XM
+(0.0)SH
+31775 XM
+(1.0)SH
+36048 XM
+(265)SH
+40696 XM
+(80)SH
+44844 XM
+(129)SH
+49492 XM
+(46)SH
+43182 3406 50 9009 39649 BX BX1
+-1703 50 17007 39649 LV BX1
+-1703 50 21405 39649 LV BX1
+-1703 50 25803 39649 LV BX1
+-1703 50 30201 39649 LV BX1
+-1703 50 34599 39649 LV BX1
+-1703 50 38997 39649 LV BX1
+-1703 50 43395 39649 LV BX1
+-1703 50 47793 39649 LV BX1
+8200 42037 MT
+(This notation says that, with 25 trials and the parameters specified, the longest)
+149 W( trial required 265 epochs, the)148 W
+7200 43323 MT
+(shortest required 80 epochs, the average over all the runs was 129 epochs, and the standard deviation was 46.  The)53 W
+7200 44609 MT
+(standard deviations are included only to give the reader a crude idea of the variation in the values;)
+10 W( the distribution of)9 W
+7200 45895 MT
+(learning times seldom looks like a normal distribution, often exhibiting multiple humps, for example.)SH
+8200 48283 MT
+(The same average learning time was obtained for an)SH
+/Symbol SF
+29333 XM
+(a)SH
+/Times-Roman SF
+30214 XM
+(of 0.5 and a smaller)SH
+/Symbol SF
+38379 XM
+(e)SH
+/Times-Roman SF
+39068 XM
+(value:)SH
+11313 50292 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27686 XM
+(a)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 50910 LH BX1
+-1703 50 17007 50910 LV BX1
+-1703 50 21405 50910 LV BX1
+-1703 50 25803 50910 LV BX1
+-1703 50 30201 50910 LV BX1
+-1703 50 34599 50910 LV BX1
+-1703 50 38997 50910 LV BX1
+-1703 50 43395 50910 LV BX1
+-1703 50 47793 50910 LV BX1
+11425 51995 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(1.1)SH
+27377 XM
+(0.5)SH
+31775 XM
+(1.0)SH
+36048 XM
+(275)SH
+40696 XM
+(85)SH
+44844 XM
+(129)SH
+49492 XM
+(40)SH
+43182 3406 50 9009 52613 BX BX1
+-1703 50 17007 52613 LV BX1
+-1703 50 21405 52613 LV BX1
+-1703 50 25803 52613 LV BX1
+-1703 50 30201 52613 LV BX1
+-1703 50 34599 52613 LV BX1
+-1703 50 38997 52613 LV BX1
+-1703 50 43395 52613 LV BX1
+-1703 50 47793 52613 LV BX1
+8200 55001 MT
+(If we hold)65 W
+/Symbol SF
+12755 XM
+(a)SH
+/Times-Roman SF
+13701 XM
+(at 0.0 and vary)65 W
+/Symbol SF
+20154 XM
+(e)SH
+/Times-Roman SF
+(, we see a U-shaped curve,)
+65 W( rising to an average learning time of 242 at)66 W
+/Symbol SF
+49987 XM
+(e)SH
+/Times-Roman SF
+(=0.5 and)66 W
+7200 56287 MT
+(rising more steeply to a value of 241 at)92 W
+/Symbol SF
+23887 XM
+(e)SH
+/Times-Roman SF
+(=1.3. If)
+434 W( we increase)92 W
+/Symbol SF
+33208 XM
+(a)SH
+/Times-Roman SF
+34181 XM
+(up to 0.5 or so, we see that we are)
+92 W( actually in a)91 W
+7200 57573 MT
+(U-shaped valley whose lowest point is always close to 130 epochs.  Above)54 W
+/Symbol SF
+38120 XM
+(a)SH
+/Times-Roman SF
+(=0.5, the floor of the)
+54 W( valley begins to)55 W
+7200 58859 MT
+(rise steeply.)SH
+8200 61247 MT
+(Varying the)10 W
+/Times-Italic SF
+13219 XM
+(r)SH
+/Times-Roman SF
+13868 XM
+(parameter by small amounts made very)
+10 W( little difference in any of these trials.  Changing)9 W
+/Times-Italic SF
+49391 XM
+(r)SH
+/Times-Roman SF
+50039 XM
+(by a large)9 W
+7200 62533 MT
+(amount, either up or down, led to greatly increased learning times.)
+93 W( A)
+438 W( value of 1.0 or 2.0 seemed as good as any)94 W
+7200 63819 MT
+(other and better than most.)SH
+8200 66207 MT
+(Plaut, Nowlan, and Hinton)
+42 W( [12])
+SH( present some analysis suggesting that it may be)
+42 W( beneficial to use different values)41 W
+7200 67493 MT
+(of)SH
+/Symbol SF
+8407 XM
+(e)SH
+/Times-Roman SF
+9220 XM
+(for different weights in the network.  Specifically, they suggest that the)124 W
+/Symbol SF
+39426 XM
+(e)SH
+/Times-Roman SF
+40239 XM
+(value used)
+124 W( in tuning each weight)125 W
+7200 68779 MT
+(should be inversely proportional to the fan-in of the)
+120 W( unit receiving activation via that weight.  I tried this with a)119 W
+7200 70065 MT
+(variety of parameter values, but for the 10-5-10 network using standard)
+74 W( backprop, it consistently performed worse)75 W
+7200 71351 MT
+(than using a single, constant)19 W
+/Symbol SF
+18850 XM
+(e)SH
+/Times-Roman SF
+19558 XM
+(value for all of the weights.  As we)
+19 W( will see below, this "split epsilon" technique does)18 W
+ES
+%%Page: 8 9
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(8)SH
+7200 7886 MT
+(turn out to be useful on networks such as the 128-7-128, where the variation in fan-in is very large.)SH
+8200 10274 MT
+(The same paper suggests that the)
+13 W( parameter values should be varied as the network learns:)14 W
+/Symbol SF
+44758 XM
+(a)SH
+/Times-Roman SF
+45653 XM
+(should be very small)14 W
+7200 11560 MT
+(at first, and should be increased after the network has chosen a direction.  The best schedule for)
+123 W( increasing)122 W
+/Symbol SF
+52330 XM
+(a)SH
+/Times-Roman SF
+53333 XM
+(is)SH
+7200 12846 MT
+(apparently different for each problem.  I)
+220 W( did not explore this idea extensively since the quickprop algorithm,)221 W
+7200 14132 MT
+(described below, seems to do roughly the same job, but in a way that adapts itself to the problem,)
+164 W( rather than)163 W
+7200 15418 MT
+(requiring the human operator to do this job.)SH
+11 /Times-Bold AF
+7200 19035 MT
+(3.2. Eliminating the "Flat Spot")SH
+10 /Times-Roman AF
+8200 20321 MT
+(Once I was able to display the weights and unit outputs during)
+69 W( the course of the learning, one problem with the)70 W
+7200 21607 MT
+(standard backprop algorithm became very clear: units were being turned off hard)
+151 W( during the early stages of the)150 W
+7200 22893 MT
+(learning, and they were getting stuck in the zero state.  The more hidden units there were in the network, the)
+57 W( more)58 W
+7200 24179 MT
+(likely it was that some output units would get stuck.)SH
+8200 26567 MT
+(This problem is due to the "flat spots" where the derivative of the)
+149 W( sigmoid function approaches zero.  In the)148 W
+7200 27853 MT
+(standard back-propagation algorithm, as we back-propagate the error through the network,)
+133 W( we multiply the error)134 W
+7200 29139 MT
+(seen by each unit)86 W
+/Times-Italic SF
+14709 XM
+(j)SH
+/Times-Roman SF
+15323 XM
+(by the derivative of the sigmoid function at)85 W
+/Times-Italic SF
+33557 XM
+(o)SH
+/Times-Roman SF
+34429 XM
+(, the current output of unit)85 W
+/Times-Italic SF
+45688 XM
+(j)SH
+/Times-Roman SF
+(. This)
+420 W( derivative is)85 W
+8 /Times-Italic AF
+34057 29484 MT
+(j)SH
+10 /Times-Roman AF
+7200 30425 MT
+(equal to)36 W
+/Times-Italic SF
+10716 XM
+(o)SH
+/Times-Roman SF
+11588 XM
+(\0501)SH
+/Symbol SF
+12571 XM
+(-)SH
+/Times-Italic SF
+13270 XM
+(o)SH
+/Times-Roman SF
+13992 XM
+(\051; I call this the)36 W
+/Times-Italic SF
+20477 XM
+(sigmoid-prime function)36 W
+/Times-Roman SF
+(. Note)
+323 W( that the value of the sigmoid-prime function goes to)37 W
+8 /Times-Italic AF
+11216 30770 MT
+(j)SH
+13770 XM
+(j)SH
+10 /Times-Roman AF
+7200 31711 MT
+(zero as the unit's output approaches 0.0 or to 1.0.  Even if such an output value)
+78 W( represents the maximum possible)77 W
+7200 32997 MT
+(error, a unit whose output is close to 0.0 or 1.0 will pass back only a)
+124 W( tiny fraction of this error to the incoming)125 W
+7200 34283 MT
+(weights and to units in earlier)
+66 W( layers.  Such a unit will theoretically recover, but it may take a very long time; in a)65 W
+7200 35569 MT
+(machine with roundoff error and the potential for truncating very small values, such units may never recover.)SH
+8200 37957 MT
+(What can we do about)
+27 W( this?  One possibility, suggested by James McClelland and tested by Michael Franzini)
+28 W( [4],)SH
+7200 39243 MT
+(is to use an error measure that goes to infinity as the sigmoid-prime function goes to zero.)
+64 W( This)
+377 W( is mathematically)63 W
+7200 40529 MT
+(elegant, and it seemed to work fairly well, but it is hard to implement.  I chose to explore a)
+1 W( simpler solution: alter the)2 W
+7200 41815 MT
+(sigmoid-prime function so)
+26 W( that it does not go to zero for any output value.  The first modification I tried worked the)25 W
+7200 43101 MT
+(best: I simply added a constant 0.1 to the sigmoid prime value before using it)
+48 W( to scale the error.  Instead of a curve)49 W
+7200 44387 MT
+(that goes from 0.0 up to 0.25 and back down to 0.0, we now have a curve that goes from 0.1 to 0.35 and back to 0.1.)SH
+8200 46775 MT
+(This modification made a dramatic difference, cutting the learning time almost in)
+141 W( half.  Once again we see a)140 W
+7200 48061 MT
+(valley in)176 W
+/Symbol SF
+11274 XM
+(a)SH
+/Times-Roman SF
+(-)SH
+/Symbol SF
+(e)SH
+/Times-Roman SF
+13103 XM
+(space running from)176 W
+/Symbol SF
+21657 XM
+(a)SH
+/Times-Roman SF
+(=0.0 up to about)176 W
+/Symbol SF
+29806 XM
+(a)SH
+/Times-Roman SF
+(=0.5, and once again the best learning speed)
+176 W( is roughly)177 W
+7200 49347 MT
+(constant as)SH
+/Symbol SF
+11866 XM
+(a)SH
+/Times-Roman SF
+12747 XM
+(increases over this range.  The two best values obtained were the following:)SH
+11313 51356 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27686 XM
+(a)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 51974 LH BX1
+-1703 50 17007 51974 LV BX1
+-1703 50 21405 51974 LV BX1
+-1703 50 25803 51974 LV BX1
+-1703 50 30201 51974 LV BX1
+-1703 50 34599 51974 LV BX1
+-1703 50 38997 51974 LV BX1
+-1703 50 43395 51974 LV BX1
+-1703 50 47793 51974 LV BX1
+11425 53059 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(1.5)SH
+27377 XM
+(0.0)SH
+31775 XM
+(1.0)SH
+36048 XM
+(115)SH
+40696 XM
+(50)SH
+45094 XM
+(75)SH
+49492 XM
+(14)SH
+43182 50 9009 53677 LH BX1
+11425 54762 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(0.9)SH
+27377 XM
+(0.4)SH
+31775 XM
+(1.0)SH
+36048 XM
+(120)SH
+40696 XM
+(50)SH
+45094 XM
+(74)SH
+49492 XM
+(14)SH
+43182 5109 50 9009 55380 BX BX1
+-3406 50 17007 55380 LV BX1
+-3406 50 21405 55380 LV BX1
+-3406 50 25803 55380 LV BX1
+-3406 50 30201 55380 LV BX1
+-3406 50 34599 55380 LV BX1
+-3406 50 38997 55380 LV BX1
+-3406 50 43395 55380 LV BX1
+-3406 50 47793 55380 LV BX1
+8200 57768 MT
+(I tried other ways of altering the sigmoid-prime function as well.  The most radical)
+107 W( was simply to replace this)106 W
+7200 59054 MT
+(function with a constant value of 0.5; in effect, this eliminates the multiplication by the derivative of the sigmoid)94 W
+7200 60340 MT
+(altogether. The)
+250 W( best performance obtained with this variation was the following:)SH
+11313 62349 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27686 XM
+(a)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 62967 LH BX1
+-1703 50 17007 62967 LV BX1
+-1703 50 21405 62967 LV BX1
+-1703 50 25803 62967 LV BX1
+-1703 50 30201 62967 LV BX1
+-1703 50 34599 62967 LV BX1
+-1703 50 38997 62967 LV BX1
+-1703 50 43395 62967 LV BX1
+-1703 50 47793 62967 LV BX1
+11425 64052 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(0.5)SH
+27377 XM
+(0.4)SH
+31775 XM
+(1.0)SH
+36048 XM
+(170)SH
+40696 XM
+(50)SH
+45094 XM
+(89)SH
+49492 XM
+(34)SH
+43182 3406 50 9009 64670 BX BX1
+-1703 50 17007 64670 LV BX1
+-1703 50 21405 64670 LV BX1
+-1703 50 25803 64670 LV BX1
+-1703 50 30201 64670 LV BX1
+-1703 50 34599 64670 LV BX1
+-1703 50 38997 64670 LV BX1
+-1703 50 43395 64670 LV BX1
+-1703 50 47793 64670 LV BX1
+8200 67058 MT
+(I next tried replacing sigmoid-prime with a function that returned a random number in the)
+42 W( range 0.0 to 1.0.  This)41 W
+7200 68344 MT
+(did not do as well, probably because)
+1 W( some learning trials were wasted when the random number happened to be very)2 W
+7200 69630 MT
+(small. The)
+250 W( best result obtained with this scheme was the following:)SH
+ES
+%%Page: 9 10
+BS
+0 SI
+10 /Times-Roman AF
+30350 4286 MT
+(9)SH
+11313 8285 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27686 XM
+(a)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 8903 LH BX1
+-1703 50 17007 8903 LV BX1
+-1703 50 21405 8903 LV BX1
+-1703 50 25803 8903 LV BX1
+-1703 50 30201 8903 LV BX1
+-1703 50 34599 8903 LV BX1
+-1703 50 38997 8903 LV BX1
+-1703 50 43395 8903 LV BX1
+-1703 50 47793 8903 LV BX1
+11425 9988 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(0.4)SH
+27377 XM
+(0.7)SH
+31775 XM
+(1.0)SH
+36048 XM
+(340)SH
+40696 XM
+(75)SH
+44844 XM
+(163)SH
+49492 XM
+(75)SH
+43182 3406 50 9009 10606 BX BX1
+-1703 50 17007 10606 LV BX1
+-1703 50 21405 10606 LV BX1
+-1703 50 25803 10606 LV BX1
+-1703 50 30201 10606 LV BX1
+-1703 50 34599 10606 LV BX1
+-1703 50 38997 10606 LV BX1
+-1703 50 43395 10606 LV BX1
+-1703 50 47793 10606 LV BX1
+8200 12994 MT
+(Finally, I tried replacing the sigmoid-prime function with the sum of a constant 0.25 and a random value)
+79 W( in the)78 W
+7200 14280 MT
+(range 0.0 to 0.5.  This did about as well as the constant alone:)SH
+11313 16289 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27686 XM
+(a)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 16907 LH BX1
+-1703 50 17007 16907 LV BX1
+-1703 50 21405 16907 LV BX1
+-1703 50 25803 16907 LV BX1
+-1703 50 30201 16907 LV BX1
+-1703 50 34599 16907 LV BX1
+-1703 50 38997 16907 LV BX1
+-1703 50 43395 16907 LV BX1
+-1703 50 47793 16907 LV BX1
+11425 17992 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(0.5)SH
+27377 XM
+(0.6)SH
+31775 XM
+(1.0)SH
+36048 XM
+(135)SH
+40696 XM
+(50)SH
+45094 XM
+(90)SH
+49492 XM
+(27)SH
+43182 3406 50 9009 18610 BX BX1
+-1703 50 17007 18610 LV BX1
+-1703 50 21405 18610 LV BX1
+-1703 50 25803 18610 LV BX1
+-1703 50 30201 18610 LV BX1
+-1703 50 34599 18610 LV BX1
+-1703 50 38997 18610 LV BX1
+-1703 50 43395 18610 LV BX1
+-1703 50 47793 18610 LV BX1
+8200 20998 MT
+(In all cases, the)
+14 W( same kind of valley in)15 W
+/Symbol SF
+23885 XM
+(a)SH
+/Times-Roman SF
+(-)SH
+/Symbol SF
+(e)SH
+/Times-Roman SF
+25553 XM
+(space was observed, and I was always able to find an)15 W
+/Symbol SF
+47212 XM
+(e)SH
+/Times-Roman SF
+47916 XM
+(value that gave)15 W
+7200 22284 MT
+(a near-optimal performance with)SH
+/Symbol SF
+20585 XM
+(a)SH
+/Times-Roman SF
+(=0.0.)SH
+8200 24672 MT
+(The primary lesson from these experiments is that it is very useful to eliminate the flat spots by one)
+107 W( means or)106 W
+7200 25958 MT
+(another. In)
+518 W( standard backprop, we must carefully choose the learning parameters to avoid)
+134 W( the problem of stuck)135 W
+7200 27244 MT
+(units; with the modified sigmoid-prime)
+79 W( function, we can optimize the parameters for best performance overall.  A)78 W
+7200 28530 MT
+(slight modification of the classic sigmoid-prime function did the job best, but replacing this)
+52 W( step with a constant or)53 W
+7200 29816 MT
+(with a constant plus noise only reduces the learning speed by about 20%.  This suggests)
+53 W( that this general family of)52 W
+7200 31102 MT
+(learning algorithms is very robust,)
+9 W( and will give you decent results however you scale the error, as long as you don't)10 W
+7200 32388 MT
+(change the sign or eliminate the error signal by letting the sigmoid-prime function)
+132 W( go to zero.  Of course, these)131 W
+7200 33674 MT
+(results may not hold for other problems or for multi-layer networks.)SH
+11 /Times-Bold AF
+7200 37291 MT
+(3.3. Using a Non-Linear Error Function)SH
+10 /Times-Roman AF
+8200 38577 MT
+(As mentioned in the previous section, several researchers have eliminated the flat spots in the)
+150 W( sigmoid-prime)151 W
+7200 39863 MT
+(function, at least for the units in the output layer of the network, by)
+37 W( using an error function that grows to infinity as)36 W
+7200 41149 MT
+(the difference between the)
+39 W( desired and observed outputs goes to 1.0 or -1.0.  As the error approaches these extreme)40 W
+7200 42435 MT
+(values, the product of this non-linear error function and sigmoid-prime remains finite,)
+141 W( so some error signal gets)140 W
+7200 43721 MT
+(through and the unit does not get stuck.)SH
+8200 46109 MT
+(David Plaut suggested to me that the non-linear error function might speed up)
+52 W( learning even though the problem)53 W
+7200 47395 MT
+(of stuck units had been handled by other means.  The idea was that for)
+23 W( small differences between the output and the)22 W
+7200 48681 MT
+(desired output, the error should behave linearly, but as the difference increased, the error function should grow faster)2 W
+7200 49967 MT
+(than linearly, heading toward infinity as errors approach their maximum values.)SH
+8200 52355 MT
+(One function that meets these requirements is hyperbolic arctangent of the difference.  I)
+92 W( tried using that, rather)91 W
+7200 53641 MT
+(than the difference itself, as the error signal fed into the output units in the network.)
+95 W( Since)
+441 W( this function was not)96 W
+7200 54927 MT
+(competing against one going)
+56 W( to zero, I did not let it grow arbitrarily large; I cut it off at -.9999999 and +.9999999,)55 W
+7200 56213 MT
+(and used values of -17.0 and +17.0 for more extreme differences.)SH
+8200 58601 MT
+(This did indeed have a modest beneficial effect.)
+114 W( On)
+480 W( the 10-5-10 encoder, using backprop with the hyperbolic)115 W
+7200 59887 MT
+(arctan error function and adding)
+257 W( 0.1 to sigmoid-prime, I was able to get the following result, about a 25%)256 W
+7200 61173 MT
+(improvement:)SH
+11313 63182 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27686 XM
+(a)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 63800 LH BX1
+-1703 50 17007 63800 LV BX1
+-1703 50 21405 63800 LV BX1
+-1703 50 25803 63800 LV BX1
+-1703 50 30201 63800 LV BX1
+-1703 50 34599 63800 LV BX1
+-1703 50 38997 63800 LV BX1
+-1703 50 43395 63800 LV BX1
+-1703 50 47793 63800 LV BX1
+11425 64885 MT
+(10-5-10)SH
+18706 XM
+(25)SH
+22979 XM
+(0.6)SH
+27377 XM
+(0.0)SH
+31775 XM
+(1.0)SH
+36298 XM
+(85)SH
+40696 XM
+(40)SH
+44719 XM
+(58.7)SH
+49492 XM
+(13)SH
+43182 3406 50 9009 65503 BX BX1
+-1703 50 17007 65503 LV BX1
+-1703 50 21405 65503 LV BX1
+-1703 50 25803 65503 LV BX1
+-1703 50 30201 65503 LV BX1
+-1703 50 34599 65503 LV BX1
+-1703 50 38997 65503 LV BX1
+-1703 50 43395 65503 LV BX1
+-1703 50 47793 65503 LV BX1
+8200 67891 MT
+(I have not tried applying nonlinear error functions to units in interior layers of the network, but)
+13 W( plan to investigate)14 W
+7200 69177 MT
+(this in the near future.  Some sort of non-linear error function may)
+76 W( be of value in increasing the learning speed of)75 W
+7200 70463 MT
+(networks with multiple hidden layers.)SH
+ES
+%%Page: 10 11
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(10)SH
+11 /Times-Bold AF
+7200 7937 MT
+(3.4. The Quickprop Algorithm)SH
+10 /Times-Roman AF
+8200 9223 MT
+(Back-propagation and its relatives work by calculating the partial first derivative of the overall)
+40 W( error with respect)41 W
+7200 10509 MT
+(to each weight.  Given this information we can do gradient descent in)
+63 W( weight space.  If we take infinitesimal steps)62 W
+7200 11795 MT
+(down the gradient, we are guaranteed to reach a local minimum, and it has been empirically determined that)
+119 W( for)120 W
+7200 13081 MT
+(many problems this local)
+199 W( minimum will be a global minimum, or at least a "good enough" solution for most)198 W
+7200 14367 MT
+(purposes.)SH
+8200 16755 MT
+(Of course, if we want to find)
+60 W( a solution in the shortest possible time, we do not want to take infinitesimal steps;)61 W
+7200 18041 MT
+(we want to take the largest steps possible without overshooting the solution.  Unfortunately, a set)
+122 W( of partial first)121 W
+7200 19327 MT
+(derivatives collected at a single point tells us very little about how large a step we may safely take in)
+41 W( weight space.)42 W
+7200 20613 MT
+(If we)
+266 W( knew something about the higher-order derivatives -- the curvature of the error function -- we could)265 W
+7200 21899 MT
+(presumably do much better.)SH
+8200 24287 MT
+(Two kinds of approaches to this problem have been tried.  The first approach tries)
+148 W( to dynamically adjust the)149 W
+7200 25573 MT
+(learning rate, either globally)
+197 W( or separately for each weight, based in some heuristic way on the history of the)196 W
+7200 26859 MT
+(computation. The)
+466 W( momentum term used in standard back-propagation is a form of this strategy; so are the)
+108 W( fixed)109 W
+7200 28145 MT
+(schedules for parameter adjustment that are recommended in)
+47 W( [12],)
+SH( though in this case the adjustment is based upon)47 W
+7200 29431 MT
+(the experience of the programmer rather than that of the)
+124 W( network.  Franzini)
+125 W( [4])
+SH( has investigated a technique that)125 W
+7200 30717 MT
+(heuristically adjusts the global)103 W
+/Symbol SF
+20056 XM
+(e)SH
+/Times-Roman SF
+20848 XM
+(parameter, increasing it whenever)
+103 W( two successive gradient vectors are nearly the)102 W
+7200 32003 MT
+(same and)
+66 W( decreasing it otherwise.  Jacobs)
+67 W( [5])
+SH( has conducted an empirical study comparing standard backprop with)67 W
+7200 33289 MT
+(momentum to a rule that dynamically)
+86 W( adjusts a separate learning-rate parameter for each weight.  Cater)
+85 W( [2])
+SH( uses a)85 W
+7200 34575 MT
+(more complex heuristic for adjusting the)
+58 W( learning rate.  All of these methods improve the overall learning speed to)59 W
+7200 35861 MT
+(some degree.)SH
+8200 38249 MT
+(The other)
+67 W( kind of approach makes explicit use of the second derivative of the error with respect to each weight.)66 W
+7200 39535 MT
+(Given this information, we can select a new set of weights using Newton's method or)
+142 W( some more sophisticated)143 W
+7200 40821 MT
+(optimization technique.  Unfortunately, it requires a very costly)
+219 W( global computation to derive the true second)218 W
+7200 42107 MT
+(derivative, so some approximation is used.  Parker)
+7 W( [8],)
+SH( Watrous)
+7 W( [17],)
+SH( and Becker and LeCun)
+7 W( [1])
+SH( have all been active)8 W
+7200 43393 MT
+(in this area.  Watrous has implemented two)
+52 W( such algorithms and tried them on the XOR problem.  He claims some)51 W
+7200 44679 MT
+(improvement over back-propagation, but it does not appear)
+171 W( that his methods will scale up well to much larger)172 W
+7200 45965 MT
+(problems.)SH
+8200 48353 MT
+(I have developed an algorithm that I call "quickprop" that has some connection to both of these traditions.  It)
+34 W( is a)33 W
+7200 49639 MT
+(second-order method, based loosely on Newton's method, but)
+50 W( in spirit it is more heuristic than formal.  Everything)51 W
+7200 50925 MT
+(proceeds as in standard back-propagation, but for each weight I keep)
+33 W( a copy of the)32 W
+/Symbol SF
+40903 XM
+(\266)SH
+/Times-Italic SF
+(E)SH
+/Times-Roman SF
+42158 XM
+(/)SH
+/Symbol SF
+42586 XM
+(\266)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Symbol SF
+(-)SH
+/Times-Roman SF
+(1\051, the error derivative)32 W
+7200 52211 MT
+(computed during the previous)
+55 W( training epoch, along with the difference between the current and previous values of)56 W
+7200 53497 MT
+(this weight.  The)SH
+/Symbol SF
+14172 XM
+(\266)SH
+/Times-Italic SF
+(E)SH
+/Times-Roman SF
+15427 XM
+(/)SH
+/Symbol SF
+15855 XM
+(\266)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051 value for the current training epoch is also available at weight-update time.)SH
+8200 55885 MT
+(I then make two risky assumptions: first, that the error vs. weight curve for)
+13 W( each weight can be approximated by a)12 W
+7200 57171 MT
+(parabola whose arms)
+6 W( open upward; second, that the change in the slope of the error curve, as seen by each weight, is)7 W
+7200 58457 MT
+(not affected by all the other weights that are changing at the same time.  For each weight, independently, we use the)20 W
+7200 59743 MT
+(previous and current error slopes and the weight-change between the points at which these slopes were measured to)33 W
+7200 61029 MT
+(determine a parabola; we then jump directly to the minimum point of this parabola.  The computation)
+3 W( is very simple,)2 W
+7200 62315 MT
+(and it uses only the information local to the weight being updated:)SH
+/Times-Italic SF
+14158 63835 MT
+(S)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051)SH
+4786 50 12487 64254 UL
+/Symbol SF
+9200 64499 MT
+(D)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051 =)SH
+/Symbol SF
+17523 XM
+(D)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Symbol SF
+(-)SH
+/Times-Roman SF
+(1\051)SH
+/Times-Italic SF
+12487 65159 MT
+(S)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Symbol SF
+(-)SH
+/Times-Roman SF
+(1\051)SH
+/Symbol SF
+15130 XM
+(-)SH
+/Times-Italic SF
+15829 XM
+(S)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051)SH
+8200 67547 MT
+(where)SH
+/Times-Italic SF
+10977 XM
+(S)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Times-Roman SF
+(\051 and)84 W
+/Times-Italic SF
+14533 XM
+(S)SH
+/Times-Roman SF
+(\050)SH
+/Times-Italic SF
+(t)SH
+/Symbol SF
+(-)SH
+/Times-Roman SF
+(1\051 are the current)
+84 W( and previous values of)85 W
+/Symbol SF
+33254 XM
+(\266)SH
+/Times-Italic SF
+(E)SH
+/Times-Roman SF
+34509 XM
+(/)SH
+/Symbol SF
+34937 XM
+(\266)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+(. Of)
+420 W( course, this new value is only a crude)85 W
+7200 68833 MT
+(approximation to the optimum value for the weight, but when applied iteratively)
+250 W( this method is surprisingly)249 W
+7200 70119 MT
+(effective. Notice)
+250 W( that the old)SH
+/Symbol SF
+19114 XM
+(a)SH
+/Times-Roman SF
+19995 XM
+(parameter is gone, though we will need to keep)SH
+/Symbol SF
+39158 XM
+(e)SH
+/Times-Roman SF
+39847 XM
+(\050see below\051.)SH
+ES
+%%Page: 11 12
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(11)SH
+8200 7886 MT
+(Using this)
+195 W( update formula, if the current slope is somewhat smaller than the previous one, but in the same)196 W
+7200 9172 MT
+(direction, the weight will change again in the same)
+84 W( direction.  The step may be large or small, depending on how)83 W
+7200 10458 MT
+(much the slope was reduced by the previous step.  If the current slope is in the opposite direction)
+33 W( from the previous)34 W
+7200 11744 MT
+(one, that means that we have crossed over the minimum and that we are)
+44 W( now on the opposite side of the valley.  In)43 W
+7200 13030 MT
+(this case, the next step will)
+55 W( place us somewhere between the current and previous positions.  The third case occurs)56 W
+7200 14316 MT
+(when the current slope is in the same direction as the previous)
+32 W( slope, but is the same size or larger in magnitude.  If)31 W
+7200 15602 MT
+(we were to blindly)
+138 W( follow the formula in this case, we would end up taking an infinite step or actually moving)139 W
+7200 16888 MT
+(backwards, up the current slope and toward a local maximum.)SH
+8200 19276 MT
+(I have)
+37 W( experimented with several ways of handling this third situation.  The method that seems to work best is to)36 W
+7200 20562 MT
+(create a new parameter, which I call)75 W
+/Symbol SF
+22441 XM
+(m)SH
+/Times-Roman SF
+(, the "maximum growth factor".)
+75 W( No)
+402 W( weight step is allowed to be greater in)76 W
+7200 21848 MT
+(magnitude than)61 W
+/Symbol SF
+13766 XM
+(m)SH
+/Times-Roman SF
+14653 XM
+(times the previous)
+61 W( step for that weight; if the step computed by the quickprop formula would be)60 W
+7200 23134 MT
+(too large, infinite, or uphill on the current slope, we instead use)11 W
+/Symbol SF
+32912 XM
+(m)SH
+/Times-Roman SF
+33749 XM
+(times the previous step as the)
+11 W( size of the new step.)12 W
+7200 24420 MT
+(The idea is that if, instead of flattening out, the error curve actually becomes steeper as you move)
+44 W( down it, you can)43 W
+7200 25706 MT
+(afford to accelerate, but)
+85 W( within limits.  Since there is some "noise" coming from the simultaneous update of other)86 W
+7200 26992 MT
+(units, we don't want to extrapolate too far from a finite baseline.  Experiments show that if)154 W
+/Symbol SF
+46396 XM
+(m)SH
+/Times-Roman SF
+47375 XM
+(is too large, the)153 W
+7200 28278 MT
+(network behaves chaotically and fails to converge.  The optimal value of)24 W
+/Symbol SF
+36843 XM
+(m)SH
+/Times-Roman SF
+37693 XM
+(depends to some extent upon the)
+24 W( type of)25 W
+7200 29564 MT
+(problem, but a value of 1.75 works well for a wide range of problems.)SH
+8200 31952 MT
+(Since quickprop changes weights based on what happened during)
+25 W( the previous weight update, we need some way)24 W
+7200 33238 MT
+(to bootstrap the process.  In addition, we need a way to)
+42 W( restart the learning process for a weight that has previously)43 W
+7200 34524 MT
+(taken a step of)
+83 W( size zero but that now is seeing a non-zero-slope because something has changed elsewhere in the)82 W
+7200 35810 MT
+(network. The)
+326 W( obvious move is to)
+38 W( use gradient descent, based on the current slope and some learning rate)39 W
+/Symbol SF
+50233 XM
+(e)SH
+/Times-Roman SF
+(, to start)39 W
+7200 37096 MT
+(the process and to restart the process for any weight that has a previous step size of zero.)SH
+8200 39484 MT
+(It took me several)
+123 W( tries to get this "ignition" process working well.  Originally I picked a small threshold and)122 W
+7200 40770 MT
+(switched from the quadratic approximation to gradient descent whenever the previous weight fell)
+248 W( below this)249 W
+7200 42056 MT
+(threshold. This)
+532 W( worked fairly well,)
+141 W( but I came to suspect that odd things were happening in the vicinity of the)140 W
+7200 43342 MT
+(threshold, especially for very large encoder problems.  I replaced this mechanism with one that always added)
+144 W( a)145 W
+7200 44628 MT
+(gradient descent term to the step computed by the quadratic method.)
+40 W( This)
+328 W( worked well when a weight was moving)39 W
+7200 45914 MT
+(down a slope, but it led to oscillation when the weight overshot the minimum and had)
+58 W( to come back: the quadratic)59 W
+7200 47200 MT
+(method would accurately locate the bottom of)
+156 W( the parabola, and the gradient descent term would then push the)155 W
+7200 48486 MT
+(weight past this point.)SH
+8200 50874 MT
+(My current)
+14 W( version of quickprop always adds)15 W
+/Symbol SF
+26717 XM
+(e)SH
+/Times-Roman SF
+27421 XM
+(times the current slope to the)15 W
+/Symbol SF
+39343 XM
+(D)SH
+/Times-Italic SF
+(w)SH
+/Times-Roman SF
+40887 XM
+(value computed by the quadratic)15 W
+7200 52160 MT
+(formula, unless the current slope is opposite in sign from the previous slope; in that)
+35 W( case, the quadratic term is used)34 W
+7200 53446 MT
+(alone.)SH
+8200 55834 MT
+(One final refinement is required.  For)
+112 W( some problems, quickprop will allow some of the weights to grow very)113 W
+7200 57120 MT
+(large. This)
+384 W( leads to floating-point overflow errors in the middle of a training session.  I fix this by)
+67 W( adding a small)66 W
+7200 58406 MT
+(weight-decay term to the slope computed for each weight.  This keeps the weights within an acceptable range.)SH
+8200 60794 MT
+(Quickprop can suffer from the same "flat spot" problems as standard)
+192 W( backprop, so I always run it with the)193 W
+7200 62080 MT
+(sigmoid-prime function modified by the addition of 0.1, as described in the previous section.)SH
+8200 64468 MT
+(With the normal linear error function, the following result was the best one obtained using quickprop:)SH
+11313 66477 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27714 XM
+(m)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 67095 LH BX1
+-1703 50 17007 67095 LV BX1
+-1703 50 21405 67095 LV BX1
+-1703 50 25803 67095 LV BX1
+-1703 50 30201 67095 LV BX1
+-1703 50 34599 67095 LV BX1
+-1703 50 38997 67095 LV BX1
+-1703 50 43395 67095 LV BX1
+-1703 50 47793 67095 LV BX1
+11425 68180 MT
+(10-5-10)SH
+18456 XM
+(100)SH
+22979 XM
+(1.5)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(72)SH
+40696 XM
+(13)SH
+44719 XM
+(22.1)SH
+49367 XM
+(8.9)SH
+43182 3406 50 9009 68798 BX BX1
+-1703 50 17007 68798 LV BX1
+-1703 50 21405 68798 LV BX1
+-1703 50 25803 68798 LV BX1
+-1703 50 30201 68798 LV BX1
+-1703 50 34599 68798 LV BX1
+-1703 50 38997 68798 LV BX1
+-1703 50 43395 68798 LV BX1
+-1703 50 47793 68798 LV BX1
+8200 71186 MT
+(With the addition of the hyperbolic arctan error function, quickprop did better still:)SH
+ES
+%%Page: 12 13
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(12)SH
+11313 8285 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27714 XM
+(m)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 8903 LH BX1
+-1703 50 17007 8903 LV BX1
+-1703 50 21405 8903 LV BX1
+-1703 50 25803 8903 LV BX1
+-1703 50 30201 8903 LV BX1
+-1703 50 34599 8903 LV BX1
+-1703 50 38997 8903 LV BX1
+-1703 50 43395 8903 LV BX1
+-1703 50 47793 8903 LV BX1
+11425 9988 MT
+(10-5-10)SH
+18456 XM
+(100)SH
+22729 XM
+(0.35)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(21)SH
+40946 XM
+(9)SH
+44469 XM
+(14.01)SH
+49367 XM
+(2.1)SH
+43182 3406 50 9009 10606 BX BX1
+-1703 50 17007 10606 LV BX1
+-1703 50 21405 10606 LV BX1
+-1703 50 25803 10606 LV BX1
+-1703 50 30201 10606 LV BX1
+-1703 50 34599 10606 LV BX1
+-1703 50 38997 10606 LV BX1
+-1703 50 43395 10606 LV BX1
+-1703 50 47793 10606 LV BX1
+8200 12994 MT
+(This result is better by about a factor of 4 than any time I obtained with a modified but non-quadratic version)
+53 W( of)52 W
+7200 14280 MT
+(backprop, and it is almost an order of magnitude better than the value)
+5 W( of 129 I obtained for standard backprop.  With)6 W
+7200 15566 MT
+(quickprop, only the)36 W
+/Symbol SF
+15363 XM
+(e)SH
+/Times-Roman SF
+16088 XM
+(parameter seems to require problem-specific tuning, and even)36 W
+/Symbol SF
+41342 XM
+(e)SH
+/Times-Roman SF
+42067 XM
+(does not have)
+36 W( to be tuned too)35 W
+7200 16852 MT
+(carefully for reasonably good results.)SH
+11 /Times-Bold AF
+7200 20469 MT
+(3.5. Scaling Experiments)SH
+10 /Times-Roman AF
+8200 21755 MT
+(The next step was to see how well the combination of quickprop,)
+96 W( adding 0.1 to sigmoid-prime, and hyperbolic)97 W
+7200 23041 MT
+(arctan error would scale up to larger)
+63 W( encoder problems.  I decided to run a series of "tight" encoders: 4-2-4, 8-3-8,)62 W
+7200 24327 MT
+(and so on.  For the larger problems in the series, the fan-in for the hidden units was much greater)
+41 W( than the fan-in to)42 W
+7200 25613 MT
+(the output units, and it proved beneficial to divide the value of)28 W
+/Symbol SF
+32728 XM
+(e)SH
+/Times-Roman SF
+33445 XM
+(by the fan-in of the unit that is receiving activation)28 W
+7200 26899 MT
+(from the weight being updated.  It also proved useful to gradually reduce)SH
+/Symbol SF
+36639 XM
+(e)SH
+/Times-Roman SF
+37328 XM
+(as the problem size increased.)SH
+8200 29287 MT
+(The results obtained for this series were as follows:)SH
+11313 31296 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27714 XM
+(m)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 31914 LH BX1
+-1703 50 17007 31914 LV BX1
+-1703 50 21405 31914 LV BX1
+-1703 50 25803 31914 LV BX1
+-1703 50 30201 31914 LV BX1
+-1703 50 34599 31914 LV BX1
+-1703 50 38997 31914 LV BX1
+-1703 50 43395 31914 LV BX1
+-1703 50 47793 31914 LV BX1
+11925 32999 MT
+(4-2-4)SH
+18456 XM
+(100)SH
+22979 XM
+(2.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(36)SH
+40946 XM
+(8)SH
+44469 XM
+(15.93)SH
+49367 XM
+(6.2)SH
+43182 50 9009 33617 LH BX1
+11925 34702 MT
+(8-3-8)SH
+18456 XM
+(100)SH
+22979 XM
+(2.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(42)SH
+40696 XM
+(12)SH
+44469 XM
+(21.99)SH
+49367 XM
+(5.6)SH
+43182 50 9009 35320 LH BX1
+11425 36405 MT
+(16-4-16)SH
+18456 XM
+(100)SH
+22979 XM
+(1.2)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(48)SH
+40696 XM
+(20)SH
+44469 XM
+(28.93)SH
+49367 XM
+(5.4)SH
+43182 50 9009 37023 LH BX1
+11425 38108 MT
+(32-5-32)SH
+18706 XM
+(25)SH
+22979 XM
+(1.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(38)SH
+40696 XM
+(26)SH
+44469 XM
+(30.48)SH
+49367 XM
+(3.1)SH
+43182 50 9009 38726 LH BX1
+11425 39811 MT
+(64-6-64)SH
+18706 XM
+(10)SH
+22729 XM
+(0.75)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(37)SH
+40696 XM
+(28)SH
+44469 XM
+(33.90)SH
+49367 XM
+(2.9)SH
+43182 50 9009 40429 LH BX1
+10925 41514 MT
+(128-7-128)SH
+18956 XM
+(5)SH
+22979 XM
+(0.5)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(43)SH
+40696 XM
+(36)SH
+44469 XM
+(40.20)SH
+49367 XM
+(2.8)SH
+43182 50 9009 42132 LH BX1
+10925 43217 MT
+(256-8-256)SH
+18956 XM
+(5)SH
+22979 XM
+(0.3)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(44)SH
+40696 XM
+(40)SH
+44469 XM
+(42.00)SH
+49367 XM
+(1.6)SH
+43182 13624 50 9009 43835 BX BX1
+-11921 50 17007 43835 LV BX1
+-11921 50 21405 43835 LV BX1
+-11921 50 25803 43835 LV BX1
+-11921 50 30201 43835 LV BX1
+-11921 50 34599 43835 LV BX1
+-11921 50 38997 43835 LV BX1
+-11921 50 43395 43835 LV BX1
+-11921 50 47793 43835 LV BX1
+8200 46223 MT
+(These times are significantly better than any others I have seen for tight encoder)
+54 W( problems.  The literature of the)55 W
+7200 47509 MT
+(field gives very few specific timings for such problems, especially for large ones.  The best time)
+24 W( I have obtained for)23 W
+7200 48795 MT
+(the 16-4-16 encoder with standard backprop is)
+42 W( 794.6 epochs \050average time over 10 trials\051.  With the sigmoid-prime)43 W
+7200 50081 MT
+(function modified to add 0.1, the time goes down to 539.2.)SH
+8200 52469 MT
+(David Plaut, who has run many backprop simulations during his graduate student career at CMU,)
+82 W( is able to get)81 W
+7200 53755 MT
+(times "generally in)
+8 W( the low 40's" on the 16-4-16 encoder using backprop with a non-linear error function.  However,)9 W
+7200 55041 MT
+(he accomplishes this)
+68 W( by watching the progress of each learning trial on the display and adjusting)67 W
+/Symbol SF
+47102 XM
+(a)SH
+/Times-Roman SF
+48050 XM
+(by hand as the)67 W
+7200 56327 MT
+(learning progresses.  This method is hard to replicate, and it is unclear how well)
+131 W( it scales up.  I suspect that an)132 W
+7200 57613 MT
+(analysis of Plait's real-time adjustments would show that he is doing something very similar to)
+144 W( what quickprop)143 W
+7200 58899 MT
+(does.)SH
+8200 61287 MT
+(Juergen Schmidhuber)
+12 W( [14])
+SH( has investigated this same class of problems up to 64-6-64 using two methods: first,)
+12 W( he)13 W
+7200 62573 MT
+(used standard backprop, but he adjusted the weights after every presentation of)
+10 W( a training example rather than after a)9 W
+7200 63859 MT
+(full epoch; second, he used a learning technique of his own that measures the)
+187 W( total error, rather than the first)188 W
+7200 65145 MT
+(derivative, and tries to converge toward a zero of the error function.  On the)
+5 W( 16-4-16 encoder, Schmidhuber reports a)4 W
+7200 66431 MT
+(learning time of 239 epochs for backprop and 146 for his own)
+83 W( method; on 64-6-64, he gets 750 for backprop and)84 W
+7200 67717 MT
+(220 for his own method.)SH
+8200 70105 MT
+(The most exciting aspect)
+83 W( of the learning times in the table above are the way they scale up as the problem size)82 W
+7200 71391 MT
+(increases. If)
+430 W( we take N as the number of patterns to be learned, the learning time measured)
+90 W( in epochs is actually)91 W
+ES
+%%Page: 13 14
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(13)SH
+7200 7886 MT
+(growing more slowly than log)115 W
+/Times-Italic SF
+19865 XM
+(N)SH
+/Times-Roman SF
+(. In)
+480 W( the past, it was generally believed that for tight encoder)
+115 W( problems this time)114 W
+7200 9172 MT
+(would grow exponentially with the problem size, or at least linearly.)SH
+8200 11560 MT
+(Of course, the measurement of learning time in epochs can be deceiving. The number of training)
+121 W( examples in)122 W
+7200 12846 MT
+(each epoch grows by a factor of N, and the time required to run each forward-backward pass)
+39 W( on a serial machine is)38 W
+7200 14132 MT
+(proportional to the number of connections --)
+48 W( also roughly a factor of N. This means that on a serial machine, using)49 W
+8 SS 
+48206 15073 MT
+(2)SH
+51255 XM
+(2)SH
+10 SS 
+7200 15418 MT
+(the techniques described here, the actual clock time required grows by)
+20 W( a factor somewhere between)19 W
+/Times-Italic SF
+47539 XM
+(N)SH
+/Times-Roman SF
+48875 XM
+(and)SH
+/Times-Italic SF
+50588 XM
+(N)SH
+/Times-Roman SF
+51655 XM
+(log)SH
+/Times-Italic SF
+53083 XM
+(N)SH
+/Times-Roman SF
+(.)SH
+7200 16704 MT
+(On a parallel network, the clock time required grows by)
+40 W( a factor between)41 W
+/Times-Italic SF
+37216 XM
+(N)SH
+/Times-Roman SF
+38174 XM
+(and)SH
+/Times-Italic SF
+39909 XM
+(N)SH
+/Times-Roman SF
+(log)SH
+/Times-Italic SF
+42004 XM
+(N)SH
+/Times-Roman SF
+(. If)
+332 W( this scaling result holds)41 W
+7200 17990 MT
+(larger networks and for other kinds of problems, that is good news for the future)
+162 W( applicability of connectionist)161 W
+7200 19276 MT
+(techniques.)SH
+8200 21664 MT
+(In order to get a feeling for how the learning time was affected by the number of)
+66 W( units in the single hidden-unit)67 W
+7200 22950 MT
+(layer, I ran the 8-M-8 problem for)
+126 W( different M values.  Again, these results are for quickprop, hyperbolic arctan)125 W
+7200 24236 MT
+(error, 0.1 added to sigmoid-prime, and epsilon divided by the fan-in.)SH
+11313 26245 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27714 XM
+(m)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 26863 LH BX1
+-1703 50 17007 26863 LV BX1
+-1703 50 21405 26863 LV BX1
+-1703 50 25803 26863 LV BX1
+-1703 50 30201 26863 LV BX1
+-1703 50 34599 26863 LV BX1
+-1703 50 38997 26863 LV BX1
+-1703 50 43395 26863 LV BX1
+-1703 50 47793 26863 LV BX1
+11925 27948 MT
+(8-2-8)SH
+18706 XM
+(25)SH
+22979 XM
+(1.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(4.0)SH
+36048 XM
+(155)SH
+40696 XM
+(26)SH
+44469 XM
+(102.8)SH
+49117 XM
+(37.7)SH
+43182 50 9009 28566 LH BX1
+11925 29651 MT
+(8-3-8)SH
+18456 XM
+(100)SH
+22979 XM
+(2.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(42)SH
+40696 XM
+(12)SH
+44469 XM
+(21.99)SH
+49367 XM
+(5.6)SH
+43182 50 9009 30269 LH BX1
+11925 31354 MT
+(8-4-8)SH
+18456 XM
+(100)SH
+22979 XM
+(3.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(23)SH
+40696 XM
+(10)SH
+44469 XM
+(14.88)SH
+49367 XM
+(2.8)SH
+43182 50 9009 31972 LH BX1
+11925 33057 MT
+(8-5-8)SH
+18456 XM
+(100)SH
+22979 XM
+(3.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(19)SH
+40946 XM
+(9)SH
+44469 XM
+(12.29)SH
+49367 XM
+(2.0)SH
+43182 50 9009 33675 LH BX1
+11925 34760 MT
+(8-6-8)SH
+18456 XM
+(100)SH
+22979 XM
+(3.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(15)SH
+40946 XM
+(7)SH
+44469 XM
+(10.13)SH
+49367 XM
+(1.6)SH
+43182 50 9009 35378 LH BX1
+11925 36463 MT
+(8-8-8)SH
+18456 XM
+(100)SH
+22979 XM
+(3.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(12)SH
+40946 XM
+(6)SH
+44719 XM
+(8.79)SH
+49367 XM
+(1.3)SH
+43182 50 9009 37081 LH BX1
+11675 38166 MT
+(8-16-8)SH
+18456 XM
+(100)SH
+22979 XM
+(3.0)SH
+27127 XM
+(1.75)SH
+31775 XM
+(2.0)SH
+36298 XM
+(10)SH
+40946 XM
+(4)SH
+44719 XM
+(6.28)SH
+49367 XM
+(1.0)SH
+43182 13624 50 9009 38784 BX BX1
+-11921 50 17007 38784 LV BX1
+-11921 50 21405 38784 LV BX1
+-11921 50 25803 38784 LV BX1
+-11921 50 30201 38784 LV BX1
+-11921 50 34599 38784 LV BX1
+-11921 50 38997 38784 LV BX1
+-11921 50 43395 38784 LV BX1
+-11921 50 47793 38784 LV BX1
+8200 41172 MT
+(The most interesting result here is that the learning time goes down monotonically with increasing M, even when)31 W
+7200 42458 MT
+(M is much greater than N. Some)
+41 W( researchers have suggested that, beyond a certain point, it actually makes learning)40 W
+7200 43744 MT
+(slower if you add more hidden units.)
+35 W( This)
+321 W( belief probably came about because in standard backprop, the additional)36 W
+7200 45030 MT
+(hidden units tend to push)
+31 W( the output units deeper into the flat spot.  Of course, on a serial simulation, the clock time)30 W
+7200 46316 MT
+(may increase as more units are added because of the extra connections that must be simulated.)SH
+11 /Times-Bold AF
+7200 49933 MT
+(3.6. The Complement Encoder Problem)SH
+10 /Times-Roman AF
+8200 51219 MT
+(As I mentioned earlier, the standard encoder problem has the peculiar feature that only one)
+34 W( of the connections on)35 W
+7200 52505 MT
+(the input side is active for each of the training patterns.  Since)
+15 W( the quickprop scheme is based on the assumption that)14 W
+7200 53791 MT
+(the weight changes are not strongly coupled to one another, we might)
+46 W( guess that quickprop looks better on encoder)47 W
+7200 55077 MT
+(problems than on anything else.  To test this, I ran a)
+135 W( series of experiments on the 10-5-10 complement encoder)134 W
+7200 56363 MT
+(problem, in which each of the input and output patterns is)
+156 W( a string of one-bits, with only a single zero.  If the)157 W
+7200 57649 MT
+(standard encoder is unusually easy for quickprop, then the complement encoder should be unusually hard.)SH
+8200 60037 MT
+(The 10-5-10 complement encoder problem was run)
+221 W( for each of the following learning algorithms: standard)220 W
+7200 61323 MT
+(backprop, backprop with 0.1 added to the sigmoid-prime)
+120 W( function, the same with the hyperbolic arctangent error)121 W
+7200 62609 MT
+(function, and quickprop with hyperbolic arctan error.  In each case)
+26 W( 25 trials were run, and a quick search was run to)25 W
+7200 63895 MT
+(determine the best learning parameters for each method.  Epsilon values marked with)
+40 W( an asterisk are divided by the)41 W
+7200 65181 MT
+(fan-in. These)
+545 W( results are summarized in the table below; for comparison, the rightmost column shows the time)147 W
+7200 66467 MT
+(required by each method for the normal encoder problem.)SH
+ES
+%%Page: 14 15
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(14)SH
+13651 8285 MT
+(Method)SH
+/Symbol SF
+24785 XM
+(e)SH
+28133 XM
+(m)SH
+/Times-Roman SF
+28959 XM
+(or)SH
+/Symbol SF
+30042 XM
+(a)SH
+/Times-Italic SF
+33606 XM
+(r)SH
+/Times-Roman SF
+37282 XM
+(Max)SH
+41763 XM
+(Min)SH
+45301 XM
+(Average)SH
+49865 XM
+(Normal)SH
+45984 50 7608 8903 LH BX1
+-1703 50 22806 8903 LV BX1
+-1703 50 27204 8903 LV BX1
+-1703 50 31602 8903 LV BX1
+-1703 50 36000 8903 LV BX1
+-1703 50 40398 8903 LV BX1
+-1703 50 44796 8903 LV BX1
+-1703 50 49194 8903 LV BX1
+8007 9988 MT
+(Standard. BP)SH
+24380 XM
+(0.9)SH
+28778 XM
+(0.1)SH
+33176 XM
+(1.0)SH
+37449 XM
+(656)SH
+41847 XM
+(140)SH
+45870 XM
+(334.4)SH
+50268 XM
+(129.0)SH
+45984 50 7608 10606 LH BX1
+8007 11691 MT
+(BP, Sig-Prime+0.1)SH
+24380 XM
+(1.1)SH
+28778 XM
+(0.0)SH
+33176 XM
+(1.0)SH
+37449 XM
+(462)SH
+41847 XM
+(111)SH
+45870 XM
+(196.2)SH
+50518 XM
+(74.0)SH
+45984 50 7608 12309 LH BX1
+8007 13394 MT
+(BP, Sig-Prime+0.1, Hyper Err)SH
+24130 XM
+(0.15)SH
+28778 XM
+(0.6)SH
+33176 XM
+(1.0)SH
+37449 XM
+(267)SH
+42097 XM
+(73)SH
+45870 XM
+(134.9)SH
+50518 XM
+(58.7)SH
+45984 50 7608 14012 LH BX1
+8007 15097 MT
+(QP, Hyper Err)SH
+23880 XM
+(0.01*)SH
+28778 XM
+(2.5)SH
+33176 XM
+(2.0)SH
+37449 XM
+(103)SH
+42097 XM
+(36)SH
+46120 XM
+(63.6)SH
+50268 XM
+(14.01)SH
+45984 50 7608 15715 LH BX1
+8007 16800 MT
+(QP, Hyper Err, Symmetric)SH
+24130 XM
+(5.0*)SH
+28528 XM
+(1.15)SH
+33176 XM
+(0.5)SH
+37699 XM
+(31)SH
+42097 XM
+(15)SH
+46120 XM
+(20.8)SH
+50518 XM
+(20.8)SH
+45984 10218 50 7608 17418 BX BX1
+-8515 50 22806 17418 LV BX1
+-8515 50 27204 17418 LV BX1
+-8515 50 31602 17418 LV BX1
+-8515 50 36000 17418 LV BX1
+-8515 50 40398 17418 LV BX1
+-8515 50 44796 17418 LV BX1
+-8515 50 49194 17418 LV BX1
+8200 19806 MT
+(For each method tried, learning the complement encoder took)
+61 W( more than twice as long as the normal encoder.  I)62 W
+7200 21092 MT
+(believe that this is because, in the complement encoder, the information gathered during each trial is unable to affect)11 W
+7200 22378 MT
+(the one weight to which it is most relevant,)
+55 W( so such information can have only an indirect effect.  In the quickprop)56 W
+7200 23664 MT
+(case, it takes over 4 times as long to learn the complement encoder as to learn the normal encoder.)SH
+8200 26052 MT
+(The last row in the table)
+174 W( shows the time required using quickprop, hyperbolic arctan error, and units whose)173 W
+7200 27338 MT
+(activation function is symmetric around zero, ranging from -0.5 to)
+56 W( +0.5 rather than from 0.0 to 1.0.  The input and)57 W
+7200 28624 MT
+(output patterns, and the thresholds used to detect successful learning are shifted down by 0.5 as well.)SH
+8200 31012 MT
+(Stornetta and Huberman)
+134 W( [15])
+SH( advocate the use of such symmetric units.  The empirical results they)
+134 W( report are)133 W
+7200 32298 MT
+(sketchy, but they claim speedups ranging from 10% to 50%, depending on the problem.)
+15 W( It)
+281 W( occurred to me that, with)16 W
+7200 33584 MT
+(symmetric units, the encoder and complement encoder)
+65 W( problems would be equivalent, but it was not clear whether)64 W
+7200 34870 MT
+(this meant that the complement encoder would be learned four times faster or that the regular encoder would)
+119 W( be)120 W
+7200 36156 MT
+(learned four times slower.  As)
+11 W( the table shows, the result is between the two extremes, but closer to the speed for the)10 W
+7200 37442 MT
+(normal encoder.)SH
+8200 39830 MT
+(It seems likely that the normal encoder is one of the)
+20 W( few problems that is well-suited to the asymmetric activation)21 W
+7200 41116 MT
+(functions, and that symmetric activation should be used for most problems.)SH
+11 /Times-Bold AF
+7200 44733 MT
+(3.7. The Exclusive-Or Problem)SH
+10 /Times-Roman AF
+8200 46019 MT
+(I have argued that the XOR problem receives too)
+87 W( much attention in learning-speed studies, but since this is the)86 W
+7200 47305 MT
+(most popular benchmark at present, I felt that I must try XOR using these new methods.  In this problem,)
+25 W( even with)26 W
+7200 48591 MT
+(very conservative parameter settings, there were still some trials that got caught in a local minimum and showed no)34 W
+7200 49877 MT
+(signs of convergence, so I used the restart method described in section 2.4.)SH
+8200 52265 MT
+(Using quickprop with hyperbolic arctan error, epsilon divided by fan-in, and symmetric)
+72 W( activation, and with the)73 W
+7200 53551 MT
+(restart limit set at 40 epochs, I got the following result for XOR with two hidden units:)SH
+11313 55560 MT
+(Problem)SH
+18039 XM
+(Trials)SH
+/Symbol SF
+23384 XM
+(e)SH
+27714 XM
+(m)SH
+/Times-Italic SF
+32205 XM
+(r)SH
+/Times-Roman SF
+35881 XM
+(Max)SH
+40362 XM
+(Min)SH
+43900 XM
+(Average)SH
+48978 XM
+(S. D.)SH
+43182 50 9009 56178 LH BX1
+-1703 50 17007 56178 LV BX1
+-1703 50 21405 56178 LV BX1
+-1703 50 25803 56178 LV BX1
+-1703 50 30201 56178 LV BX1
+-1703 50 34599 56178 LV BX1
+-1703 50 38997 56178 LV BX1
+-1703 50 43395 56178 LV BX1
+-1703 50 47793 56178 LV BX1
+11952 57263 MT
+(XOR)SH
+18456 XM
+(100)SH
+22979 XM
+(4.0)SH
+27127 XM
+(2.25)SH
+31775 XM
+(1.0)SH
+36298 XM
+(66)SH
+40696 XM
+(10)SH
+44469 XM
+(24.22)SH
+49117 XM
+(16.3)SH
+43182 3406 50 9009 57881 BX BX1
+-1703 50 17007 57881 LV BX1
+-1703 50 21405 57881 LV BX1
+-1703 50 25803 57881 LV BX1
+-1703 50 30201 57881 LV BX1
+-1703 50 34599 57881 LV BX1
+-1703 50 38997 57881 LV BX1
+-1703 50 43395 57881 LV BX1
+-1703 50 47793 57881 LV BX1
+8200 60269 MT
+(In 100 trials there were 14 restarts.  The median learning time was 19 epochs.)SH
+8200 62657 MT
+(The time of)
+19 W( 24.22 epochs compares very favorably with other times reported for this problem using backprop and)18 W
+7200 63943 MT
+(backprop-like algorithms.  Jacobs)
+137 W( [5])
+SH( reports a time of 538.9 \050plus one)
+137 W( failure\051 for standard backprop and 250.4)138 W
+7200 65229 MT
+(\050plus two failures\051 for his "delta-bar-delta" algorithm.  Tesauro and Janssens)
+26 W( [16])
+SH( report an)
+26 W( time of 95 epochs, using)25 W
+7200 66515 MT
+(their rate-based averaging function.  Watrous)
+130 W( [17])
+SH( reports a learning)
+130 W( time of 3495 epochs for a slightly different)131 W
+7200 67801 MT
+(version of XOR that uses a single hidden)
+155 W( unit and some additional connections; his "BFGS" method learns the)154 W
+7200 69087 MT
+(problem in 36 epochs, but this involves a very expensive non-local computation for each update epoch.)
+31 W( Rumelhart,)314 W
+7200 70373 MT
+(Hinton, and Williams)
+92 W( [9])
+SH( report that Yves Chauvin got)
+92 W( learning times around 245 for the XOR problem with two)91 W
+7200 71659 MT
+(hidden units.  Of course,)
+24 W( all of these studies used slightly different success criteria, usually stricter than the criterion)25 W
+ES
+%%Page: 15 16
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(15)SH
+7200 7886 MT
+(I used.)SH
+12 /Times-Bold AF
+7200 11570 MT
+(4. Conclusions and Future Work)SH
+10 /Times-Roman AF
+8200 12856 MT
+(On the problems tested to date, the learning algorithms described here run much)
+89 W( faster than standard backprop,)88 W
+7200 14142 MT
+(and scale up much better.)
+96 W( These)
+444 W( results are encouraging, but are not conclusive because we have only tested the)97 W
+7200 15428 MT
+(new techniques against a very small, and perhaps atypical, set of benchmark problems.)
+22 W( The)
+293 W( most important task for)21 W
+7200 16714 MT
+(the immediate future is)
+120 W( to apply the new algorithms, perhaps with some additional modifications, to a variety of)121 W
+7200 18000 MT
+(additional benchmarks and then to some real-world applications.  If the speedup and scaling results hold)
+28 W( up in these)27 W
+7200 19286 MT
+(tests, then)
+77 W( we will have achieved something of a breakthrough, especially when these algorithms are implemented)78 W
+7200 20572 MT
+(on the fastest available machines.)SH
+8200 22960 MT
+(The development of these new algorithms was driven not by a theoretical)
+2 W( analysis, but by observing problems that)1 W
+7200 24246 MT
+(occurred in standard back-propagation learning and by attempting to cure these problems)
+43 W( one by one.  The result is)44 W
+7200 25532 MT
+(admittedly something of a patchwork.  Now that we have seen what can be accomplished,)
+49 W( it would be useful to try)48 W
+7200 26818 MT
+(to develop a theoretical)
+20 W( understanding of some of these tricks.  For example, it might be possible to develop a better)21 W
+7200 28104 MT
+(understanding of the expected)
+8 W( performance of quickprop for various classes of problems.  This sort of understanding)7 W
+7200 29390 MT
+(should ultimately lead us to more elegant and faster learning algorithms.)SH
+8200 31778 MT
+(Among the issues that will become more important in the future are incremental learning --)
+276 W( adding new)277 W
+7200 33064 MT
+(knowledge to a network that has already been trained -- and)
+27 W( the development of networks that handle recognize and)26 W
+7200 34350 MT
+(produce time-varying)
+58 W( sequences of inputs, rather than individual patterns.  It will be interesting to see whether any)59 W
+7200 35636 MT
+(of these learning techniques are applicable in these more complex domains.)SH
+12 /Times-Bold AF
+7200 39320 MT
+(Acknowledgments)SH
+10 /Times-Roman AF
+8200 40606 MT
+(I would like to thank Geoff Hinton for sparking)
+52 W( my interest in networks of this kind and Dave Touretzky for his)51 W
+7200 41892 MT
+(persistent efforts to)
+46 W( promote an active interchange of ideas within the local connectionist community.  David Plaut,)47 W
+7200 43178 MT
+(Mark Derthick, Barak Pearlmutter, and Kevin Lang)
+13 W( offered valuable suggestions and helped to acquaint me with the)12 W
+7200 44464 MT
+(folklore of back-propagation learning systems.)SH
+ES
+%%Page: 16 17
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(16)SH
+12 /Times-Bold AF
+7200 8004 MT
+(References)SH
+10 /Times-Roman AF
+7200 9795 MT
+([1])SH
+10200 XM
+(Becker, S. and LeCun, Y.)SH
+10200 10900 MT
+(The Feasibility of Applying Numerical Optimization Techniques to Back-Propagation.)SH
+10200 12005 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings, 1988 Connectionist Models Summer School)SH
+/Times-Roman SF
+(. Morgan-Kaufman,)
+250 W( 1988.)SH
+10200 13110 MT
+(\050to appear\051.)SH
+7200 14901 MT
+([2])SH
+10200 XM
+(Cater, J. P.)SH
+10200 16006 MT
+(Successfully Using Peak Learning Rates of 10 \050and greater\051 in Back-Propagation Networks with the)SH
+11700 17111 MT
+(Heuristic Learning Algorithm.)SH
+10200 18216 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings of the IEEE International Conference on Neural Networks)SH
+/Times-Roman SF
+(, pages 645-651.  San Diego, CA,)SH
+11700 19321 MT
+(1987.)SH
+7200 21112 MT
+([3])SH
+10200 XM
+(Fahlman, S. E. and Hinton, G. E.)SH
+10200 22217 MT
+(Connectionist Architectures for Artificial Intelligence.)SH
+/Times-Italic SF
+10200 23322 MT
+(IEEE Computer)SH
+/Times-Roman SF
+16866 XM
+(20\0501\051:100-109, January, 1987.)SH
+7200 25113 MT
+([4])SH
+10200 XM
+(Franzini, M. A.)SH
+10200 26218 MT
+(Speech Recognition with Back Propagation.)SH
+10200 27323 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings, Ninth Annual Conference of IEEE Engineering in Medicine and Biology Society)SH
+/Times-Roman SF
+(. 1987.)250 W
+7200 29114 MT
+([5])SH
+10200 XM
+(Jacobs, R. A.)SH
+/Times-Italic SF
+10200 30219 MT
+(Increased rates of Convergence Through Learning Rate Adaptation)SH
+/Times-Roman SF
+(.)SH
+10200 31324 MT
+(Technical Report COINS TR 87-117, University of Massachusetts at Amherst, Dept. of Computer and)SH
+11700 32429 MT
+(Information Science, Amherst, MA, 1987.)SH
+7200 34220 MT
+([6])SH
+10200 XM
+(LeCun, Y.)SH
+10200 35325 MT
+(Une procedure d'apprentissage pour reseau a seauil assymetrique \050A learning procedure for asymmetric)SH
+11700 36430 MT
+(threshold network\051.)SH
+10200 37535 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings of Cognitiva 85)SH
+/Times-Roman SF
+(, pages 599-604.  Paris, 1985.)SH
+7200 39326 MT
+([7])SH
+10200 XM
+(Parker, D. B.)SH
+/Times-Italic SF
+10200 40431 MT
+(Learning-Logic)SH
+/Times-Roman SF
+(.)SH
+10200 41536 MT
+(Technical Report TR-47, Massachusetts Institute of Technology, Center for Computational Research in)SH
+11700 42641 MT
+(Economics and Management Science, Cambridge, MA, 1985.)SH
+7200 44432 MT
+([8])SH
+10200 XM
+(Parker, D. B.)SH
+10200 45537 MT
+(Optimal ALgorithms for Adaptive Networks: Second Order Back Propagation, Second Order Direct)SH
+11700 46642 MT
+(Propagation, and Second Order Hebbian Learning.)SH
+10200 47747 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings of the IEEE International Conference on Neural Networks)SH
+/Times-Roman SF
+(, pages 593-600.  San Diego, CA,)SH
+11700 48852 MT
+(1987.)SH
+7200 50643 MT
+([9])SH
+10200 XM
+(Rumelhart, D. E., Hinton, G. E., and Williams, R. J.)SH
+10200 51748 MT
+(Learning Internal Representations by Error Propagation.)SH
+10200 52853 MT
+(In Rumelhart, D. E. and McClelland, J. L. \050editor\051,)SH
+/Times-Italic SF
+30753 XM
+(Parallel Distributed Processing: Explorations in the)SH
+11700 53958 MT
+(Microstructure of Cognition)SH
+/Times-Roman SF
+(, chapter 8. MIT Press, Cambridge, MA, and London, England, 1986.)SH
+7200 55749 MT
+([10])SH
+10200 XM
+(Rumelhart, D. E. and McClelland, J. L.)SH
+/Times-Italic SF
+10200 56854 MT
+(Parallel Distributed Processing: Explorations in the Microstructure of Cognition.)SH
+/Times-Roman SF
+10200 57959 MT
+(MIT Press, Cambridge, MA, and London, England, 1986.)SH
+7200 59750 MT
+([11])SH
+10200 XM
+(Minsky, M. L. and Papert, S.)SH
+/Times-Italic SF
+10200 60855 MT
+(Perceptrons.)SH
+/Times-Roman SF
+10200 61960 MT
+(MIT Press, Cambridge, MA, and London, England, 1969.)SH
+7200 63751 MT
+([12])SH
+10200 XM
+(Plaut, D. C., Nowlan, S. J., and Hinton, G. E.)SH
+/Times-Italic SF
+10200 64856 MT
+(Experiments on Learning by Back-Propagation)SH
+/Times-Roman SF
+(.)SH
+10200 65961 MT
+(Technical Report CMU-CS-86-126, Carnegie-Mellon University, Computer Science Dept., Pittsburgh, PA,)SH
+11700 67066 MT
+(1986.)SH
+ES
+%%Page: 17 18
+BS
+0 SI
+10 /Times-Roman AF
+30100 4286 MT
+(17)SH
+7200 7886 MT
+([13])SH
+10200 XM
+(Pomerleau, D. A., Gusciora, G. L., Touretzky, D. S, and Kung, H. T.)SH
+10200 8991 MT
+(Neural network simulation at Warp speed:  How we got 17 million connections per second.)SH
+10200 10096 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings of the IEEE International Conference on Neural Networks)SH
+/Times-Roman SF
+(. San)
+250 W( Diego, CA, 1988.)SH
+10200 11201 MT
+(\050to appear\051.)SH
+7200 12992 MT
+([14])SH
+10200 XM
+(Schmidhuber, J.)SH
+/Times-Italic SF
+10200 14097 MT
+(Accelerated Learning in back-Propagation Nets)SH
+/Times-Roman SF
+(.)SH
+10200 15202 MT
+(Technical Report , Technische Universitaet Muenchen, Institut Fuer Informatik, Munich, Federal Republic)SH
+11700 16307 MT
+(of Germany, 1988.)SH
+7200 18098 MT
+([15])SH
+10200 XM
+(Stornetta, W. S., and Huberman, B. A.)SH
+10200 19203 MT
+(An Improved Three-Layer Back-Propagation Algorithm.)SH
+10200 20308 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings of the IEEE International Conference on Neural Networks)SH
+/Times-Roman SF
+(, pages 637-644.  San Diego, CA,)SH
+11700 21413 MT
+(1987.)SH
+7200 23204 MT
+([16])SH
+10200 XM
+(Tesauro, G. and Janssens, B.)SH
+10200 24309 MT
+(Scaling Relationships in Back-Propagation Learning.)SH
+/Times-Italic SF
+10200 25414 MT
+(Complex Systems 2)SH
+/Times-Roman SF
+18171 XM
+(:39-44, 1988.)SH
+7200 27205 MT
+([17])SH
+10200 XM
+(Watrous, R. L.)SH
+10200 28310 MT
+(Learning Algorithms for Connectionist Networks: Applied Gradient Methods for Non-Linear Optimizaiton.)SH
+10200 29415 MT
+(In)SH
+/Times-Italic SF
+11283 XM
+(Proceedings of the IEEE International Conference on Neural Networks)SH
+/Times-Roman SF
+(, pages 619-627.  San Diego, CA,)SH
+11700 30520 MT
+(1987.)SH
+7200 32311 MT
+([18])SH
+10200 XM
+(Werbos, P. J.)SH
+/Times-Italic SF
+10200 33416 MT
+(Beyond Regression: New Tools for Prediction and Analysis in the Behavioral Sciences)SH
+/Times-Roman SF
+(.)SH
+10200 34521 MT
+(PhD thesis, Harvard University, 1984.)SH
+ES
+%%Page: i 19
+BS
+0 SI
+10 /Times-Roman AF
+30461 4286 MT
+(i)SH
+12 /Times-Bold AF
+26033 8004 MT
+(Table of Contents)SH
+11 SS 
+8850 9172 MT
+(1. Introduction)SH
+53450 XM
+(1)SH
+8850 10340 MT
+(2. Methodology)SH
+53450 XM
+(2)SH
+10 SS 
+10700 11420 MT
+(2.1. What Makes a Good Benchmark?)SH
+53500 XM
+(2)SH
+10700 12500 MT
+(2.2. The Encoder/Decoder Task)SH
+53500 XM
+(3)SH
+10700 13580 MT
+(2.3. When is the Learning Complete?)SH
+53500 XM
+(4)SH
+10700 14660 MT
+(2.4. How Should We Report Learning Times?)SH
+53500 XM
+(5)SH
+10700 15740 MT
+(2.5. Implementation)SH
+53500 XM
+(6)SH
+11 SS 
+8850 16908 MT
+(3. Experiments and Results)SH
+53450 XM
+(7)SH
+10 SS 
+10700 17988 MT
+(3.1. Tuning of Backprop Learning Parameters)SH
+53500 XM
+(7)SH
+10700 19068 MT
+(3.2. Eliminating the "Flat Spot")SH
+53500 XM
+(8)SH
+10700 20148 MT
+(3.3. Using a Non-Linear Error Function)SH
+53500 XM
+(9)SH
+10700 21228 MT
+(3.4. The Quickprop Algorithm)SH
+53000 XM
+(10)SH
+10700 22308 MT
+(3.5. Scaling Experiments)SH
+53000 XM
+(12)SH
+10700 23388 MT
+(3.6. The Complement Encoder Problem)SH
+53000 XM
+(13)SH
+10700 24468 MT
+(3.7. The Exclusive-Or Problem)SH
+53000 XM
+(14)SH
+11 SS 
+8850 25636 MT
+(4. Conclusions and Future Work)SH
+52900 XM
+(15)SH
+8850 26804 MT
+(Acknowledgments)SH
+52900 XM
+(15)SH
+8850 27972 MT
+(References)SH
+52900 XM
+(16)SH
+ES
+%%Trailer
+%%Pages: 19
+%%DocumentFonts: Times-Roman Times-Bold Times-Italic Symbol

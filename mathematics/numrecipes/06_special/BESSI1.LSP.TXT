@@ -1,0 +1,35 @@
+(defun bessi1 (x) (declare (type double-float x))
+ (prog
+  ((y 0.0d0) (p1 0.0d0) (p2 0.0d0) (p3 0.0d0) (p4 0.0d0) (p5 0.0d0) (p6 0.0d0)
+   (p7 0.0d0) (q1 0.0d0) (q2 0.0d0) (q3 0.0d0) (q4 0.0d0) (q5 0.0d0) (q6 0.0d0)
+   (q7 0.0d0) (q8 0.0d0) (q9 0.0d0) (ax 0.0d0) (bessi1 0.0d0)
+  )
+  (declare (type float y)) (declare (type float p1)) (declare (type float p2))
+  (declare (type float p3)) (declare (type float p4)) (declare (type float p5))
+  (declare (type float p6)) (declare (type float p7)) (declare (type float q1))
+  (declare (type float q2)) (declare (type float q3)) (declare (type float q4))
+  (declare (type float q5)) (declare (type float q6)) (declare (type float q7))
+  (declare (type float q8)) (declare (type float q9))
+  (declare (type double-float ax)) (declare (type double-float bessi1))
+  (setq p1 0.5d0) (setq q1 0.39894228d0)
+  (cond
+   ((< (abs x) 3.75) (setf y (expt (/ x 3.75) 2))
+    (setf bessi1
+     (* x
+      (+ p1
+       (* y (+ p2 (* y (+ p3 (* y (+ p4 (* y (+ p5 (* y (+ p6 (* y p7))))))))))
+   )))))
+   (t (setf ax (abs x)) (setf y (/ 3.75 ax))
+    (setf bessi1
+     (* (/ (exp ax) (sqrt ax))
+      (+ q1
+       (* y
+        (+ q2
+         (* y
+          (+ q3
+           (* y
+            (+ q4 (* y (+ q5 (* y (+ q6 (* y (+ q7 (* y (+ q8 (* y q9))))))))))
+  ))))))))))
+  (return bessi1)
+))
+

@@ -1,0 +1,12 @@
+ In order to use sir and phd programs, you have to load
+
+sir-program.lsp and sir-i-ii-model.lsp (or/and phd-model.lsp).
+
+Th comand is like regression-model :
+(sir-i-ii-model x y)
+(phd-model x y)
+
+You may use help to find messages available :
+
+(help 'sir-i-ii-model)
+(help 'phd-model)

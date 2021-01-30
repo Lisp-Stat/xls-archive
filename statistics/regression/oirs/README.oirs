@@ -1,0 +1,203 @@
+		Guide to Lisp-Stat Software for 
+	"Order and Influence in Regression Strategy"
+
+	by Julian J. Faraway, Department of Statistics,
+		University of Michigan, Ann Arbor, MI 48109
+	email: julian@stat.lsa.umich.edu
+
+			ABSTRACT
+
+The methods (tactics) of regression data analysis such as variable
+selection, transformation and outlier detection are characterised as
+functions acting on regression models and returning regression models.
+The ordering of the tactics, that is the strategy, is studied. A
+method for the generation of acceptable models supported by the choice
+of regression data analysis methods is described with a view to
+determining if two capable statisticians may reasonably hold differing
+views on the same data. Optimal strategies are considered. The idea of
+influential points is extended from estimation to the model building
+process itself both quantitatively and qualitatively. The methods
+described are not intended for the entirely automatic analysis of
+data, rather to assist the statistician in examining regression data
+at a strategic level.
+
+(The paper is currently available as Technical Report #205 from
+the Department of Statistics, University of Michigan)
+
+                        DISCLAIMER
+
+This code is experimental and no guarantee can be made as to its
+reliability. Use at your own risk. This code is distributed under the
+same terms as XLISP-STAT.
+
+			FILES
+
+oirs.lsp 	contains the unique code for the examples considered in
+		the paper.
+
+regmodel.lsp	contains the regression methods
+
+auxil.lsp	contains the auxiliary routines
+
+chicago.lsp
+galapagos.lsp	contain the data used in the examples
+swiss.lsp
+
+                        XLISP-STAT
+
+You will need XLISPSTAT to run these programs.Here is an excerpt from
+the documentation for  XLISPSTAT:
+
+This note is to announce the availability of Version 2.1 of
+XLISP-STAT, an extensible system for statistical computing and dynamic
+graphics.
+
+XLISP-STAT is based on a dialect of Lisp called XLISP. It is available
+for the Apple Macintosh, for workstations running the X11 window
+system under BSD UNIX (and perhaps System V with BSD enhancements),
+and for Sun workstations running SunView. A version for the Commodore
+Amiga is available as well.
+
+The system is based on David Betz' XLISP 2.1, which is written in C.
+To facilitate statistical computations I have modified standard Lisp
+functions for addition, logarithms, etc., to operate on lists and
+arrays of numbers, and have also added a number of basic statistical
+functions. About two thirds of the additions are written in C; the
+rest are written in Lisp. Several basic forms of plots, including
+histograms, scatterplots, 3-dimensional rotatable plots and
+scatterplot matrices are provided.  These plots support various forms
+of interactive highlighting operations and can be linked so points
+highlighted in one plot will be highlighted in all linked plots.
+Interactions with the plots are controlled by the mouse, menus and
+dialog boxes. An object-oriented programming system is used to make it
+possible to customize menus, dialogs, and the way plots respond to
+mouse actions.
+
+Source code for the UNIX version, which can be compiled without
+graphics, for X11 graphics, or for SunView graphics, is available by
+anonymous ftp from
+
+        umnstat.stat.umn.edu (128.101.51.1)
+
+It is in the file xlispstat2.1R1.tar.Z in the directory pub/xlispstat.
+(The version and release numbers will be updated as changes are
+made/bugs are fixed).  This system has been compiled on a VAX, DEC
+3100 (pmax), Sun 3, Encore Multimax and (with a modified Makefile) a
+Cray XMP.
+
+The Macintosh version is also available by anonymous ftp from the
+address given above. The Macintosh distribution consists of two parts,
+contained in the files
+
+        XLISP-STAT2.1R1.Disk1.sit.Hqx
+        XLISP-STAT2.1R1.Disk2.sit.Hqx
+
+in the directory pub/xlispstat. These files contain archives created
+with StuffIt 1.5.1 that have been binhexed with BinHex 4.0. The
+Macintosh distribution includes two versions of the system, one for
+macs with a math coprocessor and one for generic macs. Source code for
+the Macintosh version is included in the UNIX sources.
+For reasonable operation the Mac version requires 2MB of memory. It
+may be possible to use it on very small problems with only 1MB. The
+program is fairly slow on a Mac Plus or SE.
+
+A tutorial introduction to the system is available. It is written
+primarily for the Macintosh version, but the differences to the UNIX
+version are minor. The tutorial is available as a set of LaTeX files
+in xlispstat.doc.tar.Z in the directory pub/xlispstat at the ftp
+address above.
+
+If you do not have access to anonymous ftp, you can obtain the source
+code and documentation from the statlib archive. To find out how to do
+this, send a mail message to
+
+        statlib@lib.stat.cmu.edu
+
+containing the line
+
+        send index from xlispstat
+
+More complete documentation will be published as a book that should be
+available from Wiley in October 1990. The title of the book is
+"Lisp-Stat: An object-oriented environment for statistical computing
+and dynamic graphics."
+
+For further information contact
+
+        Luke Tierney
+        School of Statistics
+        University of Minnesota
+        Minneapolis, Mn. 55455
+
+        luke@umnstat.stat.umn.edu
+
+	RECONSTRUCTION OF EXAMPLES IN PAPER
+
+;; First load the code 
+;;
+> (load "oirs")
+;; Load the galapagos data
+;;
+> (load "galapagos")
+;; Choose list of raps
+;;
+> (def raps '(:tran-predictors :bw-elim 
+	:outlier-test :test-influence :box-cox-test))
+;; Do all permuted analyses - this will take quite a while -
+;; about 15mins on a DEC5000/200
+;;
+> (def rlg (all-perm-eda x y raps :print nil 
+	:predictor-names varnames :response-name respname)
+;; Extract the unique models from the list
+;;
+> (unique-models rlg)
+;; This returns a list of the unique regression models in rlg and 
+;; a the numbers of sequences that end in these models. 
+;; Now save the unique models
+> (def unm (car *))
+;; Extract the adjusted R-squared from each model
+> (mapcar #'(lambda (r) (send r :adjusted-rsquared)) unm)
+;; Display each model
+> (mapcar #'(lambda (r) (send r :display)) unm)
+;; Extract the predictions and estimated se at (25.09 346 0.6 0.6 1.84)
+> (mapcar #'(lambda (r) (send r :prediction 
+	'(25.09 346 0.6 0.6 1.84) :compute-se t)) unm)
+;; Examine the progress of the data analysis for the first model
+> (nice-history (car unm))
+;; Now we have all the information needed to reconstruct Table 1
+;; We can reconstruct the analyses on the chicago datasets in 
+;; a similar manner except we need to prevent the elimination
+;; of the variable fire from the model by using the :vb-select keyword
+> (load "chicago")
+> (all-perm-eda x y raps :vb-select '(t nil t t t) 
+	:print nil :predictor-names varnames :response-name respname)
+;;
+;; The quantitative influence information can be extracted using the
+;; quant-inf function. This function returns the Cooks Statistics for
+;; the initial model, the final models and the overall measure of influence
+;; for the whole analysis of the model as discussed in the paper.
+;; load data
+> (load "galapagos")
+;; Define list of RAP's to be used
+> (def raps2 '(:outlier-test  :box-cox-test :tran-predictors :bw-elim ))
+;; Compute the influence statistics:
+> (def is (quant-inf x y raps2))
+;; Can examine results, for example
+> (plot-points (iseq 1 30) (nth 2 is))
+;; qual-inf is the qualitative influence function which returns
+;; a list of final model, leave-out-one final models, vector containing
+;; no. of transformations which differ and vector containing no. of
+;; weights that differ
+> (def is2 (qual-inf x y raps2))
+;; Look at the final model
+> (send (car is2) :display)
+;; Look at the models that differ in the variates
+> (mapcar #'(lambda (r) (send r :display))
+	(select (nth 1 is2) (which (/= 0 (nth 2 is2)))))
+;; Look at the models that differ in the weights
+> (mapcar #'(lambda (r) (send r :display))
+	(select (nth 1 is2) (which (/= 0 (nth 3 is2)))))
+;; Further information about these functions can be had from
+;; the help function
+> (help 'all-perm-eda)
+;; or reading the source.

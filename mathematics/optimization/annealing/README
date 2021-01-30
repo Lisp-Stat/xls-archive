@@ -1,0 +1,8 @@
+;; This is the simulated annealing algorithm discuused by Corana
+;; et al in ACM Transactions on Mathematical Software, 13, 1987,
+;; 262 - 280. It has been used (and slightly adapted) by Goffe
+;; et al in Journal of Econometrics, 60, 1994, 65-100.
+;;
+;; FORTRAN code from Goffe is in simann.f
+
+By Jan de Leeuw

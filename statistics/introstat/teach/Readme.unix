@@ -1,0 +1,20 @@
+Teach.shar is a shell archive available via anonymous ftp 
+from las2.iastate.edu using 'anonymous.mervyn' as the username 
+and your complete email address as the password.
+
+Unbundle the Teach shar files as follows:
+
+    1) Copy Teach.shar to the directory where you want to place the Teach 
+       modules.
+
+    2) Run sh on Teach.shar i.e. enter the following at the unix prompt
+                             sh Teach.shar
+
+The software will be automatically extracted and unbundled 
+and the Teach modules are ready to be executed as described in the 
+README file supplied.
+
+
+
+
+

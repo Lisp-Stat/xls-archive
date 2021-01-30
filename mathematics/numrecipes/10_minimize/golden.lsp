@@ -1,0 +1,40 @@
+(require "f2cl_macros")
+
+(defun golden (ax bx cx f tol xmin &key (r 0.618034) (c 0.38196602))
+ (declare (type double-float ax)) (declare (type double-float bx))
+ (declare (type double-float cx)) (declare (type double-float tol))
+ (declare (type double-float xmin)) (declare (type double-float r))
+ (declare (type double-float c))
+ (prog
+  ((xgolden 0.0d0) (f3 0.0d0) (f0 0.0d0) (f2 0.0d0) (f1 0.0d0) (x2 0.0d0)
+   (x1 0.0d0) (x3 0.0d0) (x0 0.0d0)
+  )
+  (declare (type double-float xgolden)) (declare (type double-float f3))
+  (declare (type double-float f0)) (declare (type double-float f2))
+  (declare (type double-float f1)) (declare (type double-float x2))
+  (declare (type double-float x1)) (declare (type double-float x3))
+  (declare (type double-float x0)) (setf x0 ax) (setf x3 cx)
+  (cond
+   ((> (abs (+ cx (- bx))) (abs (+ bx (- ax)))) (setf x1 bx)
+    (setf x2 (+ bx (* c (+ cx (- bx)))))
+   )
+   (t (setf x2 bx) (setf x1 (+ bx (* (* -1 c) (+ bx (- ax))))))
+  )
+  (setf f1 (funcall f x1)) (setf f2 (funcall f x2)) label1
+  (cond
+   ((> (abs (+ x3 (- x0))) (* tol (+ (abs x1) (abs x2))))
+    (cond
+     ((< f2 f1) (setf x0 x1) (setf x1 x2) (setf x2 (+ (* r x1) (* c x3)))
+      (setf f0 f1) (setf f1 f2) (setf f2 (funcall f x2))
+     )
+     (t (setf x3 x2) (setf x2 x1) (setf x1 (+ (* r x2) (* c x0))) (setf f3 f2)
+      (setf f2 f1) (setf f1 (funcall f x1))
+    ))
+    (go label1)
+  ))
+  (cond ((< f1 f2) (setf xgolden f1) (setf xmin x1))
+   (t (setf xgolden f2) (setf xmin x2))
+  )
+  (return xgolden)
+))
+

@@ -1,0 +1,81 @@
+FILE files
+F. Udina, May 15 1995
+
+README        is a file to be read, surprised?
+
+kde.shar      is a shar file. To unshar it, type `sh kde.shar' in your
+              /bin/sh shell once in an appropriate directory.
+
+kde.shar.gz   is a compressed version of it, use gunzip from GNU to
+              uncompress it.
+
+kde.sit.hqx   is a bin-hex'ed and stuffit version of kde.shar for Mac
+              users.
+
+lisp-sources  directory contain individual copies of all the lisp
+              files as described below.
+
+compiled-files directory contain individual files in compiled version.
+
+
+===================================================================
+
+                Needed files to run kde objects
+
+(you need either the .lsp or the compiled .fsl, not both)
+
+
+
+runkde.lsp    is the normal way to access kde objects,
+	      it has only some function for creating kde objects
+	      it loads all the files needed.
+
+kde.lsp       is the core file
+
+kde_conf.lsp  Global var definitions and some utility functions.
+
+calckde.lsp   Numerical routines for computing kernel estimates
+
+binning.lsp   Routines for binning data.
+
+wkde.lsp      Code for the wkde-proto object, 
+              the window that displays kde objects
+	      it is needed if you want to see the graphical aspect of kde
+	      objects, but kde objects can run without windows. 
+
+kdehisto.lsp  kde-proto methods to deal with histograms and related things.
+
+transfor.lsp  contains code for transf-proto object.
+
+funnorms.lsp  some utilities for computing numerical approx to integrals 
+              and functional norms.
+
+plotline.lsp  some modification of the xlispstat function plot-lines.
+
+goldsear.lsp  in the Macintosh and some unix versions, 
+              the function golden-search is documented but not defined.
+              Here is a slow lisp version of it.
+
+distrobj.lsp  contains code for distrobj-proto, a primitive distribution object
+	      prototype that allows easy building of mixtures.
+
+gnuplot.lsp   Interface to gnuplot for high-quality output. Written with
+              Jan De Leeuw. 
+
+getfile.lsp   file-selector-dialog, from Bernhard Walter.
+              
+
+Other files containing some kde objects with real data sets, some of them 
+quite popular:
+
+buf-snow.kde
+chrondite.lsp
+income75.lsp
+notes.kde
+old-faithful.kde
+Stamps.kde
+Log-Suicide.kde
+
+See the file README for more info.
+
+udina@upf.es

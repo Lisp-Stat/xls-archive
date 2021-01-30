@@ -1,0 +1,105 @@
+\documentclass[12pt]{amsart}
+\usepackage{verbatim}
+\begin{document}
+\title{PCA of three variables in Xlisp-Stat}
+\author{Jan de Leeuw}
+\date{\today}
+\maketitle
+Suppose $u_{i}=(x_{i},y_{i},z_{i})$ are $n$ points in $\mathbb{R}^{3}$.
+We want to find direction cosines $w=(w_{1},w_{2},w_{3})$ and
+an intercept $a=(a_{1},a_{2},a_{3})$ such that the
+line $\mathcal{L}=\{y\mid y=a+\lambda w\}$ approximates the $u_{i}$
+as closely as possible.\par
+%
+The loss function we use is
+\begin{equation*}
+\sigma(a,w)=\sum_{i=1}^{n}\min_{\lambda_{i}}\ (u_{i}-a-\lambda_{i}w)'
+(u_{i}-a-\lambda_{i}w).
+\end{equation*}
+This means that we project the $u_{i}$ perpendicularly on the line,
+and measure the sum of squared distances of the $u_{i}$ and the
+projections $\hat u_{i}$. Then choose $a$ and $w$, with $w'w=1$,
+such that $\sigma(a,w)$ is minimized.\par
+%
+It is clear that this problem is identical to the problem of minimizing
+\begin{equation*}
+\sigma(a,w,\lambda)=\sum_{i=1}^{n} (u_{i}-a-\lambda_{i}w)'(u_{i}-a-\lambda_{i}w)
+\end{equation*}
+over all three sets of variables, with constraint $w'w=1$. This show 
+that we may also require, without loss of generality, that the 
+$\lambda_{i}$ sum to zero.\par
+%
+We first minimize of $a$ for given $w$ and $\lambda$. This gives
+$\hat a=u_{\bullet},$
+with superscript $\bullet$ indicating mean. Thus
+\begin{equation*}
+\min_{a}\ \sigma(a,w,\lambda)=\sum_{i=1}^{n} (\tilde u_{i}-\lambda_{i}w)'
+(\tilde u_{i}-\lambda_{i}w),
+\end{equation*}
+with tildes over symbols indicating deviations from the mean. Now 
+minimize of the $\lambda_{i}$, which must add up to
+zero. The solution is $\hat\lambda_{i}=w'\tilde u_{i}$, which indeed
+adds up to zero. We now find
+\begin{equation*}
+\min_{\lambda}\min_{a}\ \sigma(a,w,\lambda)=\sum_{i=1}^{n}\{\tilde 
+u_{i}'\tilde u_{i}^{}-\hat\lambda_{i}^{2}\}.
+\end{equation*}
+In the final step of our minimization problem, we \textit{maximize}
+the sum of squares of the $\hat\lambda_{i}$ over $w$ with $w'w=1$. But
+\begin{equation*}
+\sum_{i=1}^{n}\hat\lambda_{i}^{2}=w'\{\sum_{i=1}^{n}\tilde u_{i}^{}
+\tilde u_{i}'\}w=w'Cw,
+\end{equation*}
+where $C=\tilde U'\tilde U$ is the $3\times 3$ cross-product matrix of
+the $\tilde u_{i}$. It follows that $\hat w$ is the normalized
+eigenvector corresponding with the dominant eigenvalue of $C$, or
+equivalently of the covariance matrix of the $u_{i}$. Suppose this
+dominant eigenvalue is $\omega$. We then draw the line between
+$\hat a-\frac{1}{2}\sqrt{\omega}\hat w$ and
+$\hat a+\frac{1}{2}\sqrt{\omega}\hat w$, which has length $\omega$.
+\par
+%
+This procedure can be repeated for the other two eigenvalues and
+eigenvectors, that capture the other dimensions of variation. \par
+%
+In Xlisp-Stat we simply add a PCA method to the spin-proto. Sending
+an instance of the spin-proto the PCA message will draw the three
+principal axis, with squared length equal to the eigenvalues. The 
+code is given below
+%
+%
+\begin{verbatim}
+
+(defmeth spin-proto :pca ()
+(let* ((n (send self :num-points))
+       (x (send self :point-coordinate 0 (iseq n)))
+       (y (send self :point-coordinate 1 (iseq n)))
+       (z (send self :point-coordinate 2 (iseq n)))
+       (c (* (1- n) (covariance-matrix x y z)))
+       (m (list (mean x) (mean y) (mean z)))
+       (g (eigen c))
+       (e (second g))
+       (f (sqrt (first g))))
+(send self :dircos m (first e) (/ (elt  f 0) 2))
+(send self :dircos m (second e) (/ (elt f 1) 2))
+(send self :dircos m (third e) (/ (elt f 2) 2))
+(print e)
+(print f)
+))
+
+(defmeth spin-proto :dircos (m w u)
+	(send self :abline (+ m (* u w)) (- m (* u w)) )
+)
+
+(defmeth spin-proto :abline (a b) 
+    (send self :add-lines (make-pairs a b))
+)
+
+(defun make-pairs (x y)
+  (let ((n (length x)))
+     (mapcar #'(lambda (z) (list (elt x z) (elt y z))) (iseq n))
+))
+\end{verbatim}
+\end{document}
+
+

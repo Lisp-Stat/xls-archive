@@ -1,0 +1,15 @@
+(defun cosqf (n x wsave) (declare (type fixnum n))
+ (declare (type (simple-array double-float (*)) x))
+ (declare (type (simple-array double-float (*)) wsave))
+ (prog ((sqrt2 0.0d0) (tsqx 0.0d0)) (declare (type double-float sqrt2))
+  (declare (type double-float tsqx)) (setq sqrt2 1.4142135)
+  (arithmetic-if (+ n (- 2)) (go label102) (go label101) (go label103))
+  label101 (setf tsqx (* sqrt2 (fref x 2)))
+  (fset (fref x 2) (+ (fref x 1) (- tsqx)))
+  (fset (fref x 1) (+ (fref x 1) tsqx)) label102 (go end_label) label103
+  (multiple-value-setq (n x wsave dummy_var)
+   (cosqf1 n x wsave (fref wsave (+ n 1)))
+  )
+  (go end_label) end_label (return (values n x wsave))
+))
+

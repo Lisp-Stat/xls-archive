@@ -1,0 +1,57 @@
+#+++
+#	NAME	: lspsum
+#
+#	PURPOSE : troff publication of summary of lisp code
+#
+#	USAGE	: lspsum  file1  file2  ... >PRINT
+#		  the lisp function summaries are extracted and troff
+#		  has been made to accomodate any other coding style.
+#
+#	DATE	: Mon Sep  9 09:00:51 EDT 1991
+#
+#	AUTHOR  : W. Hatch
+#
+#	COMPANY : Coleman Research Corporation
+#		  14504 Greenview Drive Suite 500
+#		  Laurel, Maryland 20708
+#		  Phone (301)470-3839
+#		  FAX (301)776-5461
+#		  uunet!bts!bill
+#---
+#------------------------------------------------------------------------
+# if no command line arguments then abort with usage instructions
+#------------------------------------------------------------------------
+usage="lspsum  file1  file2  ... >PRINT  "
+case $# in
+	0) echo $usage
+	   exit;;
+esac
+echo ".ft CW"
+echo ".nf"
+echo '.PF \042\047\047My company Logo\047\\n(mo/\\n(dy/\\n(yr\047\042'
+for i
+do
+	echo ".PH \042\047\047$i\047Page %\047\042"
+	echo ".bp"
+	echo ".H 1 $i"
+	echo ".ft CW"
+	echo ".nf"
+	awk '
+	/"-----/ {on = 1; getline}
+	/-----"/ {on = 0; count = 0; getline}
+		 {	if(on)
+			{
+				if(count == 0)
+				{
+					printf(".H 2 %s\n",$1)
+					printf(".nf\n")
+					printf(".ft CW\n")
+				}
+				print $0
+				++count
+		 	}
+		 }
+
+	' $i | gpr -e -t -w88
+done
+echo ".TC"

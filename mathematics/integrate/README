@@ -1,0 +1,6 @@
+gauss-hermite.lsp is by Jan de Leeuw.
+
+runge.lsp and integr.lsp are from Gerald Roylance 1982 CLMATH
+package. integr.lsp has Simpson's rule and the trapezoid rule.
+runge.lsp integrates runge-kutta differential equations by
+various methods.

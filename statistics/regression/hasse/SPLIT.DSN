@@ -1,0 +1,4 @@
+(A 5 fixed nil)
+(C 3 random (A))
+(B 4 fixed nil)
+(E 1 random (A C B))

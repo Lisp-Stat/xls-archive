@@ -1,0 +1,38 @@
+Copyright (c) 1991 Russell G. Almond
+
+ElToY is a tool for explorator Bayesian prior hyperparemeter
+elicitation.  
+
+Support for the ElToY package is being provided by the
+University of Washington, Department of Statistics through the
+courtesy of  Werner Stuzle and John McDonald of the same orginization
+(the author, Russell Almond, is solely responsible for the content).
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation;
+    version 2 of the License.  
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public
+    License along with this library (in the file COPYING); if not,
+    write to the Free Software Foundation, Inc., 675 Mass Ave,
+    Cambridge, MA 02139, USA. 
+
+Despite the disclaimer of warrentee, I am interested in compiling and
+fixing bugs and any problems with the software.  This will be done on
+a time available basis.  The author, Russell Almond, can be reached
+via the internet at almond@stat.washington.edu, or via U. S. mail
+through the University of Washington, Department of Statistics, GN-22,
+Seattle, WA  98195.
+
+In variance with the GNU default format, the file COPYING contains the
+GNU library licence and COPYING.PROG contains the ordinary GNU general
+public licence.
+
+
+

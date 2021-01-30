@@ -1,0 +1,44 @@
+The file {\tt dmc-opts.lsp} contains code that selects options for use
+by {\tt dmc.lsp}. 
+\begin{verbatim}
+(case (screen-has-color)
+      (nil
+       (defvar *normal-state-color* 'white)
+       (defvar *current-state-color* 'black)
+       (defvar *normal-state-text-color* 'black)
+       (defvar *current-state-text-color* 'white))
+      (t 
+       (defvar *normal-state-color* 'blue)
+       (defvar *current-state-color* 'red)
+       (defvar *normal-state-text-color* 'white)
+       (defvar *current-state-text-color* 'black)))
+(defvar *history-file* "history.mc")
+(defvar *time-window* 50)
+(defvar *run-step-delay* 30)
+\end{verbatim}
+Depending on whether the user has a color monitor or not, some global
+variables are given appropriate values. The variable {\tt
+  *normal-state-color*} refers to the background color of a normal
+state, {\tt *current-state-color*} refers to the background color of
+the current state, {\tt normal-state-text-color*} refers to the color
+used for text in a normal state, and {\tt *current-state-text-color*}
+refers to the color used for text in the current state.  The user can
+change these to reflect his or her preference.  
+
+For history recording, a default file name of ``history.mc'' is used.
+Note that this does not imply history will be recorded; the user has
+to enable history recording from the menu, and when that is done, the
+user is given a choice to change the file name. The variable {\tt
+  *time-window*} refers to the window width used for
+sample path display---the sample path for only the last {\tt
+  *time-window*} time ticks is displayed in the sample paths window.
+If the user sets this variable to zero, then the user gets a
+scroll-bar under the window which can be scrolled for the complete
+sample path plot.  It must be noted that even when the value of {\tt
+  *time-window*} is non-zero, the compplete history can be displayed
+in the plot by rescaling the plot. 
+
+Finally, since the transition takes place extremely quickly, at least
+on a workstation, a delay is employed to slow things down.  A value of
+$30$ means a delay of half a second. 
+

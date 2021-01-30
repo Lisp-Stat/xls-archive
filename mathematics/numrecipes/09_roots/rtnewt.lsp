@@ -1,0 +1,22 @@
+(require "f2cl_macros")
+
+(defun rtnewt (funcd x1 x2 xacc &key (jmax 20))
+ (declare (type double-float x1)) (declare (type double-float x2))
+ (declare (type double-float xacc)) (declare (type fixnum jmax))
+ (prog ((f 0.0d0) (df 0.0d0) (dx 0.0d0) (j 0) (xrtnewt 0.0d0))
+  (declare (type double-float f)) (declare (type double-float df))
+  (declare (type double-float dx))
+  (declare (type fixnum j)) (declare (type double-float xrtnewt))
+  (setf xrtnewt (* 0.5 (+ x1 x2)))
+  (fdo ((j 1 (+ j 1))) ((> j jmax) nil)
+   (tagbody (multiple-value-setq (xrtnewt f df) (funcall funcd xrtnewt f df))
+    (setf dx (/ f df)) (setf xrtnewt (+ xrtnewt (- dx)))
+    (if (< (* (+ x1 (- xrtnewt)) (+ xrtnewt (- x2))) 0.0)
+     (error "jumped out of brackets")
+    )
+    (if (< (abs dx) xacc) (go end_label))
+  ))
+  end_label
+  (return xrtnewt)
+))
+

@@ -1,0 +1,88 @@
+Course project:  Sta2102S, University of Toronto, Spring 1993
+Instructor: N. Reid
+Student: G. Tomlinson
+Project Title:  Random sampling and density functions for teaching elementary
+		statistics
+
+The two program files are
+
+teach-sample.lsp
+teach-density.lsp
+
+Both can be loaded with the load command.  After each one is loaded,
+it creates its own menu with what I hope are descriptive items.  Briefly
+though, here is a description of what the programs do.
+
+SAMPLE:
+
+There are three sections to the menu, each of which illustrates some 
+aspect of random sampling.
+
+Sampling from ...
+These menu items draw a plot of the reference distribution and allow the user
+to build up a histogram of data generated from that distribution.  The current
+sample size and number of points that will be added for each "click" is 
+selected by a scroll bar.   The distributions that are offered are the ones
+that one most often assumes that data comes from.  
+
+The histogram function does not work very well with counted data, as can 
+be seen with the Poisson distribution samples.  For this reason, the binomial 
+is not shown.
+
+Central Limit Theorem
+Four distributions are offered, each of different skewness.  A scroll
+bar offers a range of sample sizes.  When instructed, the program generates
+500 samples of the specified size from the given distribution.  The normalized
+sample means are then sent to a histogram.  A standard normal reference is 
+overlaid.
+
+Confidence Intervals
+The parent distribution is fixed as N(0,4).  The sample size for the sample to 
+be selected is chosen by a scroll bar.  On a plot, a vertical reference line 
+shows the position of the true mean.  Each time a sample is 
+selected, the sample mean and a 95% confidence interval (using the sample
+standard deviation and the t-distribution) is plotted.  Up to 100 CI's
+can be plotted.  The sample sizes vary enough to allow the user to see
+the halving of the confidence interval length with quadrupling of the sample
+size.  An illustration of the LLN can also be seen, as the sample means
+converge to the true mean with larger sample size. 
+
+The density section could be combined nicely with the sampling
+section below by adding a "generate sample" button to the dialog.  This would
+add a histogram for the given parameter settings to the density plot.
+
+The code that I wrote to draw bar graphs could be used to draw better
+histograms for count data.  Currently, they are not quite right (see
+samples from poisson, for example)
+
+
+DENSITY:
+
+When an item in the "densities" menu is selected, it draws a graph
+of the density (or pmf) of the selected item.  A dialog box is also
+created, with a scroll-bar (or bars) for changing the values of 
+parameters for the density over a range that I hope demonstrates
+just what the parameters do.  There is a button for rescaling the plot
+to its contents.  I chose this, rather than rescaling automatically,
+as its illustrates (rather dramatically for some densities) the relative
+heights of the density for various parameter settings.  
+
+Multiple copies of a density, or multiple densities can be on the screen
+at the same time.  This is nice for looking at the appropriateness of
+the normal approximation to the binomial, for example.
+
+I also included some code from the book that displays the coordinates
+of a "clicked" point on a plot, to allow extrema, etc. to be compared.
+
+Although I did not have time to code them, I realized that there are many 
+possible enhancements that could be made to these sorts of plots.  One idea
+would be to allow tail areas of chosen probability (e.g. one sided 5%, 
+two-sided 5%, etc) to be shaded upon request.  It would be useful also to show
+the mean and standard deviations graphically on the plot rather than only
+on the scroll bars. 
+
+
+George Tomlinson
+Department of Biostatistics
+University of Toronto
+  

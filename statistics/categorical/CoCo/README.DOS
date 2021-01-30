@@ -1,0 +1,8 @@
+
+  See the file ``Installation.DOS'' about installing CoCo on a PC.
+
+     If CoCo terminates with stack error: ``Runtime error 203'', then
+  start CoCo with a smaller overlay region, e.g., ``CoCo -O64000''.
+  See the sections ``DOS: Overlays'' in the chapter ``Miscellaneous
+  Options for ...'' in the guide to CoCo about details on controlling
+  the size of the overlay buffer.

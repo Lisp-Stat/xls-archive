@@ -1,0 +1,492 @@
+
+
+
+RUN PARAMETERS
+Maxgen = 24
+Cookgen = 10
+Cutpopgen = 10
+Cut_every = 8
+final_popsize = 250
+Init_select_gen = 3
+Threshold = 0
+Shuffle-Down Number = 24
+Random Seed = 3
+pspe = NIL
+Competitive Template- (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+
+
+Generation# 0
+Popsize = 16192
+Minfitness = 182
+Maxfitness = 226
+Average fitness = 212.16205533596838
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 8
+Average number of optimal subfunctions = 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 1 = 1 and 6.1758893280632407E-5
+Total and Average Number of optimal subfunctions in position 2 = 1 and 6.1758893280632407E-5
+Total and Average Number of optimal subfunctions in position 3 = 1 and 6.1758893280632407E-5
+Total and Average Number of optimal subfunctions in position 4 = 1 and 6.1758893280632407E-5
+Total and Average Number of optimal subfunctions in position 5 = 1 and 6.1758893280632407E-5
+Total and Average Number of optimal subfunctions in position 6 = 1 and 6.1758893280632407E-5
+Total and Average Number of optimal subfunctions in position 7 = 1 and 6.1758893280632407E-5
+Total and Average Number of optimal subfunctions in position 8 = 1 and 6.1758893280632407E-5
+
+Best solution so far -(1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 1
+Popsize = 16192
+Minfitness = 196
+Maxfitness = 226
+Average fitness = 216.01383399209487
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 16
+Average number of optimal subfunctions = 9.8814229249011851E-4
+Total and Average Number of optimal subfunctions in position 1 = 2 and 1.2351778656126481E-4
+Total and Average Number of optimal subfunctions in position 2 = 2 and 1.2351778656126481E-4
+Total and Average Number of optimal subfunctions in position 3 = 2 and 1.2351778656126481E-4
+Total and Average Number of optimal subfunctions in position 4 = 2 and 1.2351778656126481E-4
+Total and Average Number of optimal subfunctions in position 5 = 2 and 1.2351778656126481E-4
+Total and Average Number of optimal subfunctions in position 6 = 2 and 1.2351778656126481E-4
+Total and Average Number of optimal subfunctions in position 7 = 2 and 1.2351778656126481E-4
+Total and Average Number of optimal subfunctions in position 8 = 2 and 1.2351778656126481E-4
+
+Best solution so far -(1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 2
+Popsize = 16192
+Minfitness = 210
+Maxfitness = 226
+Average fitness = 220.10276679841897
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 32
+Average number of optimal subfunctions = 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 1 = 4 and 2.4703557312252963E-4
+Total and Average Number of optimal subfunctions in position 2 = 4 and 2.4703557312252963E-4
+Total and Average Number of optimal subfunctions in position 3 = 4 and 2.4703557312252963E-4
+Total and Average Number of optimal subfunctions in position 4 = 4 and 2.4703557312252963E-4
+Total and Average Number of optimal subfunctions in position 5 = 4 and 2.4703557312252963E-4
+Total and Average Number of optimal subfunctions in position 6 = 4 and 2.4703557312252963E-4
+Total and Average Number of optimal subfunctions in position 7 = 4 and 2.4703557312252963E-4
+Total and Average Number of optimal subfunctions in position 8 = 4 and 2.4703557312252963E-4
+
+Best solution so far -(1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 3
+Popsize = 8096
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.00790513833991
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 32
+Average number of optimal subfunctions = 0.003952569169960474
+Total and Average Number of optimal subfunctions in position 1 = 4 and 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 2 = 4 and 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 3 = 4 and 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 4 = 4 and 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 5 = 4 and 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 6 = 4 and 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 7 = 4 and 4.9407114624505926E-4
+Total and Average Number of optimal subfunctions in position 8 = 4 and 4.9407114624505926E-4
+
+Best solution so far -(1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 4
+Popsize = 8096
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.01556324110672
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 63
+Average number of optimal subfunctions = 0.007781620553359684
+Total and Average Number of optimal subfunctions in position 1 = 7 and 8.6462450592885375E-4
+Total and Average Number of optimal subfunctions in position 2 = 8 and 9.8814229249011851E-4
+Total and Average Number of optimal subfunctions in position 3 = 8 and 9.8814229249011851E-4
+Total and Average Number of optimal subfunctions in position 4 = 8 and 9.8814229249011851E-4
+Total and Average Number of optimal subfunctions in position 5 = 8 and 9.8814229249011851E-4
+Total and Average Number of optimal subfunctions in position 6 = 8 and 9.8814229249011851E-4
+Total and Average Number of optimal subfunctions in position 7 = 8 and 9.8814229249011851E-4
+Total and Average Number of optimal subfunctions in position 8 = 8 and 9.8814229249011851E-4
+
+Best solution so far -(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0)
+Fitness = 226
+Generation# 5
+Popsize = 4048
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.03162055335969
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 64
+Average number of optimal subfunctions = 0.015810276679841896
+Total and Average Number of optimal subfunctions in position 1 = 8 and 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 2 = 8 and 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 3 = 8 and 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 4 = 8 and 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 5 = 8 and 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 6 = 8 and 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 7 = 8 and 0.001976284584980237
+Total and Average Number of optimal subfunctions in position 8 = 8 and 0.001976284584980237
+
+Best solution so far -(0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 6
+Popsize = 4048
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.06225296442688
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 126
+Average number of optimal subfunctions = 0.031126482213438736
+Total and Average Number of optimal subfunctions in position 1 = 16 and 0.003952569169960474
+Total and Average Number of optimal subfunctions in position 2 = 16 and 0.003952569169960474
+Total and Average Number of optimal subfunctions in position 3 = 16 and 0.003952569169960474
+Total and Average Number of optimal subfunctions in position 4 = 16 and 0.003952569169960474
+Total and Average Number of optimal subfunctions in position 5 = 16 and 0.003952569169960474
+Total and Average Number of optimal subfunctions in position 6 = 16 and 0.003952569169960474
+Total and Average Number of optimal subfunctions in position 7 = 14 and 0.003458498023715415
+Total and Average Number of optimal subfunctions in position 8 = 16 and 0.003952569169960474
+
+Best solution so far -(1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 7
+Popsize = 2024
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.12252964426878
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 124
+Average number of optimal subfunctions = 0.061264822134387352
+Total and Average Number of optimal subfunctions in position 1 = 16 and 0.0079051383399209481
+Total and Average Number of optimal subfunctions in position 2 = 15 and 0.007411067193675889
+Total and Average Number of optimal subfunctions in position 3 = 16 and 0.0079051383399209481
+Total and Average Number of optimal subfunctions in position 4 = 15 and 0.007411067193675889
+Total and Average Number of optimal subfunctions in position 5 = 17 and 0.008399209486166008
+Total and Average Number of optimal subfunctions in position 6 = 17 and 0.008399209486166008
+Total and Average Number of optimal subfunctions in position 7 = 12 and 0.0059288537549407111
+Total and Average Number of optimal subfunctions in position 8 = 16 and 0.0079051383399209481
+
+Best solution so far -(0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 8
+Popsize = 2024
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.23715415019763
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 240
+Average number of optimal subfunctions = 0.11857707509881422
+Total and Average Number of optimal subfunctions in position 1 = 32 and 0.015810276679841896
+Total and Average Number of optimal subfunctions in position 2 = 30 and 0.014822134387351778
+Total and Average Number of optimal subfunctions in position 3 = 31 and 0.015316205533596838
+Total and Average Number of optimal subfunctions in position 4 = 28 and 0.01383399209486166
+Total and Average Number of optimal subfunctions in position 5 = 31 and 0.015316205533596838
+Total and Average Number of optimal subfunctions in position 6 = 34 and 0.016798418972332016
+Total and Average Number of optimal subfunctions in position 7 = 24 and 0.011857707509881422
+Total and Average Number of optimal subfunctions in position 8 = 30 and 0.014822134387351778
+
+Best solution so far -(0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 9
+Popsize = 1012
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.46047430830041
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 233
+Average number of optimal subfunctions = 0.23023715415019763
+Total and Average Number of optimal subfunctions in position 1 = 32 and 0.031620553359683792
+Total and Average Number of optimal subfunctions in position 2 = 29 and 0.02865612648221344
+Total and Average Number of optimal subfunctions in position 3 = 31 and 0.030632411067193676
+Total and Average Number of optimal subfunctions in position 4 = 26 and 0.025691699604743084
+Total and Average Number of optimal subfunctions in position 5 = 33 and 0.032608695652173912
+Total and Average Number of optimal subfunctions in position 6 = 31 and 0.030632411067193676
+Total and Average Number of optimal subfunctions in position 7 = 24 and 0.023715415019762844
+Total and Average Number of optimal subfunctions in position 8 = 27 and 0.0266798418972332
+
+Best solution so far -(0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 10
+Popsize = 506
+Minfitness = 224
+Maxfitness = 226
+Average fitness = 224.87351778656125
+Maximum number of optimal subfunctions = 1
+Total number of optimal subfunctions = 221
+Average number of optimal subfunctions = 0.43675889328063239
+Total and Average Number of optimal subfunctions in position 1 = 32 and 0.063241106719367585
+Total and Average Number of optimal subfunctions in position 2 = 26 and 0.051383399209486168
+Total and Average Number of optimal subfunctions in position 3 = 30 and 0.059288537549407112
+Total and Average Number of optimal subfunctions in position 4 = 28 and 0.05533596837944664
+Total and Average Number of optimal subfunctions in position 5 = 29 and 0.05731225296442688
+Total and Average Number of optimal subfunctions in position 6 = 29 and 0.05731225296442688
+Total and Average Number of optimal subfunctions in position 7 = 21 and 0.041501976284584984
+Total and Average Number of optimal subfunctions in position 8 = 26 and 0.051383399209486168
+
+Best solution so far -(1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+Fitness = 226
+Generation# 11
+Popsize = 253
+Minfitness = 196
+Maxfitness = 228
+Average fitness = 223.04347826086956
+Maximum number of optimal subfunctions = 2
+Total number of optimal subfunctions = 302
+Average number of optimal subfunctions = 1.1936758893280632
+Total and Average Number of optimal subfunctions in position 1 = 36 and 0.14229249011857709
+Total and Average Number of optimal subfunctions in position 2 = 39 and 0.1541501976284585
+Total and Average Number of optimal subfunctions in position 3 = 44 and 0.17391304347826086
+Total and Average Number of optimal subfunctions in position 4 = 33 and 0.13043478260869565
+Total and Average Number of optimal subfunctions in position 5 = 48 and 0.18972332015810275
+Total and Average Number of optimal subfunctions in position 6 = 38 and 0.15019762845849802
+Total and Average Number of optimal subfunctions in position 7 = 29 and 0.11462450592885376
+Total and Average Number of optimal subfunctions in position 8 = 35 and 0.13833992094861661
+
+Best solution so far -(0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1)
+Fitness = 228
+Generation# 12
+Popsize = 253
+Minfitness = 170
+Maxfitness = 232
+Average fitness = 219.54150197628459
+Maximum number of optimal subfunctions = 4
+Total number of optimal subfunctions = 538
+Average number of optimal subfunctions = 2.1264822134387353
+Total and Average Number of optimal subfunctions in position 1 = 65 and 0.25691699604743085
+Total and Average Number of optimal subfunctions in position 2 = 61 and 0.24110671936758893
+Total and Average Number of optimal subfunctions in position 3 = 79 and 0.31225296442687744
+Total and Average Number of optimal subfunctions in position 4 = 63 and 0.24901185770750989
+Total and Average Number of optimal subfunctions in position 5 = 73 and 0.28853754940711462
+Total and Average Number of optimal subfunctions in position 6 = 69 and 0.27272727272727271
+Total and Average Number of optimal subfunctions in position 7 = 56 and 0.22134387351778656
+Total and Average Number of optimal subfunctions in position 8 = 72 and 0.28458498023715417
+
+Best solution so far -(1 1 1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 1 1 1)
+Fitness = 232
+Generation# 13
+Popsize = 253
+Minfitness = 116
+Maxfitness = 238
+Average fitness = 216.90909090909091
+Maximum number of optimal subfunctions = 7
+Total number of optimal subfunctions = 782
+Average number of optimal subfunctions = 3.0909090909090908
+Total and Average Number of optimal subfunctions in position 1 = 83 and 0.32806324110671936
+Total and Average Number of optimal subfunctions in position 2 = 88 and 0.34782608695652173
+Total and Average Number of optimal subfunctions in position 3 = 113 and 0.44664031620553357
+Total and Average Number of optimal subfunctions in position 4 = 93 and 0.3675889328063241
+Total and Average Number of optimal subfunctions in position 5 = 107 and 0.42292490118577075
+Total and Average Number of optimal subfunctions in position 6 = 110 and 0.43478260869565216
+Total and Average Number of optimal subfunctions in position 7 = 85 and 0.33596837944664032
+Total and Average Number of optimal subfunctions in position 8 = 103 and 0.40711462450592883
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 1)
+Fitness = 238
+Generation# 14
+Popsize = 253
+Minfitness = 146
+Maxfitness = 240
+Average fitness = 219.098814229249
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 991
+Average number of optimal subfunctions = 3.9169960474308301
+Total and Average Number of optimal subfunctions in position 1 = 108 and 0.4268774703557312
+Total and Average Number of optimal subfunctions in position 2 = 112 and 0.44268774703557312
+Total and Average Number of optimal subfunctions in position 3 = 142 and 0.56126482213438733
+Total and Average Number of optimal subfunctions in position 4 = 122 and 0.48221343873517786
+Total and Average Number of optimal subfunctions in position 5 = 127 and 0.50197628458498023
+Total and Average Number of optimal subfunctions in position 6 = 144 and 0.56916996047430835
+Total and Average Number of optimal subfunctions in position 7 = 112 and 0.44268774703557312
+Total and Average Number of optimal subfunctions in position 8 = 124 and 0.49011857707509882
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 15
+Popsize = 253
+Minfitness = 120
+Maxfitness = 240
+Average fitness = 218.25296442687747
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1178
+Average number of optimal subfunctions = 4.6561264822134385
+Total and Average Number of optimal subfunctions in position 1 = 143 and 0.56521739130434778
+Total and Average Number of optimal subfunctions in position 2 = 140 and 0.55335968379446643
+Total and Average Number of optimal subfunctions in position 3 = 166 and 0.65612648221343872
+Total and Average Number of optimal subfunctions in position 4 = 143 and 0.56521739130434778
+Total and Average Number of optimal subfunctions in position 5 = 152 and 0.60079051383399207
+Total and Average Number of optimal subfunctions in position 6 = 164 and 0.64822134387351782
+Total and Average Number of optimal subfunctions in position 7 = 129 and 0.50988142292490124
+Total and Average Number of optimal subfunctions in position 8 = 141 and 0.55731225296442688
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 16
+Popsize = 253
+Minfitness = 116
+Maxfitness = 240
+Average fitness = 221.15415019762847
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1333
+Average number of optimal subfunctions = 5.2687747035573125
+Total and Average Number of optimal subfunctions in position 1 = 157 and 0.62055335968379444
+Total and Average Number of optimal subfunctions in position 2 = 161 and 0.63636363636363635
+Total and Average Number of optimal subfunctions in position 3 = 190 and 0.75098814229249011
+Total and Average Number of optimal subfunctions in position 4 = 157 and 0.62055335968379444
+Total and Average Number of optimal subfunctions in position 5 = 159 and 0.62845849802371545
+Total and Average Number of optimal subfunctions in position 6 = 190 and 0.75098814229249011
+Total and Average Number of optimal subfunctions in position 7 = 149 and 0.58893280632411071
+Total and Average Number of optimal subfunctions in position 8 = 170 and 0.67193675889328064
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 17
+Popsize = 253
+Minfitness = 136
+Maxfitness = 240
+Average fitness = 222.23715415019763
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1471
+Average number of optimal subfunctions = 5.8142292490118574
+Total and Average Number of optimal subfunctions in position 1 = 169 and 0.66798418972332019
+Total and Average Number of optimal subfunctions in position 2 = 177 and 0.69960474308300391
+Total and Average Number of optimal subfunctions in position 3 = 203 and 0.80237154150197632
+Total and Average Number of optimal subfunctions in position 4 = 184 and 0.72727272727272729
+Total and Average Number of optimal subfunctions in position 5 = 178 and 0.70355731225296447
+Total and Average Number of optimal subfunctions in position 6 = 199 and 0.7865612648221344
+Total and Average Number of optimal subfunctions in position 7 = 170 and 0.67193675889328064
+Total and Average Number of optimal subfunctions in position 8 = 191 and 0.75494071146245056
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 18
+Popsize = 253
+Minfitness = 142
+Maxfitness = 240
+Average fitness = 222.94071146245059
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1562
+Average number of optimal subfunctions = 6.1739130434782608
+Total and Average Number of optimal subfunctions in position 1 = 188 and 0.74308300395256921
+Total and Average Number of optimal subfunctions in position 2 = 198 and 0.78260869565217395
+Total and Average Number of optimal subfunctions in position 3 = 215 and 0.84980237154150196
+Total and Average Number of optimal subfunctions in position 4 = 182 and 0.71936758893280628
+Total and Average Number of optimal subfunctions in position 5 = 186 and 0.7351778656126482
+Total and Average Number of optimal subfunctions in position 6 = 211 and 0.83399209486166004
+Total and Average Number of optimal subfunctions in position 7 = 192 and 0.75889328063241102
+Total and Average Number of optimal subfunctions in position 8 = 190 and 0.75098814229249011
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 19
+Popsize = 253
+Minfitness = 144
+Maxfitness = 240
+Average fitness = 224.79051383399209
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1655
+Average number of optimal subfunctions = 6.541501976284585
+Total and Average Number of optimal subfunctions in position 1 = 204 and 0.80632411067193677
+Total and Average Number of optimal subfunctions in position 2 = 206 and 0.81422924901185767
+Total and Average Number of optimal subfunctions in position 3 = 223 and 0.88142292490118579
+Total and Average Number of optimal subfunctions in position 4 = 195 and 0.77075098814229248
+Total and Average Number of optimal subfunctions in position 5 = 195 and 0.77075098814229248
+Total and Average Number of optimal subfunctions in position 6 = 225 and 0.88932806324110669
+Total and Average Number of optimal subfunctions in position 7 = 202 and 0.79841897233201586
+Total and Average Number of optimal subfunctions in position 8 = 205 and 0.81027667984189722
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 20
+Popsize = 253
+Minfitness = 156
+Maxfitness = 240
+Average fitness = 226.98814229249012
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1725
+Average number of optimal subfunctions = 6.8181818181818183
+Total and Average Number of optimal subfunctions in position 1 = 210 and 0.83003952569169959
+Total and Average Number of optimal subfunctions in position 2 = 221 and 0.87351778656126478
+Total and Average Number of optimal subfunctions in position 3 = 228 and 0.90118577075098816
+Total and Average Number of optimal subfunctions in position 4 = 201 and 0.7944664031620553
+Total and Average Number of optimal subfunctions in position 5 = 208 and 0.82213438735177868
+Total and Average Number of optimal subfunctions in position 6 = 227 and 0.89723320158102771
+Total and Average Number of optimal subfunctions in position 7 = 210 and 0.83003952569169959
+Total and Average Number of optimal subfunctions in position 8 = 220 and 0.86956521739130432
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 21
+Popsize = 253
+Minfitness = 150
+Maxfitness = 240
+Average fitness = 230.03952569169959
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1779
+Average number of optimal subfunctions = 7.0316205533596836
+Total and Average Number of optimal subfunctions in position 1 = 213 and 0.84189723320158105
+Total and Average Number of optimal subfunctions in position 2 = 229 and 0.90513833992094861
+Total and Average Number of optimal subfunctions in position 3 = 236 and 0.93280632411067199
+Total and Average Number of optimal subfunctions in position 4 = 209 and 0.82608695652173914
+Total and Average Number of optimal subfunctions in position 5 = 215 and 0.84980237154150196
+Total and Average Number of optimal subfunctions in position 6 = 235 and 0.92885375494071143
+Total and Average Number of optimal subfunctions in position 7 = 216 and 0.85375494071146241
+Total and Average Number of optimal subfunctions in position 8 = 226 and 0.89328063241106714
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 22
+Popsize = 253
+Minfitness = 130
+Maxfitness = 240
+Average fitness = 233.11462450592884
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1860
+Average number of optimal subfunctions = 7.3517786561264824
+Total and Average Number of optimal subfunctions in position 1 = 236 and 0.93280632411067199
+Total and Average Number of optimal subfunctions in position 2 = 232 and 0.91699604743083007
+Total and Average Number of optimal subfunctions in position 3 = 241 and 0.95256916996047436
+Total and Average Number of optimal subfunctions in position 4 = 224 and 0.88537549407114624
+Total and Average Number of optimal subfunctions in position 5 = 234 and 0.92490118577075098
+Total and Average Number of optimal subfunctions in position 6 = 239 and 0.94466403162055335
+Total and Average Number of optimal subfunctions in position 7 = 224 and 0.88537549407114624
+Total and Average Number of optimal subfunctions in position 8 = 230 and 0.90909090909090906
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 23
+Popsize = 253
+Minfitness = 160
+Maxfitness = 240
+Average fitness = 234.48221343873519
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1900
+Average number of optimal subfunctions = 7.5098814229249014
+Total and Average Number of optimal subfunctions in position 1 = 236 and 0.93280632411067199
+Total and Average Number of optimal subfunctions in position 2 = 238 and 0.94071146245059289
+Total and Average Number of optimal subfunctions in position 3 = 245 and 0.96837944664031617
+Total and Average Number of optimal subfunctions in position 4 = 238 and 0.94071146245059289
+Total and Average Number of optimal subfunctions in position 5 = 231 and 0.91304347826086951
+Total and Average Number of optimal subfunctions in position 6 = 241 and 0.95256916996047436
+Total and Average Number of optimal subfunctions in position 7 = 233 and 0.92094861660079053
+Total and Average Number of optimal subfunctions in position 8 = 238 and 0.94071146245059289
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240
+Generation# 24
+Popsize = 253
+Minfitness = 150
+Maxfitness = 240
+Average fitness = 235.07509881422925
+Maximum number of optimal subfunctions = 8
+Total number of optimal subfunctions = 1931
+Average number of optimal subfunctions = 7.6324110671936758
+Total and Average Number of optimal subfunctions in position 1 = 241 and 0.95256916996047436
+Total and Average Number of optimal subfunctions in position 2 = 243 and 0.96047430830039526
+Total and Average Number of optimal subfunctions in position 3 = 246 and 0.97233201581027673
+Total and Average Number of optimal subfunctions in position 4 = 236 and 0.93280632411067199
+Total and Average Number of optimal subfunctions in position 5 = 238 and 0.94071146245059289
+Total and Average Number of optimal subfunctions in position 6 = 244 and 0.96442687747035571
+Total and Average Number of optimal subfunctions in position 7 = 242 and 0.95652173913043481
+Total and Average Number of optimal subfunctions in position 8 = 241 and 0.95256916996047436
+
+Best solution so far -(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+Fitness = 240

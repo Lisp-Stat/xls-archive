@@ -1,0 +1,102 @@
+I'm not sure how much speed you need. Doing something like
+
+(defun read-byte-string (string stream)
+  (let ((n (length string))
+	(i 0))
+    (loop
+     (let ((c (read-byte stream nil nil)))
+       (unless (and c (< i n)) (return i))
+       (setf (char string i) (int-char c))
+       (incf i)))))
+
+and use it as
+
+(setf x (make-string 1000))
+(time (with-open-file (s "xlisp.wks" :element-type 'fixnum)
+        (loop                
+          (unless (= (read-byte-string x s) 1000) (return)))))
+
+to read in all the bytes in a .5M file I get
+
+	The evaluation took 58.07 seconds; 0.02 seconds in gc.
+
+interpreted and
+
+	The evaluation took 7.89 seconds; 0.01 seconds in gc.
+
+byte compiled. If you go to a C function that does roughly the same thing,
+
+-------------------------------------------------------------------------------
+#include "xlisp.h"
+
+/* xrdbyte - read a byte from a file */
+LVAL xrdbytestr(V)
+{
+  LVAL str, fptr;
+  int ch, i, n;
+
+  /* get the string and file pointer */
+  str = xlgastring();
+  fptr = (moreargs() ? xlgetfile(FALSE) : getvalue(s_stdin));
+  xllastarg();
+
+  n = getslength(str);
+  i = 0;
+  while (i < n && (ch = xlgetc(fptr)) != EOF) {
+    setstringch(str, i, ch);
+    i++;
+  }
+
+  return cvfixnum((FIXTYPE) i);
+}
+-------------------------------------------------------------------------------
+loading the .o file and defining
+
+(defun read-byte-string (string stream) (call-lfun "xrdbytestr" string stream))
+
+gives
+
+	The evaluation took 0.72 seconds; 0.00 seconds in gc.
+
+This just does the reading and inserting at the C level --
+constructing the string and opening the file is done at the lis level.
+
+If you replace the use of xlgetc by getch you can probably get another
+factor of 10 or 20 in speed imrovement since xlgetc does a lot of
+checking on each character that you could hoist out of the loop. But
+getting that right would take a lot more effort.
+
+
+> 
+> 3.  Capturing "(system <cmd>)":
+> 
+>     I'd like to be able to do something like 
+> 
+> 	(setq thing (system <cmd>))
+> 
+
+The popen and pclose commands from winterp are available. There is
+some documentaiton available on them with (hepl 'popen). For example,
+
+(defun ls-l (string)
+  (let ((s (popen (format nil "ls -l ~a" string))))
+    (unwind-protect
+      (with-output-to-string (out)
+        (loop
+         (let ((line (read-line s nil nil)))
+           (unless line (return out))
+	   (push (format out "~a~%" line) lines))))
+      (pclose s))))
+
+reads runs ls -l on its argument and returns a string of the result:
+
+> (ls-l "~/")
+"total 70
+drwx------   4 luke     root        3072 Feb 10 08:52 Mail
+drwxr-xr-x   2 luke     root        2048 Jan 20 16:24 News
+drwxr-xr-x   5 luke     root        1024 Dec 20 10:53 SRC
+...
+"
+
+luke
+

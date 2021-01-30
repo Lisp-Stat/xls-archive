@@ -1,0 +1,170 @@
+
+
+-- :save-self must write a file to recreate itself in another
+XLS session, possibly in a diferent machine, right? The info to save
+is not a _identical_ copy of the object, only the main aspects of it
+must be saved. (If you want to save an identical copy of your objects,
+save your workspace instead -- release 3)
+
+-- our objects are based on prototypes that will already exist in an
+identical reincarnation when the object is to be reincarnated, so the
+only info to save is that one that makes our object differ from
+its prototype.
+
+-- So, we don't want to write ALL the slots. Some slots are physical
+memory adresses, other are binary-coded information that can't be used
+when read from a file.
+
+-- objects usually contain in its slots pointers to other objects, and
+some of them must be saved along with his 'father'. 
+
+-- Deciding whether a slot must or not be saved can't be automatic.
+For example, the 'location' slot can be important for some objects, or
+can be a matter of user choice in others.
+
+-- There is no way to decide automatically what arguments are to be
+passed to the :new method. Some prototypes need no args, some do.
+
+-- There will probably be in the object some slots that can't be
+assigned his value until the :isnew process is finished. This slots
+can't get his value from the key-value pairs in the :new call.
+
+-- The :save-self method must be defined for the root object *object*
+and will assume that the object to be saved has a slot named
+'save-self-slots and a slot named 'isnew-info described below.
+
+-- I'm not sure at the moment if we need some mechanism to customize
+the save-self method, e.g., some slot can need have a value that
+depends on the computer where it runs, so this value is to be
+recomputed when loading the file. Or, one needs to include some
+(require ...) call in the prolog, or some method is to be called after
+recreating the object... Anyway,
+
+-- To allow descendants to modify the method, the :save-self arg must
+be a stream. This way a descendant can open a file, write some
+prologue to it, then call-next-method with the open stream, and
+finally write some epilogue and close the file.
+
+-- One of the triquiest problem is to write a function that writes any
+lisp object to a stream in a readable form. So, any list must be
+written as '(list ...)' any float with enough precission, any XLS
+object must be write as :save-self do it, etc...
+That will take some time to program.
+
+
+FOLLOWING is a more precise specification of the method and the
+objects it can support. At the bottom there is a prime implementation
+that does'nt work, it is intended only to clarify ideas.
+
+WHAT DO YOU think about it all?. I will put some work on it if it can
+be useful to more people. Do you think it can work with your objects?
+
+
+++++++++++++++++++++++
+So, my current bet is
+
+The object to be saved must have two special slots:
+
+'save-self-slots contains a list of the slots than can and must be
+saved into a file by the method :save-self
+
+'isnew-info contains a list of
+  1st- the arguments needed by the :new method 
+  2nd- the slots that can be filled directly 
+       by passing paired arguments to the :new method
+
+:save-self is a method defined for *object*.
+It will create a file containing a valid lisp espression like
+
+(let ((myself (send my-proto :new args key-pairs)))
+  (send myself :accessor1 value1)
+  ...
+  (send myself :accessorN valueN)
+  (send myself :slot-value 'slot1 value1)
+  ...
+  (send myself :slot-value 'slotM valueM)
+  myself)
+
+WHERE:
+args is taken from the first elem of slot :to-isnew-info
+key-pairs is a the sequence k1 v1 k2 v2 ... kK vK made by taking the
+keys from the second of :to-isnew-info and writing the corresponding
+values.
+
+then, for each slot 'sss found in the list :for-save-self-slots
+               if sss is in key-pairs, ignore it, it's already saved
+               if sss has an accessor method, add a line to the file
+                      (send myself :accessorI valueI)
+               if not, add a line like
+                      
+=========================================================
+
+This is a sketch of the method:
+
+(defmeth *object* :save-self (stream)
+  "Args: STREAM can be a string for a filename or an already open stream.
+  self must contain slots 'save-self-slots and 'isnew-info."
+  (when (and (send self :has-slot 'save-self-slots)
+	     (send self :has-slot 'isnew-info))
+	(if (stringp stream)
+	    (with-open-file (sss stream :direction :output)
+			    (send self :save-self sss))
+            (progn
+	      (format stream ";;;saving me: ~a~%" self)
+	      (format stream "(let ((myself (send ~a :new ~%"
+		      (slot-value 'proto-name))
+	      (dolist (item (second (slot-value 'isnew-info)))
+		      (format stream "  :~s ~s~%"
+			      item
+			      (slot-value item)))
+	      (format stream ")))~%myself)~%")))))
+
+
+;;;---------------
+;;;then we define the prototype:
+
+(defproto objy-proto '(xxx yyy  save-self-slots isnew-info) () *object*)
+
+(defmeth objy-proto :isnew (&rest args)
+  (apply #'call-next-method args)
+  (setf (slot-value 'save-self-slots)
+        '(xxx yyy))
+  (setf (slot-value 'isnew-info)
+        '( () (xxx yyy)))
+  self)
+
+;;;nd we create an instance
+
+(setq obj (send objy-proto :new
+                :xxx 234 :yyy "pepet"))
+
+
+;;;and ask it to save itself
+
+(send obj :save-self "file-for-obgy.lsp")
+
+====Contents of file-for-obgy.lsp=============
+;;;saving me: #<Object: 23835584, prototype = OBJY-PROTO>
+(let ((myself (send OBJY-PROTO :new 
+  :XXX 234
+  :YYY "pepet"
+)))
+myself)
+
+
+=======that's all folks===========
+
+-- 
+
+Frederic Udina
+_______________________________________________________________________
+                                    |     voice: 34 - 3 - 542 17 56
+Facultat de Ciencies Economiques    |       fax: 34 - 3 - 542 17 46
+Universitat Pompeu Fabra            |    e-mail: udina@upf.es      
+       Balmes 132                   | appleLink: spa0172           
+       08008 Barcelona              |  Servicom: sva00484
+       SPAIN                        |   W W Web: http://libiya.upf.es/
+___________________________________/_\_________________________________
+
+
+

@@ -1,0 +1,11 @@
+(defun acondg (x y c fun) (declare (type double-float x))
+ (declare (type double-float y)) (declare (type double-float c))
+ (prog ((a 0.0d0) (acondg 0.0d0) (t2 0.0d0) (t1 0.0d0) (t_ 0.0d0) (z 0.0d0))
+  (declare (type double-float a)) (declare (type double-float acondg))
+  (declare (type double-float t2)) (declare (type double-float t1))
+  (declare (type double-float t_)) (declare (type double-float z))
+  (multiple-value-setq (c x a b) (fun c x a b)) (setf z (+ (+ c (abs c)) 1.0))
+  (setf t_ (cpabs x z)) (setf t1 (/ x t_)) (setf t2 (/ z t_))
+  (setf acondg (/ (+ (* t1 a) (* (* -1 t2) b)) t_)) (return acondg)
+))
+

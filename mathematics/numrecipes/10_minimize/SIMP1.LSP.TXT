@@ -1,0 +1,25 @@
+(require "f2cl_macros")
+
+(defun simp1 (a mp np mm ll nll iabf kp bmax)
+ (declare (type (simple-array double-float (* *)) a))
+ (declare (type fixnum mp)) (declare (type fixnum np))
+ (declare (type fixnum mm)) (declare (type (simple-array fixnum (*)) ll))
+ (declare (type fixnum nll)) (declare (type fixnum iabf))
+ (declare (type fixnum kp)) (declare (type double-float bmax))
+ (prog ((test 0.0d0) (k 0)) (declare (type double-float test))
+  (declare (type fixnum k)) (setf kp (fref ll 1))
+  (setf bmax (fref a (+ mm 1) (+ kp 1))) (if (< nll 2) (go end_label))
+  (fdo ((k 2 (+ k 1))) ((> k nll) nil)
+   (tagbody
+    (cond
+     ((= iabf 0) (setf test (+ (fref a (+ mm 1) (+ (fref ll k) 1)) (- bmax))))
+     (t
+      (setf test (+ (abs (fref a (+ mm 1) (+ (fref ll k) 1))) (- (abs bmax))))
+    ))
+    (cond
+     ((> test 0.0) (setf bmax (fref a (+ mm 1) (+ (fref ll k) 1)))
+      (setf kp (fref ll k))
+  ))))
+  (go end_label) end_label (return (values a mp np mm ll nll iabf kp bmax))
+))
+

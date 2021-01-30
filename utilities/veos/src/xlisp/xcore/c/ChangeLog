@@ -1,0 +1,203 @@
+Wed Feb 12 14:32:10 1992  Andrew MacDonald  (awm at hitl.washington.edu)
+
+	* added vector case to equal primative.
+
+Any Jan XX XX:XX:XX 1992  Voodoo (voodoo at hitl.washington.edu)
+
+    	* setup xlisp as a library.  an optional software tool.
+    	  rather than the mandatory command module.
+    	* removed main from xlisp.  xlisp entry now called xmain().
+    	* xmain.c contains the func xmain which acts just like the old main.
+    	  the differenc is that now xlisp is compiled once as a library
+    	  and linked to many software tools with respective mains.
+    	* added xlfinit() which sets up the xlisp function table.
+    	  it places the tabel in the heap rather than in global stack space.
+    	* also, user defined lisp functions are included at runtime rather
+    	  than at compile time.  again, xlisp does not need to be recompiled
+    	  to link with other software tools - even if there are user defined
+    	  xlisp functions.
+
+Sun Jun 16 13:57:05 1991  Jeff Prothero  (jsp at glia)
+
+	* xlobj.c xsendmsg0/2/3() created.
+
+Sat Jun 15 22:18:25 1991  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* xlobj.c xsendmsg1() created.
+
+Thu Jan 17 12:30:00 1991  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* xldmem.c:gc() bugfix:  Bind s_gchook to NIL while
+	  evaluating hook fn.  (This fix courtesy Tom Almy.)
+
+	* xldmem.c:gc() bugfix:  Do
+              if (nfree < (long)anodes)   addseg();
+	  in gc() before *GC-HOOK* code, instead of in findmem().
+	  Eliminate findmem(), which no longer serves any purpose.
+
+	* xlinit.c:xlsymbols() bugfix: Do
+          "setvalue(s_gchook,NIL);" *immediately* after
+          "s_gchook = xlenter("*GC-HOOK*");"
+
+
+Fri Dec 14 11:23:07 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* Renamed ~/modules.h to ~/xmodules.h, adopting a uniform
+	convention that the xlisp-interface files in a module have
+	names starting with 'x' -- and the normal C files (useful
+	even in the absence of xlisp) do not.
+
+Thu Dec 13 00:02:11 1990  Jeff Prothero  (jsp at glia)
+
+	* Split MODULE_XLFTAB_C_FUNTAB
+	  into  MODULE_XLFTAB_C_FUNTAB_S
+	  and   MODULE_XLFTAB_C_FUNTAB_F,
+	  to reduce future problems porting modules to a
+	  mooted xscheme-derived xlisp core.
+
+Wed Dec 12 23:02:52 1990  Jeff Prothero  (jsp at glia)
+
+	* Renamed ~/xcore/src/xlhybrid.h   to ~/modules.h.
+	* Renamed ~/xcore/src/hybrid.h     to ~/xcore/doc/mymodule.h.
+	* Renamed ~/xcore/src/gobject.[ch] to ~/gobject/src/gobject.[ch].
+	* Moved   ~/xcore/test/gobject.lsp to ~/gobject/test/gobject.lsp.
+
+Tue Dec  4 12:18:19 1990  Jeff Prothero  (jsp at glia)
+
+	* Added xlbadinit for bad initializer lists.
+
+Wed Nov 28 13:13:27 1990  Jeff Prothero  (jsp at glia)
+
+	* xlobj.c:sendmsg() renamed to x_sendmsg() to eliminate conflict with
+        unix-socket sendmsg() fn, added xsendmsg() fn for hybrid classes
+	to call.
+
+	* xlobj.c "class"  renamed to "cls_class".
+	  xlobj.c "object" renamed to "cls_object".
+          xlobj.c now exports s_self, k_new, k_isnew, cls_class and
+	  cls_object, for benefit of hybrid classes which want to,
+          say, send a k_new message to cls_class.
+
+Mon Nov 26 15:32:58 1990  Jeff Prothero  (jsp at glia)
+
+	* Killed 'LOCAL' on xlobj.c:getivcnt(), for gobject.c:gobshowI().
+
+	* Moved #defines for MESSAGES,IVARS,CVARS,CVALS,
+        SUPERCLASS,IVARCNT,IVARTOTAL from xlobj.c to xlisp.h,
+        so hybrid classes can access them easily.
+
+Fri Nov 23 12:58:49 1990  Jeff Prothero  (jsp at glia)
+
+	* More hooks added, to (almost) eliminate GOBJECT-specific
+        code from the core xlisp fileset:
+        MODULE_XLOBJ_C_XLOINIT,
+        MODULE_XLOBJ_C_GLOBALS,
+        MODULE_XLOBJ_C_CLNEW,
+        MODULE_XLOBJ_C_OBSYMBOLS
+
+	* Renamed xlclass.c to xlhybrid.h
+
+Thu Nov 22 16:31:11 1990  Jeff Prothero  (jsp at glia)
+
+	* Created xlftab.c:funtab_offset().
+
+Tue Nov 20 11:42:48 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* Per Niels Mayer suggestion, adopted a more systematic
+	patch-point naming convention:
+
+	DECLARING_PRIMITIVE_FUNCTIONS   -> MODULE_XLFTAB_C_GLOBALS
+	NAMING_PRIMITIVE_FUNCTIONS      -> MODULE_XLFTAB_C_FUNTAB
+	START_OF_WORLD_INITIALIZATION   -> MODULE_XLINIT_C_XLINIT
+	END_OF_WORLD_WRAPUP             -> MODULE_XLISP_C_WRAPUP
+	XLISP_H_MACROS                  -> MODULE_XLISP_H_GLOBALS
+	XLDMEM_H_MACROS                 -> MODULE_XLDMEM_H_GLOBALS
+	XLDMEM_H_EXTERNS                -> (combined with above)
+	XLDMEM_H_NODE_NINFO             -> MODULE_XLDMEM_H_NINFO
+	REPLACING_BREAKLOOP             -> MODULE_XLDBUG_C_BREAKLOOP_REPLACEMENT
+	XLDMEM_C_CVFUNS                 -> MODULE_XLDMEM_C_GLOBALS
+	XLDMEM_C_MARKING_OBJECTS        -> MODULE_XLDMEM_C_GC
+	XLDMEM_C_MARKING_NEW_NODE_TYPES -> MODULE_XLDMEM_C_MARK
+	XLDMEM_C_FREEING_NEW_NODE_TYPES -> MODULE_XLDMEM_C_SWEEP
+	XLDMEM_C_GC_INITIALIZATION      -> MODULE_XLDMEM_C_XLMINIT
+	XLGLOB_C_VARS                   -> MODULE_XLGLOB_C_GLOBALS
+	XLIMAGE_C_WRITING_VECTOR        -> MODULE_XLIMAGE_C_XLISAVE
+	XLIMAGE_C_READING_VECTOR        -> MODULE_XLIMAGE_C_XLIRESTORE
+	XLIMAGE_C_FREEING_VECTOR        -> MODULE_XLIMAGE_C_FREEIMAGE
+	XLINIT_C_VARS                   -> MODULE_XLINIT_C_GLOBALS
+	XLINIT_C_SYMBOLS                -> MODULE_XLINIT_C_XLSYMBOLS
+	XLPRIN_C_EXTERNS                -> MODULE_XLPRIN_C_GLOBALS
+	XLPRIN_C_PRINTING_NEW_NODE_TYPES-> MODULE_XLPRIN_C_XLPRINT
+	XLSYS_C_EXTERNS                 -> MODULE_XLSYS_C_GLOBALS
+	XLSYS_C_RETURNING_TYPE_SYMBOL   -> MODULE_XLSYS_C_XTYPE
+  
+
+Mon Nov 19 15:23:33 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* Added GETENV primitive: xosenvget() in unixstuff, line in xlftab.c.
+
+Sun Nov 18 13:23:07 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* Added PROVIDE_GOBJECT.  (Objects with LVAL vector and byte vector.)
+          This required minor patches to xlisp.h, xldmem.h, xlftab.c
+          xlobj.c and xwinterp.h, all marked with "#ifdef PROVIDE_GOBJECT".
+          (Also required gobject.h, a new hybrid-class file, and
+          gobject.c, with support function.)
+
+Sat Nov 17 12:24:04 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* Collected the old "#ifdef WINTERP" patches in xwinterp.h
+
+	* hybrid.h file documenting use of below.
+
+	* xlclass.c support for hybrid classes:
+          DECLARING_PRIMITIVE_FUNCTIONS   "#include" in xlftab.c
+          NAMING_PRIMITIVE_FUNCTIONS      "#include" in xlftab.c:funtab[]
+          START_OF_WORLD_INITIALIZATION   "#include" in xlinit.c:xlinit()
+          END_OF_WORLD_WRAPUP             "#include" in xlisp.c:wrapup()
+          XLISP_H_MACROS                  "#include" in xlisp.h
+          XLDMEM_H_MACROS                 "#include" in xldmem.h
+          XLDMEM_H_NODE_NINFO             "#include" in xldmem.h ninfo union
+          XLDMEM_H_EXTERNS                "#include" in xldmem.h
+          REPLACING_BREAKLOOP             "#include" in xldbug.c
+          XLDMEM_C_CVFUNS                 "#include" in xldmem.c
+          XLDMEM_C_MARKING_OBJECTS        "#include" in xldmem.c:gc()
+          XLDMEM_C_MARKING_NEW_NODE_TYPES "#include" in xldmem.c:mark()
+          XLDMEM_C_FREEING_NEW_NODE_TYPES "#include" in xldmem.c:sweep()
+          XLDMEM_C_GC_INITIALIZATION      "#include" in xldmem.c:xlminit()
+          XLGLOB_C_VARS                   "#include" in xlglob.c
+          XLIMAGE_C_WRITING_VECTOR        "#include" in xlimage.c:xlisave()
+          XLIMAGE_C_READING_VECTOR        "#include" in xlimage.c:xlirestore()
+          XLIMAGE_C_FREEING_VECTOR        "#include" in xlimage.c:freeimage()
+          XLINIT_C_VARS                   "#include" in xlinit.c
+          XLINIT_C_SYMBOLS                "#include" in xlinit.c:xlsymbols()
+          XLPRIN_C_EXTERNS                "#include" in xlprin.c
+          XLPRIN_C_PRINTING_NEW_NODE_TYPES"#include" in xlprin.c:xlprint()
+          XLSYS_C_EXTERNS                 "#include" in xlsys.c
+          XLSYS_C_RETURNING_TYPE_SYMBOL   "#include" in xlsys.c:xtype()
+
+Fri Nov 16 11:06:08 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* Have xldmem.c:xlminit() check that NULL==0, since newvector() &tc
+          depend on this.
+
+Thu Nov 15 21:08:20 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* xlread.c:pname(): Changed	xlerror("zero length name");
+	  to				xlfail( "zero length name");
+
+Sat Nov 10 00:09:23 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* xleval.c:xlevalenv() is never called. #ifdef'ed out.
+
+	* xlisp.h defines TRUE and FALSE only if undefined.
+
+	* xlftab.c: xbisubr(),xbifsubr() don't exist, deleted them.
+
+Fri Nov  9 15:16:03 1990  Jeff Prothero  (jsp at glia.biostr.washington.edu)
+
+	* unixstuff.c, xlisp.c: renamed oserror() to xoserror to avoid
+	  conflict with system SGI unix oserror fn.
+
+	* unixstuff.c/osrand() had "&" where "%" was intended.
+

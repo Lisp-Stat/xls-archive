@@ -1,0 +1,25 @@
+.BG
+.FN boxplotm
+.TL
+Box Plots with suppressed median line
+.CS
+boxplotm(data, ...)
+.AG data
+list of numeric vectors.
+.AG ...
+arguments to be forwarded to `boxplot', most likely `par' parameters.
+.PP
+`boxplotm' is primarily designed to be used as an alternate plotting
+function in `boxmat', where it is used to construct a visual display of a numeric
+data matrix.
+.RT
+invisible result from `bxp'.
+.SA
+`boxmat', `boxplot', `bxp', `nwaylist.c0a'.
+.EX
+boxmat(nwaylist.c0a(data.matrix), boxf=boxplotm)
+  # plot values of data.matrix
+  # the height of each box is proportional to the numerical value
+  # of the data in the corresponding cell of the matrix
+.KW boxmat
+.WR

@@ -1,0 +1,396 @@
+% TeX macros for use with the almond hacked version of definitions
+%% Created 10/17/91 RGA
+%%  File Name          :  lispdef.tex
+%%  Version Number     :  2.0
+%%  Last Changed Date  :  98/10/14 
+%%  Created Date       :  11/14/95
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Stylistic Clause Definitions
+
+%%% Version 2.0 now includes definitions for the Project-Doc proto
+%%% macros as well as the definition objects
+
+%%  This is a modified version which is meant to work with LaTeX
+%%  instead of Plain TeX.  
+
+%%  I've commented out the automatic page numbering.  Somebody else
+%%  will need to do that.
+
+%% Also, it doesn't use any of the LaTeX document style macros.  
+
+%% 
+\def\gotit{\relax} % for defining extent of a code argument
+
+%% Definition Objects
+\outer\def\beginDefinition{\vskip 0pt plus .3\vsize\penalty -500
+  \vskip 0pt plus -.3\vsize\bigskip\vskip\parskip}
+\newskip\BetweenDefSkip
+\outer\def\endDefinition{\vskip\BetweenDefSkip}
+
+%%Name Box Objects
+\newdimen\NameBoxWd
+\newskip\NameBoxSkip
+\def\DefNameBox#1#2{\par % #1 = Name   #2 = Entity Type
+\vbox{\hrule\hbox{\vrule\kern 3pt\vbox{\kern3pt
+  \hbox to\NameBoxWd{ #1 \hfil {\it #2\/}}\kern3pt}\kern3pt\vrule}\hrule}
+\markboth{#1}{#1}
+\vskip\NameBoxSkip}
+
+%% Usage
+\newskip\BeforeUsage
+\newskip\AfterUsage
+\newdimen\Usageindent
+\def\Usage#1{\par\noindent{\bf Usage:\/}%\hfil\par 
+\vskip\BeforeUsage
+\begingroup\tt\rightskip=0pt plus6em minus3em\relax
+\Usageindent=#1em\multiply\Usageindent by 11\divide\Usageindent by 20
+\hangindent\Usageindent}
+\def\endUsage{\par\endgroup
+\vskip\AfterUsage}
+
+%% Arguments
+\newskip\BeforeArgument
+\newskip\BetweenArgument
+\newskip\AfterArgument
+\def\beginArguments{\par\noindent{\bf Arguments:}\begingroup
+  \vskip\BeforeArgument }
+\def\argument{\hang\indent\begingroup\it}
+\def\typeArg{\endgroup \ --- \begingroup\tt}
+\def\endArg{\endgroup\par
+  \vskip\BetweenArgument}
+\def\endArguments{\par\endgroup\vskip\AfterArgument}
+
+%% Slots (follows arguments)
+\def\beginSlots{\par\noindent{\bf Slots:}\begingroup
+  \vskip\BeforeArgument }
+\def\slot{\hang\indent\begingroup\it}
+\def\initargsSlot{\endgroup\ \  {\bf (}\begingroup\tt}
+\def\typeSlot{\endgroup {\bf )}\ --- \begingroup\tt}
+\def\docSlot{\endgroup \ --- \begingroup\rm}
+\def\endSlot{\endgroup\par
+  \vskip\BetweenArgument}
+\def\endSlots{\par\endgroup\vskip\AfterArgument}
+
+%% Parameters (KR input slots)
+\def\beginProperties{\par\noindent{\bf Properties:}\begingroup
+  \vskip\BeforeArgument }
+\def\beginParameters{\par\noindent{\bf Parameters:}\begingroup
+  \vskip\BeforeArgument }
+\def\beginOutputs{\par\noindent{\bf Outputs:}\begingroup
+  \vskip\BeforeArgument }
+\def\KRSlot{\hang\indent\begingroup\tt}
+\def\typeKRSlot{\endgroup \ --- \begingroup\it}
+\def\docKRSlot{\endgroup \ --- \begingroup\rm}
+\def\endKRSlot{\endgroup\par
+  \vskip\BetweenArgument}
+\def\endOutputs{\par\endgroup\vskip\AfterArgument}
+\def\endParameters{\par\endgroup\vskip\AfterArgument}
+\def\endProperties{\par\endgroup\vskip\AfterArgument}
+
+%% Methods and Signals
+\newif\ifFirstinList
+\def\beginMethods{\par\noindent{\bf Methods:}\begingroup
+  \vskip\BeforeArgument\hang\indent\tt\FirstinListtrue }
+\def\beginSignals{\par\noindent{\bf Signals:}\begingroup
+  \vskip\BeforeArgument\tt\FirstinListtrue }
+\def\nextInList{\ifFirstinList\relax\FirstinListfalse\else , \fi}
+\def\endMethods{\par\endgroup\vskip\AfterArgument}
+\def\endSignals{\par\endgroup\vskip\AfterArgument}
+
+
+%%Returns
+\newif\ifBreakSingleReturn
+\newif\ifFirstValueReturn
+\newskip\BeforeReturn
+\newskip\BetweenReturn
+\newskip\AfterReturn
+\def\beginReturn{\par\noindent{\bf Returns:}\FirstValueReturntrue}
+\def\itemReturn{\ifFirstValueReturn\par\vskip\BeforeReturn\else
+\par\vskip\BetweenReturn\fi\hang\indent\FirstValueReturnfalse}
+\def\singleReturn{\ifBreakSingleReturn\relax\itemReturn\else\qquad\fi}
+\def\simpleReturn{\begingroup\it}
+\def\endsReturn{\endgroup}
+\def\typeReturn{{\rm Object of Type:} \begingroup \tt }
+\def\endtReturn{\endgroup}
+\def\complexReturn{\begingroup \it}
+\def\midReturn{\endgroup --- \begingroup\tt }
+\def\endcReturn{\endgroup}
+\def\endReturn{\par\vskip\AfterReturn}
+
+
+%% Parents
+\newskip\BeforeParent
+\newskip\AfterParent
+\def\Parents{\par\noindent{\bf Parents:}\hskip\BeforeParent
+\begingroup \rm\FirstinListtrue }
+\def\endParent{\endgroup \par\vskip\AfterParent}
+
+%% Children
+\newskip\BeforeChildren
+\newskip\AfterChildren
+\def\Children{\par\noindent{\bf Children:}\hskip\BeforeChildren
+\begingroup \rm\FirstinListtrue }
+\def\endChildren{\endgroup \par\vskip\AfterChildren}
+
+
+
+%% Documentation
+\newskip\BeforeDocumentation
+\newskip\AfterDocumentation
+\def\beginDocumentation{\par\noindent{\tt Documentation:\/}\par
+	\begingroup\narrower
+	\parskip=1pt plus 2pt}
+\def\endDocumentation{\par\endgroup\vskip\AfterDocumentation}
+
+%% Source
+\newskip\Sourceskip
+\def\Source#1{\par\noindent{\it Source file:\/} {\tt #1}\par
+   \vskip\Sourceskip}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Project Documentation Objects
+
+\def\beginProject#1{ % #1 == Project Name
+  \vskip 0pt plus .6\vsize\penalty -1000\vskip 0pt plus -.6\vsize	
+  \markboth{#1}{#1}}
+\def\endProject{\vfill\eject}
+
+
+\newskip\afterTitle
+\def\projectTitle#1{% #1 = Title
+\centerline{{\bf #1\/}}
+\vskip\afterTitle
+}
+
+\def\projectAuthor#1#2#3{ % #1 Name, #2 Affliiation, #3 Email
+\centerline{\it\quad #1,#2\quad \tt #3}
+}
+
+\def\projectVersion#1{% #1 = Version String
+\vskip\afterTitle
+\centerline{#1}
+\vskip\afterTitle
+}
+
+%% Functional Description
+\newskip\BeforeDesc
+\newskip\AfterDesc
+\def\beginFunctionalDesc{\par\noindent{\bf Functional Description:}\hskip\BeforeDesc
+\begingroup \rm }
+\def\endFunctionalDesc{\endgroup \par\vskip\AfterDesc}
+
+
+
+%% Copyright
+\def\projectCopyright#1{ % #1 == Copyright info
+\par\noindent{\bf Copyright and Licence:}\hskip\BeforeDesc
+\begingroup\rm #1\endgroup \par\vskip\AfterDesc}
+
+%% Reviewer
+\newskip\BeforeValue
+\newskip\AfterValue
+\def\projectReviewer#1#2{ % #1 Name #2 Email
+\par\noindent{\bf Reviewed by:}\hskip\BeforeValue #1 \quad ({\tt #2})
+\par\vskip\AfterValue}
+
+%% Motivation Description
+\def\beginMotivationDesc{\par\noindent{\bf Motivation:}\hskip\BeforeDesc
+\begingroup \rm }
+\def\endMotivationDesc{\endgroup \par\vskip\AfterDesc}
+
+
+%% Stat Description
+\def\beginStatDesc{\par\noindent{\bf Statistical Description:}\hskip\BeforeDesc
+\begingroup \rm }
+\def\endStatDesc{\endgroup \par\vskip\AfterDesc}
+
+%%Instructions
+\def\beginInstructions{\par\noindent{\bf Instructions:}\hskip\BeforeDesc
+\begingroup \rm }
+\def\endInstructions{\endgroup \par\vskip\AfterDesc}
+
+%% References
+\newskip\BetweenRefs
+\newskip\AfterRefs
+\def\beginRefs{\par\noindent{\bf References:}\par}
+\def\projectRef#1{ % #1 Ref
+\vskip\BetweenRefs\par\hang\hskip-\parindent
+#1 \par}
+\def\endRefs{\vskip\AfterRefs}
+
+%%Examples
+\newskip\BetweenExs
+\newskip\AfterExs
+\newcount\projectExNo
+\def\beginExamples{\par\noindent{\bf Examples:}\par\projectExNo=0}
+\def\projectEx#1{ % #1 Ref
+\advance\projectExNo by 1
+\vskip\BetweenExs\par\hang\textindent{\the\projectExNo} #1 \par}
+\def\endExamples{\vskip\AfterExs}
+
+%%Warnings
+\def\beginWarnings{\par\noindent{\bf Warnings:}\par}
+\def\projectWarn#1{ % #1 Ref
+\vskip\BetweenExs\par\hang\textindent{{\bf !}} #1 \par}
+\def\endWarnings{\vskip\AfterExs}
+
+%%Change History
+\def\beginChanges{\par\noindent{\bf Change History:}\par}
+\def\projectChange#1{ % #1 Ref
+\vskip\BetweenExs\par\hang\textindent{$\bullet$} #1 \par}
+\def\endChanges{\vskip\AfterExs}
+
+%%See Also
+\def\beginSeeAlsos{\par\noindent{\bf See Also:}\par}
+\def\projectSee#1{ % #1 Ref
+\vskip\BetweenExs\par\hang\textindent{$\bullet$} #1 \par}
+\def\endSeeAlsos{\vskip\AfterExs}
+
+
+%% Compatibility Info
+\def\projectXLSVersion#1{ % #1 == Version Compatibility Info
+\par\noindent{\bf {XLISP-STAT} Compatibility Issues:}\hskip\BeforeDesc
+\begingroup\rm #1\endgroup \par\vskip\AfterDesc}
+\def\projectOSVersion#1{ % #1 == OS Compatibility Info
+\par\noindent{\bf Platform Compatibility Issues:}\hskip\BeforeDesc
+\begingroup\rm #1\endgroup \par\vskip\AfterDesc}
+
+
+%%Package
+\def\projectPackage#1#2{ % #1 Package-Name
+\par\noindent{\bf Package:}\hskip\BeforeValue {\tt #1} ({\tt #2\/})
+\par\vskip\AfterValue}
+
+%% List Style Things
+%% This next macro is to get around problems with long filenames not
+%% breaking properly.
+\def\hfudge{\hskip 0pt plus .5\hsize\penalty -500
+\hskip 0pt plus -.5\hsize\quad}
+\def\beginDepList{\par\noindent{\bf Project depends on the following
+additional packages:}\par\begingroup \rm }
+\def\endProjectList{\endgroup\par\vskip\AfterDesc}
+\def\beginFileList{\par\noindent{\bf Project source files:}
+\begingroup \rm }
+\def\beginObjectList{\par\noindent{\bf Exported Objects:}
+\begingroup \rm }
+\def\beginFunList{\par\noindent{\bf Exported Functions and Messages:}
+\begingroup \rm }
+\def\beginVarList{\par\noindent{\bf Global Variables and Parameters:}
+\begingroup \rm }
+
+%% Full Definition List Style
+\outer\def\beginObjects{\vskip 0pt plus .3\vsize\penalty -500
+  \vskip 0pt plus -.3\vsize\bigskip
+\noindent{\bf Exported Classes and Prototype Objects}
+\par\vskip\parskip}
+
+\outer\def\beginProjectFuns{\vskip 0pt plus .3\vsize\penalty -500
+  \vskip 0pt plus -.3\vsize\bigskip
+\noindent{\bf Exported Functions, Generic Functions and Messages}
+\par\vskip\parskip}
+
+\outer\def\beginProjectVars{\vskip 0pt plus .3\vsize\penalty -500
+  \vskip 0pt plus -.3\vsize\bigskip
+\noindent{\bf Global Variables, Parameters and Constants}
+\par\vskip\parskip}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Headlines
+%% *** Fix Me***
+%% Somebody could modify this to work with LaTeX
+%\nopagenumbers
+%\headline={\ifodd\pageno\rightheadline \else\leftheadline\fi}
+%\def\rightheadline{\tenrm\folio \hfill \botmark}
+%\def\leftheadline{\tenrm\firstmark \hfill \folio}
+			%\topmark
+\pagestyle{myheadings}
+\voffset=2\baselineskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Stupid Verbatum Stuff
+
+% Allow reasonally normal use of < and > in (documentation) text
+
+\def\>{{$\rangle$\hskip-\lastskip}}\catcode`\>=\active\global\let>=\>
+\def\<{{$\langle$\hskip-\lastskip}}\catcode`\<=\active\global\let<=\<
+\def\{{{\tt\char"7B}}%
+\def\}{{\tt\char"7D}}%
+
+
+
+{\def\:{:\negthinspace}\catcode`\:=\active\global\let:=\:}
+% fiddle with : spacing
+
+\def\littchars{
+\catcode`\:=\active%
+\def\{{{\tt\char"7B}}%
+\def\}{{\tt\char"7D}}%
+\def\\{{\tt\char"5C}}%
+\def\^{{\tt\char"5E}}%
+\def\~{{\tt\char"7E}}%
+\catcode`\_=12\catcode`\^=12%
+\catcode`\&=12\catcode`\#=12%
+\catcode`\$=12\catcode`\%=12\relax
+}
+% The littchars macro should take care of all literal character
+% definitions for lisp input/output.  \,{ and } retain their TeX
+% meanings but do the obvious thing (in \tt font) when quoted.
+
+\def\cd{\begingroup\littchars\frenchspacing\obeyspaces\excd}
+% switch on littchars mode
+\def\excd#1{#1\endgroup}
+
+% \cd will cause the next token or group to be read in littchars mode.
+% To use it as an argument in a macro you will need to use the
+% \expandafter{ trick, thus:
+% \formattingmacro\expandafter{\cd{...}}
+
+%% \verb is set up to use the Dirty Trick on p382 of the TeX book.
+\def\uncatcodespecials{\def\do##1{\catcode`##1=12 }\dospecials\littchars}
+\def\setupverbatim{\uncatcodespecials\obeyspaces}
+\def\verb{\begingroup\setupverbatim\doverbatim}
+\def\doverbatim#1{\def\next##1#1{##1\endgroup}\next}
+
+\def\\{{\tt\char"5C}}%
+\def\^{{\tt\char"5E}}%
+\def\~{{\tt\char"7E}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Skip Settings
+\BetweenDefSkip=\bigskipamount   % Between Definitions
+\NameBoxWd=\hsize		 % Box width
+\advance\NameBoxWd by -.5 in
+\NameBoxSkip=\medskipamount	% Skip after NameBox
+\BeforeUsage=1em 		% Skip between Usage: and usage
+\AfterUsage=\smallskipamount	% Skip after Usage.
+\BeforeArgument=0pt 		% Skip between Arguments: and args
+\BetweenArgument=0pt plus 1pt	% Skip between Args
+\AfterArgument=\medskipamount	% Skip after arguments section
+\BreakSingleReturnfalse
+\BeforeReturn=0pt 		% Skip between Returns: and args
+\BetweenReturn=0pt 		% Skip between Args
+\AfterReturn=\medskipamount	% Skip after Returns section
+\BeforeParent=1em		% (Horizontal) skip between Parents:
+				% and list
+\AfterParent=\smallskipamount	% skip after Parents
+\BeforeChildren=1em		% (Horizontal) skip between Children:
+				% and list
+\AfterChildren=\smallskipamount	% skip after Children
+\BeforeDocumentation=\parskip	% After Documentation: before text
+\AfterDocumentation=\bigskipamount	% After documentation text
+\Sourceskip=\smallskipamount		% After source
+\parskip=0pt 
+
+%%% Documentation flags
+\BeforeDesc = \smallskipamount
+\AfterDesc = \smallskipamount
+\BeforeValue = \smallskipamount
+\AfterValue = \smallskipamount
+\BetweenRefs = \smallskipamount
+\AfterRefs = \smallskipamount
+\BetweenExs = \smallskipamount
+\AfterExs = \smallskipamount
+\afterTitle = \medskipamount
+

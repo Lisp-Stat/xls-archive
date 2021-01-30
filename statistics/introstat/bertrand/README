@@ -1,0 +1,5 @@
+To demonstrate Bertrand's paradox, just load bertrand.lsp and type
+
+> (betrands-paradox)
+
+B. N. 

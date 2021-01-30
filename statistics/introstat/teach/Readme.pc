@@ -1,0 +1,29 @@
+The archives 'teach.exe' or 'teach.zip' are available
+via anonymous ftp from las2.iastate.edu using 'anonymous.mervyn' 
+as the username and your complete email address as the password.
+
+Use the following instructions to unbundle Teach files:
+
+teach.exe
+==========
+teach.exe is a self-extracting binary archive. To begin 
+self-extraction process, do following in the directory 
+where you want to put these modules:
+
+                         teach -d
+
+This will create subdirectories needed to execute  the 
+Teach modules.
+
+teach.zip
+=========
+To unbundle teach.zip just execute pkunzip on the file 
+teach.zip and the subdirectories needed to execute the 
+Teach modules will be created automatically.
+
+Teach modules are ready to be executed as described in 
+the README file supplied in the main directory.
+
+
+
+

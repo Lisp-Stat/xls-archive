@@ -1,0 +1,11 @@
+README --- Header
+INSTALLATION --- Installation Instructions
+COPYRIGHT --- Copyright and warantee declaration
+COPYING --- GNU library general licence
+STRUCTURE-NOTES --- notes on various structures
+el-tool.lsp --- general elicitation tool prototypes
+distdisp.lsp --- distribution display tool prototypes
+dist.lsp  --- prior distribution prototypes
+
+
+

@@ -1,0 +1,21 @@
+(defun chder (a b c cder n) (declare (type double-float a))
+ (declare (type double-float b))
+ (declare (type (simple-array double-float (*)) c))
+ (declare (type (simple-array double-float (*)) cder))
+ (declare (type fixnum n))
+ (prog ((con 0.0d0) (j 0)) (declare (type double-float con))
+  (declare (type fixnum j)) (fset (fref cder n) 0.0)
+  (fset (fref cder (+ n (- 1))) (* (* 2 (+ n (- 1))) (fref c n)))
+  (cond
+   ((>= n 3)
+    (fdo ((j (+ n (- 2)) (+ j (- 1)))) ((> j 1) nil)
+     (tagbody
+      (fset (fref cder j) (+ (fref cder (+ j 2)) (* (* 2 j) (fref c (+ j 1)))))
+  ))))
+  (setf con (/ 2.0 (+ b (- a))))
+  (fdo ((j 1 (+ j 1))) ((> j n) nil)
+   (tagbody (fset (fref cder j) (* (fref cder j) con)))
+  )
+  (return (values a b c cder n))
+))
+

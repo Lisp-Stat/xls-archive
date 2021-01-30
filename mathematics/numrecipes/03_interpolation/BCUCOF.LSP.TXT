@@ -1,0 +1,60 @@
+(defun bcucof (y y1 y2 y12 d1 d2 c)
+ (declare (type (simple-array double-float (*)) y))
+ (declare (type (simple-array double-float (*)) y1))
+ (declare (type (simple-array double-float (*)) y2))
+ (declare (type (simple-array double-float (*)) y12))
+ (declare (type double-float d1)) (declare (type double-float d2))
+ (declare (type (simple-array double-float (* *)) c))
+ (prog
+  ((cl (make-array '(16) :element-type 'double-float))
+   (x (make-array '(16) :element-type 'double-float))
+   (wt (make-array '(16 16) :element-type 'double-float)) (j 0) (l 0) (k 0)
+   (xx 0.0d0) (i 0) (d1d2 0.0d0)
+  )
+  (declare (type (simple-array double-float (*)) cl))
+  (declare (type (simple-array double-float (*)) x))
+  (declare (type (simple-array double-float (* *)) wt))
+  (declare (type fixnum j)) (declare (type fixnum l)) (declare (type fixnum k))
+  (declare (type double-float xx)) (declare (type fixnum i))
+  (declare (type double-float d1d2))
+  (replace wt
+   '(1.0 0.0 (- 3.0) 2.0 (* 4 0.0) (- 3.0) 0.0 9.0 (- 6.0) 2.0 0.0 (- 6.0) 4.0
+     (* 8 0.0) 3.0 0.0 (- 9.0) 6.0 (- 2.0) 0.0 6.0 (- 4.0) (* 10 0.0) 9.0
+     (- 6.0) (* 2 0.0) (- 6.0) 4.0 (* 2 0.0) 3.0 (- 2.0) (* 6 0.0) (- 9.0) 6.0
+     (* 2 0.0) 6.0 (- 4.0) (* 4 0.0) 1.0 0.0 (- 3.0) 2.0 (- 2.0) 0.0 6.0
+     (- 4.0) 1.0 0.0 (- 3.0) 2.0 (* 8 0.0) (- 1.0) 0.0 3.0 (- 2.0) 1.0 0.0
+     (- 3.0) 2.0 (* 10 0.0) (- 3.0) 2.0 (* 2 0.0) 3.0 (- 2.0) (* 6 0.0) 3.0
+     (- 2.0) (* 2 0.0) (- 6.0) 4.0 (* 2 0.0) 3.0 (- 2.0) 0.0 1.0 (- 2.0) 1.0
+     (* 5 0.0) (- 3.0) 6.0 (- 3.0) 0.0 2.0 (- 4.0) 2.0 (* 9 0.0) 3.0 (- 6.0)
+     3.0 0.0 (- 2.0) 4.0 (- 2.0) (* 10 0.0) (- 3.0) 3.0 (* 2 0.0) 2.0 (- 2.0)
+     (* 2 0.0) (- 1.0) 1.0 (* 6 0.0) 3.0 (- 3.0) (* 2 0.0) (- 2.0) 2.0
+     (* 5 0.0) 1.0 (- 2.0) 1.0 0.0 (- 2.0) 4.0 (- 2.0) 0.0 1.0 (- 2.0) 1.0
+     (* 9 0.0) (- 1.0) 2.0 (- 1.0) 0.0 1.0 (- 2.0) 1.0 (* 10 0.0) 1.0 (- 1.0)
+     (* 2 0.0) (- 1.0) 1.0 (* 6 0.0) (- 1.0) 1.0 (* 2 0.0) 2.0 (- 2.0)
+     (* 2 0.0) (- 1.0) 1.0
+    )
+   :end 143
+  )
+  (setf d1d2 (* d1 d2))
+  (fdo ((i 1 (+ i 1))) ((> i 4) nil)
+   (tagbody (fset (fref x i) (fref y i))
+    (fset (fref x (+ i 4)) (* (fref y1 i) d1))
+    (fset (fref x (+ i 8)) (* (fref y2 i) d2))
+    (fset (fref x (+ i 12)) (* (fref y12 i) d1d2))
+  ))
+  (fdo ((i 1 (+ i 1))) ((> i 16) nil)
+   (tagbody (setf xx 0.0)
+    (fdo ((k 1 (+ k 1))) ((> k 16) nil)
+     (tagbody (setf xx (+ xx (* (fref wt i k) (fref x k)))))
+    )
+    (fset (fref cl i) xx)
+  ))
+  (setf l 0)
+  (fdo ((i 1 (+ i 1))) ((> i 4) nil)
+   (tagbody
+    (fdo ((j 1 (+ j 1))) ((> j 4) nil)
+     (tagbody (setf l (+ l 1)) (fset (fref c i j) (fref cl l)))
+  )))
+  (return (values y y1 y2 y12 d1 d2 c))
+))
+

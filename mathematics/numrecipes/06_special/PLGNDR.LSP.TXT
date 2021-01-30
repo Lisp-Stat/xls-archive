@@ -1,0 +1,37 @@
+(defun plgndr (l m x) (declare (type fixnum l)) (declare (type fixnum m))
+ (declare (type double-float x))
+ (prog
+  ((pll 0.0d0) (ll 0) (pmmp1 0.0d0) (plgndr 0.0d0) (i 0) (fact 0.0d0)
+   (somx2 0.0d0) (pmm 0.0d0)
+  )
+  (declare (type double-float pll)) (declare (type fixnum ll))
+  (declare (type double-float pmmp1)) (declare (type double-float plgndr))
+  (declare (type fixnum i)) (declare (type double-float fact))
+  (declare (type double-float somx2)) (declare (type double-float pmm))
+  (if (or (< m 0) (> m l) (> (abs x) 1.0)) (error "bad arguments"))
+  (setf pmm 1.0)
+  (cond
+   ((> m 0) (setf somx2 (sqrt (* (+ 1.0 (- x)) (+ 1.0 x)))) (setf fact 1.0)
+    (fdo ((i 1 (+ i 1))) ((> i m) nil)
+     (tagbody (setf pmm (* (* (* -1 pmm) fact) somx2)) (setf fact (+ fact 2.0))
+  ))))
+  (cond ((= l m) (setf plgndr pmm))
+   (t (setf pmmp1 (* (* x (+ (* 2 m) 1)) pmm))
+    (cond ((= l (+ m 1)) (setf plgndr pmmp1))
+     (t
+      (fdo ((ll (+ m 2) (+ ll 1))) ((> ll l) nil)
+       (tagbody
+        (setf pll
+         (/
+          (+ (* (* x (+ (* 2 ll) (- 1))) pmmp1)
+           (* (* -1 (+ (+ ll m) (- 1))) pmm)
+          )
+          (+ ll (- m))
+        ))
+        (setf pmm pmmp1) (setf pmmp1 pll)
+      ))
+      (setf plgndr pll)
+  ))))
+  (return plgndr)
+))
+

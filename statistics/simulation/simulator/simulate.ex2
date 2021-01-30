@@ -1,0 +1,97 @@
+;;;;
+;;;;     Example 2.  Regression estimates.  Vector simulation.
+;;;;
+
+
+;;  Begin by defining the blocking factors.  These define how
+;;  each block of data is to be built from the input noise process.
+;;  Here the two factors control the size and population shape.
+;;  These are the same as for the scalar case, only now we will treat
+;;  the resulting samples as the noise in a regression problem.
+
+(def size-list
+     (list (cons 'small  #'(lambda (x) (select x (iseq 10))))
+           (cons 'medium #'(lambda (x) (select x (iseq 20))))
+           (cons 'large  #'(lambda (x) x))  ))
+(def size-factor (make-function-dictionary size-list
+                                           :name 'size))
+
+(def dist-list
+     (list (cons 'normal    #'(lambda (x) x))
+           (cons 'slash     #'(lambda (x) (/ x (uniform-rand (length x))))) ))
+(def dist-factor (make-function-dictionary dist-list
+                                           :name 'dist))
+
+;;  Now define the regression estimator. Here the options distinguish
+;;  between OLS and a weighted regression estimator.
+
+(def estimator-options
+     (make-set '(ols tls) :name :regrOpt))
+
+(defun regr (eps &key regrOpt)
+  (let ((x (rseq 0 1 (length eps))))
+    (case regrOpt
+      (ols (let ((rm (regression-model x eps :print nil)))
+             (send rm :coef-estimates)))
+      (tls (let* ((rm   (regression-model x eps :print nil))
+                  (sr   (send rm :studentized-residuals))
+                  (keep (which (> 2 (abs sr))))
+                  (rm   (regression-model (select x keep) (select eps keep)
+                                          :print nil)) )
+             (send rm :coef-estimates)))  )))
+
+;;  Here are two commands that test the operation of this new function.
+;;  Any lisp function that case parse the selected options works, and
+;;  thus can test it outside of the operation of the simulation.
+
+(setf error (normal-rand 20))
+(regr error :regrOpt 'ols)
+(regr error :regrOpt 'tls)
+           
+
+;;  Build the simulation.  The first argument defines the maximum sample
+;;  size, the second is the estimator function, followed by blocking and
+;;  option factors. The optional argument directs the software to record
+;;  all of the simulation results rather than just record summary stats.
+
+(def sim (make-simulator 30 #'regr
+                         (list dist-factor size-factor)
+                         (list estimator-options)
+                         :generator #'normal-rand
+                         :proto memorizer-proto))
+
+;;  Run the simulation. Subsequent calls to this method append the
+;;  additional trials to the recorder elements of the simulation.
+
+(send sim :run 11)
+
+;;  Use the next command to add the SimView menu option if not remaining
+;;  from the first example.  If its still on the menu, use the first
+;;  menu item to select the new simulation.
+
+(def simView (new-simulator-view sim))
+
+;;  Note that one gets a vertical comparison plot for comparing between
+;;  cells, and a horizontal plot for comparing within a cell.
+
+
+;;  One can always recover the data from a block directly rather than via
+;;  the simulation view; the following command to find the data of the 
+;   10th trial.
+
+(def b (send sim :recover-block-data 10 '((DIST . NORMAL) (SIZE . SMALL))))
+(def mb (mean b))
+
+;;  Examine the contents of a cell by asking it to print a summary of its
+;;  results to the X-Lisp window.
+
+(def cells (send sim :cell-list))
+(def cell  (select cells 6))
+(send  cell :print-summary)
+
+
+;;  Write the simulation results out to a file for input 
+;;  to a statistics package for further analysis; ANOVA.
+
+(send sim :write-analysis-file "simres.loc")
+

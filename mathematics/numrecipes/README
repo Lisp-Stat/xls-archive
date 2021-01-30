@@ -1,0 +1,11 @@
+This is translated from ugly FORTRAN to ugly CL. f2cl is buggy, so
+many things can be wrong. If you find fault, let me know. I cannot
+check all 250 routines, but if I come across bugs I'll correct them.
+Also remember the roadmap of dependencies in NR, and remember to
+load macros.lsp for f2cl support.
+
+NB
+
+Lisp routines with names in capitals have not been tested. 
+
+

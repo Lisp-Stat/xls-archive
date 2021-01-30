@@ -1,0 +1,1330 @@
+<html> <head>
+<title>Documenting XLISP-STAT Code</title>
+</head>
+
+<body>
+<h1>Documenting XLISP-STAT Code for Use with Definition/Doc
+Documentation System</h1>  
+
+<p align=center>
+<i><a href="mailto:almond@acm.org">Russell G. Almond</a></i>
+</p>
+<p align=center>
+<i>Educational Testing Service</i>
+</p>
+
+<h3><a name="TOC">Table of Contents</a></h3>
+
+<ol>
+  <li> <a href="#DocTypes">Types Of Documentation</a>
+  <li> <a href="#Low">Low Level (Code) Documentation</a>
+  <li> <a href="#Interface">Interface Documentation</a>
+       <ol>
+	 <li> <a href="#Package">Packages</a>
+	 <li> <a href="#Lambda">Lambdas: Functions, Macros, and Methods</a>
+	 <li> <a href="#Data">Data Structures: Types, Objects, and Structs</a>
+	 <li> <a href="#Var">Global Variables, Parameters and Constants</a>
+       </ol>
+  <li><a href="#Project">Project Documentation</a>
+  <li><a href="#Manual">Using the Doc Package</a>
+  <li><a href="#XLOS">Using the XLOS Object System</a>
+       <ol>
+	 <li> <a href="#defclass">The Defclass statement</a>
+	 <li> <a href="#defgeneric">Defgeneric and Defmethod</a>
+       </ol>
+</ol>
+
+
+<p>
+The Definition/Doc package is a collection of tools for documenting
+XLISP stat projects.  It contains tools for extracting documentation
+about a project from the code, but only if the code is commented to
+certain standards.  This document describes what is necessary to do to
+take advantage of the Definition/Doc tools.
+</p>
+
+
+<p>
+As many XLISP-STAT programmers have little prior Lisp experience, this
+web page is a primer on documenting XLISP code.  Although I
+concentrate on those elements which are necessary to run 
+the Definition/Doc tools, I also include some general suggestions about
+programming style.  Readers are encouraged to look at examples
+in <a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html">Steele
+[1990]</a> and elsewhere which provide more details. 
+</p>
+
+
+<hr>
+<h2><a name="DocTypes">Types of Documentation</a></h2>
+
+<p>
+Documentation is essential to any software project.  It is the
+equivalent of going from one's scribblings on a blackboard to a
+mathematical paper; it adds the polish and organization necessary to
+communicate important statistical ideas to other people.  Thus,
+documentation is a necessary part of any archive of statistical software.
+</p>
+
+<p> Almost all software projects have three levels of documentation.
+The lowest level is the code documentation.  This consists of both the
+internal comments and the formatting and naming conventions used in
+the code.  It is primarily used by programmers who are trying to modify
+the code.  </p>
+
+<p>
+The second level is the interface documentation.  This tells
+programmers who will be using, but not modifying, the software how to
+access the important features (e.g., create objects or call
+functions).  It tells them very specifically what the range of
+capabilities are.
+</p>
+
+<p>
+The third level is the project documentation.  This provides important
+information to potential users who are trying to see if this package
+will meet their needs.  It contains information about the purpose,
+structure and history of the project as well as its authors and the
+platform that supports it.
+</p>
+
+<p>
+With the assistance of Thomas Dye and Andrew Long, I have created a
+suite of tools for documenting XLISP-STAT projects.  These tools
+consist of (1) an adaptation of a set of "Definition" tools written by
+<a href="jamdoc.pdf">John McDonald</a> for building interface level documentation and (2) a
+"Project Documentation" object which captures most of the information
+about a project.  These tools can automatically produce TeX or HTML
+versions of the project and interface documentation.
+</p>
+
+<p>
+The use of McDonald's Definition/Doc package (or my XLISP adaptation)
+requires that you document your code according to certain
+conventions.  In particular, the Definition/Doc database scans the code to
+pick up doc strings and declarations from functions.  If your code
+does not follow these conventions, then much of the utility of this
+package will be lost.  Furthermore, the project building tools infer
+what objects and functions are in the interface by looking at what
+symbols are exported from the project's package.  If all of your code
+is in the user package, the system will be unable to automatically
+infer the interface.
+</p>
+
+
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<hr>
+<h2><a name="Low">Low Level (Code) Documentation</a></h2>
+
+<p> Low level documentation is not directly supported by the
+Definition database or the Project Documentation facility.  The
+following suggestions are based on my personal preferences and I hope
+you find them thought-provoking.  These suggestions will be especially
+helpful to people who have had little exposure to LISP style.  Note
+that for functions and objects which are in the package interface,
+good style improve the clarity of the interface definition.  </p>
+
+<p>
+The importance of good low level documentation in projects intended as
+educational tools cannot be overstated.  I remember vividly my
+frustration as a graduate student with just this issue.  I was given
+some code to perform some multivariate statistical operation (I think
+it might have been principle components or some such).  I hoped that
+this explicit expression of the algorithm would clarify issues that
+neither the textbook nor our classroom work had illuminated.  However,
+there were no comments and most of the variables had cryptic one letter
+names.  Thus, this avenue of learning too proved to be useless.
+</p>
+
+<p>
+The first principle of low level documentation is to choose expressive
+names for types, functions and variables.  Lisp convention separates
+words in a multi-word name with a hypen ('<tt>-</tt>').  Predicates (functions
+which return true or false) are often indicated with '<tt>-P</tt>' or
+by appending a question mark onto the end of the name.  Single letter
+variable names should be avoided except for internal scratch variables
+(like an index loop) or conventional statistical usages (e.g. 'x' and
+'y' in a regression function).  This is especially important for
+functions in the interface of a project.  Remember that some person
+unknown to you will need to guess the meaning of the arguments from
+their names.
+</p>
+
+<p>
+Lisp code is very difficult to read if it is not indented.  The
+indentation convention should indicate what level of the list is
+currently open.  Typically, the elements of a list are indented under
+the second element:
+</p>
+
+<pre>(list 1 2 3
+      4 5 6)
+</pre>
+
+<p>
+Some forms, like <code>defun</code>, <code>dotimes</code>, and
+<code>progn</code> only take two spaces of indentation.  For example:
+</p>
+
+<pre>
+;;; A simple function to illustrate indentation options.
+;;; Note:  foo, x , bar and bazz are poorly chosen names, although
+;;; they are usually used as throw-away names in syntactic examples.
+(defun foo (x &amp;key bar bazz)
+  (declare (type T biff) (type T bar)
+	   (:returns (type Null nil)))
+  ;; Baz is ignored, for now.
+  "A simple function to illustrate indentation rules."
+  (dotimes (i 100)			;i is an index variable
+    ;; Do this 100 times
+    (progn
+      (format T "X(~d) is ~S (~S)"
+	      i x bar))
+    )
+  nil)
+</pre>
+
+<p>
+The simplest way to indent Lisp code is to use the Emacs text editor.
+When you hit linefeed in Emacs' Lisp mode, it moves you to the next
+line properly indented.  When you hit tab, it indents the current
+line.  This is an invaluable tool for spotting and fixing errors
+caused by misplaced parentheses.
+</p>
+
+<p>
+Comments can be introduced into Lisp code by adding a semicolon into
+the line.  (Everything after the semicolon but before the newline is
+considered a comment and is ignored by the Lisp reader.)  By
+convention, single semicolon comments are placed in the right margin
+on the same line as the code; double semicolon comments are indented
+to the same line of code; triple and more semicolon comments are left
+justified.  Typically, the single semicolon comments are used to
+notate tricky and obscure code constructions, double semicolon
+comments are used to describe program structure, triple semicolon
+comments are used to describe features of the functions and objects
+and their relationships.  The preceding example illustrates this idea.
+</p>
+
+<p>
+The doc string and the declaration block (described more fully in
+the next section) are also low level documentation tools.  However, as
+they are used by the Definition/Doc database, we postpone their
+discussion to the next section.  It is worth noting, however, that
+there is often redundancy between the triple semicolon and the doc
+string.  The important difference is that the doc string is picked up
+by the Definition/Doc database (i.e. advertised to users) but the triple
+semicolon comments are only accessible to those who read the source files.
+</p>
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<hr>
+<h2><a name="Interface">Interface Documentation</a></h2>
+
+<p>
+In order for somebody to use the package, they must be clear on how to
+use the "Interface." For a graphical user interface, this means instructions
+for how to use the controls on the screen. For a software library this
+means how to use the objects, functions and methods supported by the library.
+</p>
+
+<p> It is in this later case that the Definition/Doc package provides
+an incredibly convenient mechanism for automatically organizing this
+information. In particular, by documenting each object and function
+according to certain style guidelines (i.e., using the documentation
+strings and declarations) the definition package can automatically
+extract information about the purpose and usage of the functions and
+object in the interface from your code. The sections below describe
+the documentation standards for <a href="#Lambda">Functions, Macros,
+and Methods</a>, <a href="#Data">Data Types, Objects, and Structs</a>,
+and <a href="#Var">Global Variables, Parameters, and Constants</a>.
+</p>
+
+<p>
+Of course, before we can document the interface, we must figure out
+which functions and objects are in the interface. The Definition/Doc package
+does this by using the Common Lisp package mechanism. Symbols which are
+exported from the project's package are considered to be part of the
+interface.  Their documentation is included in the project user
+manual.
+</p>
+
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<h3> <a name="Package">Packages</a></h3>
+
+<p>
+The package system has long been a part of the Common LISP standard, but
+only recently was it imported into XLISP. Thus, packages are not described
+in Tierney [1990]. (This port is still "in process", as a consequence some
+of the XLISP functions are still in the USER package.) This section gives
+a quick overview of the LISP package system. See
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node111.html">Steele[1990]
+Chapter 11 </a> for a more complete description.
+</p>
+
+<p> The primary purpose of the package system is to prevent name
+conflicts between two different projects. Two symbols in different
+packages are different even if they share the same name. Thus if I
+create a constant called <code>*EPSILON*</code>, but put it in my own
+package. I don't need to worry that when I load your software that you
+might assign some other value to <code>*EPSILON*</code>.  My epsilon
+will always be <code>RGA:*EPSILON*</code>, your <code>*EPSILON*</code>
+will be in some other package. Obviously, we would want all projects
+in a software library to have their own unique package so that we
+avoid name conflicts.
+</p>
+
+
+<p> In LISP, you can always explicitly specify which package you
+should take the symbol from by qualifying the name. The format is
+<code><i>package-name</i>:<i>symbol-name</i></code>.  Thus,
+<code>XLOS:defclass</code> refers to the symbol <code>DEFCLASS</code>
+in the package <code>XLOS</code>. As a special case, symbols starting
+with just a colon refer to symbols in the keyword package (keywords).
+</p>
+
+<p>There is a difference between an exported and an internal symbol in
+a package. It is easy to get to exported symbols, but internal symbols
+are harder to find. To reference an internal symbol of a package, use
+two colons, for example <code>xlos::parse-slot-options</code>. Such
+usage should be used with extreme caution. The next release of XLOS
+might not contain the function <code>parse-slot-options</code> and
+thus any code that referred to it would break.
+
+<p> When the LISP reader encounters a symbol without a package
+qualifier, it tries to interpret it in the current package. (This is
+the last package identified with a call to the <code>in-package</code>
+function, or else the <code>USER</code> package if no other package is
+specified.) In addition to the current package, it also searches all
+exported symbols in packages that the current package is using. For
+example, most packages use the <code>LISP</code> package, so when the
+LISP reader encounters the expression <code>(cons a b)</code>, it
+usually interprets the first symbol as <code>LISP:CONS</code>, that is,
+the <code>cons</code> function.
+</p>
+
+
+<p> If you want to always refer to symbols in another package without
+qualification, you can use the <code>use-package</code> function. For
+example, <code>(use-package :rga)</code> would allow you to access the
+symbols in the <code>RGA-UTILS</code> package without qualification
+(here "RGA" is a nickname for "RGA-UTILS".)  Thus you could access the
+debugging function <code>(rga:cur-args)</code> without needing to type
+the "RGA".
+</p>
+
+
+<p> [Note: The <code>use-package</code> function will signal an error
+if using the new package will produce name conflicts. For example, if
+I typed (in the <code>USER</code> package) <code>(cur-args)</code>
+meaning to access the function <code>RGA:CUR-ARGS</code>, I would
+probably get an error, because that function is not defined in the
+<code>USER</code> package. The expression <code>(use-package
+:rga)</code> would now generate an error because if LISP completed
+this command, the reader would not be able to distinguish between
+<code>USER::CUR-ARGS</code> and <code>RGA:CUR-ARGS</code>. If I was
+serious about wanting to use the <code>RGA</code> package I would
+first need to unintern the symbol <code>CUR-ARGS</code> from the
+<code>USER</code> package: <code>(unintern 'USER::CUR-ARGS
+:USER)</code>.]
+</p>
+
+
+<p> To make a package for your project, the easiest way to do it is to use
+the <code>defpackage</code> macro. The following example shows how to do this:
+<pre>(defpackage :rga-utils 
+  (:nicknames :rga)
+  (:use "LISP")
+  (:import-from :user "ELTOY-PATH") 
+  ;; From utils.lsp
+  (:export "ELTOY-OBJECT" "TITLE-MIXIN" "TITLED-OBJECT" "NAME-MIXIN" "NAMED-OBJECT"
+           "*INFTY*" "*-INFTY*" "*EPSILON*" "*-EPSILON*"
+           "UERROR")
+  ;; from xls-error.lsp
+  (:export "WITH-ABORT" "*USER-TYPE*" "DIALOG-ERROR-HANDLER"
+           "WITH-DIALOG-ERROR-HANDLING" "DIALOG-PROTECTED-EVAL"
+           "DIALOG-PROTECTED-READ"
+           "DIALOG-PROTECTED-READ-FROM-STRING"
+           #+macintosh "*EDITOR-SIG*")
+  ;; from debugger.lsp
+  (:export "RETRIABLY" "RETRY" 
+           "CUR-FRAME" "CUR-FUN" "CUR-ARGS"
+           "BOT" "TOP" "UP" "DOWN" )
+  )
+</pre>
+
+This creates a package called <code>RGA-UTILS</code> and sets up
+<code>RGA</code> as an abbreviation for its name. The next line
+specifies that inside the <code>RGA-UTILS</code>, we should refer to
+symbols in the <code>LISP</code> package without qualification. Only
+in special circumstances would that line be omitted. More packages
+could be included in the use list by simply placing them after
+<code>:use</code> in that list. XLISP-STAT applications frequently use
+the <code>USER</code> package as many of Luke Tierney's statistical
+extensions to XLISP are in that package. If you wanted to use my XLOS
+macros to define objects and messages, you might add
+<code>"XLOS"</code> to that list. The line <code>(:import-from :user
+"ELTOY-PATH")</code> shows another way of explicitly importing a
+symbol.
+</p>
+
+
+<p> The rest of the lines show all of the symbols exported from this
+package (actually, I've deleted many of them to save space in the
+example). I've expressed all of the symbol names as upper case
+strings. This is important.  Referring to the symbols with strings
+instead of other symbols makes sure that I don't accidentally create
+symbols I don't want in the <code>USER</code> package while I'm
+reading this expression. Remember also, that LISP interally translates
+all symbol names to upper case.
+</p>
+
+
+<p> Now, each file of utilities in this collection starts with
+<code>(in-package :rga)</code> as the first executable line. This
+ensures that all symbols generated as LISP reads this package are put
+in the <code>RGA-UTILS</code> package. (The package automatically goes
+back to what it was before when I stop reading the file.)
+</p>
+
+<p> Finally, we can talk about how the Definition/Doc package (whose
+nickname by the way is "DF") uses the package system to describe the
+interface of a project. The function
+<code>(df:build-project-definitions)</code> scans through all of the
+files in your project and builds up definition objects for each
+function, object, special variable or parameter, etc. (i.e., almost
+all of the macros starting with "def" produce some kind of definition
+object.)  This function then checks to see if the function, object, or
+variable corresponds to an exported symbol. If so, it maintains it as
+part of the interface of the project. Thus, the documentation system
+will put all of your exported functions and objects into the interface
+of your project.
+
+<p> Hopefully, this is enough information about the package system to
+get you started. Bare in mind that the package for a symbol is
+established when that expression is <i>read</i> into LISP, not when it
+is executed.  If you need to set the package of a symbol at run-time
+rather than read-time, use the function <code>intern</code>.
+</p>
+
+
+<h3> <a name="Lambda">Lambdas: Functions, Macros, and Methods</a></h3>
+
+<p> This section discusses the documentation of function-like objects
+(i.e., things which have lambda-lists). This included functions,
+macros and methods.  To document the function you need four things:
+(1) what the function does, (2) what it expects as inputs, (3) what it
+produces as an output and (4) whether it has any side effects. The
+DEFINITION package gets information about 1 and 4 from the
+documentation string of the function. It gets information about 2 and
+3 from the lambda-list of the function and macro and the
+<code>declare</code> special form. Obviously, using self-describing
+names for the arguments of the function and the function name, will
+help make its interface more understandable.
+</p>
+
+<p> The LISP specifications for the <code>defun</code> and
+<code>defmacro</code> macros allow for both a documentation string and
+a declaration statement between the lambda-list for the function/macro
+and the body. These are both optional, but they are exactly what the
+Definition/Doc package uses to extract the documentation from the code.
+</p>
+
+<p>
+For an exported function (one on the interface of your project) this
+documentation string should contain information about why and how to use
+that function. Remember that the person reading this might not have seen
+it before and many require a fair amount of context.  Casual users
+will not look at the source file, so any comments in the source code
+but not the doc strings are likely to be overlooked.
+If your function has side effects, like destructively modifying
+one of the arguments, you should note this in the doc string as well.
+<pre>
+(defun up (&amp;optional (count 1))
+  "Move current debugging frame towards top level loop.
+
+Note:  Changes the current debugging frame."
+  (declare (type Fixnum count)
+           (:returns (type LIST current-frame)))
+  (if (> 0 count)
+      (down (- count))
+    (if (= 0 count)
+        (cur-frame)
+      (let ((frame-size (stack-value *my-debug-frame*)))
+        (if (or (= 1 *my-debug-frame*) 
+                (> frame-size *my-debug-frame*))
+            (sysbeep)
+          (setq *my-debug-frame* (- *my-debug-frame* frame-size)))
+        (up (1- count))))))
+</pre>
+
+The primary purpose of the <code>declare</code> special form is to
+advise the LISP compiler about the types of objects. When you put
+explicit typing information into your code, the compiler can get rid
+of a lot of the overhead of dynamic typing. The XLISP compiler does
+not currently (version 3.52) take advantage of this information, but
+if a future version of the compiler does then if your code has the
+proper declarations, it should be ready.
+</p>
+
+<p> The Definition/Doc package picks up the
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node103.html"><code>declare</code></a>
+statement and uses it  to figure out the types of the arguments. The
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node44.html">syntax
+of declarations</a> 
+is described in Steele[1990]. The most important ones (for our
+purposes) are the <code>type</code> declaration and the
+<code>:returns</code> declaration.
+</p>
+
+<p> The <code>type</code> declaration has the form
+<code>(type </code><i>type-spec</i> <i>var-name</i>*
+<code>)</code>. This specifies that each of the local variables are
+of the specified type. In the example above, the <code>count</code>
+variable is required to be a fixnum.
+</p>
+
+<p> I often find it helpful to use descriptive compound type
+specifiers.  Thus for a vectorized function, I would use the type
+<code>(or Number List Array)</code> to indicate that either a number
+or a compound data structure containing numbers was
+expected. (Actually, this type specifier will permit some other things
+which might not be legal, but the user should be able to guess that
+the function is vectorized from this description.) If I expect a
+logical value which I'm going to test to see if it is NIL, I express
+this as <code>(or T Null)</code>. This will accommodate funny
+predicates like <code>member</code> which return an arbitrary
+expression rather than <code>T</code>.
+</p>
+
+<p> To make your code safe, you might want to test the types of each
+of the arguments when the user first calls the function. (This is very
+useful for functions in the interface.) The macro
+<code>df:declare-check</code> has the same syntax as
+<code>declare</code> but it also generates type checking code. The
+Definition/Doc package will pick up declarations from both the
+<code>declare</code> special form and the
+<code>df:declare-check</code> macro.
+</p>
+
+<p> In order to document the return types of a function or macro, the
+Definition/Doc package uses the special <code>:returns</code>
+declaration. (This is not standard LISP usage, but an extension to the
+LISP language made by the Definition/Doc package). The argument to the
+<code>:returns</code> declaration gives a descriptive name or the type
+of the return argument. The syntax is <code>(:returns
+<i>name</i>)</code>, <code>(:returns (type <i>type-spec</i>))</code>
+or <code>(:returns (type <i>type-spec</i> <i>name</i>))</code>. If the
+code returns multiple values use, <code>(:returns (values</code>
+... <code>))</code> with one return spec for each value returned.
+</p>
+
+<p> XLISP-STAT messages (defined with <code>defmeth</code>) require
+special treatment. First note a message can be documented either with
+the documentation string or by sending the <code>:documentation</code>
+message to the prototype object. For example, you could use this
+syntax:
+<pre>
+(defmeth family-proto :rand (num &amp;key
+                                 (parameters (send self :default-parameters))
+                                 &amp;allow-other-keys)
+  (declare (type Integer num) (type List parameters)
+           (:returns (type List random-values)))
+  (send self :quantiles (uniform-rand num) :parameters parameters))
+
+(send family-proto :documentation :rand
+      "Args: num &amp;key parameters
+Random number generator, generates a list of &lt;num> random numbers.
+&lt;parameters> is a list of parameters, its meaning will depend on the
+type of distribution. ")
+</pre>
+
+The other thing to note is that the XLISP-STAT style convention uses
+keywords for message names. As keywords are always exported from the
+keyword package this means that if you put your object in the
+interface, all of its messages will automatically be part of the
+interface, even those that you would rather were private.
+</p>
+
+<p>
+It is probably a better procedure to use symbols in your project
+package for the message names. Then you can explicitly control control
+access to the messages by exporting or not exporting their names. Note
+that you do need to be careful to quote the symbol every time you use
+it in a send.  You can get around that problem with
+<code>defconstant</code>, e.g. <code>(defconstant law:rand 'law:rand
+"Name of the RAND message for distribution Family objects.")</code>
+</p>
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<h3><a NAME="Data">Data Structures: Types, Objects, and Structs</a></h3>
+
+<p> In an object oriented library, the objects are the primary
+features of the interface. Thus, we need to talk about how we document
+objects. In XLISP-STAT these consist principally of <i>objects</i>
+(defined with <code>defproto</code>).  But there are other kinds of
+entities for storing data supported by XLISP-STAT, including
+<i>structures</i> (defined with <code>defstruct</code>) and
+<i>abstract types</i> (made up of defined with <code>deftype</code>).
+
+</p>
+
+<p> In order to document an object, you need to provide information
+about its purpose and its visible slots and the messages it will
+accept.  The information about the slots should include what type of
+value as well as the meaning of the object in the slot.  The long form
+of the XLISP <code>defproto</code> provides a place for the
+documentation.  (This can be accessed with the message <code>(send
+<i>object</i> :documentation 'proto)</code>).  
+</p>
+
+
+<pre>
+;;; family-proto --- Prototype of a family.
+(defproto family-proto
+  '(
+    rv-names		       ;random variable name
+    mrv			       ;number (dimensionality) of r.v.
+    parameter-names	       ;distribution parameter names
+    default-parameters			;default values for parameters
+    parameter-limits			;hard limits for parameter
+					;values
+    parameter-range-default		;default range for parameters
+    parameter-granularity		;granularity of parameter
+					;sliders
+    parameter-integer?			;constrain parameter to integer?
+    parameter-constraint-fun		;further constraints among parameters
+    nparams				;number of parameters
+    ) '() (list named-object)
+      "The family-proto prototype is really a
+meta-class.  A family is itself a prototype which is used to create
+specific family objects for specific tools.
+
+See normal-family for description of use.
+"
+)
+</pre>
+
+<p>
+This object inherits from <code>Named-Object</code> (which gives it a
+slot called name and methods for accessing it.  It also has a number
+of internal and external slots of its own.</p>
+
+<p> In this example, you can see one problem with the XLISP object
+system---there is really no way to document the slots.  All of the slot
+documentation is internal to the code (and will not be picked up by the
+Definition/Doc package.)   In ElToY (where this example comes from) I
+chose to work around that problem by putting the documentation into
+the <code>:isnew</code> method and the accessor methods for the
+publicly visible slots.  The Common Lisp Object System
+<code>defclass</code> has slot documentation built in.  For that
+reason, I've created the <a href="#XLOS">XLOS</a> package, a
+series of CLOS-style macros which have many of the advantages of CLOS
+style syntax (including documentation and automatic creation of
+constructor and accessor methods.)
+</p>
+
+<p>
+A real description of a object would not be complete without a list of
+the important instances and methods supported by the object.  The
+latter is very easy to compute from the object itself.  The former is
+computed by scanning all of the exported symbols.  (It is assumed that
+any non-exported symbol is not sufficiently interesting to be reported.)
+</p>
+
+<p>
+Two other macros are available in XLISP for defining object types:
+<code>defstruct </code> and <code>deftype</code>.
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node168.html"><code>Defstruct</code></a> defines a simple structure, with none of the
+class overhead.  For example:
+</p>
+
+<pre>
+(defstruct polar-coord
+  "A location in two dimensional space described by angle and distance
+   from the origin."
+   (angle 0 :type Real)
+   (distance 0 :type Real)
+)
+</pre>
+
+<p>
+This creates a data type called <code>polar-coord</code>, accessor
+functions <code>polar-coord-angle</code> and
+<code>polar-coord-distance</code>, a constructor function
+<code>make-polar-coord</code> and a predicate
+<code>polar-coord-p</code>.  The documentation string comes after the
+name and before the slot descriptions.  
+</p>
+
+<p>
+[<em>NOTE:</em>  The current version of XLISP-STAT (3.52.5) has a
+small bug in the definition of <code>deftype</code>.  Therefore the
+preceding example will not work.  (Basically it rejects the
+documentation string.)  Hopefully this will be fixed with the next
+release.  
+</p>
+
+<p>
+Finally, <a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node51.html"><code>deftype</code></a> can be used to describe a new abstract
+type or to make a synonym for an existing type.  Here is a simple
+example:
+</p>
+
+<pre>
+(deftype Vectorized-Number ()
+  "An input suitable for an XLISP-STAT vectorized function.
+Specificly, a number, a list of vectorized-numbers, or an array of
+vectorized-numbers." 
+  (or Number List Array))
+</pre>
+
+<p>
+[This example would be improved by adding a type predicate to check for
+this particular type.]
+</p>
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<h3> <a name="Var">Global Variables, Parameters and Constants</a></h3>
+
+<p>
+Global variables, parameters and constants which affect a program are
+declared through the
+<code><a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node67.html">defvar</a></code>,
+<code>defparameter</code>, and <code>defconstant</code> macros.  These
+each define a symbol which is a global (special) variable.  Any
+special variable which is exported from the project needs to be
+documented.  The Definition/Doc package can pick up the documentation
+string from these variable. Here are some examples:
+</p>
+
+<pre>
+(defvar *main-window* nil
+  "(type (or Object Null)) This variable gets bound to the main window
+while the User Interface is active.  Programs may send messages to it
+to simulate user interactions.")
+(defparameter *definition-hfuzz* 5
+  "Amount of slop, or Hfuzz (in points), in TeX line breaking
+  algorithm.  Increasing this value will encourage TeX to stop
+  complaining about overfull hboxes.") 
+(defconst QUARTER-CIRCLE (/ pi 2)
+  "Angle (in radians) of a quarter circle.")
+</pre>
+
+<p>
+[Note that <code>defparameter</code> resets the value of the parameter
+every time the form is reloaded, while <code>defvar</code> does not.
+A very common Lisp mistake is to fix a problem in an initial value for
+a <code>defvar</code> and reload the source file and expect to find
+that the value of the variable has changed.  You will need to execute
+a <code>setq</code> expression to do that job.]
+</p>
+
+<p>
+The Definition/Doc package does not produce documentation for the
+XLISP-STAT macro <code>def</code>.  <code>Def</code> is really
+designed for data sets and not global variables.  
+</p>
+
+
+<hr>
+<h2><a name="Project">Project Documentation</a></h2>
+
+<p>
+The project level documentation is difficult because it serves many
+purposes.  For casual browsers, it enables them to figure out whether
+or not this package will help solve their problem (not unlike the
+abstract of a paper).  For first time users, it enables them to get
+started using the system.  For old users, it allows them to track what
+has changed about the latest version.  For your colleagues, it
+provides information about the methods you used to solve the problem.
+For programmers, it gives an entry point into the system
+documentation.  It also provides a way for you to sign your work and
+provide contact information.
+</p>
+
+
+<p>
+The Doc package is a rider on top of the Definition/Doc package which
+allows you to produce system level documentation.  It defines a
+<code>df:project-doc-proto</code> object which documents the project
+as well as an <code>df:author-doc-proto</code> object for describing
+authors and a <code>df:version-doc-proto</code> for describing
+versions.  
+</p>
+
+<p>
+The file <code>doc.lsp</code>, included in the same directory as the
+Definition/Doc package, is really a template for project documentors.
+Copy that file into your project directory and edit it to reflect what
+is going on in your project.  The following example shows the
+documentation for the Definition/Doc project.
+</p>
+
+
+<pre>
+(defparameter *doc*
+  (send df:project-doc-proto :new
+	:title "Project Documentation Toolkit"
+	:authors 
+	(list (send df:author-doc-proto :new :name "Russell Almond" 
+		    :affiliation "Educational Testing Service"
+		    :email "almond@acm.org" 
+		    :home-page "http://bayes.stat.washington.edu/almond/almond.html")
+	      (send df:author-doc-proto :new :name "Thomas S. Dye" 
+		    :affiliation "International Archaeological Research Institute, Inc."
+		    :email "tdye@lava.net" 
+		    :home-page "http://www.lava.net/~tdye")
+	      (send df:author-doc-proto :new :name 
+		    "Andrew E. Long" :email "aelon@sph.umich.edu")
+	      )
+	:version 
+	(send df:version-doc-proto :new :major 1 :minor 0  :rev-level 2
+	      :date "Dec 2, 1998")
+	:package "DEFINITIONS"
+	:nicknames (list "DF")
+	:package-dependencies (list "XLOS" "LISP")
+	:motivation "This package is intended to solve two different
+  problems.  The first is to give us a database of XLS objects which
+  describe project written in XLS.  The second is to provide an
+  automatic way of documenting projects."
+	:functional-description "This package provides objects for
+  documenting projects, as well as objects for documenting functions,
+  generic functions, messages, variables, parameters, prototypes,
+  etc. which are part of a project.  There are a number of tools
+  provided for extracting the documentation automatically from the
+  source files (although project level documentation must still be
+  created manually.)  Two functions provide a printing mechanism into
+  either Plain TeX or HTML."
+	:stat-description "Documenting software is critically
+  important to the dissemination of statistical ideas, but is an often
+  overlooked step in statistical programming.  This package attempts
+  to provide tools for automatically documenting projects in a hope to
+  eliminate some of that lag.   This is based on an earlier
+  implementation of a similar system in Common LISP by John McDonald
+  (McDonald[1991])" 
+	:instructions "Documenting a project under the
+  Definition/Doc system consists of four steps:  (1) writing your code
+  according to certain conventions which make it self documenting;
+  this includes using declarations where appropriate and including
+  documentation strings.  (2) Creating a documentation object for your
+  project; this can be done by filling out the template given in the
+  file doc.lsp.  (3) load the file 'definitions/system.lsp' and then 
+  the file containing your project documentation object. (4)  Run the
+  function df:print-tex-documentation or df:print-html-documentation
+  to generate the documentation.  TeX documentation comes out in Plain
+  TeX or LaTeX." 
+	:examples (list "See the file doc-doc.lsp in this distribution.")
+	:xls-version "Works with XLS 3.52.5 and later."
+	:os-dependencies "No known incompatibilities; tested on Unix
+  and Mac"
+	:warnings (list "Unless you document your code, it will be
+  unreadable and these tools will be useless!"
+			"These tools will not work very well if all of
+  your code is left in the USER package; in particular, it relies on
+  which symbols are exported to know which objects are important."
+			)
+	:see-also (list "Note Tierney [1990] is not really a complete
+  LISP reference manual.  For notes on documentation strings and
+  declaration syntax, look at Steele [1990]")
+	:references (list "McDonald, J.A. [1991] ``Definitions:  a
+  simple database for typesetting documentation.''  University of
+  Washington, Dept. of Statistics, Technical Report."
+			  "Steele, G.L., Jr. [1990] ``Common LISP:  The
+Language, Second Edition.'' Digital Press."
+			  "Tierney, L. [1990] ``LISP-STAT:  An Object
+  Oriented Environment for Statistical COmputing and Dynamic
+  Graphics''.  John Wiley and Sons."
+)
+	:copyright "This work is public domain.  The authors make no
+warrantee as to its suitability for any particular purpose."
+	:change-history (list
+			 "Version 1.0.2 Added minimal links and anchors to user
+level documentation.  Still a lot to do here."
+			 "Version 1.0.2 Added Change Log feature."
+			 "Version 1.0.1 Added Project Level
+Documentation Objects.")
+	:files (list "package" "exports" "defs"
+		     "definition" "pack" "global" "fun" "type"
+		     "build" "read" "xls-object" "filter" "sort"
+		     "condition" "tex-print" "html-print" "project-doc"
+		     "tex-print-doc" "html-print-doc" "doc-doc")
+	)
+  "This is the project documentation object for the definitions package.")
+	
+</pre>
+
+<p>
+The files list provides the name of the files in your project.  This
+is important as the Definition/Doc code will scan through those files to
+find the definition information it needs about the project.  
+</p>
+
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<hr>
+<h2><a name="Manual">Using the Doc Package</a></h2>
+
+<p>
+In order to document your project using the Definition/Doc system,
+you will need to take the following steps:
+</p>
+
+<ol>
+  <li> First, make sure that all functions, methods, objects and
+       variables in your system are documented according to the
+       <a href="#Interface">Definitions specification</a>.  (This may
+       mean editing your source code to include declarations and
+       doc-strings.)  
+
+  <li> Second, copy the file <code>doc.lisp</code> from the
+       Definitions project directory.  Edit it to reflect the details
+       of your project.  If you are planning to build a user manual,
+       make sure you include the list of files.
+
+  <li> In your copy of <code>doc.lisp</code>, you will find the
+       following expression which builds the Interface documentation.
+       You may comment this out if you are not building user manuals.
+       
+<pre>  
+(df:build-project-definitions *doc*)
+</pre>
+
+  <li> Next, chose which style of description you want (TeX or HTML,
+       brief or long) comment out the lines which are not
+       appropriate.  
+
+<pre>
+;;; Printing Script
+
+;; Print project summary, TeX mode:
+(df:print-tex-documentation *doc* "brief.tex" :mode :tex :brief t)
+;; Print project description, TeX model:
+(df:print-tex-documentation *doc* "doc.tex" :mode :tex :brief nil)
+;; Print user manual, TeX model:
+(df:print-tex-documentation *doc* "user.tex" :mode :tex :brief nil
+			    :include-user-manual t)
+
+
+;; Print project summary, html mode:
+(df:print-html-documentation *doc* "brief.html" :brief t)
+;; Print project description, html model:
+(df:print-html-documentation *doc* "doc.html" :brief nil)
+;; Print user manual, html model:
+(df:print-html-documentation *doc* "user.html" :brief nil
+		    :include-user-manual t)
+
+</pre>
+
+  <li> If you want a programmer's manual with more complete listings
+       of methods and objects, you should uncomment the following
+       lines.  
+<pre>
+;;; Manual building scripts.
+
+(defparameter *definition-defs*
+       (df:read-definitions-from-files (send *doc* :files))
+  "All definitions")
+
+(df:print-tex-definitions
+ (sort (remove-if-not #'df:exported-definition? *definition-defs*)
+       #'df:definition-alpha<)
+ "reference-manual.tex" :mode :tex)
+
+
+(df:print-html-definitions
+ (sort (remove-if-not #'df:exported-definition? *definition-defs*)
+       #'df:definition-alpha<)
+ "reference-manual.html")
+</pre>
+
+  <li> Load the definitions package (if it is not already loaded) by
+       loading the file <code><i>definition-home</i>/system.lsp</code>.
+
+  <li> Load your software package (if it is not already loaded.)
+
+  <li> Load the <code>doc.lsp</code> file you just created for your
+       project.  (This will take a while, get yourself a cup of
+       coffee).
+
+  <li> View the resulting documentation.  If you are not happy with
+       the level of detail, you may need to manually edit, or go back
+       and flesh out the doc strings and declarations in your project.
+
+</ol>
+
+<p>
+I hope you find this useful.  If you find what you think is a bug, you
+can report it to <a href="mailto:almond@acm.org">me</a> (please try to
+be as specific as possible and include stack backtraces).
+</p>
+
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<hr>
+<h2><a name="XLOS">Using the XLOS Object System</a></h2>
+
+<p>
+In the <a href="#Data">discussion about documenting XLISP-STAT
+objects</a>, we noticed that the basic <code>defproto</code> macro
+does not provide a mechansim for documenting slots.  Furthermore, the
+initialization (<code>:isnew</code>) and accessor methods for the
+slots must be created by hand.  Finally, there is no simple way to
+document the type of a slot.  
+</p>
+
+<p>
+All of these features are built into the Common Lisp Object System
+(CLOS) <code>defclass</code> macro.  Furthermore, John MacDonald's
+Definition/Doc package was written using CLOS.  It would be much simpler
+to port it to XLISP-STAT if I had versions of some of the CLOS macros
+available.  This might also be of use to other people trying to port
+code from Common Lisp (using CLOS) to XLISP-STAT.
+</p>
+
+<p>
+XLOS is a version of the most important CLOS macros for XLISP-STAT.
+It is not really a CLOS implementation.  First of all, it is syntactic
+sugar on top of the XLISP-STAT object system.  Thus it retains the
+prototype--instance implementation of XLISP-STAT (even though CLOS is a
+class--instance object system).  Second, only the most common types of
+CLOS functionality are included; many of the more arcane features are
+left off.
+</p>
+
+<p> As XLOS is distributed with the documentation system, you might
+want to consider using it in your software.  The <a
+href="#defclass"><code>xlos:defclass</code></a> macro provides a
+compact alternative to <code>defproto</code> which automatically
+builds accessor and constructor methods for you.  This is generally
+useful in almost any XLISP-STAT application.  The <a
+href="#defgeneric">defgeneric</a> and <a
+href="#defgeneric"><code>defmethod</code></a> macros are very limited
+implementations which are only really meant to facilitate porting CLOS
+code to the XLISP-STAT object system.  If you want to use XLOS without
+the rest of the documentation system, you should load the file
+<code><i>xlos-home</i>/system.lsp</code>.  </p>
+
+<p>
+CLOS is described in
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node260.html">Chapter
+28 of Steele[1990]</a>.  You may want to look at
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node263.html">
+Section 28.1.2</a> which describes classes,
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node277.html">
+Section 28.1.6</a> which describes generic functions and methods and
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node311.html">
+Section 28.2</a> which describes the syntax of these operators.  (This
+is quite long and you will need to search for <code>defclass</code>
+and <code>defmethod</code>.
+</p>
+
+<p> <b>Note</b> that XLOS introduces a typing mechanism for slots of
+XLISP-STAT objects.  It does this by adding a slot
+<code>XLOS:SLOT-TYPES</code> to <code>XLISP:*OBJECT*</code> and a
+method <code>:slot-type</code> which returns the type of the slot.
+Slot types are inherited.  The automatically generated XLOS accessor
+functions check for type, but <code>xlisp:slot-value</code> does not.
+</p>
+
+<p>
+In order to facilitate using XLISP-STAT objects as types, XLOS defines
+a new type checking function <code>xlos:mytypep</code>.  This function
+is similar to <code>lisp:typep</code> except that it will accept the
+name (symbol) of an XLISP-STAT object as a type specifier.  In that
+case, it check to see if the first argument is an object which is an
+instance of the "type" object.  <code>Xlos:My-Check-Type</code> is a
+version of <code>lisp:check-type</code> which similarly accepts
+XLISP-STAT object names as types.
+</p>
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+<h3> <a name="defclass">The Defclass statement</a></h3>
+
+<p>
+In CLOS the <pre>defclass</pre> macro is used to define a new class
+metaobject.  In XLOS, this is a prototype (prototypes are their own
+metaobjects).  The syntax of the <code>defclass</code> macro is given
+below.  Options which are unavailable in XLOS are struck out.
+Additional options available in XLOS are underlined.
+</p>
+
+<br><b>[Macro]</b><BR>
+<pre>
+xlos:defclass <i>class-name</i> ({<i>superclass-name</i>}*)
+         ({<i>slot-specifier</i>}*) <b>[[</b>?<i>class-option</i><b>]]</b>
+<p>
+<i>class-name</i> ::= <i>symbol</i>
+<i>superclass-name</i> ::= <i>symbol</i>
+<i>slot-specifier</i> ::= <i>slot-name</i> | (<i>slot-name</i> <b>[[</b>?<i>slot-option</i><b>]]</b>)
+<i>slot-name</i> ::= <i>symbol</i>
+<i>slot-option</i> ::= {:reader <i>reader-function-name</i>}*
+		| {:writer <i>writer-function-name</i>}*
+		| {:accessor <i>reader-function-name</i>}*
+		| {:allocation <i>allocation-type</i>}*
+		| {:initarg <i>initarg-name</i>}*
+		| {:initform <i>form</i>}*
+		| {:type <i>type-specifier</i>}*
+		| {:documentation <i>string</i>}*
+
+<i>reader-function-name</i> ::= <i>symbol</i>
+<i>writer-function-name</i> ::= <i>function-name/</i>
+<i>function-name</i> ::= {<i>symbol</i> | <s>(setf <i>symbol</i>)</s>}
+<i>initarg-name</i> ::= <i>symbol</i>
+<i>allocation-type</i> ::= :instance | :class <u>| :prototype</u>
+<i>class-option</i> ::= (:default-initargs <i>initarg-list</i>)
+		| (:documentation <i>string</i>)
+		<s>| (:metaclass <i>class-name</i>)</s>
+<i>initarg-list</i> ::= {<i>initarg-name default-initial-value-form</i>}*
+</pre>
+
+<p>
+A few notes here about the differences between
+<code>xlos:defclass</code> and <code>clos:defclass</code>:
+
+<ul>
+  <li> The <i>superclass-name</i> must be bound to a Prototype
+       object.  XLOS, unlike CLOS, does not allow forward references
+       to classes.
+  <li> XLOS supports XLISP-STAT style accessors (i.e., <code>(send
+       <i>obj message</i>)</code> and  <code>(send <i>obj message
+       new-value</i>)</code>).  It does not support setf methods.
+  <li> XLOS does not automatically make generic functions for accessor
+       methods.  If you want to use the CLOS style generic function
+       invocation (as opposed to the <code>send</code> function), you
+       will need to define these manually.
+  <li> It is probably a bad idea to supply both an
+       <code>:initform</code> for a slot and
+       <code>:default-initargs</code> for the class.  Undefined things
+       may happen.
+
+
+  <li> <b>Note:</b> Behavior of the <code>:default-initargs</code>
+       argument does not comply with
+       <a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node292.html">Steele[1990] 28.1.9</a>.
+       In particular, initargs for the instance 
+       will override values of the initargs supplied for the same slot
+       by the prototype.  Precedence within the initargs for the
+       instance will find the first matching initarg in the list.
+       Implimenters would do well to not rely on precedence among
+       multiple initargs/default-initargs, nor to rely on side effects
+       when evaluating initforms or default-initargs.
+  <li> If a <code>:type</code> argument is supplied, then the writer
+       function will include type checking code.
+  <li> Allocation <code>:class</code> and <code>:prototype</code> are
+       synonymous. Both create shared slots.
+  <li> <b>Note:</b> Under XLS a shared slot may only be set by the
+       owning object, not by an instance.  The system allows the
+       creation of an accessor method which sets the slot, but it will
+       generate an error unless it is called on the prototype. 
+  <li> The <code>:metaclass</code> option is not available.  The only
+       metaclass supported is <code>*OBJECT*</code>.
+  <li> The <code>xlos:defclass</code> macro generates an
+       <code>:isnew</code> method for the prototype instead of an
+       <code>initialize-instance</code> method.
+</ul>
+</p>
+
+<p>
+The following example shows a typical invocation of
+<code>xlos:defclass</code>. 
+</p>
+
+<pre>
+(defclass Definition ()
+	  ((definition-form
+	    :type List
+	    :reader definition-form
+	    :initarg :definition-form
+	    :documentation
+	    "The Lisp form that results from reading the definition.")
+	   (definition-path
+	    :type (or Pathname string)
+	    :reader definition-path
+	    :initarg :definition-path
+	    :documentation
+	    "Pathname of the file from which the definition was read."))
+  (:documentation
+   "Abstract root class for definition objects."))
+</pre>
+
+<p>
+Note that in the above definition only readers are defined.  This is
+because the slots of the definition object should be set once at
+creation time and not changed afterwards.
+</p>
+
+
+<p>
+The default <code>:isnew</code> method for an XLOS class requires some
+explanation, and if you need to override this method, you will
+need to recreate some of the functionality.  The default
+<code>:isnew</code> method does three things:  (1) It calls
+<code>xlos:process-initargs</code> with two arguments, the
+default-initargs for the class and the arguments passed to isnew.  It
+returns a new list of arguments incorporating the default initargs at
+the end.  (2) It applies <code>call-next-method</code> to the revised
+arglist (this calls the initialization for the parent classes.) (3) It
+sends itself the message <code>xlos:shared-initialize</code> with the
+revised args.  This sets the values of all of the slots of the object
+to their default values.
+</p>
+
+<p>
+Finally, for compatibility with CLOS, XLOS defines the
+<code>xlos:make-instance</code> function.  This is a synonym for
+sending the <code>:new</code> message to the object.
+</p>
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<h3> <a name="defgeneric">Defgeneric and Defmethod</a></h3>
+
+<p>
+When translating CLOS code into XLISP-STAT one of the bigger problems
+is that CLOS syntax is <code>(<i>message-name</i> <i>object</i>
+<i>...</i>)</code> while XLISP-STAT syntax is <code>(send
+<i>object</i> <i>message-name</i> <i>...</i>)</code>.  XLOS contains a
+very limited implementation of the <code>defgeneric</code> and
+<code>defmethod</code> macros whose main purpose is to perform this
+translation.  It does not contain most of the advance CLOS features
+such as method combination options and dispatching on the types of
+multiple arguments.  It also does not support setf methods.  
+</p>
+
+<p>
+In CLOS there is a clear distinction between the <em>generic
+function</em> which describes a certain kind of action which can be
+performed on certain objects or data types and the <em>methods</em>
+which are used to implement them.  The generic function contains the
+information which is most interesting in the interface:
+what are the arguments and their types and the documentation.  The
+method contains the code which implements them.  
+</p>
+
+<pre>
+(defgeneric print-tex-definition-usage (def &amp;key stream)
+  (declare (type Definition def)
+	   (type Stream stream)
+	   (:returns def))
+  (:documentation "Print a description of how to ``call'' the definition.")
+  )
+</pre>
+
+<p>
+This has some interesting consequences when applied to the idea of
+project interface documentation.  Usually, it is only the generic
+functions and not the methods which need to be documented.  This can
+be done by filtering out method definitions from the list of 
+definitions to be printed.  However, this will only work if
+appropriate generic functions are defined.
+</p>
+
+<p>
+The <code>xlos:defgenric</code> macro works by producing a function
+which sends a message (the same as the name of the function) to the
+first argument (which should be an object.)  In order for this to do
+anything useful, you must define a method with the same name in at
+least one object type.  This is just an alternative syntax for
+<code>send</code>. 
+</p>
+
+<p>
+Note that <code>xlos:defgeneric</code> works with messages defined by
+both the <code>xlos:defmethod</code> and the
+<code>xlisp:defmeth</code> macros.  As long as you follow the XLOS
+convention of using symbol names (in your project package) instead of
+keywords for messages, you can mix and match the XLOS and XLISP-STAT
+style messages freely in your code.
+</p>
+
+<p>
+The <code>xlos:defmethod</code> macro is an alternative syntax for
+specifying methods.  It looks like:
+</p>
+
+<br><b>[Macro]</b><BR>
+<pre>
+defmethod <i>function-name</i> <s>{<i>method-qualifier</i>}*</s> <i>specialized-lambda-list</i>
+          <b>[[</b> {<i>declaration</i>}* | <i>doc-string</i><b>]]</b>
+          {<i>form</i>}*
+
+<i>function-name</i> ::= {<i>symbol</i> |<s> (setf <i>symbol</i>)</s>}
+<i>specialized-lambda-list</i> ::= ((<i>first-arg</i> <i>object-name</i>) 
+<i>more-args-and-keywords</i>)
+</pre>
+
+<p>
+The specialized Lambda list is a lambda list in which the first
+argument is "specialized" by the name of the object this will be a
+method for.  (CLOS specs call for the possibility of more than one
+specializing argument, but XLOS does not support that.  CLOS methods
+which dispatch on multiple arguments will need to be rewritten by
+hand.)  The rest of the lambda list is normal.  An example should
+clarify this:
+</p>
+
+<pre>
+(defmethod print-tex-definition-usage ((def Definition) 
+				   &amp;key
+				   (stream *standard-output*))
+  "Print a description of how to ``call'' the definition."
+  (declare (type Definition def)
+	   (type Stream stream)
+	   (:returns def))
+  (with-readable-printing
+      (multiple-value-bind (usage-string usage-indent)
+	  (definition-usage def)
+	(format stream "\\Usage{~D}{\\cd{~A}}\\endUsage~%"
+	    usage-indent usage-string))
+    def))
+</pre>
+
+<p>
+This method is attached the the <code>Definition</code> prototype and
+will be called by any instance where it is not overridden.  This code
+must be executed after the <code>Definition</code> object is defined.
+</p>
+
+<p>
+Basically, there is very little difference in effect between
+<code>xlos:defmethod</code> and <code>xlisp:defmeth</code>.  Use
+whichever you are happier with.  Note that they do produce
+different definition objects.  A <code>xlos:defmethod</code>
+form produces a <code>Df:Method-Definition</code> object.  A
+<code>xlisp:defmeth</code> form produces a
+<code>df:Message-Definition</code> object.  The default method for
+project description filters out <code>df:Method-Definition</code>
+objects (assuming that the corresponding
+<code>Df:Generic-Function-Definition</code> object will provide the
+necessary interface documentation) but does not filter the
+<code>df:Message-Definition</code> objects (assuming that there is no
+corresponding <code>DF:Generic-Function-Definition</code>).
+Therefore, using <code>xlos:defgeneric</code> and
+<code>xlos:defmethod</code> helps limit the number of advertised
+functions in your interface.
+</p>
+
+<p align=center><a href="#TOC">Return to table of contents</a></p>
+
+<p>
+I hope this give you enough information to get started documenting
+your project.  Good luck and I look forward to sharing code with you!
+</p>
+
+
+<hr>
+<address><a href="mailto:almond@acm.org">Russell G. Almond</a></address>
+<!-- hhmts start -->
+Last modified: Tue Jan 12 11:34:48 1999
+<!-- hhmts end -->
+</body> </html>

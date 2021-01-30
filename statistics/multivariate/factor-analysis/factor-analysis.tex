@@ -1,0 +1,254 @@
+% Format BigLaTeX2e
+\documentclass[12pt]{amsart}
+\usepackage{uclastat,verbatim,amssymb}
+%\input xypic
+%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+%
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+%
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+%
+\numberwithin{equation}{section}
+%
+\begin{document}
+\title[Factor Analysis]{Factor Analysis in Xlisp-Stat}
+\author{Jan de Leeuw}
+\address{UCLA Statistics Program\\
+8118 Mathematical Sciences Building\\
+University of California at Los Angeles}
+\email{deleeuw@@stat.ucla.edu}
+\maketitle
+\begin{abstract}
+This note explains algorithms and corresponding
+Xlisp-Stat computer programs for exploratory
+factor analysis. It gives brief introductions
+to the various factor analysis techniques.
+\end{abstract}
+%
+\tableofcontents
+%
+\section{Introduction}\label{s:intro}
+%
+Suppose $\Rx_1,\Rx_2,\cdots,\Rx_m$ is a sequence of
+$m$ centered random variables, with $\Var{\Rx_j}<\infty$
+for all $j,$
+and suppose
+%
+\begin{equation}\label{e:disp}
+C=\{c_{j\ell}\}\defi\{\Exp{\Rx_j\Rx_\ell}\}
+\end{equation}
+%
+is their \textit{covariance} or \textit{dispersion matrix}.\par
+%
+\begin{definition}\label{d:fac}
+\textit{Linear Factor Analysis} is a class of techniques that
+studies decompositions of the form 
+%
+\begin{equation}\label{e:decomp}
+\Rx_j=\underline{\hat x}_j+\underline{\tilde x}_j,
+\end{equation}
+%
+where, for each $j,$ 
+%
+\begin{equation}\label{e:orth}
+\Cov{\underline{\hat x}_j}{\underline{\tilde x}_j}=0.
+\end{equation}
+%
+\end{definition}
+%
+\begin{remark}\label{r:fadefi}
+This definition is, of course, rather vague. It means that we
+think of factor analysis as any technique that decomposes observed
+variables into two uncorrelated parts. If we remember the basic
+Tukey-ism, that
+%
+\begin{equation*}
+\mathrm{Data}=\mathrm{Structure}+\mathrm{Error}, 
+\end{equation*}
+%
+we see that this
+notion is very general indeed. 
+\end{remark}
+%
+To give Definition \ref{d:fac} some substantial
+content, we have to add some additional qualifications. Usually
+they are of the form
+%
+\begin{equation}\label{e:prop1}
+\cP_1\{\underline{\hat x}_1,\cdots,\underline{\hat x}_m\},
+\end{equation}
+%
+which simply means that the structural parts $\underline{\hat x}_j$ are supposed to
+have some (usually desirable) property $\cP_1$, and 
+%
+\begin{equation}\label{e:prop2}
+\cP_2\{\underline{\tilde x}_1,\cdots,\underline{\tilde x}_m\},
+\end{equation}
+%
+which means that the \textit{errors} or \textit{residuals}
+have some other property $\cP_2$, which usually emphasizes their error-like
+behavior.
+%
+\begin{remark}\label{r:covdec}
+Of course property \ref{e:orth} implies that
+\begin{equation}\label{e:cdecom}
+\Cov{\Rx_j}{\Rx_\ell}=\Cov{\underline{\hat x}_j}{\underline{\hat x}_\ell}+
+\Cov{\underline{\tilde x}_j}{\underline{\tilde x}_\ell},
+\end{equation}
+which means that the additive decomposition \ref{e:decomp} of the
+random variables implies an additive decomposition of their
+dispersions. Of course the properties \ref{e:prop1} and \ref{e:prop2}
+in general also imply certain properties of the dispersion matrices,
+which we will write as $\hat C$ and $\tilde C$ below.
+\end{remark}
+%
+\section{Common Factor Analysis}\label{s:common}
+%
+\begin{definition}\label{d:common}
+Common factor analysis is defined by the two properties
+%
+\begin{align}\label{e:xcommon}
+\mathrm{rank}(\underline{\hat x}_1,\cdots,\underline{\hat x}_m)&=p<m,\\
+\underline{\tilde x}_j\perp\underline{\tilde x}_\ell&\mathrm{\ for\ all\ }j,\ell.
+\end{align}
+%
+\end{definition}
+%
+It is clear that Definition \ref{d:common} implies that
+%
+\begin{align}\label{e:ccommon}
+\mathrm{rank}(\hat C)&=p<m,\\
+\mathrm{diag}(\tilde C)&=\tilde C.
+\end{align}
+%
+It may not be immediately obvious (and, indeed, it took Spearman 25 years to prove) that the
+converse is also true. If equations \ref{e:ccommon} are true, then equations \ref{e:xcommon}
+also have a solution (in fact, they have more than one, which is the fundamental
+indeterminacy of common factor analysis). We give a simple proof of these facts below.
+%
+\begin{definition}\label{d:terms}
+Random variable $\underline{\hat x}_j$ is called the \textit{common part}
+of $\Rx_j,$ while $\underline{\tilde x}_j$ is called the \textit{unique part}.
+The matrix $U^2\defi\mathrm{diag}(\tilde C)$ contains \textit{uniquenesses},
+while $H^2\defi\mathrm{diag}(C)-U^2$ contains \textit{communalities}. Any basis
+for the space spanned by the $\underline{\hat x}_j$ is a set of 
+\textit{common factors}. Coordinates of the $\underline{\hat x}_j$ in
+a space of common factors are called \textit{factor loadings}.
+\end{definition}
+%
+\begin{remark}\label{r:mathform}
+Observe that we can also write the common or multiple factor analysis model in the form
+%
+\begin{equation}\label{e:cmatform}
+C=AA'+U^2,
+\end{equation}
+%
+where $A$ is an $m\times p$ matrix of rank $p$ of factor loadings, 
+and $U^2$ is the non-negative diagonal
+matrix of uniquenesses. In the same way the random variable
+form of the model can be written as
+%
+\begin{equation}\label{e:xmatform}
+\Rx=A\Rz+U\Ry,
+\end{equation}
+%
+where $\Rz$ is an orthonormal set of common factors, and $\Ry$
+is an orthonormal set of unique factors, which is moreover
+orthogonal to $\Rz.$
+\end{remark}
+%
+\begin{theorem}\label{t:funda}
+A vector $\Rx$ of random variables can be written in the
+form $\Rx=A\Rz+U\Ry$ if and only if the dispersion matrix
+of $\Rx$ can be written in the form
+$C=AA'+U^2.$
+\end{theorem}
+%
+\begin{proof}
+It is trivial that \ref{e:xmatform} implies \ref{e:cmatform}. We
+construct the general solution to \ref{e:xmatform} to prove the
+converse.
+\end{proof}
+%
+\subsection{Upper Bounds for uniqueness}
+\begin{theorem}\label{t:bound1}
+$U\leq[\mathrm{diag}(C^{-1})]^{-1}.$
+\end{theorem}
+%
+\begin{proof}
+We know that $U\leq C,$ which means $C^{-1}\leq U^{-1},$ which
+means $\mathrm{diag}(C^{-1})\leq U^{-1},$ which shows that
+$U\leq[\mathrm{diag}(C^{-1})]^{-1}.$
+\end{proof}
+%
+There is an alternative proof, which actually leads to a
+sharper bound. Define $\beta_j$ as the vector of
+regression coefficients of variable $j$ on the others.
+Also $\sigma_j^2$
+is the residual sum of squares of this regression.
+Define $\overline\beta_j$ as the vector with element
+$+1$ on position $j,$ and the elements of $-\beta_j$
+on the other places. Observe that $\overline\beta_j$ is
+equal to $\sigma_j^2$ times column $j$ of $C^{-1}.$ 
+%
+\begin{theorem}\label{t:bound2}
+$u_j^2\leq u_j^2+\sum_{\ell\not= j}\beta_{j\ell}^2 u_\ell^2\leq\sigma_j^2$
+\end{theorem}
+%
+\begin{proof}
+Because $U\leq C,$ we also have $\overline\beta_j'U_j^2\overline\beta_j\leq
+\overline\beta_j'C\overline\beta_j.$ But the right hand side is equal to
+$\sigma_j^2.$
+\end{proof}
+%
+\subsection{Rank p Approximation}
+\subsection{Least Squares Factor Analysis}
+\subsection{Maximum Likelihood Factor Analysis}
+\subsection{Swain-type Loss Functions}
+\section{Minimum Trace Factor Analysis}
+Common Factor Analysis, in the covariance version, can be interpreted as finding
+a decomposition $C=\hat C+\tilde C$ such that $\tilde C$ is diagonal, and
+$\mathrm{rank}(\hat C)$ is as small as possible. This means, using a more
+convenient notation, that we want to compute
+%
+\begin{equation}\label{e:infrk}
+\inf_U\{\mathrm{rank}(C-U)\mid 0\leq U\leq C\}
+\end{equation}
+%
+In Equation \ref{e:infrk} $U$ varies over the diagonal matrices, and the
+interval over which $U$ is allowed to vary should be interpreted in the
+Loewner sense. Thus $U\leq C$ means that $C-U$ is positive semi-definite,
+and $0\leq U$ means that $U$ is positive semidefinite (which, in this
+case, simply means that the diagonal elements of $U$ are non-negative).
+Observe that $U^2$ varies over a convex region.\par
+%
+The rank of a matrix is not a continuous function of the matrix (in fact, it
+is a lower semi-continuous step-function), which means the minimization problem defined
+by  \ref{e:infrk} cannot really be solved by the usual numerical methods. In order
+to solve it, we have investigate solvability of 
+the systems $\mathrm{rank}(C-U)=p$ for $p=1,2,\cdots.$ This can be done quite
+easily for $p=1,$ in which we find the famous tetrad conditions. See Bekker
+and De Leeuw \cite{bekker} for a recent review. For $p>1$ things are not
+so simple, and basically unresolved.
+The equation $\mathrm{rank}(C-U)=p$ is equivalent to the system $\mathrm{det}(A)=0,$
+where $A$ varies over all submatrices of $C-U$ of order $p+1.$ We can first
+check if this system is solvable for $p=1,$ then for $p=2,$ and so on.\par
+%
+A considerable more promising approach would be to look at the problem
+%
+\begin{equation}\label{e:inftr}
+\inf_U\{\mathrm{trace}(C-U)\mid 0\leq U\leq C\}
+\end{equation}
+%
+\section{Image Analysis}
+%
+\section{Brief Notes on Nonlinear Factor Analysis}
+
+\end{document}

@@ -1,0 +1,21 @@
+This is version 0.0 alpha of the ElToY package.  It will eventually
+available via anonymous ftp from beligica.stat.washington.edu
+(128.95.17.57). 
+
+You may copy and distribute this program for educational or research
+purposes, as long as you distribute the copyright notice, the file
+COPYRIGHT, along with the program.  If you copy the program, you must
+copy the file COPYRIGHT.  Other uses are allowed under the GNU library
+general public licence (see file COPYING for details).
+
+Read the file INSTALLATION for installation instructions.
+It currently runs on top of XLISP-STAT.
+
+
+Limited support for the ElToY package is provided via electronic
+mail.  Please mail any problems to almond@stat.washington.edu, and I
+will try and examine them, as I have a chance.  
+
+Good Luck
+	--Russell Almond
+

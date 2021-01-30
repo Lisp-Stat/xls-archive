@@ -1,0 +1,132 @@
+File README, kde directory
+May 15, 1995
+
+This directory,
+        ftp://halley.upf.es:/stat/kde 
+contains lisp code to be run under XLISP-STAT. The whole is under
+development forever, so, use it at your own risk and fun.
+
+KDE means Kernel Density Estimation, these files create xlisp-stat
+objects to display interactively such estimations. Only univariate 
+density estimation is currently supported.
+
+File FILES contains a brief description of the files in this
+directory.
+
+For trying it, start xlisp-stat with some memory available from a
+directory containing these files, and type
+(load "buf-snow.kde")
+or
+(load "Stamps.kde")
+or any other example file. Then, explore the KDE menu.
+
+To start a kde object for your own data, load runkde.lsp 
+and try one of
+(make-kde :data your-data-in-a-lisp-list)
+or
+(make-kde-from-file "filename")
+
+See below for more detailed technical info.
+
+You can use it all freely. If you use it, please notify the author and
+adjoin any useful comments you have. You can also distribute the code.
+If you modify it in any essential way, please notify it to the author,
+and clarify what part of the code is yours and the credits for the rest.
+
+Frederic Udina
+udina@upf.es
+
+
+===================================================================
+
+If you have problems running the software, please read these notes. If
+your problems doesn't disappear, send me e-mail with some details
+about the version and OS of your XLisp-Stat copy.
+
+
+YOU NEED XLISP-STAT RUNNING FIRST
+Xlisp-Stat is a free lisp dialect specialized for statistical
+computing. You can get more info about it, and get the software too,
+by ftp'ing to umnstat.stat.umn.edu.
+
+KDE FILES MUST LIVE ALL TOGETHER IN THE SAME DIRECTORY
+Put them all in a new directory or in the XLisp-Stat directory. If you
+put the files in a directory, be sure that XLisp-Stat can access them
+for loading. In the Mac or in MS-Windows, this is easy: use the
+'Load file' item in the File menu. In Unix, start XLisp-Stat from the
+directory where the files lie, or type
+(set-working-directory "the-dir-where-you-put-it")
+once in the lisp prompt.
+
+HOW MUCH MEMORY?
+I use to work with 250,000 nodes in the lisp workspace in my Unix box
+and about 150000 in the Mac PowerBook. Probably this is too much, but is
+useful while developing. Ask for it with the `(room)' call.
+Try experimenting with `(expand nnn)' to tune up it.
+
+FILES WITH EXTENSION .KDE
+contain XLisp-Stat calls to create a full KDE object for some data
+set. Loading one of this file will create the object and display his
+contents in a window. You can be interested in reading those files and
+modify it to suit your particular needs.
+
+ONCE IN XLISP-STAT,
+you need to load the files for using it. This is done automatically by
+the .kde files. To load the files, simply type
+(load "runkde")
+and wait some moments for the loading be complete.
+
+IF YOU HAVE YOUR DATA IN A TEXT FILE,
+you can load it in a kde object easily. Enter XLisp-Stat and type:
+(make-kde-from-file "filename.xxx")
+This will read your data for the file, provided they are separated by
+spaces or newline characters.
+
+IF YOU KNOW LISP
+enough to have your data loaded in the lisp workspace as a lisp list,
+then you can type
+(make-kde :data my-list-of-data)
+
+COMPILED LISP CODE
+runs faster than pure interpreted code. Files with .fsl extension are
+the compiled version of the matching .lsp files. XLisp-Stat load the
+newest of the two files (file.lsp or file.fsl). If you want to
+recompile the files in your own environment, remove all the .fsl files 
+and type
+(load "compile-kde-files")
+when in the lisp prompt. Compilation is slow, go for a coffee.
+XLisp-Stat will load the newer of the files .lsp and .fsl, you can
+keep only one of them in your directory if space is a big concern.
+
+IF YOU NEED MORE INFO, look for it:
+
+KDE files can be found in
+     ftp://halley.upf.es:/stat/kde
+
+The file
+     ftp://halley.upf.es:/stat/kde/FILES
+describes the contents of that directory.
+
+A file notesAboutKDE.ps contain a possibly not updated version of a
+paper that describes KDE objects, how to use it, and some theoretical
+background to use it properly. It is on:
+     ftp://halley.upf.es:/stat/papers/notesAboutKDE.ps.Z
+
+There is another draft describing the transformations stuff that is
+used for the local bandwidth controller. It is on:
+     ftp://halley.upf.es:/stat/transfor/transformations.ps.gz
+
+The gnuplot bridge is described in
+     ftp://halley.upf.es:/stat/papers/HQGinLISP-STAT.ps[.gz]
+
+If you don't have any of these files, try ftp'ing:
+
+ftp://halley.upf.es:/stat/kde
+
+ftp://halley.upf.es:/stat/papers/HQGinLISP-STAT.ps[.gz]
+ 
+ftp://halley.upf.es:/stat/transfor/transformations.ps.gz
+
+
+
+udina@upf.es

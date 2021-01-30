@@ -1,0 +1,2 @@
+# tekmode : echo the escape sequence to put terminal in graphics mode
+echo '\033[?38h'

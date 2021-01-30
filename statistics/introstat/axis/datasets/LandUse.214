@@ -1,0 +1,23 @@
+"Land use and nitrogen content in 20 river basins;  everthing in percent
+except Nitrogen (mg/l)"
+Case Basin   Agriculture  Forests   Urban   Nitrogen
+1 Olean	26	63	1.49	1.1
+2 Cassadaga	29	57	0.79	1.01
+3 Oatka	54	26	2.38	1.9
+4  Neversink	2	84	3.88	1
+5 Hackensack	3	27	32.51	1.99
+6 Wappinger	19	61	3.96	1.42
+7 Fishkill	16	60	6.71	2.04
+8 Honeoye	40	43	1.54	1.65
+9 Susquehanna	28	62	1.25	1.01
+10 Chenango	26	60	1.13	1.21
+11 Tioughnioga	26	53	1.08	1.33
+12 West_Canada	15	75	0.86	0.75
+13 East_Canada	6	84	0.62	0.73
+14 Saranac	3	81	1.15	0.8
+15 Ausable	2	89	1.05	0.76
+16 Black	6	82	0.65	0.87
+17 Schoharie	22	70	1.12	0.8
+18 Raquette	4	75	0.58	0.87
+19 Oswegatchie	21	56	0.63	0.66
+20 Cohocton	40	49	1.23	1.25 

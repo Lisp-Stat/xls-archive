@@ -1,0 +1,41 @@
+(defun elmhes (a n np) (declare (type (simple-array double-float (* *)) a))
+ (declare (type fixnum n)) (declare (type fixnum np))
+ (prog ((y 0.0d0) (j 0) (i 0) (x 0.0d0) (m 0)) (declare (type double-float y))
+  (declare (type fixnum j)) (declare (type fixnum i))
+  (declare (type double-float x)) (declare (type fixnum m))
+  (cond
+   ((> n 2)
+    (fdo ((m 2 (+ m 1))) ((> m (+ n (- 1))) nil)
+     (tagbody (setf x 0.0) (setf i m)
+      (fdo ((j m (+ j 1))) ((> j n) nil)
+       (tagbody
+        (cond
+         ((> (abs (fref a j (+ m (- 1)))) (abs x))
+          (setf x (fref a j (+ m (- 1)))) (setf i j)
+      ))))
+      (cond
+       ((/= i m)
+        (fdo ((j (+ m (- 1)) (+ j 1))) ((> j n) nil)
+         (tagbody (setf y (fref a i j)) (fset (fref a i j) (fref a m j))
+          (fset (fref a m j) y)
+        ))
+        (fdo ((j 1 (+ j 1))) ((> j n) nil)
+         (tagbody (setf y (fref a j i)) (fset (fref a j i) (fref a j m))
+          (fset (fref a j m) y)
+      ))))
+      (cond
+       ((/= x 0.0)
+        (fdo ((i (+ m 1) (+ i 1))) ((> i n) nil)
+         (tagbody (setf y (fref a i (+ m (- 1))))
+          (cond
+           ((/= y 0.0) (setf y (/ y x)) (fset (fref a i (+ m (- 1))) y)
+            (fdo ((j m (+ j 1))) ((> j n) nil)
+             (tagbody
+              (fset (fref a i j) (+ (fref a i j) (* (* -1 y) (fref a m j))))
+            ))
+            (fdo ((j 1 (+ j 1))) ((> j n) nil)
+             (tagbody (fset (fref a j m) (+ (fref a j m) (* y (fref a j i)))))
+  )))))))))))
+  (return (values a n np))
+))
+

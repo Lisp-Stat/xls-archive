@@ -1,0 +1,18 @@
+# use these for Sun4
+
+
+CC= gcc
+XLISPCFLAGS= -O2 -w 
+
+# use -DOPTIMAL for a very fast xlisp interpreter.
+# this removes all setjmp()s and longjmp()s.
+# the resulting executable cannot recover from
+# lisp errors.  instead, it will exit gracefully.
+
+AR= /usr/local/bin/GNU/gar
+XLISPARFLAGS= rv
+
+XLISPRANLIB= granlib
+
+LD= /usr/local/bin/GNU/gld
+

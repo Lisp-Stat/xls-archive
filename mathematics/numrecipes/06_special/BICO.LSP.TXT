@@ -1,0 +1,8 @@
+(defun bico (n k) (declare (type fixnum n)) (declare (type fixnum k))
+ (prog ((bico 0.0d0)) (declare (type double-float bico))
+  (setf bico
+   (anint (exp (+ (+ (factln n) (- (factln k))) (- (factln (+ n (- k)))))))
+  )
+  (return bico)
+))
+

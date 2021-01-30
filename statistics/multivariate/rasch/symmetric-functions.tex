@@ -1,0 +1,55 @@
+% Format BigAMSLaTeX2e
+\documentclass[12pt]{amsart}
+\usepackage{uclastat,float}
+%\input xypic
+%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+%
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+%
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+%
+\numberwithin{equation}{section}
+%
+\begin{document}
+\title[Symmetric Functions]{Symmetric Functions in Lisp}
+\author{Jan de Leeuw}
+\date{\today}
+\address{UCLA Statistics Program\\
+8118 Mathematical Sciences Building\\
+University of California at Los Angeles}
+\email{deleeuw@@stat.ucla.edu}
+\maketitle
+%\tableofcontents
+%\begin{abstract}
+%\end{abstract}
+\section{Introduction}
+Suppose $\eps=\{\eps_1,\cdots,\eps_n\} is a sequence of real numbers. The elementary 
+symmetric functions of these numbers are defined by the recursion
+\begin{equation}
+\gamma_r(\eps_1,\cdots,\eps_t)=\gamma_r(\eps_1,\cdots,\eps_{t-1})+
+\eps_n\gamma_{r-1}(\eps_1,\cdots,\eps_{t-1}),
+\end{equation}
+for $0\leq r\leq t$ and $1\leq t\leq n$. The initial condition is
+\begin{equation}
+\gamma_0(\eps)\ident 1.
+\end{equation}
+For convenience we set $\gamma_1
+It follows that
+\begin{align}
+\gamma_1(\eps)&=\sum_{i=1}^n \eps_i,\\
+\gamma_2(\eps)&=\sum_{i<j}^n \eps_i\eps_j,\\
+\gamma_3(\eps)&=\sum_{i<j<k}^n \eps_i\eps_j\eps_k,
+\end{align}
+and so on. In general
+\begin{equation}
+\gamma_r(\eps)=\sum_{\#(K)=r}^{\binom{n}{r}}\prod_{k\in K}\eps_k
+\end{equation}
+\section{Programming the Symmetric Functions}
+\end{document}

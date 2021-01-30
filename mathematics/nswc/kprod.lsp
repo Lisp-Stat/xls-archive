@@ -1,0 +1,23 @@
+(defun kprod (a ka m n b kb k l c kc)
+ (declare (type (simple-array float (* *)) a)) (declare (type fixnum ka))
+ (declare (type fixnum m)) (declare (type fixnum n))
+ (declare (type (simple-array float (* *)) b)) (declare (type fixnum kb))
+ (declare (type fixnum k)) (declare (type fixnum l))
+ (declare (type (simple-array float (* *)) c)) (declare (type fixnum kc))
+ (prog ((r 0) (s 0) (ii 0) (i 0) (jj 0) (j 0)) (declare (type fixnum r))
+  (declare (type fixnum s)) (declare (type fixnum ii))
+  (declare (type fixnum i)) (declare (type fixnum jj))
+  (declare (type fixnum j)) (setf j 0)
+  (fdo ((s 1 (+ s 1))) ((> s n) nil)
+   (tagbody
+    (fdo ((jj 1 (+ jj 1))) ((> jj l) nil)
+     (tagbody (setf j (+ j 1)) (setf i 0)
+      (fdo ((r 1 (+ r 1))) ((> r m) nil)
+       (tagbody
+        (fdo ((ii 1 (+ ii 1))) ((> ii k) nil)
+         (tagbody (setf i (+ i 1))
+          (fset (fref c i j) (* (fref a r s) (fref b ii jj)))
+  ))))))))
+  (return (values a ka m n b kb k l c kc))
+))
+

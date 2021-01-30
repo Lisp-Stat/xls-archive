@@ -1,0 +1,30 @@
+(defun qromb
+ (func a b ss &key (eps 1.0E-6) (jmax 20) (jmaxp jmax) (k 5) (km 4))
+ (declare (type double-float func)) (declare (type double-float a))
+ (declare (type double-float b)) (declare (type double-float ss))
+ (declare (type double-float eps)) (declare (type fixnum jmax))
+ (declare (type fixnum jmaxp)) (declare (type fixnum k))
+ (declare (type fixnum km))
+ (prog
+  ((s (make-array '(jmaxp) :element-type 'double-float))
+   (h (make-array '(jmaxp) :element-type 'double-float)) (j 0)
+  )
+  (declare (type (simple-array double-float (*)) s))
+  (declare (type (simple-array double-float (*)) h)) (declare (type fixnum j))
+  (fset (fref h 1) 1.0)
+  (fdo ((j 1 (+ j 1))) ((> j jmax) nil)
+   (tagbody
+    (multiple-value-setq (func a b dummy_var j) (trapzd func a b (fref s j) j))
+    (cond
+     ((+ ((j >= k) then) (* nil nil))
+      (multiple-value-setq (dummy_var dummy_var k dummy_var ss dss)
+       (polint (fref h l) (fref s l) k 0.0 ss dss)
+      )
+      (if (< (abs dss) (* eps (abs ss))) (go end_label))
+    ))
+    (fset (fref s (+ j 1)) (fref s j))
+    (fset (fref h (+ j 1)) (* 0.25 (fref h j)))
+  ))
+  (return (values func a b ss))
+))
+

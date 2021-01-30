@@ -1,0 +1,37 @@
+(defun apple (i)
+(+ i i))
+
+(defun melon (i)
+(* i i))
+
+(defun fruit (n)
+(dotimes (i n)
+(apple i) (apple (melon i))))
+
+(with-function-call-count (apple melon) (fruit 100))
+
+returns
+
+NIL           --> which is what (fruit 100) returns
+(200 100)     --> which is the number of times
+                  apple and melon were called
+
+Unfortunately this does not work with builtin
+functions such as * or + or eigen or what-have-you
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(time-form (eigen (identity-matrix 10)))
+
+runs eigen 20 times on the identity matrix and takes
+the average runtime (this is total time, ie. it
+may include gc).
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(breakon 'apple)
+
+sets a break at the beginning of apple, which means
+for instance that fruit will stop as soon as it
+gets to apple.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+

@@ -1,0 +1,42 @@
+(require "xfig")
+
+(def num 12)
+(def plot (plot-points (- (uniform-rand num) 1) (- (uniform-rand num) 0.5)
+           :symbol 'DOT :color 'BLACK))
+(send plot :add-points    (uniform-rand num)    (- (uniform-rand num) 0.5)
+           :symbol 'DISK :color 'RED)		
+(send plot :add-points (+ (uniform-rand num) 1) (- (uniform-rand num) 0.5)
+           :symbol 'DIAMOND :color 'BLUE)	
+(send plot :add-points (+ (uniform-rand num) 2) (- (uniform-rand num) 0.5)
+           :symbol 'CROSS :color 'CYAN)	
+(send plot :add-points (- (uniform-rand num) 1) (+ (uniform-rand num) 0.5)
+           :symbol 'SQUARE :color 'YELLOW)	
+(send plot :add-points    (uniform-rand num)    (+ (uniform-rand num) 0.5)
+           :symbol 'WEDGE1 :color 'GREEN)	
+(send plot :add-points (+ (uniform-rand num) 1) (+ (uniform-rand num) 0.5)
+           :symbol 'WEDGE2 :color 'MAGENTA)	
+(send plot :add-points (+ (uniform-rand num) 2) (+ (uniform-rand num) 0.5)
+           :symbol 'X :color 'BLACK)
+
+(send plot :range 0 -1 3) 
+(send plot :range 1 -0.5 1.5) 
+(send plot :size 600 400)
+(send plot :showing-labels t)
+(send plot :selection (which (< (uniform-rand (* 8 num)) 0.3)))
+
+(send plot :add-lines (- (* 4 (uniform-rand 7)) 1) (- (* 2 (uniform-rand 7)) 0.5)
+           :COLOR 'BLACK :TYPE 'SOLID)
+
+(send plot :add-lines (- (* 4 (uniform-rand 5)) 1) (- (* 2 (uniform-rand 5)) 0.5)
+           :COLOR 'RED :TYPE 'DASHED)
+
+(send plot :title "This is a demonstration")
+(send plot :variable-label 0 "x-axis")
+(send plot :variable-label 1 "y-axis")
+(send plot :x-axis t t 9)
+(send plot :y-axis t t 5)
+
+(send plot :to-xfig :filename "example.fig")
+(send plot :to-xfig :bw t :filename "example_bw.fig")
+(send plot :to-xfig :bw t :filename "example_bw_all.fig"
+           :x-zero-axis t  :y-zero-axis t :box t :grid t)

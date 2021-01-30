@@ -1,0 +1,8 @@
+subgradient.lsp
+
+Simple version of Zhor's subgradient optimization algorithm
+that can minimize (possibly nondifferentiable) convex functions
+and that can (consequently) solve systems of convex
+inequalities and general convex programs (although often
+painfully slowly). By Jan de Leeuw.
+===================================================================

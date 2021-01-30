@@ -1,0 +1,2 @@
+tar cf - . | (cd /hilbert/users/ftp/pub/xlispstat/AXIS/datasets; tar xvf -)
+

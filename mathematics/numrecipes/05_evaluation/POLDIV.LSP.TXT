@@ -1,0 +1,18 @@
+(defun poldiv (u n v nv q r) (declare (type (simple-array double-float (*)) u))
+ (declare (type fixnum n)) (declare (type (simple-array double-float (*)) v))
+ (declare (type fixnum nv)) (declare (type (simple-array double-float (*)) q))
+ (declare (type (simple-array double-float (*)) r))
+ (prog ((k 0) (j 0)) (declare (type fixnum k)) (declare (type fixnum j))
+  (fdo ((j 1 (+ j 1))) ((> j n) nil)
+   (tagbody (fset (fref r j) (fref u j)) (fset (fref q j) 0.0))
+  )
+  (fdo ((k (+ n (- nv)) (+ k (- 1)))) ((> k 0) nil)
+   (tagbody (fset (fref q (+ k 1)) (/ (fref r (+ nv k)) (fref v nv)))
+    (fdo ((j (+ (+ nv k) (- 1)) (+ j (- 1)))) ((> j (+ k 1)) nil)
+     (tagbody
+      (fset (fref r j)
+       (+ (fref r j) (* (* -1 (fref q (+ k 1))) (fref v (+ j (- k)))))
+  )))))
+  (fset (fref r nv) 0.0) (return (values u n v nv q r))
+))
+

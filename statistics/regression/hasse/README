@@ -1,0 +1,60 @@
+hasse.lsp
+
+Contributed by Philip Iversen, piversen@iastate.edu
+
+This program determines F-test and expected mean squares for
+balanced complete experimental designs.  It is based on rules
+presented in Taylor & Hilton (American Statistician, 1981).
+It also draws the Hasse diagram associated with the design, and allows
+the user to rearrange nodes in the diagram by dragging them with a
+mouse.
+
+The program accepts as input a plain text file containing
+information about the factors in the experiment, for example:
+
+(A 5 fixed nil)
+(C 3 random (A))
+(B 4 fixed nil)
+(E 1 random (A C B))
+
+Each line represents one factor in the design and contains a 
+list of four elements: the factor name (or letter designation), number
+of levels, type (either fixed or random) and a list of all factors in
+which the given factor is nested.  An empty list, nil, in the fourth
+position indicates that the given factor is not nested in any 
+other factors.  There should always be one factor, E, which is
+random and nested in all the other factors; this is sometimes called
+the "within" factor.
+   On UNIX systems the input filenames MUST be in upper case and
+end with .DSN; otherwise the get-filename function will not find them.
+
+This package contains the following files:
+
+    README        This file.
+    hasse.lsp     The program.
+    SPLIT.DSN     Example input file for a split-plot design.
+    FIXED2.DSN    Example input file for a 2-factor fixed effects design.
+
+To get started, put these files together in a directory or folder.
+Start LISP-STAT from this directory and load the program:
+
+(load "hasse")
+
+Then enter an expression such as
+
+(def ba (balanced-anova-model))
+
+This will create a balanced-anova object and prompt you to select an 
+input file.  At first you will have the two choices mentioned above.  
+Additional input files may be created with any text editor.  Once the 
+file is read, a menu is installed that gives access to the balanced anova 
+object, ba.  Messages may also be sent from the LISP-STAT prompt.  
+See hasse.tex for details.
+
+This software my be freely used for non-commercial purposes and my be
+freely distributed.
+
+Questions and comments may be sent to  piversen@iastate.edu
+
+Philip Iversen, 4/9/92.
+

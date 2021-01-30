@@ -1,0 +1,40 @@
+This file contains a small spreadsheet editor in Xlisp-Stat, with
+an example (the iris data, obviously).
+
+This is part of our introductory statistics project, an earlier
+version was integrated with the ucladata project.
+
+One nasty problem I had was that the list-item-proto is fairly
+limited. I wanted a spreadsheet with variable labels in the
+first row and case labels in the first column. But scrolling
+horizontally should not scroll case labels out of sight, and scrolling
+vertically should not scroll variable labels out of sight. 
+This editor is the current solution.
+
+To start it, simply load "iris.lsp". This will load "spreadsheet.lsp"
+and it will create an instance of the multi-variable-proto filled
+with iris data and labels. This instance is called "iris". Then say
+(send iris :edit), and take it from there.
+
+There are two variations. We can say
+(send iris :edit '(0 1))
+which will only load the first two variables into the editor. Or
+(send iris :edit '(0 1) t)
+which create the editor as a modal dialog (default is modeless).
+
+You edit a cell by double clicking, you can scroll through the 
+variables by the scroll bar at the bottom, you can transform a
+variable by double clicking its name. This all feels fairly
+natural to me. You can revert a variable by the revert button
+(this only reverts the currently active -- i.e. visible --
+variable).
+
+I have made sure that this looks good on both X11 and Mac, I
+dont know about MSW. Also, it can be byte-compiled on both
+types of machines. 
+
+Weights and labels cannot be reverted. It needs a save method.
+It is easy to extend it with a menu that has save, revert,
+plot, and univariate statistics. 
+
+--- Jan

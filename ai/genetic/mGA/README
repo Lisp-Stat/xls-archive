@@ -1,0 +1,61 @@
+
+
+
+		     Messy Genetic Algorithm (Lisp) Files
+
+
+
+This directory contains the files for the messy GA (mGA) Lisp code documented in the
+technical report "mGA 1.0:  A Common Lisp Implementation of a Messy Genetic Algorithm"
+(TCGA Report No. 90004, by David E. Goldberg and T. Kerzic, 1990.  Please request this
+report from The Clearinghouse for Genetic Algorithms (TCGA), University of Alabama at
+Tuscaloosa (try contacting Robert E. Smith at rob@comec4.mh.ua.edu).   
+
+Below is the original README file for version 1.0 of the code.  
+
+Kalyanmoy Deb and David E. Goldberg modified the original code in 1991 to run under 
+Kyoto Common List (KCL) and to correct errors in version 1.0.  This directory contains 
+the modified code.  Please see the postscript file "errata.ps", in this directory, for a 
+brief (two page) explanation of Deb and Goldberg's changes.
+
+If you have any problems retrieving files from this server, please contact either Jason
+R. Wilcox (jrwilcox@GAL3.GE.UIUC.EDU) or Jeffrey Horn (jeffhorn@uiuc.edu).  If you have
+any questions about the code, you can try reaching Kalyanmoy Deb at (deb@iitk.ernet.in).
+
+-Jeffrey Horn (10/5/1994)
+
+
+
+The files for the program are 
+AUX.LISP    - auxiliary functions
+DECODE.LISP - functions for extracting the chromosome 
+MGA.LISP    - the main MGA pprogram as well as phasing functions
+OBJFUNC.LISP- objective function and associated subroutines
+OPS.LISP    - contains MGA genetic operators
+SETUP.LISP  - contains the functions for reading in the setup file and setting system parameters
+              as well as sizing the population and setting phase change points
+STATS.LISP  - generational statistics routines 
+
+The files have associated compiled filed (designation .XLD) for using the system-make feature. If 
+you are running on a TI-Explorer then they will be useful otherwise you will probably have to 
+recompile the program. It does have one or two explorer specific command that will have to be
+changed.  
+
+Other files included
+EXAMPLEX.ASC - example input files
+DATA.DAT     - data output file
+STATOUT.DAT  - keeps track of generation statistics output (just like what you see on the screen)
+
+
+06/26/91   The code has been modified to run in KCL (Kyoto Common Lisp)   
+	   The changes are marked 'deb' at the end of the line.
+	   Contributions: Kalyanmoy Deb, David E. Goldberg, and Andrew Horner 
+			  University of Illinios at Urbana-Champaign
+	   To run in KCL, type the following:
+		     > (load "./loadfiles.o")
+		     > (load-files)
+		     > (mGA)
+           The name of the input file name has to be typed in quotes.
+	   For example, type "./example2.asc"
+
+

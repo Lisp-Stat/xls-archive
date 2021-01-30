@@ -1,0 +1,49 @@
+(defun bcuint (y y1 y2 y12 x1l x1u x2l x2u x1 x2 ansy ansy1 ans y2)
+ (declare (type (simple-array double-float (*)) y))
+ (declare (type (simple-array double-float (*)) y1))
+ (declare (type (simple-array double-float (*)) y2))
+ (declare (type (simple-array double-float (*)) y12))
+ (declare (type double-float x1l)) (declare (type double-float x1u))
+ (declare (type double-float x2l)) (declare (type double-float x2u))
+ (declare (type double-float x1)) (declare (type double-float x2))
+ (declare (type double-float ansy)) (declare (type double-float ansy1))
+ (declare (type double-float ans)) (declare (type double-float y2))
+ (prog
+  ((c (make-array '(4 4) :element-type 'double-float)) (i 0) (ansy2 0.0d0)
+   (u 0.0d0) (t_ 0.0d0) (d2 0.0d0) (d1 0.0d0)
+  )
+  (declare (type (simple-array double-float (* *)) c))
+  (declare (type fixnum i)) (declare (type double-float ansy2))
+  (declare (type double-float u)) (declare (type double-float t_))
+  (declare (type double-float d2)) (declare (type double-float d1))
+  (setf d1 (+ x1u (- x1l))) (setf d2 (+ x2u (- x2l)))
+  (multiple-value-setq (y y1 y2 y12 d1 d2 c) (bcucof y y1 y2 y12 d1 d2 c))
+  (if (or (= x1u x1l) (= x2u x2l)) (error "bad input"))
+  (setf t_ (/ (+ x1 (- x1l)) d1)) (setf u (/ (+ x2 (- x2l)) d2))
+  (setf ansy 0.0) (setf ansy2 0.0) (setf ansy1 0.0)
+  (fdo ((i 4 (+ i (- 1)))) ((> i 1) nil)
+   (tagbody
+    (setf ansy
+     (+
+      (+ (* t_ ansy)
+       (* (+ (* (+ (* (fref c i 4) u) (fref c i 3)) u) (fref c i 2)) u)
+      )
+      (fref c i 1)
+    ))
+    (setf ansy2
+     (+
+      (+ (* t_ ansy2) (* (+ (* (* 3.0 (fref c i 4)) u) (* 2.0 (fref c i 3))) u)
+      )
+      (fref c i 2)
+    ))
+    (setf ansy1
+     (+
+      (+ (* u ansy1)
+       (* (+ (* (* 3.0 (fref c 4 i)) t_) (* 2.0 (fref c 3 i))) t_)
+      )
+      (fref c 2 i)
+  ))))
+  (setf ansy1 (/ ansy1 d1)) (setf ansy2 (/ ansy2 d2))
+  (return (values y y1 y2 y12 x1l x1u x2l x2u x1 x2 ansy ansy1 ans y2))
+))
+

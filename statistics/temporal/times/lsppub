@@ -1,0 +1,59 @@
+#+++
+#	NAME	: lsppub
+#
+#	PURPOSE : troff publication of lisp code
+#
+#	USAGE	: lsppub  file1  file2  ... >PRINT; 
+#		  the output file contains troff macros inserted in to the
+#		  lisp source to print with table of contents by file and
+#		  by function within a file.  lsppub works for the lisp
+#		  code format that is used with this submission.  No attempt
+#		  has been made to accomodate any other coding style.
+#
+#	DATE	: Mon Sep  9 09:00:51 EDT 1991
+#
+#	AUTHOR  : W. Hatch
+#
+#	COMPANY : Coleman Research Corporation
+#		  14504 Greenview Drive Suite 500
+#		  Laurel, Maryland 20708
+#		  Phone (301)470-3839
+#		  FAX (301)776-5461
+#		  uunet!bts!bill
+#
+#---
+#------------------------------------------------------------------------
+# if no command line arguments then abort with usage instructions
+#------------------------------------------------------------------------
+usage="lsppub  file1  file2  ... >PRINT  "
+case $# in
+	0) echo $usage
+	   exit;;
+esac
+echo ".ft CW"
+echo ".nf"
+echo '.PF \042\047\047My Company Logo\047\\n(mo/\\n(dy/\\n(yr\047\042'
+for i
+do
+	echo ".PH \042\047\047$i\047Page %\047\042"
+	echo ".bp"
+	echo ".H 1 $i"
+	echo ".ft CW"
+	echo ".nf"
+	awk '
+	BEGIN {count = 1}
+	/defun/ {count = 0}
+		{
+			if(count == 0)
+			{
+				printf(".H 2 %s\n",$2)
+				printf(".nf\n")
+				printf(".ft CW\n")
+			}
+			print $0
+			++count
+		 }
+
+	' $i | gpr -e -t -w88 | sed 's/\\/\\\\/g'
+done
+echo ".TC"

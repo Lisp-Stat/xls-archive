@@ -1,0 +1,63 @@
+To: all_s390f@ms,consult@msn
+Subject: A new toy
+--text follows this line--
+
+
+There is a new toy called "dist-toy"  which is available to s390f
+students.  
+
+Because the xlispstat software is out of date on the RT's, it is available
+only on coco.  To get a window on coco type:
+
+xon coco xterm
+
+This will launch a new window for you attached to the computer coco
+which runs xlispstat.
+
+At the coco_1% prompt type "dist-toy".  This should launch the
+program.  It will load a large number of files and then give you a
+choice of two menus.
+
+The menu "DIST TOY" has various distribution displays.  To use select
+a distribution by name.  You can change the parameters using the
+sliders and watch what happens to the density or mass function.
+Selecting the menu item again will cause the plot and sliders to
+disappear. 
+
+Note: plots are not automatically rescaled.  You can rescale a plot by
+pressing the menu button and selecting the rescale option.
+
+The menu "CLT Toy" selects various central limit theorem
+demonstrations.  Again you choose a distribution and the program
+displays a histogram of a sample of 500 draws from that population and
+the best approximating normal curve.  When you select the same distribution
+again it changes from the sample of a single value to the sample of 
+sums of values.  Each "iteration" another sample of 500 draws is added
+to the exisiting total.  The plot is adjusted accordingly.  Each time
+you select the distribution (after the first) 10 samples are added.
+
+
+There is an exit item in the menu-bar menu (press the menu button)
+
+BUGS
+	It is possible to get some illegal values of parameters (e.g.,
+uniform distribution in which the min is greater than the max, or zero
+values for certain distributions in which the parameters must be
+greater than zero.)  This is mostly harmless.
+
+	There is no clean way to get rid of a clt plot.  If you press
+the close button, the plot goes away, but there is no easy way to get
+it back.
+
+
+There is currently no "help" button.
+
+FEATURES
+
+Xlispstat has a very stupid algorithm for placing windows.  The
+usually wind up on top of each other.
+
+Xlispstat doesn't update the parameters immediately if you edit the
+text items on the sliders.  Press the corresponding "update" button to
+register the change.
+

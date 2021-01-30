@@ -1,0 +1,5 @@
+Wed Oct 23 19:34:18 1991  Russell G. Almond  (almond at ernie)
+
+	* added integer? slot to parameters.  This should force some
+	things like the binomial distribution to behave properly.
+

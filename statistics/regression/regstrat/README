@@ -1,0 +1,171 @@
+A LISP-STAT tool to investigate order in Regression Strategy
+============================================================
+
+     by Julian Faraway, Department of Statistics, Univ. of Michigan.
+     e-mail: julian@stat.lsa.umich.edu
+
+Conditions of use
+-----------------
+
+This program may be freely redistributed and modified for
+non-commercial purposes provided the copyright notice remains intact.
+There is no warranty.  I am interested in compiling and fixing bugs
+and any problems with the software.  The author can be reached by
+e-mail at julian@stat.lsa.umich.edu, or via U. S. mail through the
+Department of Statistics, University of Michigan, Ann Arbor, MI
+48109-1027.
+
+
+Motivation
+----------
+
+A regression analysis may consist of several stages involving
+procedures such as variable selection, transformation and outlier
+detection.  If the analyst applies these procedures in different
+orders, a different models may be selected. This is a LISP-STAT tool
+for discovering and examining the models found by changing the order
+in which a regression analysis is done.
+
+Regression procedures like variable selection by backward elimination
+are characterized as functions acting on and returning regression
+models. The procedures characterized here are variable selection by
+backward elimination and forward selection, determination of the
+transform on the response using the Box-Cox method, a test for power
+transforms on the predictors, outlier and influential point detection
+and removal and restoration of points previously excluded which were
+once outliers or influential but are not so after a change in the form
+of the model. These procedures are discussed (and used in a different
+way) in "The Cost of Data Analysis" by myself in JCGS 1, 215-231.
+
+The analysis starts with a default initial model of all variables
+untransformed and all points included and the user selects a subset of
+the available regression procedures. Each of these procedures is
+applied (in parallel) to the initial model.  Some procedures may
+produce a changed model.  All the procedures are then applied to the
+changed models and so on until no further new models can be generated
+and all procedures have been applied to the existing models. The
+entire analysis is represented as a directed graph with which the user
+may interact. Absorbing vertices are of special interest since these
+represent models that are unchanged by the application of any of the
+procedures and thus may be regarded as "final" acceptable models.
+
+Some data and choices of procedures will result in only one final
+model being found, others will result in several candidate final
+models. 
+
+Remember, this is an experimental tool so the results should be
+independently checked. At any rate, this is intended as an aid to
+and not a replacement for the usual regression analysis.
+
+
+Description
+------------
+
+To get a quick start on an example dataset simply place the code in
+the same directory or folder and load by
+
+	(load "run")
+
+This example dataset is discussed briefly below.
+To run the code on your own data, 
+
+	(load "regpath")
+
+and then the calling function is
+
+(defun regpaths (x y &key 
+		   predictor-names	
+		   response-name 
+		   tran-list)  ....)
+
+where x is a list of the regression predictors and y is the response.
+The optional variables are strings describing the predictors and
+response and the initial transformations on the variables. The default
+is to include all variables untransformed. 
+
+The first dialog asks which actions will be considered and the second
+which predictors should be forced to be included in the model - these
+chosen predictors will not be eliminated or transformed. A further
+dialog questions the user regarding the verbosity of the output, "all"
+means the result of every action is reported even if it causes no
+change to the model and "some" results in only actions which have some
+effect being reported.
+
+When the calculation is complete, a plot with the models as nodes is
+presented. Heavily circled nodes are absorbing i.e. models where no
+action caused a change. A key will be printed giving the letters
+representing each action. The menu can be used to interact with the plot.
+
+"Clear Arcs" - removes all arcs drawn on the plot.
+
+"Draw All" - draws all the arcs representing the effective actions
+
+"Move Node" - since arcs may be drawn over nodes, a clearer plot may
+	be obtained by selecting this item and then using the 
+	mouse to drag some nodes. A "Draw All"
+	will be necessary once you are done moving.
+
+"Display" - puts you in display mode - click on any node to get a
+	regression summary.
+
+"Model Weights" - will request the assignment of weights to the 
+	acceptable final models. Input in the form of a list is expected
+	e.g. '(1 2 1 1). Normalization will occur automatically. The
+	default is equal weights.
+
+"Prediction" - will give a plot of the weighted sums of the predictive
+      	distributions at a requested point, which must be a list e.g. 
+	'(10 20 30 40 1). If the response is transformed in any model, the
+        prediction is transformed back into the original scale.
+        The predictions themselves are plotted at the bottom
+        of the plot. A brief summary of the acceptable
+        models and the associated predictions will be printed.
+
+"Effect"     - will only be selectable if some variables are forced
+        into all models as chosen in the second dialog.
+	We define the effect of a predictor by considering the
+        change in the predicted value (in the original scale)
+        for a unit change in that predictor at a user-specified
+        point in the predictor space. If the response and
+        predictor are untransformed this is exactly the reg.
+        coefficient for that predictor. The standard error
+        for this effect is also calculated and a
+        weighted sum of the effect distributions is plotted.
+
+
+For users more familiar with LISP-STAT, it is possible to interact
+with the graph and associated models at the command line. The current
+model selected in "Display" mode is stored in the global variable *cm*.
+This regression object can then be analyzed as desired or fed into
+other LISP-STAT packages. 
+
+The result of the regpaths function is a regression graph object which
+can be sent messages directly from the command line. E.g.
+
+(setf rp (regpaths x y :predictor-names varnames))
+
+Then we may obtain a list of regression objects for the acceptable
+models by
+
+(send rp :terminal-nodes)
+
+Further details may be gleaned by examining the source.
+
+An Example
+------------
+
+The example dataset is on some insurance data from Chicago described
+in "DATA" by Andrews and Herzberg, pub. by Springer.  There are 49
+cases representing ZIP codes in the City of Chicago.  The response is
+the roughly number of home-owner insurance policies per head and there
+are 5 predictors: %minority, fire rate, theft rate, age of housing and
+income.
+
+If you select all the procedures except "transformation on predictors"
+a graph with 17 models will be found where 2 represent final
+acceptable models. There is also a 4-cycle discernable on the right of
+the graph. If you include the "transformation on predictors" action, a
+graph with 200 models will be generated which will take an appreciable
+amount of time even on faster UNIX workstations.
+
+This program has been tested on UNIX under X-windows and Macintoshs only.

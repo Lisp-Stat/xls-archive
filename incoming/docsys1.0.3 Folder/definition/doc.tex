@@ -1,0 +1,99 @@
+\input /home/comet/rga6711/xlisp/definition/lispdef.tex
+\hfuzz=5pt
+
+
+\beginProject{ Project Documentation Toolkit}
+\projectTitle{ Project Documentation Toolkit}
+\projectAuthor{ Russell Almond}{ Educational Testing Service}{ almond@acm.org}
+\projectAuthor{ Thomas S. Dye}{ International Archaeological Research Institute, Inc.}{ tdye@lava.net}
+\projectAuthor{ Andrew E. Long}{ }{ aelon@sph.umich.edu}
+\projectVersion{ Version 1.0.3 (Jan 11, 1999)}
+\beginMotivationDesc
+ This package is intended to solve two different
+  problems.  The first is to give us a database of XLS objects which
+  describe project written in XLS.  The second is to provide an
+  automatic way of documenting projects. 
+\endMotivationDesc
+\projectCopyright{ This work is public domain.  The authors make no
+warantee as to its suitability for any particular purpose.}
+\projectReviewer{ }{ }
+\beginFunctionalDesc
+ This package provides objects for
+  documenting projects, as well as objects for documenating functions,
+  generic functions, messages, variables, parameters, prototypes,
+  etc. which are part of a project.  There are a number of tools
+  provided for extracting the documentation automatically from the
+  source files (although project level documentation must still be
+  created manually.)  Two functions provide a printing mechanism into
+  either Plain TeX or HTML. 
+\endFunctionalDesc
+\beginStatDesc
+ Documenting software is critically
+  important to the dissemination of statistical ideas, but is an often
+  overlooked step in statistical programming.  This package attempts
+  to provide tools for automatically documenting projects in a hope to
+  eliminate some of that lag.   This is based on an earlier
+  implementation of a similar system in Common LISP by John McDonald
+  (McDonald[1991]) 
+\endStatDesc
+\beginRefs
+\projectRef{ McDonald, J.A. [1991] ``Definitions:  a
+  simple database for typesetting documentation.''  University of
+  Washington, Dept. of Statistics, Technical Report.}
+\projectRef{ Steele, G.L., Jr. [1990] ``Common LISP:  The
+Language, Second Edition.'' Digital Press.}
+\projectRef{ Tierney, L. [1990] ``LISP-STAT:  An Object
+  Oriented Environment for Statistical COmputing and Dynamic
+  Graphics''.  John Wiley and Sons.}
+\endRefs
+\beginInstructions
+ Docuementing a project under the
+  definitions system consists of four steps:  (1) writing your code
+  according to certain conventions which make it self documenting;
+  this includes using declarations where appropriate and including
+  documentation strings.  (2) Creating a documentation object for your
+  project; this can be done by filling out the template given in the
+  file doc.lsp.  (3) load the file 'definitions/system.lsp' and then 
+  the file containing your project documentation object. (4)  Run the
+  function df:print-tex-documentation or df:print-html-documentation
+  to generate the documentation.  TeX documenation comes out in Plain
+  TeX or LaTeX. 
+\endInstructions
+\beginExamples
+\projectEx{ See the file doc-doc.lsp in this distribution.}
+\endExamples
+\beginWarnings
+\projectWarn{ Unless you document your code, it will be
+  unreadable and these tools will be useless!}
+\projectWarn{ These tools will not work very well if all of
+  your code is left in the USER package; in particular, it relies on
+  which symbols are exported to know which objects are important.}
+\projectWarn{ TeX documents will still create overfull
+hboxes, especially if doc-strings contain lots of long symbol names.
+You can increase hfuzz to fix small problem.  Editing the TeX file is
+probably you best resort for big problems.}
+\endWarnings
+\beginSeeAlsos
+\projectSee{ Note Tierney [1990] is not really a complete
+  LISP reference manual.  For notes on documentation strings and
+  declaration syntax, look at Steele [1990]}
+\endSeeAlsos
+\projectXLSVersion{ Works with XLS 3.52.5 and later.}
+\projectOSVersion{ No known incompatabilities; tested on Unix
+  and Mac}
+\beginDepList \cd{ "Xlos" \hfudge "Lisp" \hfudge } \endProjectList
+\projectPackage{ "Definitions"}{"Df" \hfudge }
+\beginChanges
+\projectChange{ Version 1.0.3 Minor cleanups}
+\projectChange{ Version 1.0.2 Added minimal links and anchors to user
+level documentation.  Still a lot to do here.}
+\projectChange{ Version 1.0.2 Added Change Log feature.}
+\projectChange{ Version 1.0.1 Added Project Level
+Documenation Objects.}
+\endChanges
+\beginFileList \cd{"/Home/Comet/Rga6711/Xlisp/Definition/Package.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Exports.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Defs.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Definition.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Pack.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Global.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Fun.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Type.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Build.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Read.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Xls-Object.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Filter.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Sort.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Condition.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Tex-Print.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Html-Print.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Project-Doc.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Tex-Print-Doc.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Definition/Html-Print-Doc.Lsp" \hfudge } \endProjectList
+\beginObjectList \cd{Definitions:Author-Doc-Proto \hfudge Definitions:Class-Definition \hfudge Definitions:Condition-Definition \hfudge Definitions:Constant-Definition \hfudge Definitions:Definition \hfudge Definitions:Function-Definition \hfudge Definitions:Generic-Function-Definition \hfudge Definitions:Global-Variable-Definition \hfudge Definitions:Lambda-List-Definition \hfudge Definitions:Macro-Definition \hfudge Definitions:Message-Definition \hfudge Definitions:Method-Definition \hfudge Definitions:Package-Definition \hfudge Definitions:Parameter-Definition \hfudge Definitions:Project-Doc-Proto \hfudge Definitions:Prototype-Definition \hfudge Definitions:Setf-Definition \hfudge Definitions:Structure-Definition \hfudge Definitions:Type-Definition \hfudge Definitions:User-Type-Definition \hfudge Definitions:Variable-Definition \hfudge Definitions:Version-Doc-Proto \hfudge } \endProjectList
+\beginFunList \cd{Definitions:Build-Project-Definitions \hfudge Definitions:Declare-Check \hfudge (Setf Definitions:Definer-Class) \hfudge Definitions:Definer-Class \hfudge Definitions:Definition-Alpha\< \hfudge Definitions:Definition-Arg-Types \hfudge Definitions:Definition-Body \hfudge Definitions:Definition-Children \hfudge Definitions:Definition-Class-Nice-Name \hfudge Definitions:Definition-Declarations \hfudge Definitions:Definition-Definee \hfudge Definitions:Definition-Definer \hfudge Definitions:Definition-Documentation \hfudge Definitions:Definition-Form \hfudge Definitions:Definition-Initial-Value \hfudge Definitions:Definition-Lambda-List \hfudge Definitions:Definition-Method-Qualifier \hfudge Definitions:Definition-Name \hfudge Definitions:Definition-Name-\>String \hfudge Definitions:Definition-Parents \hfudge Definitions:Definition-Returns \hfudge Definitions:Definition-Slots \hfudge Definitions:Definition-Specializers \hfudge Definitions:Definition-Symbol \hfudge Definitions:Definition-Symbol-Name \hfudge Definitions:Definition-Type-Declarations \hfudge Definitions:Definition-Usage \hfudge Definitions:Definition\< \hfudge Definitions:Exported-Definition? \hfudge Definitions:Lambda-List-Arg-Names \hfudge Definitions:Lambda-List-Keyword-Arg-Names \hfudge Definitions:Lambda-List-Keyword-Args \hfudge Definitions:Lambda-List-Optional-Arg-Names \hfudge Definitions:Lambda-List-Optional-Args \hfudge Definitions:Lambda-List-Required-Arg-Names \hfudge Definitions:Lambda-List-Required-Args \hfudge Definitions:Lambda-List-Rest-Arg-Name \hfudge Definitions:Lambda-List-Specializers \hfudge Definitions:Lambda-List-Whole-Arg \hfudge Definitions:Make-Definitions \hfudge Definitions:Make-Slot-Accessor-Definitions \hfudge Definitions:Make-Subdefinitions \hfudge Definitions:Print-Html-Definition \hfudge Definitions:Print-Html-Definitions \hfudge Definitions:Print-Html-Documentation \hfudge Definitions:Print-Tex-Definition \hfudge Definitions:Print-Tex-Definitions \hfudge Definitions:Print-Tex-Documentation \hfudge Definitions:Read-Definitions-From-File \hfudge Definitions:Read-Definitions-From-Files \hfudge Definitions:Type-Check \hfudge Definitions:Version\> \hfudge } \endProjectList
+\beginVarList \cd{Definitions:*Definition-Hfuzz* \hfudge } \endProjectList
+\endProject
+

@@ -1,0 +1,30 @@
+This release contains three files:
+
+       README      - the file you're reading now
+ 
+       expsurv.lsp - a set of XLISP-STAT routines for performing
+                     interactive dynamic exploratory  graphical analysis of 
+                     survival data. These techniques are described in
+                     the 1993 proceedings of the ASA Section on Statistical
+                     Graphics and in The American Statistician, vol. 49,
+                     no. 1, pp. 77-84 (Feb. 1995).
+
+       expsurv.tex - a brief user's manual for the routines.
+
+If you have any comments or suggestions on this work, I would be glad
+to hear them. I am trying to develop a set of techniques which will permit
+clinical researchers to examine survival data in a direct and intuitive
+fashion.
+
+This software may be freely redistributed.
+
+                     E. Neely Atkinson
+                     Department of Biomathematics
+                     Univ. of Texas M. D. Anderson Cancer Center
+                     1515 Holcombe Blvd.
+                     Houston, TX 77030
+
+                     (713) 792-2619
+
+                     neely@biomath.mda.uth.tmc.edu
+

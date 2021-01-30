@@ -1,0 +1,11 @@
+(defun ipmpar (i) (declare (type fixnum i))
+ (prog ((imach (make-array '(10) :element-type 'fixnum)) (ipmpar 0.0d0))
+  (declare (type (simple-array fixnum (*)) imach))
+  (declare (type integer ipmpar)) (replace imach '(2) :end 0)
+  (replace imach '(31) :end 0) (replace imach '(2147483647) :end 0)
+  (replace imach '(2) :end 0) (replace imach '(24) :end 0)
+  (replace imach '((- 125)) :end 0) (replace imach '(128) :end 0)
+  (replace imach '(53) :end 0) (replace imach '((- 1021)) :end 0)
+  (replace imach '(1024) :end 0) (setf ipmpar (fref imach i)) (return ipmpar)
+))
+

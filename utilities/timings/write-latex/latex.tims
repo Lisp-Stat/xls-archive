@@ -1,0 +1,50 @@
+From deleeuw Fri Feb  3 10:31 PST 1995
+Return-Path: <deleeuw>
+Received: from galton.math.ucla.edu by laplace.math.ucla.edu 
+	(Sendmail 5.0/1.11) id AA12935; Fri, 3 Feb 1995 10:31:24 +0800
+Received: by galton.math.ucla.edu 
+	(Sendmail 4.1/1.12) id AA23918; Fri, 3 Feb 95 10:31:22 PST
+From: Jan Deleeuw <deleeuw>
+Message-Id: <9502031831.AA23918@galton.math.ucla.edu>
+Subject: speed
+To: stat-lisp-news@umnstat.stat.umn.edu (Xlisp List)
+Date: Fri, 3 Feb 1995 10:31:21 -0800 (PST)
+Cc: deleeuw (Jan de Leeuw)
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Length: 1240
+Status: RO
+
+In view of recent discussion about the relative merits of Xlisp and
+Common Lisp, and about the differences between byte-compiled and
+object-compiled code, here is a tiny speed comparison using the
+write-latex-table fucntion I posted recently. I have done similar
+comparisons using floating point operations, and then the
+results are quite different. This function is just IO and looping.
+
+(0) All runs on galton, a Sparc 20 with 64MB and 1 processor
+    Command (time (write-latex-table (make-array '(100 100))))
+
+(1) Xlisp-Stat
+	interpreted lsp 3.27 sec
+	byte-compiled   0.83 sec
+(2) Clisp
+	interpreted lsp real 10.54 run 10.43 gc 0.26
+        byte compiled   real  6.36 run  6.24 gc 0.24
+(3) cmucl
+	interpreted lsp real 12.10 run 11.61 gc 1.53
+        object code     real  4.74 run  3.45 gc 1.06
+(4) gcl
+	interpreted lsp real  5.73 run  3.27
+        object code     real  3.78 run  1.55
+
+I'll do Xlisp-Stat vs MCL when I get home (on the PowerBook 170).
+I cant do PowerMac, because my Powermac is in LA, and I am
+in NC.
+-- 
+Jan de Leeuw; UCLA Statistics Program; UCLA Statistical Consulting
+US mail: 8118 Math Sciences, 405 Hilgard Ave, Los Angeles, CA 90024-1554
+phone (310)-825-9550; fax (310)-206-5658; email: deleeuw@stat.ucla.edu  
+

@@ -1,0 +1,241 @@
+
+announcements.lisp,211
+(defclass Announcement-Definition 31,1066
+(defmethod definition-documentation 35,1199
+(defmethod definition-usage 47,1605
+(defmethod definition-definee 72,2573
+(defmethod definition-class-nice-name 80,2781
+
+build.lisp,448
+(defvar *definer-class* 26,960
+(defun definer-class 31,1095
+(defsetf definer-class 55,1779
+(defgeneric make-slot-accessor-definitions 77,2844
+(defmethod make-slot-accessor-definitions 86,3171
+(defmethod make-slot-accessor-definitions 140,4670
+(defgeneric make-subdefinitions 176,5845
+(defmethod make-subdefinitions 188,6237
+(defmethod make-subdefinitions 198,6446
+(defmethod make-subdefinitions 210,6809
+(defun make-definitions 256,8330
+
+condition.lisp,482
+(defclass Condition-Definition 27,982
+(defmethod definition-definee 31,1104
+(defmethod definition-documentation 37,1316
+(defmethod definition-slots 43,1581
+(defmethod definition-parents 49,1799
+(defmethod definition-children 55,2013
+(defmethod definition-class-nice-name 70,2526
+(defmethod definition-usage 78,2773
+(defun get-slot-initargs 96,3385
+(defun get-slot-initarg-list 99,3489
+(defmethod definition-usage 110,3798
+(defmethod print-definition-slot-types 125,4315
+
+definition.lisp,1347
+(defclass Definition 24,860
+(defun definition-form 40,1337
+(defun definition-path 43,1437
+(defun definition-definer 50,1599
+(defgeneric definition-definee 58,1847
+(defmethod definition-definee 70,2429
+(defgeneric definition-name 80,2637
+(defmethod definition-name 90,2996
+(defgeneric definition-name->string 102,3294
+(defmethod definition-name->string 109,3525
+(defgeneric definition-symbol 121,3890
+(defmethod definition-symbol 130,4251
+(defun definition-symbol-name 146,4740
+(defgeneric definition-usage 154,4997
+(defmethod definition-usage 163,5330
+(defgeneric definition-lambda-list 172,5653
+(defmethod definition-lambda-list 178,5840
+(defgeneric definition-arg-types 186,6047
+(defmethod definition-arg-types 192,6242
+(defgeneric definition-documentation 200,6447
+(defmethod definition-documentation 207,6702
+(defgeneric definition-declarations 219,7073
+(defmethod definition-declarations 230,7556
+(defun definition-type-declarations 236,7706
+(defun definition-returns 249,8131
+(defgeneric definition-slots 258,8446
+(defmethod definition-slots 266,8737
+(defgeneric definition-parents 274,8938
+(defmethod definition-parents 283,9289
+(defgeneric definition-children 291,9492
+(defmethod definition-children 303,9992
+(defgeneric definition-class-nice-name 315,10305
+(defmethod definition-class-nice-name 322,10544
+
+defs.lisp,104
+(defun find-documentation-option 28,949
+(defmacro type-check 41,1318
+(defmacro declare-check 56,1914
+
+exports.lisp,0
+
+filter.lisp,69
+(defun exported-symbol? 26,929
+(defun exported-definition? 35,1216
+
+fun.lisp,1785
+(defun lambda-list-whole-arg 26,909
+(defun lambda-list-required-args 33,1147
+(defun lambda-list-specializers 48,1664
+(defun lambda-list-required-arg-names 56,1975
+(defun lambda-list-optional-args 63,2277
+(defun lambda-list-optional-arg-names 77,2796
+(defun lambda-list-rest-arg-name 84,3072
+(defun lambda-list-keyword-args 92,3344
+(defun lambda-list-keyword-arg-names 106,3854
+(defun lambda-list-arg-names 113,4127
+(defclass Lambda-List-Definition 124,4493
+(defun setf-function-or-method? 128,4635
+(defmethod definition-lambda-list 138,4932
+(defmethod definition-documentation 145,5164
+(defmethod definition-declarations 161,5697
+(defmethod definition-arg-types 186,6485
+(defmethod definition-usage 212,7567
+(defclass Function-Definition 248,8984
+(defmethod definition-class-nice-name 251,9097
+(defclass Macro-Definition 257,9272
+(defmethod definition-class-nice-name 260,9385
+(defmethod definition-usage 264,9491
+(defmethod definition-arg-types 283,10143
+(defclass Setf-Definition 292,10461
+(defmethod definition-class-nice-name 295,10572
+(defmethod definition-name 299,10675
+(defmethod definition-lambda-list 305,10900
+(defmethod definition-arg-types 320,11451
+(defmethod definition-documentation 327,11698
+(defmethod definition-declarations 343,12257
+(defclass Generic-Function-Definition 364,12951
+(defmethod definition-class-nice-name 368,13080
+(defmethod definition-documentation 372,13201
+(defclass Method-Definition 383,13551
+(defmethod definition-class-nice-name 387,13669
+(defmethod definition-name 392,13855
+(defmethod definition-name->string 404,14285
+(defmethod definition-lambda-list 416,14742
+(defmethod definition-documentation 425,15049
+(defun definition-method-qualifier 440,15616
+(defun definition-method-qualifier 452,15903
+
+global.lisp,344
+(defclass Global-Variable-Definition 24,856
+(defun definition-initial-value 29,993
+(defclass Constant-Definition 38,1272
+(defmethod definition-class-nice-name 42,1399
+(defclass Parameter-Definition 46,1514
+(defmethod definition-class-nice-name 50,1642
+(defclass Variable-Definition 54,1760
+(defmethod definition-class-nice-name 58,1882
+
+pack.lisp,209
+(defclass Package-Definition 24,854
+(defmethod definition-class-nice-name 29,963
+(defmethod definition-documentation 34,1076
+(defmethod definition-name->string 40,1346
+(defmethod definition-usage 46,1576
+
+package.lisp,32
+(defpackage :Definitions26,857
+
+read.lisp,86
+(defun read-definitions-from-file 26,925
+(defun read-definitions-from-files 57,1855
+
+script.lisp,40
+(defparameter *definitions-defs*27,919
+
+sort.lisp,717
+(defun definition-alpha< 29,974
+(defgeneric definition< 47,1483
+(defmethod definition< 55,1727
+(defmethod definition< 63,1953
+(defmethod definition< 72,2211
+(defmethod definition< 83,2538
+(defmethod definition< 94,2879
+(defmethod definition< 106,3239
+(deftype Method-Combination-Type 119,3744
+(deftype Method-Combination-Order 122,3844
+(defun method-combination-type 126,3939
+(defun method-combination-type 141,4357
+(defun method-combination-order 146,4472
+(defun method-combination-order 159,4966
+(defun subobjp 164,5095
+(defun more-specific? 178,5538
+(defun less-specific? 194,6078
+(defun method< 221,6949
+(defun method< 265,8482
+(defmethod definition< 279,8837
+(defmethod definition< 298,9300
+
+system.lisp,307
+(defun load-truename 32,1059
+(defun load-directory 47,1704
+(defparameter *definitions-directory* 51,1799
+(defun load-directory 100,2861
+(defparameter *definitions-directory* 104,2957
+(defparameter *definition-header-file*108,3029
+(defparameter *definition-hfuzz* 112,3164
+(defmacro declaim 117,3286
+
+tex-print.lisp,816
+(defmeth Definition 16,418
+(defmacro with-readable-printing 28,753
+(defun fix-TeX-string 38,1068
+(defmethod print-definition-headline 68,1822
+(defmethod print-definition-usage 89,2334
+(defmethod print-definition-arg-types 108,2837
+(defmethod print-definition-slot-types 130,3488
+(defun format-return-spec 145,3829
+(defmethod print-definition-returns 156,4319
+(defmethod print-definition-parents 185,5142
+(defmethod print-definition-children 208,5654
+(defmethod print-definition-documentation 229,6171
+(defmethod print-definition-source-path 249,6779
+(defmethod print-definition-methods 270,7260
+(defmethod print-definition-signals 274,7401
+(defgeneric print-definition 280,7623
+(defmethod print-definition 286,7803
+(defun print-definitions 319,8916
+(defmethod print-definition-slot-types 342,9448
+
+type.lisp,954
+(defclass User-Type-Definition 24,854
+(defmethod definition-name->string 28,975
+(defmethod definition-usage 35,1252
+(defclass Type-Definition 45,1619
+(defmethod definition-class-nice-name 49,1754
+(defmethod definition-documentation 53,1857
+(defclass Class-Definition 63,2212
+(defmethod definition-class-nice-name 67,2326
+(defmethod definition-definee 71,2432
+(defmethod definition-documentation 79,2681
+(defmethod definition-slots 85,2938
+(defmethod definition-parents 91,3148
+(defmethod definition-children 97,3354
+(defmethod definition-usage 127,4332
+(defclass Structure-Definition 139,4642
+(defmethod definition-class-nice-name 143,4761
+(defmethod definition-name 148,4880
+(defmethod definition-documentation 158,5202
+(defmethod definition-slots 165,5477
+(defun process-slot 173,5779
+(defun structure-conc-name 180,5942
+(defun structure-constructor 191,6337
+(defun structure-copier 205,6808
+(defun structure-predicate 219,7269
+
+xls-object.lisp,355
+(defclass Prototype-Definition 28,982
+(defmethod definition-definee 32,1110
+(defmethod definition-documentation 39,1330
+(defmethod definition-slots 48,1640
+(defmethod definition-parents 56,1909
+(defun prototype-name 63,2170
+(defmethod definition-children 68,2359
+(defmethod definition-usage 98,3216
+(defmethod definition-class-nice-name 112,3528

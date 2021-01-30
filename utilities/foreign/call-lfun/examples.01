@@ -1,0 +1,433 @@
+#!/bin/sh
+# This is a shell archive (produced by shar 3.49)
+# To extract the files from this archive, save it to a file, remove
+# everything above the "!/bin/sh" line above, and type "sh file_name".
+#
+# made 06/09/1994 01:19 UTC by naras@euler
+# Source directory /disk3/people/naras/p2
+#
+# existing files will NOT be overwritten unless -c is specified
+#
+# This shar contains:
+# length  mode       name
+# ------ ---------- ------------------------------------------
+#    771 -rw-r--r-- README
+#   4027 -rw-r--r-- example1.c
+#    699 -rw-r--r-- example10.c
+#   1365 -rw-r--r-- example2.c
+#   2272 -rw-r--r-- example3.c
+#   1512 -rw-r--r-- example4.c
+#    735 -rw-r--r-- example5.c
+#   1174 -rw-r--r-- example6.c
+#   1705 -rw-r--r-- example7.c
+#   1450 -rw-r--r-- example8.c
+#    917 -rw-r--r-- example9.c
+#      0 -rw-r--r-- examples.01
+#   4169 -rw-r--r-- kde.c
+#   4086 -rw-r--r-- kde1.c
+#   4184 -rw-r--r-- kde2.c
+#     58 -rw-r--r-- myxlisp.h
+#   7322 -rw-r--r-- xldmem.h
+#  12035 -rw-r--r-- xlisp.h
+#
+# ============= README ==============
+if test -f 'README' -a X"$1" != X"-c"; then
+	echo 'x - skipping README (File already exists)'
+else
+echo 'x - extracting README (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,5-"4`6'F#1LV;^ZD<7,&1!@Y`^>\:3/03ADY>4#,2=,&#IN!0PC6<3.&
+M3IHW;N:`2`+BCIPW=`:&$?.F#AV'(/*4>>CPS!L%=#`N;$CG#0@R:>:,>6-1
+M#@@T"4$4!5%GSD`18\(<;,'&S$@1+D"L?!J&C%2!($(N)3.039ZA"A[6=&,V
+M#-V5)\PN[?@QIEN";^3XI!/334LT86[2$9@1*9FP20P'?<M0ZD^(2)4RO7AV
+MJ,J"3B527#QTK)LR9=B283%V<<TS:&ZFN=DF#>R;8@8JJ%K&*QO++>7,'E@'
+MCL:)`_=2=$/G8<8P*N^4.1@6Q!,S();6D6.5M=;?I.<H2`I"#/34(%!F1QDT
+MC1B;)U,2?-D&!)4T%T_G80WEY>*+;WAW5Q!LM)&'"PHHP%(;8:PQD!M&C<%&
+M&!RI--5_Z\D!44FGS:%28`[!`<=+(Z:16!D=?HC=?U8IL-9`9L@1QAG+T3$'
+M:Q(=A=()N$U($0@452>$33J"T!>0`ZT!X1WI86=7'@I`=<='W"&HX$UWU,2&
+M6;F!X$8:8PPTE4O#.710DYVIM%!:5Q0AA`MPPIG@$$%404423SBA`PA3((<F
+MA@O%)(<9882IDG9;9H<80P.MZ14=VPT$T4?GS8&@6)AB.N1-9.R(I4QG(F01
+M"&7@`<=%'*%H4F4*+>8E2G,T1]=#9L5:AQEFQ!F6`BVTH,";(#CQ$'0<+9KI
+8L9BZ,>P<0)11!Y4NB/$8''/4X4)J=20(
+`
+end
+SHAR_EOF
+echo 'uncompressing file README' &&
+compress -d < _shar_cmp_.tmp > 'README' && rm -f _shar_cmp_.tmp &&
+chmod 0644 README ||
+echo 'restore of README failed'
+Wc_c="`wc -c < 'README'`"
+test 771 -eq "$Wc_c" ||
+	echo 'README: original size 771, current size' "$Wc_c"
+fi
+# ============= example1.c ==============
+if test -f 'example1.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example1.c (File already exists)'
+else
+echo 'x - extracting example1.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+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
+/JFGXP(4K[>+*O<&UWDL!
+`
+end
+SHAR_EOF
+echo 'uncompressing file example1.c' &&
+compress -d < _shar_cmp_.tmp > 'example1.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example1.c ||
+echo 'restore of example1.c failed'
+Wc_c="`wc -c < 'example1.c'`"
+test 4027 -eq "$Wc_c" ||
+	echo 'example1.c: original size 4027, current size' "$Wc_c"
+fi
+# ============= example10.c ==============
+if test -f 'example10.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example10.c (File already exists)'
+else
+echo 'x - extracting example10.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`1$#A@L02=R`H(,FS1P090PB5,@"Q)V%<^C4(9,'
+M!)HW=T"T6</&(AV/;^2LN3APR!N$:12"2..&SAL0(C(>3%BFH8LW(D"$<4-F
+M8AXX"T%(G4JUJM6K(`:B(.FF!9LW89H&U4C4*-(46-.J73M5ZY@P;-AX-5-'
+MHH@V8=:4:1DR:4,0,F"@I3J0K>'#B-4.7-HTSYLZ(.:<K,.FZ9DR+U$$!@R#
+ML^?-H#N'YCPXL>FV*EXH4#""YQ@V(Q>*P,,7C@LT(EB[ADU&=IL\M"W:QKV:
+MB94@3%3FW>L210H%>W;VW-G1S8["A8TC!Z'0S1<X=.1TM`/W>_CKA;N;EP.B
+M!PC:9\*828/'39TVSG>`"`CB".:):"S4W1D4@9!:8>2QL5Y[[[$1WWSUW9??
+M?BJ`0$6`("18QT(^@2#&0G#4\1)/!JI6&&ULA!%2&'*<,2&%(-BT41@DIF&&
+M2C$MQ.(9]Y71TT4L+G1&&G;X^-"!A<F!61URN('"2GS1@<)E=$!H'W[J@2='
++"BPDN%X**5S7AP(L
+`
+end
+SHAR_EOF
+echo 'uncompressing file example10.c' &&
+compress -d < _shar_cmp_.tmp > 'example10.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example10.c ||
+echo 'restore of example10.c failed'
+Wc_c="`wc -c < 'example10.c'`"
+test 699 -eq "$Wc_c" ||
+	echo 'example10.c: original size 699, current size' "$Wc_c"
+fi
+# ============= example2.c ==============
+if test -f 'example2.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example2.c (File already exists)'
+else
+echo 'x - extracting example2.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`2'#!0@05-"DF0.BC$&$"D&0*=/FC9LY=.2$H5.&
+M(IHW=T#0>0-BC)PR(Q>&`>&F3$H[9<:LE`,BC!LR#P>^I%-'CAL0:>CTI#CS
+MY9PZ;.@X?$BUJM6K6+-JI3IPJ]>O8,-N'4B%99TY"Y.R:/D&89J,29&Z60E"
+MA,6#"<LT?".BYT^5>>`L%'MU(`HR>=RT8/,F#%"[%_/N%9&"L.6PAL>$8<-F
+ML9DZ1T6TR>,2)DF<8_K&@%'YLNNJ75_+GET81!*E<TY"!3JTZ-$1*&`P!$$#
+MA`T0.$"L5BY#>?$8QV/@:$T;A`(%*EY<#PA1(L6[&!>6CLF4IDT0J'>NA5.'
+M#L4Y;1?:V5RGI%RD=%@H\,F[#%&C%-&!AGPY[01"=M>-D(8;8[!1QT9UX<'&
+M1'"X@(8(US%A11!,@##:>*?EA$(*"NS1U8)*I<&"&SMTI2&'Z.7TA4)N?`%'
+M2&NA9B..<M&QHQPM=J4CC3^"T`,($IX1AAEIX.%&'6V,N`,(W!WAGTH#@D#C
+M&0*"\(896"ZTT1QIO`14>F_PA&!7$K(1!DAAR'&&E`]Q-T1;"86Q(%)@=O12
+M3W)"6<9<3/UY1AHXN>'0F@])"-(:8PPXQAHHR)!"BXVR,4<8.*&@XXUR7$H5
+M=TGTU`9-;^!6U$)W2!0I"*!25%,90-$EQD*;X@24&7*T!<(98ZRE0`+$BM&>
+M;2=P!L*M(&QJADQNY'%'&'FX8.VBVF6::QDHH/CCI=<]=-219_C'I)-0>BHC
+MD:""^]"G(1EIWAUHRH&"&Z):EP!W$4T$PF<,TI&&1RV]1%Y/\\:H4YI>@BF@
+MF"652:N6@W*)QK!.I+K0PR"<M="7OYK;Y).GTE6N4AQOV>5\#B[$Z+\,=RLO
+M#%.F`0(/--6\P@HIF)B`MZ#*.X8=YY+<K0J6MI@`6B0IU,:@=*@[QH\LJ`AT
+F2*)R-\65')?A--0'9@M"'VRR`<<;<+A1J;L@]&:4PC_ND(`"9`,[
+`
+end
+SHAR_EOF
+echo 'uncompressing file example2.c' &&
+compress -d < _shar_cmp_.tmp > 'example2.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example2.c ||
+echo 'restore of example2.c failed'
+Wc_c="`wc -c < 'example2.c'`"
+test 1365 -eq "$Wc_c" ||
+	echo 'example2.c: original size 1365, current size' "$Wc_c"
+fi
+# ============= example3.c ==============
+if test -f 'example3.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example3.c (File already exists)'
+else
+echo 'x - extracting example3.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`3'#!0@J:-+,`7$GS,0S:>R4<0."SAL0;1:*R?,P
+M31DY;LJ0]`AB#IHW=T"\20EBS)LZ;,C4#,.&#8@P'$&`&(B'C40X(,S4<3.&
+M3IJ92>6\:4,Q#9V(',.`&`("CM0S<@XZ%$JVK-FS:,L.3,NVK=NW<-,.'#(5
+M3AJ%(*SF=<-2JYF["T64,8A08<,W(GZZT4DG#YR%<=\.1$$FCYL6;-Z$T2F8
+M<,(RAT6DB$RZ].0Q/-FT&*.4HX@V>5HG/@%"A@L8#$>7WHUV+>_?P-L.A"BQ
+MY4N<.N64H5,')0@;/R=>70ATSIV3#K/<W,FQSASJ;DC:X9E&I]$Y2,\.;-WT
+M*<<T;N;0*;-9IAD0M*^&H0/">QGI=WP4AAQGU!$27W,X-,4;+/QV6FJ8M0;"
+M:[$M-=L+#-U6VV@NW903"!AI!$(>V\7@0@W1*68==I(IH,(+"B@P`GQCL%$'
+M&8$5=90+:"064%=U\#==2S?),<9"4`U)HXTX=K4?&AU]=,9R'44TT8LQ,F%%
+M$$R`5*$;*.CVHQL"$FC@1G1,U$)7:8RQ1I5E4%4'4G=8!>60\H7A)@C*;0;?
+M&2#I*=65,.ZQEI9<_D3@'`V:T2`>#>;1H')SX$3'#FN1<9,8>(W'!J9KW=<#
+M"$5-2<>`9X2Y0UECEEG@@?R-@489;OX)`I9"X0'"J*6&849F;ABHJE`_RDKK
+M&M(Y5L:J<Z1QAAL\37225'+D=9]>Q9')GQS.HL$?KB/N2BH;9_B:!A[!MC$L
+M"#^&42Y\-<WJYD2HGHG@K3#FVI-%IQ*XKED_$C=1L\]&JQ@(T[Y1;1KW3:><
+MH@NUH3!D9H'+6[MFPIK@0[,&.H94._4$TL2HSA%F1_^E69;%N_UHAL(C/URO
+MQHKIA!I'8BSD'V,?M1'&&A3CZUO+*OR4U%+M057G53+!X=1,/"GZ*IH;MX7E
+M6D7-$89&,:!0<@JKLEJT5V_,UU144X$XH!CN+F133[3RMV8354Q!!0@Y!SJ=
+M3BR7]N-(1L/Q!E+[P8GP8C)5B^>I>YHZ45I]DU;L3$I]IQ-0.I%8!]Y3B3%6
+M<%<36[08==RETYR&STPU".?)#8*F518WTY%)P=R&I6E\%C(;CPL%;KN(^\=G
+M0GIJQ=)?(NNU-)0IQ:3ZO;^!6[*X-L47!@IY@$W6CUJ'E&+U)DL*@A-),*%]
+M<+[G*_5$HX*/`J3K@QVCZ#_!D=!*';/W-$?@4FJIN$4)@_W8D`<4P,$[:"@9
+M"AP5/_FMI5CR>A/F$$88^"S$?VSXEOH8!@(4A"`IYX(#"C!(A]&8P`0@^."O
+M-$,'$9(P!:,IBAG"<!<4B(!MR?G/_QKS&-%@2BB>$M<",[,?%^HP@S`$P0]`
+MM)P5IFN$1RPA"'3`1#HX45@O!!7]!(<4/&VM##I!DQQ(TH(U):%V!"I;["8"
+MKR%YI0QV>(IW0*`1.31K)B'X(+B*PD55S8]=15,.'/2TAK;5C$_+:0Y'AD3"
+L%&G%"$QX@A.JT`2A"44YS$$)"L9@ARNJ"P60?`(5L@"%(HS&4S#$5!]BQ$K"
+`
+end
+SHAR_EOF
+echo 'uncompressing file example3.c' &&
+compress -d < _shar_cmp_.tmp > 'example3.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example3.c ||
+echo 'restore of example3.c failed'
+Wc_c="`wc -c < 'example3.c'`"
+test 2272 -eq "$Wc_c" ||
+	echo 'example3.c: original size 2272, current size' "$Wc_c"
+fi
+# ============= example4.c ==============
+if test -f 'example4.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example4.c (File already exists)'
+else
+echo 'x - extracting example4.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`4'#!0@J:-+,`5'&($*%("2"F).F31HV8>2`H/.&
+MHL6$"V68'%,&#IV1:,*\3/,2Q,`Q<LK(+#,Q#`@V$E^&<4-F(YHW=R8>O3.R
+M)!TY8>R4D3-GH4^@<^@X!,&UJ]>O`Z>\:5.&3D>>+$#<05/&#8@\;^J`J%,5
+MA)DZ;L:8?>-FHILW+\F4,9/&39FBA4'@P0K'!9JT=-AVO3D6SD>9:?B"\'@&
+MS4LQ8\6D#3,Q<62-%0^B3,LQ[\(V:[#.]`O8)@C!A`TC=KM88F,T6Y$@+2-5
+MSNB?-.E@%$,3Q!LS(,3(0=KZC%'J7@=&E@ES(>["-#.[G7.T#INB8A96I#/5
+M+1,K09ALCAT418JM269'Y_E2>TDX=;PT1QUCH+$1'768`5UB/K$5AF`B$:80
+M:V'D`8((;>31VQR_B;#55V"!*.*())9HXHE<#31$91\M5!A)%Z9V41D-O2$"
+M"$,514<><"R$XH\I@H`"&7FXT0(;;SP8XTD*U2A""D!&6>)`*(P1!AML''F7
+M6QCF@9-.[,EV8PPP0"FEE`.=J>::(@Z4XUMQ76=>46>4)20,(*A$`P@V@(`#
+M"&0"JE(,>\;09PPXF(FF"B\HH,`(A8W!1AV"7;AAAX]&.FFE75[JF`B.OA??
+M9E[FM)-L]BFP1YHO9L2"&SND*:I\LGWADG$_M67K4VD9A@<=L::ID!N[BM2#
+M8FR<$09A>+A11QOV[0!"0"`<86=D"PU[1F3.08?M;3RED5-1LH'`J*-<+092
+M5B&=$2U7U*YX41B)I0%=&V_DA*,<9SS;%AT]Z7M&&E*YX="Y:2XV1U1EQ(!"
+MK;>F(.VT*H!PQ4)\L6%A3%(Y9QA,A5D'X\(=(\R56\?620>SSD([;+$2HXM<
+M5L6"<"QLJ+J1EA-),"%QB@E0"Y%&6^HE'@A?[M03"(8Q5>YSN;JQK8$Z9^1&
+M>%>FH<=A3:5)XM5LF-LHJS:#`$.L7)F1KY"^OG0LQ$]).P9?'*+0]L]MEST&
+M&7+8O5X*::6QP@HI>/V5'`F%8:7?OZ8UAATL/XL""D8D@04564!1!)1IJ"!#
+M"C&O26T0;,Q1$GG8+=742%`55]=508F=,!MPO`%'M&GFA*`<;L$MQPX)*-"'
+!`C&O
+`
+end
+SHAR_EOF
+echo 'uncompressing file example4.c' &&
+compress -d < _shar_cmp_.tmp > 'example4.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example4.c ||
+echo 'restore of example4.c failed'
+Wc_c="`wc -c < 'example4.c'`"
+test 1512 -eq "$Wc_c" ||
+	echo 'example4.c: original size 1512, current size' "$Wc_c"
+fi
+# ============= example5.c ==============
+if test -f 'example5.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example5.c (File already exists)'
+else
+echo 'x - extracting example5.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`5'#!8@D;D#009-F#H@R!A$J9`'BSD(Y9>C4D1-Q
+MXD*%;LY,!/'&#(@P(-A4I`.BILV!-G/JW,FSI\^?0$$,'/(&81J%(-*XH?,&
+MA`B,!Q.6:?A&Q$LW9"3F@;,PJ-><`U&0R>.F!9LW8;(^S2B5JH@47^,&#3LF
+M#!LV9LW4B2BB31Z4*M%812%S#DW",T'$`"$#+F+#BEW(`''#!0[&*>#RQ"FW
+ML^>Y5[/F>5,'Q!PTI-ED/1.2\6>O"E2\4*!@A-(Q;.J062@"3V$X+@37OIU[
+MMU._OBL"%ZZ`B94@3$#X!3P110H%>W`ZAQYSYA<X=.1P!#FG#ALZ.VC7+$SG
+M>W@0/4#X/F-WIO4=(`*".-+:9'?(LJDGWUUA&!:&'&?<5Y-^1&D4AE))N=3&
+M&R"]A&`=;92QE$4'+G1&&G9HZ%"`-?DV1Q@AQH`">>;1D4)Z-;%X7@]CV&%&
+C&GBX@2%AU*'Q6'O@R9$9C`/"\08<]^$$DD@D@2`C>@KT01MZ
+`
+end
+SHAR_EOF
+echo 'uncompressing file example5.c' &&
+compress -d < _shar_cmp_.tmp > 'example5.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example5.c ||
+echo 'restore of example5.c failed'
+Wc_c="`wc -c < 'example5.c'`"
+test 735 -eq "$Wc_c" ||
+	echo 'example5.c: original size 735, current size' "$Wc_c"
+fi
+# ============= example6.c ==============
+if test -f 'example6.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example6.c (File already exists)'
+else
+echo 'x - extracting example6.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`6'#!8@D;D#009-F#H@R!A$J9`'BSD(Z8=8L#`/"
+M3IDQ=-[(`?'&3,F3*>58#..&#(B;-P?**4.GCIR()-E4I,/2Y<2%9M+()%I&
+M89LR;NA8;'DQS!@T#G%JW<JUZ]:!7L.*'4NV+(B!0]X@3*,01)JH;T"(P'@P
+M89F&;T2`H&F33AXX"\T*'HB"3!XW+=B\"6-S;D:[>$6D$$Q9+.$Q8=BP26RF
+M3D01)L<T+=-FCEX4H6."0`U3)8@8(&2`F#&9-4K7-V:GF*P5;.7?P,,.Y`LB
+MSYLZ(.:@.<[&YAF>JV'?X!V<L@(%*EY<'_%V#)LZ9!:*P"-T#AP7:$0HX.[&
+M.WCQ;?*0KW@^_74F5H(P>2G:Z1P4*2BPAUM1N<61&QP=)X<=F>T`%ECXZ<??
+M%W#0(<>!&-'!T4YSU,&&AA<YY2!8H5%H(0@]@$#>&6&DIA*`.X`0$`A'0'<4
+M?ZIE=]U-Y+$1QAP@R7$&C#?-F)9&8;SEEDMMJ#22D'4\%=5,.X%P1AHFN>&0
+MCF"1!^0:5YVT!@JT.<@C&W.T6`8*''I(1PIFJHBFFBBXD2&<7<YI$@JCM8$G
+M6!&E^)Q4:>BQ9HD5RO'G36U^V$,;:Y1'1YTL.)$$$WC>9"<>=/30*!TCWF2&
+M:RBD@2((,,1H*@\@N*'J"BM,MH=O(9)VZJ!]0C4IKD[I:IN)%Z:1`@LP9(I3
+M&BZA$`((2>$!!Y].36:""2`L:X9B8=#Q[*>[R6E&DFR@(((8C.&HDFG&WJ0@
+M@VS<RE.S;D0)+6GIGJ65'`E9%4:=&7(TAAWPRKMN9KO%J6F&IXY!AAS\<FIL
+4'SO*"<<;<+A!IK$[]?03")\Z"#&=
+`
+end
+SHAR_EOF
+echo 'uncompressing file example6.c' &&
+compress -d < _shar_cmp_.tmp > 'example6.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example6.c ||
+echo 'restore of example6.c failed'
+Wc_c="`wc -c < 'example6.c'`"
+test 1174 -eq "$Wc_c" ||
+	echo 'example6.c: original size 1174, current size' "$Wc_c"
+fi
+# ============= example7.c ==============
+if test -f 'example7.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example7.c (File already exists)'
+else
+echo 'x - extracting example7.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`7'#!8@D;D#009-F#H@R!A$J9`'BSL(Y:-[<`1%R
+M))TW(.K,6?@&#ITT;]R$80,BC)PS<QR"`#%PI\^?0(,*'4JT:-&!0]X@3*,0
+M1!HW)T&(P'@P89F&;T34=$-&8AXX"XV*#3H0!9D\;EJP>1.FZ]2,5FVXR)IB
+MK%V[9<?,9*/63)V((MKDL8E3*PH[9<:<E`/B<.+%(&*`D`%B1EW'BM\POE$Y
+M15VA/>^*'GUW8!BN(/*\J0,"Y&HV7<^4H=-X!L//I'/S?&@F]>J4*W4+'YMW
+M;]^_4@43GF,8<6;&F"%+IFRYL7/(G*M/Q[U[N/?<`Y_.H5.F+4?5K%W7@0U"
+M-FT4TRO?_@Z:OGV\((*`:!,&3YHV=;0!PAN]Q0##@"[!)!--RSEET5XBE4&&
+M3L(IH,(+"B@PPE-CL%$'&0N)@`<;%<'A`AHB:,BAAR`FE\>()9Z8HH8@FO'4
+M0DUDP402321!160P9,B$%4$PL=]@-\V!0@H*[.$45$YQU`9';G"TFAS\X<$1
+M&0$*MD6.._9(11<[]-33D$6"X-P7+LE!)49T<"1'&7.L%^=%"K519D]KM@E"
+M#R",>$88UVFVY`X@!`3"$;-)A,9"A3)V888["0@H#&7N=`=%3:'0AF;E);ED
+M77N$!@*7;7C91A=_MC>;C7BX$2`*@H8!JZQMC)JI3VVLL,*N.Z71FZ=_`@HF
+MCS[6-:(983"%@@A4O($2?V[D@>!+,<U44Y(BI+!K'Y0&RL9X:XSQZ!AKH&#9
+MKB/.06@9*,Q9)QMT>-M3N^^BX`:<]NZ$+V(HE)&GO3U%!*A[<Z2A![Q]TB$'
+MP3O):V</;:Q!XGCZKC"E$TDPT6]W9FC66!JMPO`F'K0!*C&]B)+,PWXM^TJJ
+MJ7(D%(9>^L+)T1AVW#HKJEZFT85GP(*P+\JMCD&&'#FC_#&X/84,'<F7M@S"
+MRV[$O,+,/PE<AJ6NDI=G&5"AX)[7;9!-!V9L.LQ"&BFP`,/'P0X;`@BPPA'P
+MP""88`((=YNQ5AATZ+URO<JRP:RS(HC1EIJ/:<8<W0/6@65_K;KG<ZYH4UXS
+I&S>'T?2=/&^.PI59$FWJT2F#H#33K#\=[HAPM.2&NA_/28?E$1U>)KAH
+`
+end
+SHAR_EOF
+echo 'uncompressing file example7.c' &&
+compress -d < _shar_cmp_.tmp > 'example7.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example7.c ||
+echo 'restore of example7.c failed'
+Wc_c="`wc -c < 'example7.c'`"
+test 1705 -eq "$Wc_c" ||
+	echo 'example7.c: original size 1705, current size' "$Wc_c"
+fi
+# ============= example8.c ==============
+if test -f 'example8.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example8.c (File already exists)'
+else
+echo 'x - extracting example8.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H`%$$3Y@V<-B4`8'#!8@D;D#009-F#H@R!A$J9`'BSL(Y:-[<`1%R
+M))TW(.K,6;BF3)X[;^20`1%&SIDY#D'H'&A$SILV(-KD2>F&3!DY<^B$*9K&
+MS1D0;\Q(I.AT#L<T4M^X65@QY9RF3\.`V#JRY<N8,T$,3$,GJ,JV8EBZ$1GQ
+MY%2N;N@<A2.GC%XY',-8!$D71%,02</0:<K6Q1B=D'G&O)@Q81F.<]9\H9,'
+MSL(>(/`HS'L4A0@=5+)`*2(B14Z(4[MB/&B98Q*:0`>>>0-6(DJ5"U&K+D+3
+MHE`09F'*1-QT#->V:`339-,W#)FA<<M$A+SS(NF^9!P^F7CT3L7+#SNF8<.&
+M9!@["^V."<.>)@B?=19OG:K8^U^+Y`V4'%I>]2::=G^!8$8:2-'AT$#<12CA
+MA!16:.&%W`TTQ$]PK(>772+,IE$9#;TA`DU%2=390ABVF"$(*%SG1@MLO&$=
+M""%6IE")K;GH(X8#H3`?>S2:44=$(@AEUHDHL%%16S&`(`,(,Z0`@@Z<>0;"
+M"2C0`$(-(-B0@I4_0OCCF6@"B>),>;Q1!V(AU<'&3&?X!2,*44Y9)0A>@BDF
+M"&*$,<8:.:49V4-2M?DF<(8VVF*00[)1Y)$X*ND2DTXF!4*>5)+I:(5F?BJJ
+MCVNYD509UG&D*)QNS@F"&F^!4&=;*.`I9:=6!CIHH6<JH,(+"B@P0G-LU&$4
+MCJ)5!(<+:(@@++'&+I1D'LG.L6RSP6+T5T1,6!$$$XAIEF49.P3;[;=!Y6$6
+M"BDHL(=A>1G&D1OE=@?"N>!F2L<7-9W!T;[]SJLM1WW-(2<=Y4*H+[\V@0":
+M:&?0]R2[.X`0$`A'V$D>"/J"\"N$$&(%8PBAL3&K6?VBD-EF*W)D`L`VC2D1
+MPT^!YD023-1;,AN"T;%N"A7K=#$3/2/G$DTVU=$&@AX#"Z%H<[Q71@PH%'PP
+KT,'J9#4;;8$VAE9S-/DDS2S`?`;63[,!QQMP4`QA7W34(4=$6R.L0!_!`GPP
+`
+end
+SHAR_EOF
+echo 'uncompressing file example8.c' &&
+compress -d < _shar_cmp_.tmp > 'example8.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example8.c ||
+echo 'restore of example8.c failed'
+Wc_c="`wc -c < 'example8.c'`"
+test 1450 -eq "$Wc_c" ||
+	echo 'example8.c: original size 1450, current size' "$Wc_c"
+fi
+# ============= example9.c ==============
+if test -f 'example9.c' -a X"$1" != X"-c"; then
+	echo 'x - skipping example9.c (File already exists)'
+else
+echo 'x - extracting example9.c (Compressed)'
+sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _shar_cmp_.tmp
+M'YV,+U0H*((G3!LX;,J`R.$"!!4T:>:`*%/P8$(0<]"\N2-1XQT0=-Z`&".G
+M3!@Z"O.\J2,'Q$8W(-:4R7/GC1PR<UPH>*A0SDHZ:=PH)&D2I4R:-LF`:%-G
+M#AT08H:&89-0:50S-A720=/S9]`R"E`Z/5KSIDX%2,J4!!$1A$>V3\NNR:E`
+M@0\0*,9,9=."C9DZ,$40/5F&;%(1*7;6O9MW;]^_@<72,7Q3!(@3*&*`D`%B
+M1HK$65:"()-&J9LW3\^DL:,P3,R9996&D7.F3ILR;N@H<)*$R6*\>JD^!@Q"
+MA&3*9"QCULS9,P@=:@"O:7&T1>S.H$6?"<,:A&ODWFG;QOUTAF(%*E[453`B
+MZ!@V=<@H%(&'340X+M"(J$L1I1R83%@1!!,8?4&'''64L0,((`0$`E8ME40'
+M2VX$=09(""IDTX-3S:%0>@H$."`(T;FQQA?([5"7B`0.9A1L2:&0V!X*,%CB
+MB>#U`$)]Y*F%@@@Z*%&%$TNTL$016;1PQ1-2$(&8B@Q*2&&!!R:H8A\U,KBB
+M@`0>!^--,BI`(X,L@F"?4U_`<2`+)$KWQ6QGJ)CEF72D>2`(.M:W'9TR@K"@
+M@ULI1*=+9HQVDFMPO!$4'1*!F&4:A:(0PHYLG%'&9#/!B<*-*'Y)!ILF<`KG
+M9VV:^"9M>(+`&Q-R,@@I7J+2EL*8#((`AQR+1BI":'6`L%UWWWD:7FVWY09"
+M"61PX88(;%I*AQEIX.&&;9NZ.6H*4-8JY7]49I@ME@R6P8:'(-#*X*VYXK6K
+>:*29AIJOJ[7V&E(W#3M>;LH^F664ETZYZK<*8*D`
+`
+end
+SHAR_EOF
+echo 'uncompressing file example9.c' &&
+compress -d < _shar_cmp_.tmp > 'example9.c' && rm -f _shar_cmp_.tmp &&
+chmod 0644 example9.c ||
+echo 'restore of example9.c failed'
+Wc_c="`wc -c < 'example9.c'`"
+test 917 -eq "$Wc_c" ||
+	echo 'example9.c: original size 917, current size' "$Wc_c"
+fi
+# ============= examples.01 ==============

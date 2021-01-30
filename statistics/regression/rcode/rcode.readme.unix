@@ -1,0 +1,198 @@
+                        The R-code for Unix
+                             July 1994
+
+Copyright for the R-code (C) 1994 R. Dennis Cook and Sanford Weisberg,
+all rights reserved.  License to use the R-code on any CPU is granted to
+purchasers of ``An Introduction to Regression Graphics'', published by John
+Wiley, Inc., 1994, ISBN 0-471-00839-7.  The full license agreement is 
+given in Appendix B of the book.  
+
+World Wide Web users:  All the information in this document can be obtained
+over the World Wide Web, stating with the University of Minnesota, School of
+Statistics home page, 
+
+       http://stat.umn.edu/
+
+This file describes what is needed to get the R-code running on a Unix
+workstation.  If you already have Xlisp-Stat on your system,
+getting the R-code and running it is a very simple process, as
+described in Section 1 of this document.  If you do not have Xlisp-Stat 
+on your system, getting the R-code started requires some familiarity with 
+Unix, and may require a system administrator.  The details are described 
+in Section 2.
+
+Send comments, questions and bug reports to rcode@stat.umn.edu.
+
+Section 1.  Setting up the R-code if you have Xlisp-Stat on your system.
+
+Section 1a.  Setup for a single user.
+
+The R-code may be distributed only to owners of the book, "An
+Introduction to Regression Graphics," by R. Dennis Cook and
+Sanford Weisberg, published by John Wiley, 1994.  Please do not make 
+the distribution publicly available and do not place it on an ftp 
+server.
+
+The R-code requires approximately a megabyte of free disk space.
+It is obtained as a single archive file, which must be unpacked.  Here 
+is a set of Unix commands you can use for this.
+
+  cd                        ...change to your home directory
+  mkdir R-code              ...create a new directory R-code
+  cd R-code                 ...change to the R-code directory
+  ftp stat.umn.edu          ...connect to the file server
+           User name:  anonymous 
+           Password:  your e-mail address.
+  cd pub/rcode              ...change to the rcode directory
+  get rcode.shar            ...copy the file rcode.shar to your computer
+  exit                      ...leave ftp
+  /bin/sh rcode.shar        ...unpacks the files into the R-code directory
+  rm rcode.shar             ...delete the archive
+
+On most Unix systems, typing xlispstat or xlisp will start Xlisp-Stat.  If
+you start Xlisp-Stat from the R-code directory, then the file
+statinit.lsp will be loaded automatically, and this will load the
+R-code.
+
+Section 1b.  Setting up the R-code for all users on a system.
+
+The R-code can be set up so a single copy can be accessed by all
+licensed users on your network.  The steps are to first move the files to 
+a directory on all the users' search path and then to modify the 
+files rcode.lsp and statinit.lsp.  We will assume that the 
+R-code will be put in the directory /usr/local/lib/R-code.
+
+	1.  Move the files rcode.lsp, COPYING, COPYRITE, and the
+directories R-code and R-data to /usr/local/lib/R-code.
+
+	2.  Modify the file rcode.lsp to specify the correct 
+paths (/usr/local/lib/R-code).  Instructions are given in the file 
+rcode.lsp, starting at approximately line number 300.
+
+	3.  The following four lines should be put into each
+user's statinit.lsp file:
+
+(autoload rcode "/usr/local/lib/R-code/rcode")
+(autoload r-code "/usr/local/lib/R-code/rcode")
+(autoload load-rdata "/usr/local/lib/R-code/rcode")
+(autoload load-rcode "/usr/local/lib/R-code/rcode")
+
+With this setup, the R-code will only be loaded when one of the
+four functions (rcode), (r-code), (load-rdata) or (load-rcode)
+is first used, but not otherwise.  If you want the
+R-code to load every time at startup, put the following in the
+user's statinit.lsp file:
+
+(load "/usr/local/lib/R-code/rcode")
+
+Section 1c.  Getting Additional Data Files
+
+The data files from two books are currently available for use
+with the R-code.  These are Weisberg (1985), Applied Linear
+Regression, 2nd Edition, Wiley (ALR.shar) and Cook and Weisberg
+(1982), Residuals and Influence in Regression, Chapman & Hall
+(RIR.shar).  Here are the Unix commands to get these files.
+
+   cd ~/R-code                     ...change to your R-code directory
+   ftp stat.umn.edu                ...connect to the file server
+            User name:  anonymous 
+            Password:  your e-mail address.
+   cd pub/rcode
+   get ALR.shar
+   get RIR.shar
+   exit
+   /bin/sh ALR.shar
+   /bin/sh RIR.shar
+
+This will create subdirectories ALR and RIR in the R-code directory with
+all the data files.  A typical file name is alr102.lsp, meaning
+the data on page 102 of "Applied Linear Regression".
+
+
+Section 2. Setting up Xlisp-Stat
+
+If your system does not already have Xlisp-Stat on it, then you will have to
+retrieve and install Xlisp-Stat yourself (or have your system administrator 
+do it for you). Installing Xlisp-Stat involves (1) getting the computer 
+code; (2) compiling the program and (3) setting up the results into correct
+directories. This section describes how to do this in general, with some 
+specific details in files that you down-load. You may require help from 
+your Unix system administrator to do parts of this setup. You will need 
+at least 15 megabytes of free disk space to get and compile Xlisp-Stat.
+
+Getting the code
+
+You must first fetch Xlisp-Stat by anonymous ftp from stat.umn.edu (just
+select that link).  You must also fetch the README file because it has 
+important information regarding Xlisp-Stat, and you need to get the
+current release information. After you get the files, you will then have to 
+extract the archive:
+
+     gunzip xlispstat-3-37.tar.gz
+     tar -xf xlispstat-3-37.tar
+
+Xlisp-Stat is compressed by GNU zip (gzip/gunzip), not with the standard
+Unix compression utility (compress). GNU zip is used because it compresses 
+50% better than the standard Unix version. (To get GNU zip, anonymous ftp to
+prep.ai.mit.edu, and get the file pub/gnu/gzip-1.2.4.tar)
+These instructions also assume that you have placed the source code in a 
+scratch area used for compiling new software.  After you extract the archive, 
+you should immediately recompress the .tar file (with gzip). This will free
+approximately four megabytes of disk space.
+
+Compiling Xlisp-Stat
+
+Compiling Xlisp-Stat is easier on some systems than it is on others.
+If you have one of the following machines, then the compilation should 
+proceed smoothly:
+
+     Machine                 Operating System
+     =======                  ================
+     CRAY Y-MP               Cray OS 7.C.3
+     EPIX                    UMIPS 1.4.3
+     DECstation 3100         ULTRIX 4.2
+     DEC Alpha               OSF1 V1.3
+     HP 9000/715 HP-UX       A.09.01
+     IBM RS6000              AIX 2.3 (?)
+     SGI IndyPC              IRIX 5.2
+     Sun Sparc               SunOs 4.1
+     Sun Sparc               SunOA 5.3
+
+If you do not have one of these machines, then you may have to consult
+an expert when you compile. Once you have unpacked the
+distribution, you will need to read the file "INSTALL" for compiling 
+instructions. If you have a supported system (the ones listed
+above), you should be able to simply type in the following commands:
+
+          configure
+          make
+          make install
+
+However, to have Xlisp-Stat install properly, you will have to give some
+options to the configure script. You should read the
+INSTALL file for more details. For example, to install Xlisp-Stat in 
+your home directory, you can give the following configure command:
+
+  configure --prefix=/home/stat1/bjm --with-gcc --x-includes=/usr/include/mit
+
+where /home/stat1/bjm is my home directory, and I choose to compile
+Xlisp-Stat using gcc, and the X11 include files are in /usr/include/mit/X11.
+
+Since you are also installing the R-code, you may want to modify the
+autoload.lsp file (see getting the R-code). Make sure you
+do this before typing the "make" command.
+
+Additionally, if you wish to use dynamic loading in Xlisp-Stat, you MUST 
+read the file machines/your-os/README under the xlispstat3-37 directory. 
+The README file has important compiling information and may have you 
+modify your Makefile before typing 'make'.
+
+Wherever you leave Xlisp-Stat, make sure that its location is in your 
+search path for executables (you may have to edit your
+~/.cshrc file). After you are sure the Xlisp-Stat is working, you may 
+wish to strip it to save disk space and decrease loading time
+(especially over a network).
+
+
+
+Good luck and happy computing!

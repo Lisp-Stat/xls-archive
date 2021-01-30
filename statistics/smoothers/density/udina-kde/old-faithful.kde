@@ -1,0 +1,21 @@
+;;this file has been created by a kde object, to reproduce itself
+(require "kde")
+
+(let ((myself (make-kde
+:title 
+"Old Faithful data" 
+:sorted t
+:data '(1.67 1.67 1.68 1.73 1.73 1.75 1.77 1.77 1.8 1.8 1.82 1.83 1.83 1.83 1.85 1.85 1.88 1.9 1.9 1.9 1.95 1.97 1.97 2 2.03 2.25 2.27 2.33 2.5 2.72 2.93 2.93 3.1 3.2 3.33 3.43 3.43 3.5 3.5 3.5 3.52 3.58 3.58 3.67 3.68 3.7 3.7 3.72 3.73 3.73 3.75 3.77 3.8 3.8 3.83 3.87 3.92 3.92 3.93 3.95 4 4 4 4 4 4.03 4.03 4.05 4.07 4.08 4.08 4.1 4.1 4.12 4.13 4.13 4.18 4.2 4.25 4.25 4.25 4.28 4.33 4.33 4.35 4.37 4.4 4.42 4.43 4.5 4.5 4.5 4.53 4.57 4.58 4.58 4.6 4.6 4.62 4.62 4.63 4.63 4.65 4.7 4.73 4.83 4.93)
+:x-values '(0 6)
+:kernel-type 'H
+:bandwidth 0.809338
+:print t
+:show t)))
+
+(send myself :to-window :mouse-mode 'SHOW-COORDINATES)
+(send myself :slot-value 'show-a-kernel NIL)
+(send myself :slot-value 'show-distr-lines NIL)
+(send myself :bw-ends '(0.214003 1.63))
+(print "loaded kde object. Has been stored in **")
+(setq * myself))
+

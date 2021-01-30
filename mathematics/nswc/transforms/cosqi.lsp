@@ -1,0 +1,13 @@
+(defun cosqi (n wsave) (declare (type fixnum n))
+ (declare (type (simple-array double-float (*)) wsave))
+ (prog ((k 0) (fk 0.0d0) (pih 0.0d0) (dt 0.0d0)) (declare (type fixnum k))
+  (declare (type double-float fk)) (declare (type double-float pih))
+  (declare (type double-float dt)) (setq pih 1.5707964)
+  (setf dt (/ pih (float n))) (setf fk 0.0)
+  (fdo ((k 1 (+ k 1))) ((> k n) nil)
+   (tagbody (setf fk (+ fk 1.0)) (fset (fref wsave k) (cos (* fk dt))))
+  )
+  (multiple-value-setq (n dummy_var) (rffti n (fref wsave (+ n 1))))
+  (return (values n wsave))
+))
+

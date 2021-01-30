@@ -1,0 +1,687 @@
+Objects Data base:
+
+notes:
+
+object (slot-list) (shared-slots) (Parents) [filename] "Doc"
+	:method
+	        ^ means calls #'call-next-method
+		^^ means calls #'call-next-method first
+
+-------------------------------------------------
+Grandparent Utiltiy Objects
+-------------------------------------------------
+
+ElToY-object  () () () [utils/utils.lsp] "Grandparent Object"
+	:isnew
+	:describe
+	:destruct
+	:update [update.lsp] --- transforms :update <signal> data
+requests into <signal> :local data messages.
+
+titled-object (title) () (ElToY-object) [utils/utils.lsp] "Object with a title"
+	:isnew ^
+	:title
+	:print 
+	:describe ^ --- describes title
+
+named-object (name) () (ElToY-object) [utils/utils.lsp] "Object with a name"
+	:isnew ^
+	:name
+	:print 
+	:describe ^ --- describes name 
+
+
+----------------------------------------------------------------------
+Update Logic Objects
+----------------------------------------------------------------------
+
+subtool-mixin (supertool) () (ElToY-object) [utils/update.lsp]
+	:isnew ^
+	:supertool
+	:set-supertool
+	:describe ^ --- send parent :describe <stream> nil
+
+mirror-parent (subtool) () (ElToY-object) [utils/update.lsp]
+	:isnew ^^ --- argument make-child function which when called
+		     will create child object.
+	:destruct ^ --- sends destruct to child object and empties
+		slot.
+	:update ^^
+
+
+----------------------------------------------------------------------
+Parameter Objects
+----------------------------------------------------------------------
+
+para-proto (values names range limits granularity integer?
+		constraint-fun nparams) ()
+	(ElToY-object) [params/parameters] "Generic Parameter storage object"
+	:print
+	:describe ^
+	:isnew ^ :names :values :range :limits :granularity :integer?
+	:values returns/sets list of values (real numbers between limits)
+	:values1 returns/sets nth value
+	:range returns/sets list of ranges (pairs of numbers between
+			limits)
+	:range1 returns/sets nth range
+	:limits returns/sets list of limits (pairs of numbers)
+	:limits1 returns/sets nth limits
+	:granularity returns/sets list of granularitys (possibly to
+			same number)
+	:granularity1 returns/sets nth granularity
+	:integer? returns/sets integer constraint
+	:integer?1
+	:names retuns/sets list of names
+	       also creates for each name a method which will access
+	       that variable.
+	:names1
+	:constraint-fun returns/sets constraint function
+
+Note function para-proto-para-method becomes an effective method for
+each "named" parameter object in the parameter system.
+
+" With no argument, this method retuns the named parameter value
+  With a numeric arugment, this method sets the named parameter value
+  With signal arguments:
+     :value or :values (or omited/numeric value) resets the value
+     :range --- changes the range
+     :limit, :limits --- changes the limits
+     :granularity --- changes the granularity
+     :name, :names --- changes the name
+")
+
+
+parameter-mixin (parameters) () (ElToY-object) [params/paramixin.lsp] ---
+	Object containg parameter slot holding (real) parameter object
+    :isnew ^ 	:parameter-values :parameter-names :parameter-range
+             	:parameter-limits  :parameter-granularity
+		:parameter-integer? :parameter-constraint-fun
+		creates new para-proto object in parameters slot.
+    :destruct ^
+    :parameter-names (:parameters :names)
+    :parameters (updates) [:local] :values (default) :limits :names
+                                   :range :granularity :integer?
+				   :describe :constraint-fun <p-name>
+	Passes messages to parameter-object
+    :parameter-object (updates) [:local]
+    :local-parameter-dispatch
+
+
+inh-parameter-mixin (parameters) () (subtool-mixin ElToY-object)
+	  [params/paramixin.lsp] "Creates a slot for an inhereted
+			parameters object"
+    :isnew ^ :parameters --- sets parameter object
+    :destruct ^
+    :parameter-names (:parameter :names)
+    :parameters (updates) [:local] :values (default) :limits :name
+				   :range :granularity :integer?
+				   :describe :constraint-fun <p-name>
+    :parameter-object (updates) 
+
+hyperparameter-mixin (hyperparameters) () (ElToY-object)
+	[params/hyperparams.lsp] ---
+	Object containg hyperparameter slot holding (real)
+		hyperparameter object
+    :isnew ^ 	:hyperparameter-values :hyperparameter-names
+		:hyperparameter-range
+             	:hyperparameter-limits  :hyperparameter-granularity
+		:hyperparameter-integer?
+		creates new para-proto object in hyperparameters slot.
+    :destruct ^
+    :hyperparameter-names (:hyperparameters :names)
+    :hyperparameters (updates) [:local] :values (default) :limits :names
+                                   	:range :granularity :integer?
+					:describe <hp-name>
+	Passes messages to hyperparameter-object
+    :hyperparameter-object (updates) [:local]
+
+
+inh-hyperparameter-mixin (hyperparameters) () (subtool-mixin ElToY-object)
+           [params/hyperparams.lsp] "Creates a slot for an inhereted
+			hyperparameters object"
+    :isnew ^ :hyperparameters --- sets hyperparameter object
+    :destruct ^
+    :hyperparameter-names (:hyperparameter :names)
+    :hyperparameters (updates) [:local] :values (default) :limits :name
+			  	        :range :granularity :integer?
+					:describe <hp-name>
+    :hyperparameter-object (updates)
+    :local-hyperparameter-dispatch
+
+
+nui-parameter-mixin (nui-parameters) () (ElToY-object)
+	[params/nui-params.lsp] ---
+	Object containg nui-parameter slot holding (real)
+		nui-parameter object
+    :isnew ^ 	:nui-parameter-values :nui-parameter-names
+		:nui-parameter-range
+             	:nui-parameter-limits  :nui-parameter-granularity
+		:nui-parameter-integer?
+		creates new para-proto object in nui-parameters slot.
+    :destruct ^
+    :nui-parameter-names (:nui-parameters :names)
+    :nui-parameters (updates) [:local] :values (default) :limits :names
+                                   	:range :granularity :integer?
+					:describe <np-name>
+	Passes messages to nui-parameter-object
+    :nui-parameter-object (updates) [:local]
+
+
+inh-nui-parameter-mixin (nui-parameters) () (subtool-mixin ElToY-object)
+           [params/nui-params.lsp] "Creates a slot for an inhereted
+			nui-parameters object"
+    :isnew ^ :nui-parameters --- sets nui-parameter object
+    :destruct ^
+    :nui-parameter-names (:nui-parameter :names)
+    :nui-parameters (updates) :values (default) :limits :name
+			  		        :range :granularity :integer?
+						:describe <np-name>
+    :nui-parameter-object (updates) [:local]
+    :local-nui-parameter-disptach
+
+
+------------------------------------------------------------------------
+Data Prototypes
+------------------------------------------------------------------------
+
+el-data-proto (names data limits integer? ndata constraint-fun) ()
+		(inh-nui-parameter-mixin) [params/data.lsp]
+		"Data object"
+
+	:isnew ^^ :data :names :limits :integer? :constraint-fun
+		  :supertool :nui-parameters
+	:destruct ^
+	:print
+	:describe ^
+	:names
+	:names1
+	:data
+	:data1
+	:values (same as :data)
+	:values1 (same as :data1)
+	:limits
+	:limits1
+	:integer?
+	:integer?1
+	:constraint-fun
+
+el-data-mixin (data) '() '(list ElToY-object) [params/data-mixin.lsp]
+		"Owner of Data object.  Shoul have nui-parameter-mixin
+		 or inh-nui-parameter-mixin."
+	:isnew ^^ :data-names :data-values :data-limits :data-integer?
+		  :data-constraint-fun
+	:destruct ^
+	:data-names
+	:data (updates) [:local] (:data (default) :values :names :describe
+				  :integer? :constraint-fun <data-name>)
+		Passes messages to data object
+	:data-object
+
+inh-data-mixin (data) '() '(list ElToY-object) [params/data-mixin.lsp]
+		"Owner of Data object.  Shoul have nui-parameter-mixin
+		 or inh-nui-parameter-mixin."
+	:isnew ^^ :data :nui-parameters :parent
+	:destruct ^
+	:data-names
+	:data (updates) (:data (default) :values :names :describe
+				  :integer? :constraint-fun <data-name>)
+		Passes messages to data object
+	:local-data-dispatch
+	:data-object
+
+
+
+----------------------------------------------------------------------
+Family Prototypes
+----------------------------------------------------------------------
+family-proto (rv-names mrv parameter-names default-parameters
+	      parameter-limits parameter-range-default
+	      parameter-granularity parameter-integer?
+	      parameter-constraint-fun
+	      nparams) ()
+	     (named-object) [fam/family.lsp]
+	Meta-class for family classes
+	:isnew :name :rv-names :parameter-names :default-parameters
+		:parameter-range-default :parameter-limits
+		:paramter-granularity :parameter-integer?
+	:rv-names
+	:parameter-names
+	:default-parameters
+	:parameter-range-default
+	:parameter-limits
+	:parameter-granularity
+	:parameter-integer?
+	:parameter-constraint-fun
+	:print 
+	:describe ^
+	:destruct ^
+	:dist-graph-proto [fam/graph.lsp] returns proper display graph.
+------------------------------ The following methods must be specialized.
+	:quantiles
+	:cdf
+	:rv-default (Defaults to median)
+	:rv-limits
+	:rv-range-default (Default to limits)
+	:rv-integer? (nil if continuous)
+	:continuous?
+	:atoms (if discrete)
+	:mass (if discrete)
+	:density (if continuous)
+	:rand (defaults to inverse cdf method)
+	:mean
+	:variance
+---------
+
+discrete-family-proto () () (family-proto) [family.lsp]
+	"Discrete probability distribution family"
+	:continuous?
+	:atoms
+	:mass
+	:density (cerror)
+	:dist-graph-proto [fam/graph.lsp]
+
+continuous-family-proto () () (family-proto) [family.lsp]
+	"Discrete probability distribution family"
+	:continuous?
+	:atoms (nil)
+	:mass (cerror)
+	:density
+	:dist-graph-proto [fam/graph.lsp]
+
+
+Undefined-family () () (family-proto)
+	[family.lsp] "Undefined family object"
+	:isnew ^
+
+
+family-mixin (family) () (ElToY-object) "Adds a family slot to object"
+	[fam/family-mixin.lsp]
+	:isnew ^ :family
+	:destruct ^
+	:family
+	:set-family
+	:parameter-names ^ [update] (after method)
+	:rv-names [update]
+	:update ^^ 
+
+inh-family-mixin (family) () (subtool-mixin) [fam/family-mixin.lisp]
+	"Adds an inhereted family slot to object"
+	:isnew ^
+	:family [update]
+	:set-family [update]
+	:destruct ^
+	:rv-names [update]
+
+
+------------------------------------------------------------------------
+Prior Families
+------------------------------------------------------------------------
+
+prior-family-proto () () (family-proto) [conj/prior.lsp]
+	"Differences for prior distributions"
+
+continuous-prior-proto () () (prior-family-proto continuous-family-proto)
+	[conj/prior.lsp]---Continuous prior distirbution
+
+
+discrete-prior-proto () () (prior-family-proto discrete-family-proto)
+	[conj/prior.lsp]---Discrete prior-distribution
+
+
+
+------------------------------------------------------------------------
+Likelihood Families
+------------------------------------------------------------------------
+
+likelihood-family-proto (nui-parameter-names nui-default-parameters
+			 nui-parameter-limits nui-parameter-range-default
+			 nui-parameter-integer?
+			 nui-parameter-granularity nui-nparams
+			 nui-parameter-constraint-fun
+			 data-constraint-fun) ()
+                        (family-proto) [conj/likelihood.lsp]
+	"Difference for Likelihood distributions."
+	:isnew ^ :nui-parameter-names :nui-default-parameters
+	         :nui-parameter-range-default :nui-parameter-limits
+		 :nui-parameter-granularity :nui-parameter-integer?
+		 :prior
+	:describe ^^
+	:destruct ^ 
+	:nui-parameter-names 
+	:nui-default-parameters
+	:nui-parameter-limits
+	:nui-parameter-range-default
+	:nui-parameter-granularity
+	:nui-parameter-integer?
+	:nui-parameter-constraint-fun 
+	:data-constraint-fun 
+------------------------------------
+	:dist-graph-proto [fam/graph.lsp] returns proper display graph.
+	:quantiles
+	:cdf
+	:rv-default (Defaults to median)
+	:rv-limits
+	:rv-range-default (Default to limits)
+	:continuous?
+	:rv-integer? (nil if continuous)
+	:atoms (if discrete)
+	:mass (if discrete)
+	:density (if continuous)
+	:rand (defaults to inverse cdf method)
+	:mean
+	:variance
+
+
+
+Undefined-likelihood-family () () (likelihood-family-proto Undefined-family)
+	[conj/likelihood.lsp] "Undefined likelihood family object"
+	:isnew ^
+
+
+continuous-likelihood-proto () () (likelihood-family-proto
+				   continuous-family-proto) 
+	[conj/likelihood.lsp]---Continuous likelihood distirbution
+
+
+discrete-likelihood-proto () () (likelihood-family-proto discrete-family-proto)
+	[conj/likelihood.lsp]---Discrete likelihood-distribution
+
+
+
+----------------------------------------------------------------------
+Conjugage Families
+----------------------------------------------------------------------
+
+conjugate-family-proto (prior-family likelihood-family) ()
+		(ElToY-object) [conjugate]
+		"Conjugate prior/likelihood family"
+		:print
+		:describe 		
+		:name
+		:isnew :prior-family :likelihood-family (note expects families)
+		:destruct
+		:prior-family :likelihood-family
+		:default-hyperparameters
+		:hyperparameter-limits
+		:hyperparameter-constraint-fun
+		:hyperparameter-range-default
+		:hyperparameter-integer?
+		:hyperparameter-granularity
+		:hyperparameter-names
+		:default-parameters
+		:parameter-names
+		:parameter-limits
+		:nui-default-parameters
+		:nui-parameter-limits
+		:nui-parameter-range-default
+		:nui-parameter-constraint-fun
+		:nui-parameter-integer?
+		:nui-parameter-granularity
+		:data-names
+		:data-limits
+		:data-constraint-fun
+		:data-integer?
+--------------------------------------- conjugate-families must define
+					methods for these functions
+		:forward-link
+		:reverse-link
+		:data-range-default
+		:default-data
+
+conjugate-family-mixin (conjugate-family) () (ElToY-object)
+	[conj/conj-mixin.lsp]
+	"For adding a conjugate-family to an object."
+	:isnew ^ :conjugate-family
+	:destruct ^
+	:set-conjugate-family (updates) [:local]
+	:conjugate-family
+	:prior-family 
+	:likelihood-family 
+	:hyperparameter-names ^ (updates) :local only
+	:parameter-names ^ (updates) :local only
+	:nui-parameter-names ^ (updates) :local only
+	:data-names ^ (updates) :local only
+	:forward-link
+	:reverse-link
+   Note:  Conjugate-family-mixin must precede parameter mixins on list.
+
+inh-conjugate-family-mixin (conjugate-family) () (subtool-mixin)
+	[conj/conj-mixin.lsp] "Object includes reference to conjugate-family
+object owned above."
+	:isnew ^ :conjugate-family
+	:destruct ^
+	:set-conjugate-family (updates) [:local]
+	:conjugate-family
+	:prior-family
+	:likelihood-family
+	:foward-link
+	:reverse-link
+
+
+----------------------------------------------------------------------
+Distribution Displays
+----------------------------------------------------------------------
+dist-disp-proto (para-disp pdf-graph) () (inh-family-mixin
+					  inh-parameter-mixin
+				          titled-object)
+	[fam/distdisp.lsp] " distribution display tool."
+	:print
+	:describe
+	:isnew ^^ 
+	:destruct ^
+	:update ^^
+	:parameter-object ^^ (updates) [:local]
+
+pri-post-disp-proto (marginal-tool) () (dist-disp-proto
+					inh-conjugate-family)
+	[conj/ppdistdisp.lsp] "Prior/posterior display tool."
+	:isnew ^^ :parent-signal
+	:destruct ^
+	:update ^^
+	:spawn-marginal [unimplimented]
+	:parameters (updates) (passes up using :parent-signal)
+
+
+
+
+----------------------------------------------------------------------
+parameter display objects
+----------------------------------------------------------------------
+
+para-disp-proto (paras name-text-items value-text-items
+                 update-button-items lb-text-items ub-text-items
+	         slider-items dialog parent-signal) ()
+		(dialog-proto subtool-mixin ElToY-object) [params/paradisp.lsp]
+	Display object consisting of group of silders displaying
+parameters. 
+	:print
+	:describe
+	:isnew other-items :supertool :parameters :title :parent-signal
+			  :parent-signal :parent-signal-fun ^
+	:parent-signal &optional signal parent-signal-fun
+	:value-n (as number)
+	:value-t (as string)
+	:lb
+	:up
+	:update-button
+	:values (updates) [:local]
+	:values1 (updates) [:local]
+	:range (updates) [:local]
+	:range1 (updates) [:local]
+	:limits (updates) [:local]
+	:limits1 (updates) [:local]
+	:granularity (updates) [:local]
+	:granularity1 (updates) [:local]
+	:names (updates) [:local]
+	:names1 (updates) [:local]
+
+
+----------------------------------------------------------------------
+data display objects
+----------------------------------------------------------------------
+
+data-disp-proto (data prompt-text-items data-text-items
+                 evaluate-button-items reset-button-items
+	         data-parent-signal) ()
+		(dialog-proto subtool-mixin ElToY-object)
+		[params/data-disp.lsp]
+	Display object consisting of group of editable text items displaying
+data. 
+	:print
+	:describe
+	:isnew other-items :supertool :data :title :data-parent-signal
+			  :data-parent-signal-fun ^
+	:data-parent-signal &optional signal parent-signal-fun
+	:value-e (as expression)
+	:data-values (updates) [:local]
+	:data-values1 (updates) [:local]
+	:data-names (updates) [:local]
+	:data-names1 (updates) [:local]
+
+data-nui-para-disp-proto '() '() (para-disp-proto data-disp-proto)
+	:isnew ^
+	:print
+	:describe
+
+
+
+
+----------------------------------------------------------------------
+Graph display objects
+----------------------------------------------------------------------
+pdf-graph-proto (percents quantiles density pdf-graph) ()
+	(inh-family-mixin inh-parameter-mixin titled-object)
+	[fam/graph.lsp]  "Displays a continuous distribution."
+	:print
+	:describe
+	:isnew ^
+	:rv-names ^
+	:percents
+	:quantiles
+	:density
+	:recalculate
+	:calcualte-density
+	:redisplay
+	:values (update) [:local]
+	:values1 (update) [:local]
+	:parameters ^^ (update) [:local]
+
+
+
+pmf-graph-proto (dipslay-min-mass displayed-atoms mass pmf-graph) ()
+	(inh-family-mixin inh-parameter-mixin titled-object)
+	[fam/graph.lsp]  "Displays a continuous distribution."
+	:print
+	:describe
+	:isnew ^
+	:rv-names ^
+	:display-min-mass
+	:displayed-atoms
+	:mass
+	:recalculate
+	:calculate-mass
+	:redisplay
+	:values (update) [:local]
+	:values1 (update) [:local]
+	:parameters ^^ (update) [:local]
+
+
+------------------------------------------------------------------------
+Data-Link
+------------------------------------------------------------------------
+data-link-proto (prior-parameters posterior-parameters data-display
+		 posterior-display link-dialog) ()
+	(el-data-mixin nui-parameter-mixin inh-conjugate-family-mixin
+	 subtool-mixin titled-object)
+	:print
+	:describe
+	:isnew ^^ :conjugate-family :prior-parameters :title
+		  :nui-parameter-names :nui-parameter-values
+	 	  :nui-parameter-range :nui-parameter-limits
+	          :nui-parameter-granularity :nui-parameter-integer?
+	          :nui-parameter-constraint-fun 
+	          :data-names :data-values :data-limits
+	          :data-integer? :data-constraint-fun 
+	:destruct ^
+	:update ^^
+	:posterior-parameters
+	:posterior-parameter-object
+	:prior-paramters
+	:prior-parameter-object
+	:foward-link
+	:reverse-link
+	
+
+link-dialog-proto ( item-list last-signal) () (ElToY-dialog)
+	[conj/data-link.lsp] 
+	"Display/Control Box for data-link"
+	:isnew other-items :title ^
+	:destruct ^
+	:update [:prior-parameters :posterior-parameters
+		 :nui-parameters :data]  doesn't follow normal update
+logic 
+	:prior-parameters
+	:posterior-parameters
+	:nui-parameters
+	:data
+
+
+
+------------------------------------------------------------------------
+El-Tool-proto
+------------------------------------------------------------------------
+	
+el-tool-proto (prior-tool posterior-tool control-dialog) ()
+	(conjugate-family-mixin hyperparameter-mixin titled-object)
+	[toys/el-tool.lsp]
+"The el-tool is the most generic elicitation tool available.  "
+	:print
+	:describe
+	:isnew ^^ :conjugate-family
+		  :hyperparameter-valuess :hyperparameter-names
+		  :hyperparameter-range :hyperparameter-limits
+		  :hyperparameter-integer? :hyperparameter-granularity
+		  :hyperparameter-constraint-fun :parameter-names
+		  :data-names :title
+
+
+	:return -- kills child tools and returns parameter values
+	:spawn-data-link -- spawns a new fictional data and posterior tool
+	:spawn-prior 
+	:spawn-contol-dialog
+
+
+;;;======================================================================
+;;; range-slider-proto --- extension to xlispstat
+;;;======================================================================
+
+;;; range-slider-proto
+;;; Slots:
+;;;	scroll-item (type Scroll-item)	--- primitive display item.
+;;;	text-item (type Text-Item)	--- display for value
+;;;	val	(type Number)    	--- stored value
+;;;     ival	(type Fixnum)    	--- intergized (displayed) value 
+;;;	range   (type (list Number Number)) --- range of values
+;;;	integer? (type (member T nil))	--- is value constrained to integers?
+;;;	granularity (type Number)	--- increment of scroll
+;;;	num-points (type Fixnum)	--- number of points in scroll
+;;;	action  (type Function (val))	--- action function
+;;;
+;;; Parents: ()
+;;; Defined Messages:
+;;;  	:value (&optional new-value) Returns/sets value
+;;;    	:display-value () Redisplayes text item
+;;;	:do-action  () Call contents of :action slot Only-if value has
+;;;		       changed.
+;;;	:range (&optional new-range) Returns/sets range
+;;;	:min (&optional new-min) Returns/sets min (first range)
+;;;	:max (&optiona new-max) Returns/sets max (second range)
+;;;	:granularity (&optional new-gran) Returns/sets granularity
+;;;	:num-points (&optional reset?) Returns/recalculates num-points
+;;;	:scroll-item (&rest args) Returns scroll-item or sends args to
+;;;				  scroll item.
+;;;	:text-item (&rest args) Returns text-item or sends args to
+;;;				  text item.
+;;;	:val-to-ival (val) Calculates integer position on scroll from value
+;;;	:ival-to-val (ival) Caclulates value from integer position on scroll
+

@@ -1,0 +1,924 @@
+
+
+
+
+
+
+        gt-select (data value) data is a list of lists; the component lists
+        are assumed to be of the same length with the first list being
+        time tags.  The returned object is a list of the original lists
+        containing all elements having time tags greater than given value.
+        lt-select (data value) data is a list of lists; the component lists
+        are assumed to be of the same length with the first list being
+        time tags.  The returned object is a list of the original lists
+        containing all elements having time tags less than given value.
+        chop-first (x &optional (n 1)) returns x with first n elements
+        removed
+        chop-last (x &optional (n 1)) returns x with last n elements
+        removed
+        assert-list (x name) print result of assertion that x is a list
+        name is the symbol that is printed
+        range-delete (data &key (min-y minus-huge) (max-y huge))
+        data is a list of lists; there are assumed
+        to be 2 component lists of the same length. Additional component
+        lists are ignored.  The first list is assumed to be
+        time tags and the second list y data values that correspond
+        to the time tags.  range-delete returns a like list of lists with all
+        data points having values greater than min-y and less than max-y
+         my-error (msg)  prints msg and returns nil
+        remove-from-list (x i)  returns list x with ith element removed
+        if i is out of range the given list x is returned unchanged
+        itoa(n) return integer converted to a string
+        ntoa(n) return number converted to a string
+        gmt-hhmmss (gmt) given gmt in seconds convert to hhmmss string
+        vec-gmt-hhmmss (gmt) given gmt in seconds convert to hhmmss string
+
+
+
+
+
+        strlen (s) used in gmt-hhmmss
+        vec-const (x n) return a list of length n, each list element
+        is equal to x
+        chinorm (s df) returns transformation of chi-square
+        s with df degrees of freedom to approximate N(0,1) deviate
+        trim-mean (x &key (high .95) (low .05)) return trimmed mean of x
+        high and low specify the quantiles to be trimmed from x
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 2 -
+
+
+         safediv (num denom) returns scalar division result
+         delta (x) returns scalar forward first difference, zero at end of list
+         dydx (x y) returns scalar numerical first derivative
+         vec-dydx (x y) return list of dydx, chop off last 2 list elements
+         load-seq (file) load col of data to y, make x real sequence (0,1)
+         smooth-lowess (x y) return smoothed y sequence at given x values
+         smooth-spline (x y) return smoothed y sequence at given x values
+         smooth-kernel (x y) return smoothed y sequence at given x values
+        plot-dydx (x y &key (min-x minus-huge) (max-x huge))
+        plot dy/dx chopping off last 2 end points in vec-dydx
+         print-list (file x &rest args ) print multiple lists in parallel
+         column format assumes lists are of equal length; NIL printed for
+         some entries if this is not true
+         vec+ (x y) addition of simple or compound objects,
+         Tierney page 98,99
+         vec- (x y) subtraction of simple or compound objects,
+         Tierney page 98,99
+         vec* (x y) multiplication of simple or compound objects,
+         Tierney page 98,99
+         vec/ (x y)  division of simple or compound objects, Tierney page 98,99
+         rms3 (x y z) returns list of rms of given 3 lists elements
+
+
+
+
+
+         tekmode () if Wyse terminal, switch to tek graphics mode
+                otherwise do nothing
+         ansimode () if Wyse terminal switch to ansi character mode
+                otherwise do nothing
+         plot-density (x) plot probability density function, then plot
+                normal sample density for same number of points
+         tekpoints(x y &key (min-x minus-huge) (max-x  huge))
+         select range for x and plot-points
+         norm-plot (x) normal probability plot of given list of values
+         ksh () escape to korn shell
+         raw-psd(x) returns squared magnitude of fft(x)
+         raw psd is scaled such that sum of components is unity
+         plot-raw-psd(x) plots squared magnitude of fft(x)
+         vs normalized frequencies 0 to .5
+         plot-smooth-psd (x)  plots the smooth-psd of x at normalized
+         frequencies 0 to .5
+         smooth-psd (x) returns kernel-smooth of raw psd
+         half-list(x) returns list containing first half of the elements
+                in x
+        center-and-scale (x) return x with mean subtracted and divided
+                by standard deviation
+        read-xyz (file)  def x y, and z as first 3 data column read from file
+        greater-than (x y) returns true if x greater than y, else nil
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 3 -
+
+
+        less-than (x y) returns true if x is less than y, else nil
+        equal-to (x y) returns true if x is equal to y, else nil
+        log10 (x) returns log to the base 10 of x, vectorized
+        pow (x y)  returns x raised to the yth power
+        limit (x &key (lower .05) (upper .95)) evaluates the upper and
+        lower quantiles of x and returns x with values above the upper
+        quantile set to the upper quantile and values less than the lower
+        quantile set to the lower quantile.
+        atan (y)  returns the arc tangent of y in radians
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 4 -
+
+
+        get-filter (n cutoff rolloff &key (nyquest .5) (units 10)
+                (type lowpass))
+        returns list of n real, frequency domain filter coefficients
+        for given cutoff and rolloff. If units = 10, the rolloff is in
+        dB per decade, if units = 2, the rolloff is in db per octave.
+        The cutoff is the half power frequency in Hz. The type is
+        lowpass or highpass.  The fft of the time series to be
+        filtered will be  multiplied by the real filter coeffients term by
+        term.
+        real-filter (x cutoff rolloff &key (type lowpass) (nyquest .5))
+        returns real x lowpass or highpass filtered
+        real-band-filter (x low-freq high-freq rolloff &key (nyquest .5)
+                (type bandpass))
+        returns real x after bandpass or bandstop filtering
+        complex-filter (x cutoff rolloff &key (type lowpass) (nyquest .5))
+        returns complex lowpass or highpass filtered sequence
+        complex-demodulate (x mod-freq &key (cutoff .1) (rolloff 200)
+        returns series x demodulated by mod-freq and low pass filtered
+        mod-freq must be between 0. and .5 (normalized frequency)
+        gen-data (n amp freq )
+        returns n data points, (+ normal-rand (* amp (sin (* 2 PI i freq)))
+        decimate ( x &optional (n 5))  returns list containing
+        every nth element of the given list x, n defaults to 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 5 -
+
+
+        low-pass-iir (x fp gp fs gs) given pass freq fp, and gain  gp,
+        stop frequency fs and gain gs; design iir low pass filter and
+        filter the time series x.  returns the filtered time series.
+        SEE iir-filter, low-pass-design
+        high-pass-iir (x fs gs fp gp) given stop frequency fs and gain gs;
+        pass freq fp, and gain  gp, design iir high pass filter and
+        filter the time series x.  returns the filtered time series.
+        SEE iir-filter, high-pass-design
+        band-pass-iir (x fs1 gs1 fp1 gp1 fp2 gp2 fs2 gs2)
+        given stop frequency fs1 and gain gs1 pass frequency fp1 and
+        gain  gp1, pass frequency fp2 and gain fp2, stop frequency fs2
+        and gain gs2; design iir band pass filter and
+        filter the time series x.  returns the filtered time series.
+        SEE iir-filter, band-pass-design
+        band-stop-iir (x fp1 gp1 fs1 gs1 fs2 gs2 fp2 gp2)
+        given pass frequency fp1 and gain gp1, stop frequency fs1 and
+        gain  gs1, stop frequency fs2 and gain fs2, pass frequency fp2
+        and gain gp2; design iir band stop filter and
+        filter the time series x.  returns the filtered time series.
+        SEE iir-filter, band-stop-design
+        print-object (msg obj)  display message, print object followed
+        by newline
+        message (msg)  print message followed by newline
+        iir-filter (x coef) infinite impulse response (iir) filter
+        x is the input time series and coef
+        is either 1.) a single 2d or 4th order section or 2.) a list
+        of 2d and/or 4th order serial sections. Each 2d order filter
+        section is a list containing the coefficients (Kd a0 a1 b0 b1)
+        for a digital filter section of the form
+
+                            z**2 + a1 * z + a0
+                H(z) = Kd * -------------------
+                            z**2 + b1 * z + b0
+
+        The corresponding difference equation is
+
+            y(i) = Kd * {x(i) + a1*x(i-1) + a0*x(i-2) - b1*y(i-1) + b0*y(i-2)}
+
+        Each 4th order section contains (Kd a0 a1 a2 a3 b0 b1 b2 b3) for
+        a 4th order form of the above.
+
+        The time series x is filtered forward and backward to cancal out
+        any phase shift or delays.
+
+
+
+
+
+        iir-section (x coef)  2d or 4th order iir section
+        returns filtered time series. x is time series to be filtered,
+        For a 2d order section coef contains Kd, a0, a1, b0, b1 for the
+        digital transfer function
+
+                            z**2 + a1 * z + a0
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 6 -
+
+
+                H(z) = Kd * -------------------
+                            z**2 + b1 * z + b0
+
+        the corresponding difference equation is
+
+            y(i) = Kd * {x(i) + a1*x(i-1) + a0*x(i-2) - b1*y(i-1) + b0*y(i-2)}
+
+        For a 4th order section coef contains (Kd a0 a1 a2 a3 b0 b1 b2 b3)
+        for the 4th order version of the above.
+        iir4-section (x coef)  4th order iir section
+        returns filtered time series. x is time series to be filtered,
+        SEE iir-section
+        butterworth-size (fp gp fs gs &key (base 1)) given fp passband
+        frequency, gp the gain in db at frequency fp, fs stopband frequency, and
+        gs the gain in db at frequency fs, returns list (n fc) where
+        n is the order and fc is the cutoff frequency.   n is a multiple
+        of base.  if n is to be even, base is 2; if n is to be a multiple
+        of 4, then base is 4.
+
+        note that gp = 20 log10 (gain at fp),  gs = 20 log10 (gain at fs) with
+        both gp and gs assumed to be negative with gp > gs (low pass filter)
+        the frequencies fp < fs
+        are assumed to be normalized such that 0 < fp  and 0 < fp
+
+        reference: Digital Filters, R. W. Hamming, Prentice-Hall,1977,
+        pages 189-195
+        iir-test () test the following infinite impulse (iir) filter functions
+                low-pass-iir
+                high-pass-iir
+                band-pass-iir
+                band-stop-iir
+        testing consists of generating a white noise time series, filtering
+        the time series and plotting the smoothed power spectrum of the
+        filter output
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 7 -
+
+
+        analog-test () test the following analog low pass prototype filter
+        transforms in this xlispstat file
+                - analog-low2low
+                - analog-low2high
+                - analog-low2pass
+                - analog-low2stop
+                - analog24-transfer
+        analog-low2low (coef freq) given in coef the coefficients of an analog,
+        low pass, second order filter with cutoff radian frequency of 1.0,
+        return the coefficients of a low pass filter with cutoff
+        frequency of f Hz .  The assumed form of a second order section is
+
+           H(s) = K * (a2 * s**2 + a1 * s + a0)/(s**2 + b1 * s + b0)
+
+        coef is a list (K a0 a1 a2 b0 b1), the returned list is
+        (Ka alpha0 alpha1 alpha2 beta0 beta1 beta2)
+        analog-low2high (coef freq) given in coef the coefficients of an analog,
+        low pass, second order filter with cutoff radian frequency of 1.0,
+        return the coefficients of a high pass filter with cutoff
+        frequency of freq Hz .  The assumed form of a second order section is
+
+           H(s) = K * (a2 * s**2 + a1 * s + a0)/(s**2 + b1 * s + b0)
+
+        coef is a list (K a0 a1 a2 b0 b1), the returned list is
+        (Ka alpha0 alpha1 alpha2 beta0 beta1 beta2)
+        analog-low2pass (coef lowfreq upfreq) given in coef the coefficients
+        of an analog, low pass, second order filter with cutoff radian
+        frequency of 1.0, return the coefficients of a band pass filter with
+        lower cutoff frequency lowfreq and upper cutoff upfreq Hz.
+        The assumed form of the given second order section is
+
+                H(s) = K * (a2 * s**2 + a1 * s + a0)/(s**2 + b1 * s + b0)
+
+        coef is a list (K a0 a1 a2 b0 b1), the returned list contains
+        the coefficients for the 4th order band pass section as
+        (Ka alpha0 alpha1 alpha2 alpha3 alpha4 beta0 beta1 beta2 beta3)
+        analog-low2stop (coef lowfreq upfreq) given in coef the coefficients
+        of an analog, low pass, second order filter with cutoff radian
+        frequency of 1.0, return the coefficients of a band stop filter with
+        lower cutoff frequency lowfreq and upper cutoff upfreq Hz.
+        The assumed form of the given second order section is
+
+                H(s) = K * (a2 * s**2 + a1 * s + a0)/(s**2 + b1 * s + b0)
+
+        coef is a list (K a0 a1 a2 b0 b1), the returned list contains
+        the coefficients for the 4th order band stop section as
+        (Ka alpha0 alpha1 alpha2 alpha3 alpha4 beta0 beta1 beta2 beta3)
+        analog24-transfer (coef &key (hfreq .5) (steps 50))
+
+
+
+
+
+        returns magnitude of analog transfer function for a 2d or 4th
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 8 -
+
+
+        order filter section with gain and coefficients in coef.
+        these are for 2d order section: (K a0 a1 a2 b0 b1)
+        with b2 assumed to be 1.0 and the transfer function given by
+
+                H(S) = K * (a2 * s**2 + a1 * s + a0) / (s**2 + b1 * s + b0)
+
+        For 4th order section the coefficients are
+        (K a0 a1 a2 a3 a4 b0 b1 b2 b3) with b4 assumed to be 1.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 9 -
+
+
+        test-bilinear24 ()  test d2a-freq, bilinear2, bilinear4,
+        and digital-transfer
+        d2a-freq (fd) given digital frequency 0 <= fd <= .5 Hz,
+        returns pre-warped analog frequency fa for use of bilinear transform.
+        a2d-freq (fa) given digital frequency 0 <= fa <= + infinity
+        returns un-warped digital frequency fd = 2*atan(2*pi*fd) / (2*pi)
+        bilinear2 (coef) return bilinear transform of 2d order analog
+        filter section. The analog section is assumed to have the form
+
+                H(s) = Ka * (a2 * s**2 + a1 * s + a0) / (s**2 + b1 * s + bo)
+
+        The resultant digital filter is assumed to have the form
+
+                H(z) = Kd*(z**2 + alpha1*z * alpha0) / (z**2 + beta1*Z + beta0)
+
+        The given coef contains (Ka a0 a1 a2 b0 b1) and the returned list
+        contains (Kd alpha0 alpha1 beta0 beta1). Note that in the digital
+        filter, H(z), the 2d order terms in both numerator are assumed
+        to have a coefficient of 1.0 .  In the analog filter, H(s), only
+        the denominator coefficient of s**2 is assumed to be 1.0 .
+        bilinear4 (coef) return bilinear transform of 4th order analog
+        filter section. The analog section is assumed to have the form
+
+                        Ka * (a4 * s**4 + a3 * s**3 + a2 * s**2 + a1 * s + a0)
+                H(s) =  -----------------------------------------------------
+                         (s**4 + b3 * s**3 + b2 * s**2 + b1 * s + bo)
+
+        The resultant digital filter is assumed to have the form
+
+                Kd * (z**4 + alpha3 * z**3 + alpha2 * z**2 + alpha1*z * alpha0)
+        H(z) = ----------------------------------------------------------------
+                (z**4 + beta3 * z**3 + beta2 * z**2 + beta1*Z + beta0)
+
+        The given coef contains
+                (Ka a0 a1 a2 a3 a4 b0 b1 b2 b3 )
+
+        The returned list contains
+                (Kd alpha0 alpha1 alpha2 alpha3 beta0 beta1 beta2 beta3)
+
+        Note that in the digital filter, H(z), the 4th order terms in
+        both numerator are assumed to have a coefficient of 1.0 .
+        In the analog filter, H(s), only the denominator coefficient of
+        s**4 is assumed to be 1.0 .
+        digital-transfer (coef &key (hfreq .5) (steps 50) magnitude t))
+        returns the magnitude of the H(z) for z = exp(j*2*pi*f(i))
+        where f(i) ranges from 0 Hz to hfreq in steps and j=sqrt(-1)
+
+                            z**n + a(n-1)*z**(n-1) ... + a(1)*z + a(0)
+
+
+
+
+
+                H(z)= Kd*  -------------------------------------------
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 10 -
+
+
+                            z**n + b(n-1)*z**(n-1) ... + b(1)*z + b(0)
+
+        coef contains (Kd a(0) a(1) ... a(n-1) b(0) b(1) ... b(n-1)
+
+        if the given magnitude is false, then the complex digital transfer
+        function is returned
+        multi-sect-digital-transfer (coef &key (hfreq .5) (steps 50)
+                (magnitude t))
+        returns the magnitude of the H(z) for z = exp(j*2*pi*f(i))
+        where f(i) ranges from 0 Hz to hfreq in steps and j=sqrt(-1)
+        The transfer function for each section is of the form
+
+                            z**n + a(n-1)*z**(n-1) ... + a(1)*z + a(0)
+                HS(z)= Kd*  -------------------------------------------
+                            z**n + b(n-1)*z**(n-1) ... + b(1)*z + b(0)
+
+        and the overall transfer function is
+
+                H(z) = H0(z) * H1(z) * ...
+
+        coef contains (coef0 coef1 .... ) and for each section coef(i)
+        contains
+
+        (Kd a(0) a(1) ... a(n-1) b(0) b(1) ... b(n-1)
+
+        if given magnitude is false, then the complex frequency domain
+        transfer function is returned
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 11 -
+
+
+        digital-filter-design--test () test the following functions
+                - low-pass-design
+                - high-pass-design
+                - band-pass-design
+                - band-stop-design
+                - digital-transfer
+                - butterworth-analog-lp-proto
+                - d2a-freq
+                - bilinear2
+                - bilinear4
+        low-pass-design (fp gp fs gs &key (type butterworth))
+        given pass frequency fp and gp, the gain in db at fp, the stop
+        frequency fs and gs, the gain in db at fs.  gp and gs must be
+        negative with gp > gs.  both fp and fs must be between 0 and .5
+        with fp < fs.  the function returns a list of lists.
+        each of the component lists contains the digital gain Kd and the
+        coefficients for one serial section of the filter.
+        a typical 2d order section would contain (Kd a0 a1 b0 b1) and
+        the corresponding digital transfer function for the section is
+
+                H(z) = Kd * (z**2 + a1 * z + a0) / (z**2 + b1 * z + b0)
+
+        note that the coefficients of z**2 is 1.0 in both numerator and
+        denominator.
+
+        at present butterworth is the only type that is implemented.
+        butterworth-analog-lp-proto (order k)
+        high-pass-design (fs gs fp gp &key (type butterworth))
+        given stop frequency fs and gs, the gain in db at fs, the pass
+        frequency fp and gp, the gain in db at fp.  gs and gp must be
+        negative with gp > gs.  both fp and fs must be between 0 and .5
+        with fp > fs.  the function returns a list of lists.
+        each of the component lists contains the digital gain Kd and the
+        coefficients for one serial section of the filter.
+        a typical 2d order section would contain (Kd a0 a1 b0 b1) and
+        the corresponding digital transfer function for the section is
+
+                H(z) = Kd * (z**2 + a1 * z + a0) / (z**2 + b1 * z + b0)
+
+        note that the coefficients of z**2 is 1.0 in both numerator and
+        denominator.
+
+        at present butterworth is the only type that is implemented.
+        band-pass-design (fs1 gs1 fp1 gp1 fs2 gp2 fs2 gs2
+                &key (type butterworth))
+        given frequencies fs1, fp1, fp2, fs2 and the corresponding gains
+        gp1, fp2, gp2, and gs2, where fs1 and fs2 are the stop frequencies,
+        gs1 and gs2 are the stop gains, fp1 and fp2 are the pass frequencies,
+        gp1 and gp2 are the pass gains.
+        The frequencies are in Hz with 0 < fs1 < fp1 < fp2 < fs2 < .5 .
+        The gains are negative db with gs1 and gs2 < gp1 and gp2 .
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 12 -
+
+
+
+        the function returns a list of lists.  each of the component
+        lists contains the digital gain Kd and the coefficients for
+        one serial section of the filter.  a typical 4th order section
+        would contain (Kd a0 a1 a2 a3 b0 b1 b2 b3) and the
+        corresponding digital transfer function for the section is
+
+                            (z**4 + a3 * z**3 + a2 * z**2 + a1 * z + a0)
+                H(z) = Kd * --------------------------------------------
+                            (z**4 + b3 * z**3 + b2 * z**2 + b1 * z + b0)
+
+        note that the coefficients of z**4 is 1.0 in both numerator and
+        denominator.
+
+        at present butterworth is the only type that is implemented.
+        band-stop-design (fp1 gp1 fs1 gs1 fs2 gs2 fp2 gp2
+                &key (type butterworth))
+        given frequencies fp1, fs1, fs2, fp2 and the corresponding gains
+        gs1, gp1, gs2, and gp2, where fs1 and fs2 are the stop frequencies,
+        gs1 and gs2 are the stop gains, fp1 and fp2 are the stop frequencies,
+        gp1 and gp2 are the stop gains.
+        The frequencies are in Hz with 0 < fp1 < fs1 < fs2 < fp2 < .5 .
+        The gains are negative db with gs1 and gs2 < gp1 and gp2 .
+
+        the function returns a list of lists.  each of the component
+        lists contains the digital gain Kd and the coefficients for
+        one serial section of the filter.  a typical 4th order section
+        would contain (Kd a0 a1 a2 a3 b0 b1 b2 b3) and the
+        corresponding digital transfer function for the section is
+
+                            (z**4 + a3 * z**3 + a2 * z**2 + a1 * z + a0)
+                H(z) = Kd * --------------------------------------------
+                            (z**4 + b3 * z**3 + b2 * z**2 + b1 * z + b0)
+
+        note that the coefficients of z**4 is 1.0 in both numerator and
+        denominator.
+
+        at present butterworth is the only type that is implemented.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 13 -
+
+
+        convolve (x h)  discrete concolution of 2 finite duration sequences
+        h and x .  h and x may be different lengths
+        Reference: Brigham, The Fast Fourier Transform And Its Applications
+        Prentice-Hall 1988, page 208
+        correlate (x h)  discrete correlation of 2 finite duration sequences
+        h and x .  h and x may be different lengths. The output is scaled
+        so that the largest positive peak is 1.0.
+        Reference: Brigham, The Fast Fourier Transform And Its Applications
+        Prentice-Hall 1988, page 228
+        test-convolve ()
+        crshift (x) circular right shift of elements of list x
+        CAUTION: this function has NOT been tested as of 12/4/91
+        clshift (x) circular left shift of elements of list x
+        CAUTION: this function has NOT been tested as of 12/4/91
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+
+
+
+
+                           - 14 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      January 15, 1992
+
+

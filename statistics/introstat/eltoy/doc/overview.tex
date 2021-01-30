@@ -1,0 +1,1633 @@
+
+%% You may not have these on you system, if so, just comment them out.
+\input/bass/users/almond/text/rgafig
+%\input psfig
+%\psfigtrue
+\def\directory{/bass/users/almond/ElToY/doc}
+%Use Standard Postscript Fonts
+\input/bass/users/almond/text/psfonts
+
+\def\eltoy/{{\tt ElToY}}
+\def\disttoy/{{\tt Dist-toy}}
+\def\clttoy/{{\tt CLTToy}}
+\def\xlispstat/{{\tt XLISP-STAT}}
+\def\lispstat/{{\tt LISP-STAT}}
+\def\begincode{\begingroup\tt\obeylines\obeyspaces}
+\def\endcode{\endgroup}
+\def\:#1 {{\tt :#1\/} }
+\def\meth#1(#2)---{\noindent{\tt #1 (#2)}---}
+\hfuzz=14pt
+
+
+
+\centerline{{\tt ElToY\/}:  A tool for Education and Elicitation\/}
+
+\centerline{\it Russell Almond\/}
+
+\beginsection{1.  What is \eltoy/?}
+
+At the winter 1992 ASA meating, several colleagues and I were
+discussing the apparent lack of Bayesian software.  It occurred to me
+then that there are two principle problems with the construction of
+Bayesian software:  the first problem is philosophical; most Bayesians
+feel that each problem is unique and the model should be assessed anew
+for each problem.
+However, good Bayesian software could provide the user with template
+analyses which can be modified to fit the needs of the assessed model.
+The second problem is Elicitation---the process of encoding prior
+information as a probability judgement.  
+\eltoy/ ({\bf El}icitation {\bf To}ol for {\bf Y}ou)
+is meant to address this issue.
+({\bf Y}ou should be taken loosely in the spirit of de~Finetti's usage.)
+
+The process of encoding prior information as a probability
+distribution is not at all simple or obvious.  Although statisticians
+are familiar with probability distributions, most are not familiar
+with the consequence of choice of prior distribution in a Bayesian
+model.  If this subject is taught, it is as an advanced study for
+graduate students, and not as part of the undergraduate service
+courses.
+
+To further complicate this training need, the typical user of such
+software will not be a statistician but a statistical consumer.
+A physician or an engineer is a good example of such an individual.
+Although highly knowledgeable in her field, she has little statistical
+training (probably one course packed into a demanding curriculum), 
+and that little may have gone rusty through disuse.  Thus if we expect
+statistical consumers to routinely use prior information, we need to
+train them.
+
+Thus the need for \eltoy/.  \eltoy/ actually consists of three
+separate toys for exploring statistics:  \disttoy/, which teaches
+about the relationship between distributions and their parameters;
+\clttoy/, which demonstrates the central limit theorem; and \eltoy/
+which demonstrates the relationship between prior and posterior
+distributions and sample data.
+
+\disttoy/ is a subset of \eltoy/ which displays probability
+distributions.  It was originally built to create distribution display
+facilities for \eltoy/.  \disttoy/ (and \eltoy/) reguard probability
+distributions as *{\it objects\/}* which can be acted upon.  \disttoy/
+action is to display a graph of its p.d.f. (or p.m.f. if the
+distribution is discrete) along with a control box of its parameters.
+Changing the parameters changes the display.
+
+\clttoy/ is an example of the advantages of object oriented
+programming.  Once the distribution object had been defined in
+\disttoy/ we could use it to watch convergence in the CLT for very
+little additional effort.  \clttoy/ takes a probability distribution
+and sample from it, displaying a histogram of the result with a
+superimposed normal curve.  Pressing the ``more'' button turns it into
+a sample of the sum of two draws.  Pressing the button repeatedly
+makes it a picture of the sum of three, four, or more samples from the
+original distribution.  
+
+\eltoy/ displays two \disttoy/ displays:  a prior distribution graph
+display and parameter control box, and a posterior distribution graph
+display and control box.  A fifth display shows sample data.  All of
+the displays are linked so that changes in one display are propagated
+to all of the others.  Thus if you change the prior parameters, the
+posterior changes; if you change the data the posterior changes; if
+you change the posterior, the prior changes.
+
+\eltoy/ acts on conjugate families of distributions in a say that is
+analogous to the way \disttoy/ works on ordinary distribution
+families.  Conjugate families are important for the simple reason that
+the relationship between prior and posterior distributions can be
+easily described.  Theoretically, any distributional type could be
+used as a prior or likelihood, all we need is a rule for updating the
+posterior when the {\it likelihood\/} prior or data change, and rules
+for updating the prior when the posterior changes.  Thus in theory
+methods like Gaussian quadriture (already available in \lispstat/).
+Future versions of eltoy may support just that.
+
+Good[1976] introduces the idea of Bayesian robustness through the concept
+of a {\it black box}.  When the inputs
+(the prior and data) are wiggled, the output wiggles as well.  Thus
+You (the generalized user of \eltoy/) can see the consequences of
+changes in the prior judgements and judge the sensitivity of Your
+results to those changes.  Furthermore, You can see the sensitivity of
+Your conclusions to questionable data values.  \eltoy/ achieves this
+through dynamically linked multiple views.  These provide You with
+immediate feedback as to the consequences of Your prior judgements.
+This should provide You with the understanding necessary to assess
+realistic priors or classes of priors for Your Bayesian analyses.
+
+\beginsection{2. How do I use \eltoy/?}
+
+\eltoy/ consists of three different toys:  \disttoy/, \clttoy/, and
+\eltoy/.  The routine operation of these three toys are described
+below.  There are two other things you need to know to operate
+\eltoy/: how to get a copy and how to start it and stop it.  As
+installation only needs to be done once, the installation instructions
+will be put last.  Finally, I include some ``exercises'' for classroom
+or self-taught demonstration.
+
+\eltoy/ is written in \xlispstat/(Tierney[1990]).  If you already known
+how to use \xlispstat/ you should have no problems with \eltoy/.  If
+you don't, don't worry; \eltoy/ provides a menu interface so you never
+need to learn LISP (of course, if you do learn LISP, you can extend
+the system.)
+
+\xlispstat/ is currently available for Apple MacIntosh${}^{\rm TM}$
+Computers (with 24 Mbytes of memory) and Unix${}^{\rm TM}$
+workstations running X Windows${}^{\rm TM}$.  As some instructions are
+slightly different for the two systems, paragraphs that apply mainly
+to MacIntosh users will start with \#+MacIntosh, and those that apply
+mainly to Unix users will start with \#+Unix.
+
+\beginsection{2.1 Getting started.}
+
+\#+MacIntosh:  To start \eltoy/, first start \xlispstat/.  Do this in
+the usual way, {\it i.e.,} find the \xlispstat/ icon and double click
+it.  This will start \xlispstat/ which will open a LISP listener
+window.  \xlispstat/ will load some files and then signal that it is
+ready for a new command by prompting with a `$>$' in the listener
+window.  Now select `Load' from the `File' menu
+(`Open' opens a file for editing, `Load' loads it into LISP)
+and look in the ElToY folder for a file marked ``load-eltoy.lsp.''
+Selecting that file will start \eltoy/ loading.  Selecting
+``loaddisttoy'' will load \disttoy/ and \clttoy/ but not \eltoy/
+(this takes about half the memory).
+There is a third load file, ``loadall-debug.lsp.''  This loads \eltoy/
+but with the LISP debugger turned on.  This is very useful for
+programmers wishing to debug problems with loading the files, but is
+probably confusing to users unfamiliar with LISP.
+
+\#+MacIntosh:  After you have selected `Load', the listener window will
+show you the files it is loading.  This will take a little while.  You
+will also receive a warning about Loading without documentation.  As
+the documentation is intended mainly for programmers, this should not
+present any difficulties.  Loading and other operations should be must
+faster on a machine with more memory.  Every once in a while, LISP
+will stop and try and recycle unused memory in an operation called
+``garbage collection.''  You will notice garbage collection because
+the cursor temporarily becomes a trash bag with the letters ``GC''
+written on it.
+
+\#+Unix:  Your system administrator should have set up the loading
+files somewhere on your normal search path (usually in
+`/usr/local/bin'). 
+Two different loading commands are available:  `disttoy' which loads
+only \disttoy/ and \clttoy/ and `eltoy' which loads \eltoy/ as well as
+the other two.  Your window will display messages about the loading of
+files as the system loads data for first \xlispstat/ then \disttoy/
+and \eltoy/.  \eltoy/ should create a ``Menu Bar'' window
+(a quick and dirty emulation of the MacIntosh menu bar) and your
+xterm window will become the LISP listener window.  It will inform you
+that it is ready to go by prompting with a `$>$' in the LISP listener
+window.
+
+You need never interact with the LISP listener window; all the commands
+you need to operate \eltoy/ are available from the menu bar, including
+the commands to exit.  You may exit at any time by selecting the
+appropriate menu item.  You can also exit by typing 
+`{\tt (exit)}'
+in the LISP listener window
+(the parentheses are required; they indicate to LISP that you want to
+run a command, not examine a variable).
+Exiting LISP will close all \eltoy/ windows.
+
+\#+MacIntosh.  On the MacIntosh, the Quit item is located in its usual
+place in the file menu, and can be accessed through the shortcut
+frimsy-Q.  Unfortunately, there is no way to interrupt a LISP program
+behaving strangely; you may need to reboot.  The usual interrupt
+command (frimsy-{.}) is bound to something else
+(return to top level from debug).
+
+\#+Unix.  On the menu bar window, there is a button marked `menu'.
+Press that button and a pop-up menu will appear with a single choice 
+`{\tt Exit}'.  Chosing 
+`Exit' will exit \xlispstat/.  Control-C in the listener window will
+not exit \xlispstat/, but it will interrupt \xlispstat/ and give you a
+LISP prompt from which you can type 
+`{\tt (exit)}' to exit.  Typing a Control-D in the listener window will
+cause \xlispstat/ to exit.  Typing Control-Z will suspend the LISP
+job; you can resume a suspended job with the Unix 
+`{\tt fg}' command
+and terminate it with the Unix 
+`{\tt kill}' command.  Exiting \xlispstat/ will remove all \eltoy/
+windows.
+
+\beginsection{2.2 Using \disttoy/}
+
+To use \disttoy/ press the mouse button over the name \disttoy/ on the
+menu bar.  A pull down menu should appear giving you a list of all
+distributions currently known to \eltoy/.  Select any one of them
+(note that selecting `undefined-distribution' will create an error).
+\disttoy/ should then open two windows (one displaying a graph and
+one displaying a set of parameter controls).  (It will usually display
+them in an inconvenient location, {\it i.e.}, on top of the Menu Bar
+window on an X windows display.  Move them to someplace more
+convenient.)
+
+In this version of \eltoy/ you do most of your interaction with the 
+{\it parameter\/} control window.  There is one slider for each
+parameter, and you should be able to manipulate them using the normal
+ways of manipulating sliders on your system.  If you would rather
+enter an exact value, you can edit the value shown above the slider.
+You can also edit the upper and lower limits on the slicer value.  To
+enter these changes press the `Update' button for the particular
+parameter you wish to change.  \eltoy/ will not notice your changes
+before you hit the Update button.
+
+When you change the value of a parameter, the graph of the  p.d.f.
+(continuous distribution) or of the p.m.f. (discrete distribution)
+should change accordingly.  In many cases, this will cause the picture
+to go partially or even completely off the screen.  This can be fixed
+by selecting the `rescale' item from the graph menu.
+(\#+Macintosh: Select the graph window and the graph menu should
+appear on the menu bar.)
+(\#+Unix:  The graph menu psps up when you press the button marked
+`menu' on the graph window.)  
+
+Some values of the parameters may not
+produce valid distributions
+({\it e.g.}, a negative variance or a non-integral number of trials).
+In these cases \eltoy/ will signal an error and not change the
+internal values.
+
+To close a \disttoy/, select the same distribution again from the main
+\disttoy/ menu.  It is possible to have more than one \disttoy/ open
+at the same time, but if you keep opening them you will clutter your
+screen and run out of memory.  Pressing the `close' button on a window
+will remove the window, but will leave \disttoy/ in a peculiar internal
+state.  It will then be difficult to open a new \disttoy/ on the same
+distribution.  
+
+\#+Unix Warning:  Pressing the close button on the Menu Bar window
+will cause it to go away, leaving just the LISP Listener window.  You
+will now need to type `(exit)' in the Listener (Xterm) window to exit
+LISP.
+
+\beginsection{2.3 Using \clttoy/}
+
+To launch \clttoy/ press on the name `CLTTOY' on the Menu Bar.  This
+will create a pull-down menu of distributions known to \clttoy/;
+select one of them (again selecting `Unknown' will cause an error).
+Two windows should appear on your screen, a histogram window and a
+control and explanation dialog window.  (Again these will probably
+appear in inconvenient locations and sizes.  Adjust them accordingly.)
+
+The dialog window explains what the histogram window is showing.
+When you first start a \clttoy/, it will show a sample of $500$ draws
+$(X_1, \ldots\ X_{500})$ from the selected distribution.  Superimposed
+on this histogram is a normal curve with the same mean and variance as
+the sample.
+
+Now press the button `more' on the dialog.
+The computer will draw another sample of $500$ random values from the
+selected distribution $(Y_1,\ldots, Y_{500})$.  The normal curve will
+be set to match the mean and variance of the sample distribution of
+totals.  Pressing the `more' button  again adds another sample of
+five hundred to the data, making the displayed data a sample from the
+distribution of the total of three draws.  And so forth.
+
+As you watch, you should see the histogram come closer and closer to
+the normal curve.  If you want a lot of `more's, selecting the same
+distribution from the \clttoy/ menu performs the same action as
+pressing the `more' button ten times.
+
+Pressing the button marked `Add QQ-plot' or selecting the `Add
+QQ-plot' item from the graph menu creates a Quantile Quantile plot.
+(Inconveniently, it usually does so right over the histogram window.)
+The Quantile Quantile plot plots quantiles of a standard normal
+distribution ($x$-axis) vs the observed quantiles of the distribution
+currently displayed in the histogram window.  When the distribution of
+totals converges to normal, this should follow a straight line with a
+roughly 45${}^\circ$ angle (in a square plotting region).  Try this
+option, it's really fun!
+
+There is no easy way to get rid of \clttoy/ windows (aside from
+exiting LISP).  Pressing the `close' button will remove the window,
+but it will then be impossible to restart a \clttoy/ with the same
+distribution.
+
+\beginsection{2.4 Using \eltoy/}
+
+Bear in mind that in order to use \eltoy/ you must first have loaded
+it.  See Section~2.1 on starting \eltoy/.  If you just loaded
+\disttoy/, ElToY will not appear on the menu bar.  You can load
+\eltoy/ from LISP at any time.  Just type {\tt (load-eltoy)\/} in the
+Lisp listener windows (the parenthesis are important).
+
+\#+Macintosh: You can load \eltoy/ now, the same way you would load it from
+the beginning, {\it i.e.}, select load and the file Load-eltoy.  This
+will only load the files it needs (\disttoy/ files will not be
+reloaded).
+
+
+When \eltoy/ is loaded, there will be a menu titled \eltoy/ on the
+menu bar.  Pull that down to get a list of currently known conjugate
+distributions.  Select any one of them (except the Unknown
+distribution).  \eltoy/ will create 7 new windows (mostly on top of
+each other).  Move them around until they are mostly visible.  The
+windows are identified by the first part of their titles; the full 
+title indicates the specific distribution.
+
+\item{\eltoy/} This is a main control window.  There are two buttons:
+``Spawn New Data Link'' and ``Return Values and Exit''.  The first
+button will create a new data-link and posterior distribution objects.
+The second button will create a pop-up window with the current values
+of the prior parameters and an opportunity to approve or reject them.
+If you approve them, it will return the values and destroy all
+windows.  If you don't approve them, you will return to normal
+operation.  This is the proper way to clean up all windows and exit.
+
+%Programmers note:  You can also invoke an \ELToY/ directly with the
+%Lisp expression {\tt (make-el-tool {\it conj-family\/})}.  This
+%function will return an {\tt el-tool} object (the collection of
+%windows on the screen).  If it is created with {\tt (make-el-tool {\it
+%conj-family\/} :catch-return t)} then it with throw the values to any
+%form catching {\tt eltoy-return}.  Thus:
+%\begingroup \obeylines\obeyspaces\tt
+%(catch 'eltoy-return
+%\        (make-el-tool {\it conjugate-family})
+%\        (break))
+%\endgroup
+%will return those values.
+
+\item{Prior:}  There are actually two windows with this name, one is a
+graph and one is a set of parameters.  This is a picture of the prior
+distribution.  They behaves like the \disttoy/ windows except that the
+results are also passed through a ``data-link'' to the posterior
+distribution windows.
+
+\item{Posterior:}  Again these are two windows which behave like
+\disttoy/ windows accept that they are linked to the prior windows
+through the ``data-link.''
+
+\item{Data:}  This window records both data and nuisance parameters
+associated with the data.  The bottom half of the window allows entry
+of the data.  This is entered as an arbitrary LISP expression.  This
+expression when evaluated, can either be a single value or a list of
+values.  In particular, it could be the name of an \xlispstat/
+variable.  The button ``Evaluate X'' causes \eltoy/ to read the
+current expression in the editing window.  The button ``Reset X''
+causes \eltoy/ to redisplay the current value of the parameters.
+
+\item{}  The upper half of the Data/Parameters window reads in a nuisance
+parameter associated with each data point.  In the Normal-normal
+family, this is the standard deviation of the observations.  In the
+beta-binomial family, it is the number of trial associated with each data
+value.  In the gamma-Poisson family, it is the observation time period
+for each observation.
+
+\item{} The data and nuisance parameters are linked to the posterior
+distribution through the data-link object.
+
+\item{Data-Link} The ``data-link'' object links a posterior and prior
+distribution through a collection of data.  In particular, it uses the
+conjugate family to figure out the posterior parameters from the prior
+parameters and the data.  \eltoy/ uses the following rules to update
+in response to a change:
+
+\itemitem{1.} If the prior parameters change, update the posterior
+parameters.
+
+\itemitem{2.} If the data change, update the posterior parameters.
+
+\itemitem{3.} If the nuisance parameters change, update the posterior
+parameters. 
+
+\itemitem{4.} If the posterior parameters change, update the prior
+parameters.  
+
+The Data-Link window is a probe which monitors the internal data-link
+object.  It displays the rule which was last used to update the
+display.
+
+\medskip
+
+The best way to exit from an \eltoy/ is to press the ``Return Values
+and Exit'' button on the \eltoy/ window.
+
+\beginsection 2.5 Installing \eltoy/.
+
+
+In order to run \eltoy/, you will first need a copy of \xlispstat/.  If
+you don't have a copy of \xlispstat/, don't worry, its free.  You can
+obtain a copy via electronic mail.  Send mail to {\tt
+statlib@temper.stat.cmu.edu\/} continuing the single line {\tt send
+index from xlispstat\/}.  This mail should contain no subject header
+and no extraneous information because it will be processed by the
+computer and not by a human.  Follow the instructions there to install
+\xlispstat/ on your system.
+
+After you have gotten \xlispstat/ installed, copy the ElToY files to
+their home.  The only part that should require customization is the
+``loadall'' files.  These are in the top level directory of the
+distribution.   Each of them contains a line of the form:
+$$\vbox{
+\tt\obeyspaces
+(def ElToY-directory "/home0/almond/ElToY/" )
+}$$
+Edit this to reflect the location of \eltoy/ on your system.
+
+\#+MacIntosh:  MacIntosh pathnames are sort of like Unix pathnames,
+except that they use ``{\tt :}'' instead of ``{\tt /}'' to separate
+the directories.  Thus for your system it will look something like:
+$$\vbox{
+\tt\obeyspaces
+(def ElToY-directory ":Hard Drive:Free Software:ElToY:" )
+}$$
+Once you've edited this line in all three ``loadall'' files, you
+should be ready to run.
+
+\#+Unix:  There are three more files you need to modify, the startup
+files.  These are also in the top level directory and are named ``{\tt
+eltoy\/}'', ``{\tt dist-toy\/}'' and ``{\tt debug-toy\/}.''  They look
+something like:
+\begincode
+\#!/bin/csh
+xlispstat \~almond/ElToY/loadall.lsp
+\endcode
+Edit them to reflect the placement of the \eltoy/ directory on your
+system.  If you have system privileges, you will probably want to copy
+the files {\tt eltoy\/} and {\tt dist-toy\/} to {\tt /usr/local/bin\/}
+to that they can be accessed by everybody.  {\tt debug-toy\/} is meant
+for serious programmers and should probably be left where it is.
+
+You should now be ready to go.
+
+
+{\it Debugging problems with loading of files.\/} The ``loadall'' file
+{\tt loadall-debug.lsp\/} (and the command file {\tt debug-toy\/}
+which loads it) is identical to {\tt loadeltoy\/}, except that the
+LISP debugger is turned on before the first file is loaded.  If you
+can program in LISP, this will help you tract down specific problems.
+Hopefully, there won't be any problems unless you change something.
+
+\beginsection 2.6 Exercises (and other fun things to try)
+
+\item{1.} Change the parameters on the normal distribution and then
+hit rescale plot.  Notice how the distribution when rescaled looks the
+same as the standard normal.  The {\it mean\/} of a normal
+distribution is called a {\it location parameter\/} and the {\it
+standard deviation\/} is called a {\it scale parameter\/}.  Why?
+
+\item{2.} Open up both a Binomial and a Hypergeometric Dist-toy.  Give
+the $r$ and $b$ parameters of the hypergeometric (number of red balls
+and black balls) large values and match the binomial parameter
+$\theta=r/(r+b)$.  Let the $n$ parameter of the binomial and the $k$
+of the hypergeometric be the same.  If $n$ and $k$ are small compared
+to $r$ and $b$, the two distributions should be close.  When $n$ and $k$ are
+large compared to one of $r$ or $b$, then the distributions will be
+different.  Recall that the binomial distribution is like taking $n$
+samples from an urn, replacing the ball on each sample.  The
+hypergeometric is like sampling from the urn without replacement.
+When is the binomial formula a good approximation for sampling without
+replacement?
+
+\item{3.} Play with the CLT Toys with several of the standard
+distributions.  In particular, pick a symmetric distribution like the
+binomial with $\theta=.5$, a skewed distribution like the exponential, a
+flat distribution like the continuous uniform and a distribution with
+heavy tails like the student-$t$.  Which distributional shapes converge
+fastest to the normal?  How many samples does it take before the
+sum/average is reasonably close to normal?  What does this tell you
+about rates of convergence in the Central Limit Theorem?
+
+\item{4.}  Try the following:
+\itemitem{4a)} Open up a binomial ``Dist-Toy'' and let $n$ get large
+for various values of $\theta$.
+\itemitem{4b)} Open up a Poisson distribution and let $\lambda$ get
+large.
+\itemitem{4c)} Open up a gamma distribution and let the shape parameter
+get large.
+\itemitem{4d)} Open up a negative binomial distribution and let $r$ get
+large.  
+\item{}In each case, the distributional shape should begin to take on
+a familiar form.  Interpret each random variable as the sum of other
+random variables and use the central limit theorem to explain what you
+see.
+
+\item{5.} Open up a clt-toy on the ``Cauchy'' distribution.  Does it
+converge to the normal?  If so, what happens as you add more samples?
+The Cauchy distribution has such extreme tails that it doesn't have a
+mean or a variance (the appropriate integrals don't converge).  Does
+it satisfy the conditions of the central limit theorem?
+
+\item{6.} (Probably want to try this on after you learn the $t$-test).
+Call up the student-t distribution and fool around with the degrees of
+freedom parameter.  Notice that as the degrees of freedom increase it
+gets closer to the normal and as they decrease it gets closer to the
+Cauchy.  What does this mean in terms of sample size?
+
+
+\beginsection {3.}  How can I extend \eltoy/?
+
+\eltoy/ is a library of \xlispstat/ objects and methods.  If you are
+willing to program in \xlispstat/, you can easily extend the system.
+The rest of this book assume you can program in \xlispstat/, if not I
+recommend you read Tierney[1990] first.
+
+Even though there is not much in the way of user's documentation
+(except this file), there is a substantial amount of programmer's
+documentation.  This is available on-line for Unix users by sending
+any ElToY object the {\tt :documentation\/} and {\tt :doc-topic\/}
+messages.  It is not loaded on the MacIntosh (the program assumes
+limited memory), but they are present in the source code.  The file
+``{\tt OBJECTS\/}'' lists all of the objects supported by \eltoy/ and
+gives a list of methods which they specialize.
+
+
+The most obvious way to extend \eltoy/ is to add new probability
+distributions.  Therefore this section talks about the protocol for
+probability distribution families and conjugate families.  The rest of
+this section describes these implementations.  
+
+One of the advantages of object oriented programming is that it encourages
+code re-use.  In particular, the specification for probability
+distributions described here should be reusable in other contexts.  A
+good example of this is the CLT-Toy.  CLT-Toy was not part of the
+original \eltoy/ project specification.  However, I wanted a central
+limit theorem demonstration for a class and the distribution library
+was already written.  It was relatively straightforward to build the
+CLT-Toy on top of the existing \disttoy/ code.  
+
+\xlispstat/ implements a prototype object system.  This means that
+every object inherits default values and methods---(methods are
+functions which manipulate the object) from the prototype object.
+Prototypes behave much the same way that classes do in a class based
+system (like CLOS).  Prototypes are also objects themselves, so they
+can accept messages and behave properly.  
+
+(Note: there is a relatively serious bug in the \xlispstat/ object
+system: when the method of a prototype object is changed, the
+unspecialized methods of its children are not changed.  This is very
+annoying, but can be worked around by reloading all code which was
+loaded after the prototype was changed.  The function {\tt
+new-provide\/} provided in the \eltoy/ distribution helps to work
+around that problem.  It behaves roughly the same way as {\tt
+provide\/}, except that if the file is being reloaded, then all
+modules which were reloaded after the current file are marked as unloaded
+(removed from {\tt *modules*\/}).  A ``loadall'' file which has
+require statements for all necessary files will then reload and hence
+recreate any code which might be affected by the change.)
+
+
+\beginsection 3.1 Distribution Families.
+
+A good exercise in object oriented programming for statisticians is to
+think about the probability distribution family as an object.  If we
+think of a probability distribution, we can think of all sorts of
+statistical operations we would like to perform on it, calculate the
+mean and variance, draw random values, find quantiles, find the mass
+or density, etc.  If we restrict our attention to univariate
+distributions, we also can divide the class of univariate
+distributions into two subclasses:  discrete and continuous
+distributions.  (Version~1.0 of \eltoy/ does not support mixtures).
+
+Before we can implement the exciting statistical properties of
+distributions, we need to implement some lower level functions which
+assign and return default values of parameters, constrain parameters
+and so forth.  Fortunately we can benefit from object oriented
+programming here; most of the methods for default parameter values and
+related concepts can be inherited from the {\tt family-proto\/} object
+which is the prototype for all families.  
+
+Objects have internal ``slots'' for storing values.  In particular,
+family objects have the following slots:
+$$\vbox{
+\halign{\tt # \hfil\ & \ \it #\hfil \ &\rm #\hfil\cr
+{\rm Slot} & {\rm Type} & Description\cr
+\noalign{\smallskip\hrule\smallskip}
+rv-name & List (of symbols) & Name(s) of random variable(s)\cr
+parameter-names & List (of symbols) & Name(s) of parameter(s)\cr
+default-parameters & List (of numbers) & Default value(s) of parameter(s)\cr
+parameter-limits & List (of number pairs) & Hard limits of parameter(s)\cr
+parameter-range-default & List (of number pairs) & Elicitation range of parameter(s)\cr
+parameter-granularity & List (of numbers) & Elicitation step size for parameter(s) \cr
+parameter-integer? & List (of {\tt T} or {\tt Nil\/}) & Is parameter(s) integer(s)?\cr 
+parameter-constraint-fun & Function (args parameters) & Constraint function\cr
+nparams & Integer & Number of parameters \cr
+}}$$
+Except for the last two, all of the slots store lists.  In particular,
+{\tt rv-name\/} is a list of names (anticipating multivariate distributions
+which are not yet implemented) for the random variable and {\tt
+parameter-names\/} is also a list of names.  For all of the
+parameters, {\tt parameter-names\/}, {\tt default-parameters\/}, {\tt
+parameter-limits\/}, {\tt parameter-range-default\/}, {\tt
+parameter-limits\/}, {\tt parameter-granularity\/} and {\tt
+parameter-integer?\/} are lists of the same length,  one value (or
+pair of values) for each parameter.  Specifically, {\tt
+parameter-names\/} stores the name (which should be a symbol), {\tt
+default-parameters\/} stores the default values for each parameter,
+{\tt parameter-limits\/} stores the upper and lower bounds for the
+parameter value (as a list) and {\tt parameter-integer?\/} stores {\tt
+t\/} if the parameter must be an integer and {\tt nil} otherwise.
+{\tt parameter-range-default\/} and {\tt parameter-granularity\/} are
+related to the slider objects which are used to input parameters; the
+first slot stores the default upper and lower bound for the slider and
+the second stores the default step size for the slider.  
+
+The slot {\tt parameter-constraint-fun\/} stores a function which
+should take as its sole argument the list of parameters and returns
+{\tt t\/} if they are in a legal relationship to each other and {\tt
+nil\/} otherwise.  For example, the parameters of the normal
+distribution can be in any relationship to each other (the variance
+will have a lower limit of zero, this will be handled automatically by
+the {\tt parameter-limits\/} and doesn't need to be build into the
+constraint function).  The parameters of the uniform
+distribution---the upper and lower bound---must be in decreasing
+order.  The file ``{\tt constraints.lsp\/}'' in the ``{\tt utils\/}''
+directory provides several useful constraint functions.  In
+particular, the {\tt \#'vacuous-constraint-fun\/} which puts no
+constraints on the parameters, the {\tt
+\#'increasing-constraint-fun\/} which forces the parameters to be in
+increasing order and the {\tt \#'decreasing-constraint-fun\/} which
+forces the parameters to be in decreasing order.
+
+The {\tt family-proto\/} is a child of the {\tt named-object\/}
+prototype, so the {\tt family-proto\/} also inherits the slot {\tt
+name\/} which is the name of the distribution.  
+
+\medskip
+
+The mechanism for setting and accessing these slots is mostly
+established.  You will, however, need to specify default values for
+most of them.  This is usually done in the {\tt :isnew\/} method.
+(The {\tt :isnew\/} method initializes the various variables.)  This is
+usually done immediately after we define the family prototype.
+(Distribution families are themselves prototypes, you can create a new
+instance of that kind of distribution by sending it the {\tt :new\/}
+message.) 
+
+These definitions are usually placed in a file (which can then be
+loaded when needed).  The following is code is from the file for the
+normal distribution (``{\tt Dist-Lib/Normal.lsp\/}''.  It is
+recommended that you try to edit a template from one of the existing
+distributions, rather than start from scratch).
+
+\begincode
+;;; This defines normal distribution families.
+
+(require :el-family (strcat ElToY-directory "fam" *d-sep*  "family.lsp"))
+\endcode
+
+The first expression makes sure that the \eltoy/ code defining the
+family objects is loaded before the code for the normal family is
+loaded.  
+
+\begincode
+;;; generic normal family  Note that a family is a proto-type which is
+;;; sent a :new message to create a specific instance of that family
+
+(defproto normal-family '() '() (list continuous-family-proto))
+\endcode
+
+The second expression defines the {\tt normal-family\/} prototype.  It
+has no slots of its own (the first '()) and it has no shared slots
+(the second '()).  It inherits from the {\tt
+continuous-family-proto\/}.  There is also a {\tt
+discrete-family-proto\/} from which discrete families should inherit.
+
+\begincode
+;;; :isnew --- mostly this sets up default args for the call to the
+;;; family-proto :isnew
+(defmeth normal-family :isnew
+\  	(\&rest args
+\	 \&key (name (gensym "NORMAL"))
+\	      (rv-names '(X))
+\	      (parameter-names '(Mean StDev))
+\	      (default-parameters '(0 1))
+\	      (parameter-range-default '((-10 10) (0 5)))
+\	      (parameter-limits (list (list *-infty* *infty*)
+\				      (list 0 *infty*)))
+\	      (parameter-granularity (list .25 .1))
+\	      (parameter-integer? '(nil nil))
+\	      \&allow-other-keys)
+\  (apply \#'call-next-method
+\   :name name
+\   :rv-names rv-names
+\   :parameter-names parameter-names
+\   :default-parameters default-parameters
+\   :parameter-range-default parameter-range-default
+\   :parameter-limits parameter-limits
+\   :parameter-integer? parameter-integer?
+\   :parameter-granularity parameter-granularity
+\   args))
+\endcode
+
+This expression defines a method for the {\tt :isnew\/} method for the
+normal, which mostly calls the {\tt :isnew\/} method for the {\tt
+family-proto\/} with certain defaults set.  These defaults can be
+overridded in the creation of a new {\tt normal-family\/} with the
+appropriate keyword arguments.  First, the default name for the
+distribution is a new symbol starting with ``NORMAL''  thus we will
+get NORMAL-1, NORMAL-2, etc.  This can be directly specified with the
+keyword {\tt :name\/}.  Next is the name of the random variable, in
+this case, ``X''.  Then come the name of the parameters ``Mean'' and
+``StDev'', their default values (0 and 1, given the standard-normal),
+the default elicitation range (between -10 and 10 for the mean,
+between 0 and 5 for the SD), the limits (note that {\tt *infty*\/} is
+a big number and {\tt *-infty*\/} is {\tt (- 0 *infty*)}, the
+granularity (.25 for the mean and .1 for the SD) and neither parameter
+is constrained to be an integer.  These arguments are passed to the
+function {\tt call-next-method\/} which passes them to the {\tt
+:isnew\/} method for the parent of {\tt normal-family\/} which in this
+case is {\tt family-proto\/} (it skips over {\tt
+continuous-family-proto\/} which does not specialize that method).
+
+The parent objects {\tt family-proto\/} and {\tt
+continuous-family-proto\/} provide sensible defaults for many useful
+methods (such as {\tt :print\/}).  However, in order to the {\tt
+:print\/} method to work successfully with the prototype, the {\tt
+:name\/} argument must be initialized.  Thus:
+
+\begincode
+;; sensible default for print
+(send normal-family :name :normal0)
+\endcode
+
+All distributions must have the following methods:  {\tt
+:quantiles\/}, {\tt :cdf\/}, {\tt :rv-limits\/}, {\tt :mean\/}, and
+{\tt :variance\/}.
+
+All continuous distributions must additionally have the following
+method: {\tt :density\/}.
+
+All discrete distributions must additionally have the following
+methods:  {\tt rv-integer?\/}, {\tt :atoms\/}, and {\tt :mass\/}
+
+Sensible default methods are provided for the following methods, but
+they should probably be specialized for particular families:  {\tt
+rv-default\/} (defaults to median), {\tt :rv-range-default\/}
+(defaults to limits), {\tt :rand\/} (defaults to inverse cdf method).
+
+All of these methods take the \:parameters as a keyword argument.  If
+this argument is omitted, the default-parameters are used instead.
+Some methods require other arguments (as specified below).
+
+
+\noindent{\it Methods Required of All Distributions}
+
+\meth :quantiles ({\it prob} \&key :parameters)---The argument {\it
+prob\/} should be either a probability or list of probabilities
+(values between 0 and 1).  The function returns a list of the
+corresponding quantiles (value $x_p$, such that $F(x_p)=p$)
+
+\begincode
+;; :quantiles  -- takes parameters as optional second argument.  First
+;; argument should be probabilities expressed as fraction
+(defmeth normal-family :quantiles
+\         (prob \&key (parameters (send self :default-parameters)))
+\  (unless (listp prob) (setq prob (list prob)))
+\  (let ((mean (car parameters))
+\	(stdev (cadr parameters)))
+\    (+ mean (* stdev (normal-quant prob)))))
+\endcode
+	
+\meth :cdf ({\it quant\/} \&key :parameters)---This takes a list of
+quantiles and returns a list of the cumulative density function
+($F(x)=\Pr(X\leq x)$) for the given quantiles.
+
+\begincode
+;; :cdf  -- takes parameters as optional second argument.  First
+;; argument should be quantiles
+(defmeth normal-family :cdf
+\         (quant \&key (parameters (send self :default-parameters)))
+\   (let ((mean (car parameters))
+\	 (stdev (cadr parameters)))
+\     (normal-cdf (/ (- quant mean) stdev))))
+\endcode
+
+\meth :rv-limits (\&key :parameters)---Returns a list of limits (lower
+and upper bound) for each random variable.
+
+\begincode
+;; :rv-limits
+(defmeth normal-family :rv-limits
+\         (\&key (parameters (send self :default-parameters)))
+\   (list (list *-infty* *infty*)))
+\endcode
+
+\meth :mean (\&key :parameters)---Returns a list of means for all
+random variables.
+
+\begincode
+(defmeth normal-family :mean (\&key
+\			      (parameters (send self :default-parameters)))
+\  (let ((mean (car parameters))
+\	(stdev (cadr parameters)))
+\    (list mean)))
+\endcode
+
+\meth :variance (\&key :parameters)---Returns a list of variances for
+all random variables.
+
+\begincode
+(defmeth normal-family :variance (\&key
+\			      (parameters (send self :default-parameters)))
+\  (let ((mean (car parameters))
+\	(stdev (cadr parameters)))
+\    (list (* stdev stdev))))
+\endcode
+
+\noindent{\it Methods Required of Continuous Distributions}
+
+\meth :density ({\it quant} \&key :parameters)---This method takes a
+list of quantiles and returns a list of the corresponding probability
+density function (p.d.f., $f(x)$) values. 
+
+\begincode
+;; :density  -- takes parameters as optional second argument.  First
+;; argument should be quantiles
+(defmeth normal-family :density
+\         (quant \&key (parameters (send self :default-parameters)))
+\   (let ((mean (car parameters))
+\	 (stdev (cadr parameters)))
+\     (/ (normal-dens (/ (- quant mean) stdev))
+\	stdev)))
+\endcode
+
+\noindent{\it Methods Required of Discrete Distributions}
+
+\meth :rv-integer? (\&key :parameters)---returns {\tt t} if random
+variables must be integers, {\tt nil\/} otherwise.
+
+\begincode
+;; :rv-integer?   
+(defmeth binomial-family :rv-integer? (\&key \&allow-other-keys)
+\  t)
+\endcode
+
+\meth :atoms (\&key :parameters :min-mass)---Returns a list of atoms of the
+distribution.  \:min-mass is a lower cut-off for mass, this prevents
+this list from being infinite.
+
+\begincode
+;; :atoms  -- takes parameters as keyword argument.  
+;; minimum mass as optional third
+;; trick use normal approximation to find approximate range of values.
+(defmeth binomial-family :atoms
+\         (\&key (parameters (send self :default-parameters))
+\	       (min-mass 0.001))
+\   (let ((theta (car parameters))
+\	 (n (cadr parameters)))
+\     (if (eql 0 min-mass)
+\	 (iseq 0 n)
+\       (let ((mu (* n theta))
+\	     (sigma (sqrt (* n theta (- 1 theta))))
+\	     (z (abs (normal-quant min-mass))))
+\	 (apply \#'iseq (force2-between
+\			(list (floor (- mu (* z sigma)))
+\			      (ceiling (+ mu (* z sigma))))
+\			(list 0 n)))))))
+\endcode
+
+\meth :mass ({\it quant} \&key :parameters)---Returns a list of
+probability mass function (p.m.f., $p(x) = \Pr(X=x)$) values for the
+list of quantiles.  If the quantile is not an atom, it 
+the mass is zero.
+
+\begincode
+;; :mass  -- takes parameters as optional second argument.  First
+;; argument should be atoms
+(defmeth binomial-family :mass
+\         (quant \&key (parameters (send self :default-parameters)))
+\   (let ((theta (car parameters))
+\	 (n (cadr parameters)))
+\     (binomial-pmf quant n theta)))
+\endcode
+
+\noindent{\it Methods Which are Not Required but have Sensible Defaults}
+
+\meth :rv-default (\&key :parameters)---Default value for random
+variable  (returns a list for each random variable).  Defaults to
+median. 
+
+\begincode
+;; :rv-default  --- default value of random variable.
+
+(defmeth normal-family :rv-default
+\         (\&key (parameters (send self :default-parameters)))
+\   (list (first parameters)))		;mean
+\endcode
+Exploits the fact that the mean (first parameter) is a sensible
+default.  
+
+
+\meth :rv-range-default (\&key :parameters)---Default elicitation
+range for random variables (defaults to limits).  Returns a list of
+ranges, one for each random variable.
+
+\begincode
+;; :rv-range-default
+(defmeth normal-family :rv-range-default
+\         (\&key (parameters (send self :default-parameters)))
+\   (let ((mean (car parameters))
+\	 (stdev (cadr parameters)))
+\     (list (+ (* '(-3 3) stdev) mean))))
+\endcode
+
+\meth :rand ({\it num}\&key :parameters)---Random number generator.
+Returns {\it num\/} random numbers.  Defaults to inverse c.d.f.
+method.
+
+\begincode
+(defmeth normal-family :rand (num \&key
+\			      (parameters (send self :default-parameters)))
+\  (let ((mean (car parameters))
+\	(stdev (cadr parameters)))
+\    (+ (* (normal-rand num) stdev) mean)))
+\endcode
+We have an efficient normal random number generator, so use it.
+
+
+\noindent{\it Other Methods for Which the defaults are always useful}
+
+\meth{:continuous?} ()---Returns {\tt t\/} if the distribution is continuous
+and {\tt nil\/} otherwise.  
+
+\meth{:dist-graph-proto} ()---Returns {\it pmf-graph-proto\/} (displays
+probability mass function) for discrete distributions and {\it
+pdf-graph-proto\/} for continuous distributions.
+
+Additionally, the following methods which must be defined for children
+of {\tt discrete-family-proto\/} have sensible defaults for {\tt
+continuous-family-proto\/}, namely \:rv-integer? which returns {\tt
+nil}, \:atoms which returns {\tt nil} (empty list) and \:mass which
+signals a continuable error (continuing returns the density).
+
+\medskip
+
+The file which defines the normal distribution ends with
+several lines to establish the families place in the \eltoy/ system.
+
+\begincode
+(send normal-family :isnew :name :normal)
+\endcode
+This line causes the {\tt normal-family\/} to initialize itself, so it
+can be used as specific normal distribution as well as a prototype.
+
+\begincode
+(push normal-family *Known-families*)
+\endcode
+The variable {\tt *Known-families*\/} keeps track of families known to
+\eltoy/.  \eltoy/ uses this to build its menus.  This expression adds
+{\tt normal-family\/} to the list.
+
+\begincode
+(new-provide :el-normal)
+\endcode
+This expression lets other programs know that the file containing {\tt
+normal-family\/} definitions has been successfully loaded.
+
+To provide for automatic loading of a distribution family when \eltoy/
+is loaded, add a line to the file {\tt Dist-Lib/Dist-Lib.lsp\/} like
+the following:
+
+\begincode
+(require :el-normal (strcat ElToY-directory "Dist-Lib" *d-sep*  "Normal.lsp"))
+\endcode
+
+\beginsection 3.2 Finite and Bootstrap families.
+
+There is a representation which works for  all discrete distributions
+over finite outcome spaces, namely a list of atoms and a list of mass
+values.  A special case, the bootstrap family, is formed by giving
+all of the atoms equal mass ($1/n$), although there can be duplicate
+values among the atoms.  These two families are particularly powerful
+as they can be used to create a number of special effects.  The {\tt
+:wavy\/}, {\tt :holey\/} and {\tt :outliers\/} distributions included
+in \clttoy/ are a special case of this effect.
+
+The {\tt :new\/} method for the {\tt finite-family\/} object takes
+keyword arguments {\tt :atoms\/} which should be a list of the atoms
+and {\tt :mass\/} which should be a list of the mass values
+corresponding to the atoms.  Atoms may be repeated in the list, the
+appropriate mass values are summed to create the final mass list.
+
+The {\tt :mass\/} and {\tt :atoms\/} lists of an instance of {\tt
+finite-family\/} can be set with the {\tt :mass\/} and {\tt :atoms\/}
+messages.  This is done by using the {\tt :set\/} keyword, whose
+argument should be the new {\tt :atoms\/} or {\tt :mass\/} list.
+Note:  The {\tt :atoms\/} list is stored sorted with duplicates
+removed.  The {\tt :mass\/} list should correspond to the order of the
+sorted, duplicates removed list.
+
+The following code fragments implement the example distributions for
+\clttoy/
+
+\begincode
+(defun normalize (vals)
+\  "Normalize list of values by dividing by their sum. *Vectorized*"
+\  (/ vals (sum vals)))
+\endcode
+This function is used to normalize distribution functions, so they can
+be specified more flexibly.
+
+\begincode
+(def wavy-dist
+\     (send finite-family :new :name :wavy
+\	   :atoms (iseq 1 9)
+\	   :mass (normalize '(2 4 2 1 3 5 6 5 3))))
+\endcode
+This specifies the distribution function.
+
+\begincode
+(push wavy-dist *CLT-Families*)
+\endcode
+The special variable {\tt *CLT-Families*\/} is a list of families to
+be used with \clttoy/.  It is used in the automatic menu
+building for \clttoy/.
+
+
+The {\tt bootstrap-family\/} is even simpler.  It is specified with a
+single list of ``data.''  This can be set with the {\tt :data\/}
+keyword argument to the {\tt bootstrap-family :isnew\/} method.
+The {\tt :data\/} message with no arguments returns the data.  If an
+argument is given, it becomes the new data.
+
+\begincode
+(def holey-dist (send bootstrap-family :new :name :holey
+\		      :data '( -4 -3 -3 -2 2 3 3 4)))
+
+(push holey-dist *CLT-Families*)
+\endcode
+
+
+\beginsection 3.3 Conjugate Families.
+
+The definition of a conjugate-family is very simple, all it requires
+is a {\tt prior-family\/} and a {\tt likelihood-family\/}.  Most of the
+method which work on a conjugate family reference the appropriate
+value.  The only methods which currently must be specialized are the
+:forward-link and :reverse-link functions which translate prior
+hyperparameters into posterior hyperparameters.   Of course, we first
+need to define the prior and likelihood families.
+
+\medskip
+
+The class of {\tt prior-families\/} is very similar to the class of
+families defined above.  The only difference is an extra parent {\tt
+prior-family-proto\/} is added to the list of parents.  Thus:
+
+\begincode
+(defproto normal-prior-family () () (list normal-family continuous-prior-proto)
+  "Normal prior distribution")
+\endcode
+
+Sets up the new prototype, taking most of its method from the normal
+family.  In this case, we want to change some of the default values,
+so we write a new \:isnew method.  This is the only extra method
+needed to implement the normal prior.  Occasionally extra code will be
+needed to implement an alternate parameter set.
+
+The completed prior is pushed onto the list of {\tt
+*Know-prior-families*\/}. 
+
+\medskip
+
+The {\tt likelihood-family-proto\/} is not so simple.  In particular, it
+is quite possible (and in fact usual) to have nuisance parameters
+floating around.  For example, the {\tt normal-likelihood-family\/}
+has the nuisance parameter ``sigma'' which is the variance of the
+observations.  
+
+In particular, the {\tt likelihood-family-proto\/} supports the
+following methods for returning/setting properties of the likelihood
+function:  {\tt :nui-parameter-names\/}, {\tt
+:nui-default-parameters\/}, {\tt :nui-parameter-limits\/}, {\tt
+:nui-parameter-range-default\/}, {\tt :nui-parameter-granularity\/},
+{\tt :nui-parameter-integer?\/}, \hskip 0pt plus 1in \ \break{\tt :nui-parameter-constraint-fun\/}
+and {\tt :data-constraint-fun\/}.  All of these can be (and should be)
+set through the {\tt :isnew\/} method for {\tt
+likelihood-family-proto\/} as well.   Finally, the {\tt :prior\/}
+keyword argument to the creation ({\tt :new, :isnew\/}) method
+specifies the prior distribution to be used with this likelihood.
+This allows the likelihood function to access information about the
+prior distribution if needed in the methods.
+
+Most of these specialized methods need a little explanation and their
+meaning and syntax is analogous to the parameter methods of {\tt
+family-proto\/}.   The {\tt :data-constraint-fun\/} is a function of
+two arguments the {\it data\/} and the {\it nui-parameters\/} is
+and return true if the the data values are legal for the given set of
+nuisance parameters.  Data constraint functions should take
+keyword arguments.  In particular, it should take the {\tt :warn\/}
+argument.  If {\it warn\/} is true, then a warning message should be
+printed if the constraint is violated.  Thus, 
+
+\begincode
+\  :data-constraint-fun 
+\   \#'(lambda (data nui-parameters \&key (warn t) \&allow-other-keys)
+\       $\ldots$)
+\endcode
+
+\noindent will produce a legal data constraint function.  
+
+Two data constraint functions are distributed with \eltoy/:  {\tt
+vacuous-data-constraint\/} always returns true; and {\tt
+max-data-constraint\/} returns true if the data values are less than
+or equal to the nuisance parameter.  This is used for the binomial
+likelihood, where the nuisance parameter is $n$, the number of draws.
+
+\smallskip
+
+Finally, the {\tt likelihood-family-proto\/} modifies the syntax for
+some of the methods by adding a {\tt :nui-parameters\/} keyword to
+specify the nuisance parameters.  The modified methods include:
+{\tt :quantiles\/}, {\tt :atoms\/}, {\tt :mass\/}, {\tt :density\/},
+{\tt :cdf\/}, {\tt :rv-default\/},  {\tt :rv-limits\/}, {\tt
+:rv-range-default\/}, {\tt :rand\/}, {\tt :mean\/} and {\tt
+:variance\/}.  
+
+The variable {\tt *Known-likelihood-families*\/} records the known
+likelihood families.
+
+\bigskip
+
+After you have specified the prior and likelihood families, you are
+ready to specify the conjugate family.  The creation ({\tt :isnew})
+method for conjugate families uses two keyword arguments. The {\tt
+:prior-family\/} keyword argument specifies the prior family {\it
+prototype\/} and {\tt :likelihood-family\/} keyword argument specifies
+the likelihood family {\it prototype\/}.  Note that these (as are all
+family object in \eltoy/) are prototypes, and they will be sent the
+{\tt :new\/} message when the creation of a conjugate family occurs.
+
+The {\tt conjugate-family-proto\/} prototype supports a large range of
+messages for accessing information from the prior and likelihood
+families.  The {\tt :prior-family\/} and {\tt :likelihood-family\/}
+messages also support either pass messages on to the appropriate
+object, or return the object itself.
+
+There are four messages which the user must specify for each conjugate
+family, they are {\tt :default-data\/}, {\tt :data-range-default\/},
+{\tt :reverse-link\/} and {\tt :forward-link\/}.  The latter two are
+particularly important as they define the protocol for Bayesian
+updating.  The {\tt :forward-link\/} message turns prior
+hyperparameters and data into posterior hyperparameters and the {\tt
+:reverse-link\/} turns posterior hyperparameters and data into prior
+hyperparameters.  These are at the heart of the idea of ``conjugate''
+in \eltoy/ and any class of distribution which can support these
+methods can be considered a conjugate family.
+
+\medskip
+
+Here is an annotated definition for the {\tt normal-normal-family\/}:
+
+First, we need to define the family object.  We will also want to
+define its initialization method.  These are done below:
+\begincode
+(defproto normal-normal-family '() '() (list conjugate-family-proto))
+
+;; :isnew method sets up defaults then inherits from conjugate-family-proto
+(defmeth normal-normal-family :isnew
+\         (\&rest args
+\	  \&key  (prior-family normal-prior-family)
+\	        (likelihood-family normal-likelihood-family)
+\	  \&allow-other-keys)
+\ (apply \#'call-next-method
+\	:prior-family prior-family
+\	:likelihood-family likelihood-family 
+\	args))
+
+(send normal-normal-family :isnew)
+\endcode
+The last form initializes the normal-normal prototype for use as a
+family object.
+
+Next we define the method for the forward link.  In this case the
+prior family has hyperparameters $\mu$ (mean) and $\tau$ (standard
+deviation).  The data value is $X$ and the nuisance parameter (the
+standard deviation of the data) is $\sigma$.  In general $X$ can be a
+vector (data-structure) and $\sigma$ can either be a single number or
+a vector of matching length.  We add (using \lispstat/ vectorization)
+{\tt (- X X)\/} to {\tt sigma\/} to insure that it is a of the same
+shape as {\tt X\/}.  As the normal is easier to parameterize
+in terms of precisions, we use {\tt tau-2\/} for $1/\tau^2$ and {\tt
+sigma-2\/} for $1/\sigma^2$.  The code computes the posterior mean and
+precision: $(1/\tau_*^2) = (1/\tau^2) + \sum (1/\sigma_i^2)$ and 
+$$ \mu_* = { (1/\tau^2) \mu + \sum (1/\sigma_i^2) X_i \over
+(1/\tau_*^2) } $$  The posterior mean and variance are then returned.
+\begincode
+;;; required link methods for conjugate-families
+
+;;; :forward-link --- returns posterior hyperparameters from prior
+;;; hyperparameters 
+(defmeth normal-normal-family :forward-link
+\  	(\&rest args
+\	 \&key  (parameters (send self :default-hyperparameters))
+\	       (nui-parameters (send self :nui-default-parameters))
+\	       (data (send self :default-data))
+\	 \&allow-other-keys)
+\  (let* ((mu (car parameters))
+\	 (tau-2 (/ 1.0 (* (cadr parameters) (cadr parameters))))
+\	 (X (car data))
+\	 (sigma-2 (+ (/ 1.0 (* (car nui-parameters) (car nui-parameters)))
+\		     (- X X)))
+\					;makes the same shape as X
+\	 (tau-2* (+ tau-2 (sum sigma-2)))
+\	 (mu* (/ (+ (* tau-2 mu) (sum (* X sigma-2))) tau-2*)))
+\    (list mu* (sqrt (/ 1.0 tau-2*)))))
+\endcode
+
+The reverse link just solves the formulas used above for the prior
+parameters.  There is one complication, in that the posterior
+precision can be underspecified.  This will result in a negative prior
+variance.  The reverse link traps for this.
+
+\begincode
+;;; :reverse-link --- returns posterior hyperparameters from prior
+;;; hyperparameters 
+(defmeth normal-normal-family :reverse-link
+\  	(\&rest args \&key
+\	       parameters
+\	       (nui-parameters (send self :nui-parameters-default))
+\	       (data (send self :default-data))
+\	       \&allow-other-keys)
+\  (let* ((mu* (car parameters))
+\	 (tau-2* (/ 1.0 (* (cadr parameters) (cadr parameters))))
+\	 (X (car data))
+\	 (sigma-2 (+ (/ 1.0 (* (car nui-parameters) (car nui-parameters)))
+\		     (- X X)))
+\	 (tau-2 (max *epsilon* (- tau-2* (sum sigma-2))))
+\	 (mu (/ (- (* tau-2* mu*) (sum (* X sigma-2))) tau-2)))
+\    (if (<= tau-2 0) (uerror "force to *epsilon*"
+\			     "Negative variance mu*: \~S tau-2*:\~A X:\~S
+sigma-2: \~S tau-2: \~S mu: \~S~\%" mu* tau-2* X sigma-2 tau-2 mu))
+\    (list mu (sqrt (/ 1.0 tau-2)))))
+\endcode
+
+Finally, we push the appropriate values on the {\tt
+*Known-conjugate-families*\/} list.
+\begincode
+(push normal-normal-family *Known-conjugate-families*)
+
+(new-provide :el-norm-norm)
+\endcode
+
+\beginsection {4.}  How does \eltoy/{} work inside?
+
+At any given time, \eltoy/ is showing a number of different views of
+the same probability model.  The challenge is to maintain the
+consistency of those views.  Thus when the user make a small change on
+one of the interaction objects, the change must be propagated
+globally.  This was the principle challenge of the \eltoy/ system.  It
+is essentially just a giant constraint maintenance system.
+
+%This code will probably burble on your system.  Try commenting out
+%the line and printing the figure El-Toy.eps separately.  
+\prologue{\adobe}
+\rgafig1[El-Toy]{{\tt ElToY\/} system diagram}hsize=6.25truein
+vsize=5.5truein/ 
+
+Figure~1 presents an overview of the \eltoy/ system.  It is laid out
+as a tree, the {\it tool-tree\/}.  At the root of the tool tree is the
+{\tt el-tool\/} object which owns all of the others.  The leaves of the tree
+are the various interaction objects.  The rest of the tree serves as a
+framework from which to hang the display objects.  By passing messages
+up through the branches to the root and back down to the leaves,
+consistency is maintained.
+
+\eltoy/ uses an {\tt :update\/} and {\tt :local\/} strategy to pass
+messages and maintain consistency.  Each object in the tool tree
+(except the root) has a distinct owner.  Although children of the
+owner may inherit references to an object owned by their parent, they
+do not own the object itself.  Thus they may access but not change its
+value.  This is particularly important for the parameter objects.  In
+particular, the parameter display object cannot directly change the
+values of the parameter, it must first pass the change message up to
+the owner of the parameter object, in this case the root El-Tool.
+
+The updating strategy works as follows.  Whenever an {\tt el-tool\/} object
+receives a request to change data that it is owned by its parent in
+the tool tree, it passes the change request to the parent.  The top
+level data object owning the value to be changed, then sends an
+{\tt :update\/} message to itself with the message it received as the
+arguments.
+
+The {\tt :update\/} method for all {\tt el-tool\/} objects resends the change
+message with the keyword flay {\tt :local\/} placed before the data.
+This enables any local processing of data (for example, the owner will
+change the value, a display object will change the display).  
+It then sends an update message to each of its children.
+
+\begingroup\narrower\sl
+{\bf Example\/}: Suppose we change the posterior mean.  The following
+illustrates the series of messages passed (in some cases detail is
+suppressed where it is peripheral to the update strategy).
+
+\item{1} The {\tt posterior parameter display\/} will generate a {\tt
+:parameters\/}  message requesting a change to the posterior
+hyperparameters.  
+
+{\tt parameter display $\rightarrow$ :parameters mean 5}
+
+
+\item{2} As the  {\tt display tool\/} does not own the posterior
+hyperparameters, but rather inherits them from the {\tt data-link\/}
+(through the distribution display), the unqualified
+method for the {\tt :parameters\/} message sends {\tt
+:posterior-parameters\/} message to the {\tt data-link\/}.  
+
+{\tt distribution display $\rightarrow$ :parameters mean 5}\par
+{\tt data-link $\rightarrow$ :posterior-parameters mean 5}\par
+
+\item{3} The {\tt data-link\/} is the highest object in the tool tree
+containing the posterior parameters.  Its method for making a change
+not marked as {\tt :local\/}, however, is to change the prior
+hyperparameters using the reverse link.  This in turn is done by
+sending a {\tt :hyperparameters\/} message to the {\tt el-tool\/} to
+change the hyperparameters.
+
+{\tt el-tool $\rightarrow$ :hyperparameters mean (send conjugate-family
+:reverse-link ...)}
+
+\item{4} The {\tt el-tool\/} then sends itself an {\tt :update\/}
+message, whose arguments are the request to change 
+the hyperparameters.  (Assume that the new prior mean after the
+reverse link is 7.5).
+
+{\tt el-tool $\rightarrow$ :update :hyperparameters mean 7.5}
+
+
+\item{5} It handles the update message by first sending
+itself a {\tt :hyperparameters :local\/} message and then sending and
+{\tt :update :hyperparameters\/} message to each of its children.  The
+{\tt :hyperparameters :local\/} message actually changed the prior
+hyperparameters.  
+
+{\tt el-tool $\rightarrow$ :hyperparameters :local mean 7.5}\par
+{\tt el-tool $\rightarrow$ :update :hyperparameters mean 7.5}\par
+{\tt Prior distribution display $\rightarrow$ :update :hyperparameters mean 7.5}\par
+{\tt data-link $\rightarrow$ :update :hyperparameters mean 7.5}\par
+
+\item{6} Following the change down just the {\tt data-link} side of
+the tree, the {\tt :update\/} message is
+received by the data-link which sends itself a {\tt :hyperparameters
+:local\/} message.  It also generates an {\tt :update
+:posterior-parameters\/}.  Changing the posterior parameters is held
+until now because some changes in the posterior may lead to invalid
+priors.  
+
+{\tt data-link $\rightarrow$ :posterior-parameters :local (send
+conjugate-family :forward-link)}\par
+{\tt data-link $\rightarrow$ :update :posterior-parameters mean 5}
+
+\item{7} The {\tt :update\/} message is now passed down to the
+children of the {\tt :data-link\/} object.  In particular, the {\tt
+Distribution Display\/} and the {\tt Data Display\/}.  
+
+{\tt Distribution Display $\rightarrow$ :update :posterior-parameters mean 5}\par
+{\tt Data Display $\rightarrow$ :update :posterior-parameters mean 5}\par
+
+\item{8}  The data display, having no message for the {\tt
+:posterior-parameters\/} ignores the message.  The Distribution display
+changes them into parameter messages which it sends to its children.
+
+{\tt Parameter Display $\rightarrow$ :update :parameters mean 5}\par
+{\tt Graph $\rightarrow$ :update :parameters mean 5}\par
+
+\item{9} These become {\tt :parameter :local\/} messages which update
+the displays.
+
+{\tt Parameter Display $\rightarrow$ :parameters :local mean 5}\par
+{\tt Graph $\rightarrow$ :parameters :local mean 5}\par 
+
+Note:  To simplify the presentation, some of the arguments to the
+messages have been simplified.
+
+\endgroup
+
+The example is the most complex of the message passing strategies.  In
+particular, the {\tt data-link\/} needed to to both forward and
+backwards conversion of messages for the strategy to succeed.  As the
+role of the {\tt data-link\/} object is to convert messages, it is
+attached to a display object which shows the current message
+conversion strategy.  The role of the {\tt el-tool\/} object is simply
+to reflect change request messages comming up the tree and turn them
+into {\tt :update\/} messages going back down.
+
+\disttoy/ is a simplified version of \eltoy/.  It simply chops the
+tool tree off at the distribution display and adds a new {\tt
+dist-tool\/} root node.  It was in fact developed to debug the lowest
+levels of the \eltoy/ system and the design of the {\tt :update\/}
+message passing strategy. 
+
+There are other strategies for maintaining consistency among objects
+which could have been used.  Another approach would have used would be
+to use mediators (Sullivan and Notkin[1990]) to handle the changes.
+The {\tt Garnet\/} user interface toolkit (Meyers {\it et al.\/}
+[1990]) provides a constraint maintenance object system (Guise[1989,1990])
+which will automatically keep track of changes and reciprocal changes.
+The {\tt data-link\/} object provides a major challenge to all of the
+constraint maintenance strategies and it must be able to transform the
+sort of message it supports.
+
+One of the advantages of the current system is its extensibility.
+The constraint propagation strategy theoretically supports new ways of
+propagating the message.  For example, one could add a ``hot point''
+(say the mode) to the graph of the prior and posterior distributions.
+Moving this point could produce a {\tt :parameters\/} message, which
+would in turn use the \:update  strategy to propagate its effects.
+Adding additional displays (such as a display of the predictive
+distributions) can also be easily incorporated into the existing {\tt
+:update\/} strategy.
+
+\smallskip
+
+The other advantage of this update strategy, it the way the framework
+can be re-used.  In particular, changing the {\tt conjugate-family\/}
+slot of the parent {\tt el-tool\/} specialized the display for a
+particular distribution.  Certain pieces of the framework can be
+broken off and replaced as well.  For example, the {\tt graph\/} slot
+of the distribution display object can be replaced with a display of
+the p.m.f. or p.d.f. depending on whether the distribution is discrete
+or continuous.
+
+
+\beginsection {5.}  What's in the future for \eltoy/?
+
+There are several ways in which \eltoy/ needs to be extended to
+fully support the elicitation process, in particular:
+
+\item{1.} Providing support for other representations, in particular,
+support for using the predictive distribution for elicitation (as in
+Chaloner and Duncan[1983]).
+
+\item{2.} Providing support for alternative parameterizations.  (For
+example, mean and observational equivalence (number of observations)
+for the binomial).
+
+\item{3.} Providing support for bivariate and multivariate prior
+distributions and data.  
+
+\item{4.} Providing support for non-conjugate prior as posteriors
+through numeric integration strategies.
+
+However, in order to be truly functional as an elicitation system, it
+needs a help system.  This is a fairly large challenge and has brought
+my development efforts on \eltoy/ to a temporary hold.  As a first
+pass, the help system should integrate into the \lispstat/ protocol for
+help.  Although \lispstat/ provides a protocol for documenting objects
+and methods (through the {\tt :documentation\/} message), this
+provides help for the programmer and not the more casual user.  There
+is as of yet no established \lispstat/ user help protocol, and this
+needs to be addressed by the \lispstat/ community before work could
+proceed. 
+
+Ideally, \eltoy/ would have a hypertext help facility.  This would
+include an online glossary for the definition of unfamiliar words, and
+perhaps sample animations illustrating key concepts.  There should
+also be synonyms available for many technical terms.  This will allow
+the program to be automatically specialized to the needs of a
+particular user community (for example, engineers or physicians).
+Such a facility will take a major development effort.
+
+\smallskip
+
+Another part of my reluctance to expand on \eltoy/ is the nature of
+the \lispstat/ programming environment.  \xlispstat/ as is currently
+available has several difficulties.  In particular:
+
+\item{1.} There is a lack of consistent documentation.  In particular,
+there is no programmer's manual describing all available interaction
+object and the messages they accept.  The principle documentation,
+Tierney[1990], is a tutorial on too many levels.  It contains a brief
+introduction to LISP, examples of how to use many of the \lispstat/
+interaction objects and some examples of statistical programming.
+Unfortunately, it does not have time to provide a thorough or systematic
+description of all the functions, objects and methods.
+
+\item{2.} Many of the interaction objects are difficult to extend or
+specialize.  Some of them do not completely conform to the \lispstat/
+documentation protocol.  In particular, it is difficult to figure out
+how to add a slider to the bottom of a graph.  It was also difficult
+to figure out how to make the endpoints of a slider user changeable
+values.  (This eventually involved going back to the C code to find
+out what the slider object did.)  The \eltoy/ distribution contains a
+modified slider object.
+
+\item{3.} The \lispstat/ object system is relatively immature.
+\lispstat/ could greatly benefit from being ported to a more mature 
+object system such as CLOS (now standard with Common LISP,
+Steele[1990]) or KR (Guise [1991], distributed with {\tt Garnet\/},
+Myers {\it et al.\/} [1990]).  These systems also provide additional
+features and data and function abstractions.
+
+\item{} There is one particularly annoying bug associated with the
+\lispstat/ object system.  When a modified {\it defproto\/} statement
+is  reloaded, a new prototype is created rather than the
+old one being updated.  Furthermore, old references to the prototype
+object use the old prototype and not the updated one.  This makes
+debugging very difficult.  To work around that problem, \eltoy/
+provides the {\it new-provide\/} and {\it new-require\/}.  New-provide
+destructively modifies the {\tt *modules*\/} variable to mark any
+modules read in after a given file as unread.  Thus a call for a
+system load will load in all files which potentially could be effected
+by the change.  This is a work around for an incomplete system.
+
+\item{4.} The \lispstat/ system currently works on top of XLISP, which
+is a Common LISP subset.  In particular, it has relatively crude
+versions of the Common LISP development environment available in more
+complete LISPs.  It is sometimes difficult to anticipate which
+features will be available in XLISP.
+
+As my understanding is that Luke Tierney plans to move \lispstat/ to a
+more complete version of LISP (AKCL), some of these objections will be
+removed.  For the present, the best development strategy for \eltoy/
+is to wait and see what happens.
+
+Despite my criticisms of \lispstat/, it does provide two critical
+features which made the development of \eltoy/ possible:
+
+\item{1.} \lispstat/ contains interaction objects for common types of
+statistical graphs.  These are not commonly available with user
+interface toolkits.  Although \lispstat/ interaction objects could be
+more flexible and extensible, and should probably contain additional
+control features, they are *there* which is unique to the \lispstat/
+environment. 
+
+\item{2.} The \lispstat/ mapping operations over complex data
+structures is a nice generalization of a feature which has been
+partially available in matrix based languages like {\tt S\/}.  Although
+not used extensively in \eltoy/ it looks exceedingly useful for other
+data analysis tasks.
+
+Unfortunately, the programming style which \lispstat/ seems to support
+best is to hack existing objects or examples into new code.  In
+particular, the development time for the \clttoy/ was much shorter
+than that for \disttoy/.   However, the structure of \disttoy/ and how
+to extend it is relatively obvious from its code, while the structure
+of \clttoy/ is convoluted and assumes that you intimately understand
+how the  \lispstat/ graph objects work.  While this produces
+rapid creation of prototype implementations, it does not provide a
+solid basis for developing supporting more complete applications.
+
+
+\medskip
+
+Although future development on \eltoy/ is on the back burner, I am
+interested to hear your comments and suggestions for improvement.  I
+am also interested in any modifications you make to the code to
+support a particular application.  Someday (when funding catches up
+with this particular project) I hope to extend this facility.
+Meanwhile, I hope that some use can be made of this project either as
+tool for exploring conjugate distributions or an example of developing
+a complex system in an object oriented language.
+
+I can be reached at:
+\begingroup\narrower\obeylines
+Russell Almond			   
+Statistical Sciences, Inc.	
+1700 Westlake Ave., N Suite 500
+Seattle, WA  98109			
+(206) 283-8802				
+{\tt almond@statsci.com\/}
+\endgroup
+0r
+\begingroup\narrower\obeylines
+U. Washington
+Statistics, GN-22
+Seattle, WA  98195
+{\tt almond@stat.washington.edu\/}
+\endgroup
+
+
+
+\beginsection References
+
+\def\refrence#1{\par\hang\hskip-\parindent {\bf #1\/}.}
+
+\refrence {Chaloner, Kathryn M. and Duncan, George T.[1983]}
+``Assessment of a Beta Prior Distribution: PM Elicitation.''  {\it The
+Statistician.\/}  {\bf 32\/}, 174--180.
+
+\refrence{Good, I. J. [1976]}, ``The Bayesian Influence, or How to Sweep
+Subjectivism Under the Carpet,''  {\it Foundations of Probability
+Theory, Statistical Inference, and Statistical Theories of Science,\/}
+Proc. of a Conference in May, 1973, Hooker, C. A. and Harper, W.,
+eds., Vol. 2 (Dordrecht, Holland, D. Reidel, 1976), pp 125-174. 
+Reprinted in {\it Good Thinking\/}, University of Minnesota Press,
+1983,   pp 22--55. 
+
+\refrence{Guise, Dario A. [1990]} ``Efficient Knowledge Representation
+Systems.'' {\it Knowledge Engineering Review.\/} {\bf 5}(1), pp 35--50.
+
+\refrence{Guise, Dario A. [1991]} ``KR: Constraint-Based Knowledge
+Representation.'' Carnegie Mellon University Computer Science,
+Technical Report.
+
+\refrence{Myers, Brad A., Guise, Dario A., Dannenberg, Roger B.,
+Zanden, Brad Vander, Kosbie, David S., Pevin Ed, Mickish, Andrew, and
+Marchal, Phillipe [1990]} ``Comprehensive Support for Graphical,
+Highly-Interactive User Interfaces:  The Garnet User Interface
+Development Environment.''  {\it IEEE Computer\/} {\bf 23\/}(11), pp
+71-85.  
+
+
+\refrence{Sullivan, Kevin J. and Notkin, David [1990]} ``Reconciling
+environment integration and component independence.''  In {\it
+SIGSOFT'90:  Fourth Symposium on Software Development Environments,\/}
+Irvine, CA, pp 208--225.  
+
+\refrence{Tierney, Luke [1990]} {\it LISP-STAT:  An Object Oriented
+Environment for Statistical Computing and Dynamic Graphics\/}.  John
+Wiley and Sons.
+
+\bye

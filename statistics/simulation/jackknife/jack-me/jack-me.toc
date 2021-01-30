@@ -1,0 +1,13 @@
+\contentsline {section}{\tocsection {}{1}{Introduction}}{1}
+\contentsline {section}{\tocsection {}{2}{The Jackknife}}{2}
+\contentsline {subsection}{\tocsubsection {}{2.1}{Delta Method}}{2}
+\contentsline {subsection}{\tocsubsection {}{2.2}{Approximating the Derivatives}}{2}
+\contentsline {section}{\tocsection {}{3}{Some Lisp}}{3}
+\contentsline {subsection}{\tocsubsection {}{3.1}{Symbols}}{3}
+\contentsline {subsection}{\tocsubsection {}{3.2}{Data Types and Function Types}}{4}
+\contentsline {subsection}{\tocsubsection {}{3.3}{Evaluation}}{4}
+\contentsline {section}{\tocsection {}{4}{The Jackknife Code}}{5}
+\contentsline {subsection}{\tocsubsection {}{4.1}{A Pseudovalue Closure}}{5}
+\contentsline {subsection}{\tocsubsection {}{4.2}{Pseudovalue Means and Dispersion}}{6}
+\contentsline {subsection}{\tocsubsection {}{4.3}{Tying it all together}}{7}
+\contentsline {section}{\tocsection {}{}{References}}{8}

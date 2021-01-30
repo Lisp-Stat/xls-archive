@@ -1,0 +1,92 @@
+This Digital Library is published by the Association for Computing.
+Copyright © 1998 ACM, Inc.
+  ------------------------------------------------------------------------
+
+     Algorithm 744; a stochastic algorithm for global optimization with
+                                 constraints
+
+                           F. Michael Rabinowitz
+
+                  ACM Transactions on Mathematical Software
+                  Vol. 21, No. 2 (June 1995), Pages 194-213
+
+               [Abstract] ..... [Index Terms] ..... [Review]
+                     [Full Text in PDF Format, 1270 KB]
+
+  ------------------------------------------------------------------------
+
+                                  Abstract
+
+A stochastic algorithm is presented for finding the global optimum of a
+function of n variables subject to general constraints. The algorithm is
+intended for moderate values of n, but it can accommodate objective and
+constraint functions that are discontinuous and can take advantage of
+parallel processors. The performance of this algorithm is compared to that
+of the Nelder-Mead Simplex algorithm and a Simulated Annealing algorithm on
+a variety of nonlinear functions. In addition, one-, two-, four-, and
+eight-processor versions of the algorithm are compared using 64 of the
+nonlinear problems with constraints collected by Hock and Schittkowski. In
+general, the algorithm is more robust than the Simplex algorithm, but
+computationally more expensive. The algorithm appears to be as robust as the
+Simulated Annealing algorithm, but computationally cheaper. Issues discussed
+include algorithm speed and robustness, applicability to both computer and
+mathematical models, and parallel efficiency.
+
+  ------------------------------------------------------------------------
+
+General Terms
+
+ALGORITHMS, PERFORMANCE
+
+Categories and Subject Descriptors
+
+G.1.6  Mathematics of Computing, NUMERICAL ANALYSIS, Optimization, Nonlinear
+       programming.
+G.3    Mathematics of Computing, PROBABILITY AND STATISTICS, Probabilistic
+       algorithms (including Monte Carlo).
+G.4    Mathematics of Computing, MATHEMATICAL SOFTWARE, Certification and
+       testing.
+
+  ------------------------------------------------------------------------
+
+                           From Computing Reviews
+
+M. Minkoff
+
+A stochastic algorithm for global optimization subject to general
+constraints is presented. The algorithm is based on using an adaptive n
+-dimensional torus to surround and isolate the global minimum. The paper
+compares the torus algorithm with two related approaches: the traditional
+Nelder-Mead simplex method and the use of simulated annealing algorithms.
+The torus algorithm is claimed to be more efficient than the simulated
+annealing algorithm and more robust than the simplex algorithm.
+
+The torus algorithm is presented after a brief overview of the other two
+algorithms. Thus the paper is self-contained and provides a fairly detailed
+description of the torus algorithm. Details of the relevant user-specified
+parameters and the controlling function are given, although it would be
+difficult to implement the algorithm independently.
+
+A standard set of test problems is used to provide computational experience.
+In particular, the standard Rosenbrock function, the parabolic multiminima
+function, and a collection of problems by Hock and Schittkowski are used to
+illustrate performance.
+
+The paper presents some results on parallel function evaluation. As the
+author points out, this approach is more of a Monte Carlo approach, and
+results are given by conducting function evaluations in a group (thus
+simulating parallel performance), rather than by actually running on a
+parallel computational system.
+
+This well-written paper provides an interesting new algorithm in global
+optimization.
+
+                           Additional Information
+
+  Software   Software associated with the paper has been included in the
+             Collected Algorithms of the ACM.
+
+                  Download Algorithm 744 (gzipped ASCII file, 33 kB)
+
+             Refer to our notes on file compression if you have
+             difficulty in downloading.

@@ -1,0 +1,39 @@
+Instructions for installation under Unix (your instructions may vary
+under other operating systems.)
+
+1) Unpack the directories 'xlos' and 'definition' from the provided file:
+
+zcat docsys1.tar.Z | tar xfv - xlos defintion
+
+2) Start Xlisp-stat
+
+3) Load the file "defintion/system.lsp"
+
+(load "definition/system.lsp")
+
+4) Load a file containing a documentation object:
+
+e.g., 
+(load "defnition/doc-doc.lsp")
+
+This builds the manuals for the project documentation project.
+
+See the files defintion/brief.tex, doc.tex, user.tex and
+user-manual.tex or user-manual.html for more information.
+
+The file definition/doc.lsp is a template.  Copy it to your project
+directory and edit it for your project.  See doc-doc.lsp for an
+example.
+
+The file definition/documenting.html is a primer on documentation for
+XLISP.  It contains details about which concepts the documentation
+system picks up.
+
+The file definition/jamtr.pdf contains John MacDonald's original
+technical report on documenting CLOS/Common Lisp Code.
+
+
+Good Luck,
+
+	--Russell Almond
+	almond@acm.org

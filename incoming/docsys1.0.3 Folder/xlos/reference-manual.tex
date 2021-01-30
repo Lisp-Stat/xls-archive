@@ -1,0 +1,290 @@
+\input /home/comet/rga6711/xlisp/definition/lispdef.tex
+\hfuzz=5pt
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:defclass}{Macro}
+\beginDocumentation
+This macro provides the defclass syntax for the XLISP-STAT object
+system.  It creates an appropriate defproto form, along with
+appropriate creation (:isnew) and accessor methods.  For more
+information, see Steele [1990], p 822.
+
+    Usage
+    defclass class-name (\{superclass-name\}*)(\{slot-specifier\}*)[class-
+      option]
+    class-name:: symbol
+    superclass-name:: symbol
+    slot-specifier:: slot-name {\tt|} (slot-name [slot-option])
+    slot-name:: symbol
+    slot-option::
+     \{:reader reader-function-name\}* {\tt|}
+     \{:writer writer-function-name\}* {\tt|}
+     \{:accessor reader-function-name\}* {\tt|}
+     \{:allocation allocation-type\} {\tt|}
+     \{:initarg initarg-name\}* {\tt|}
+     \{:initform form\} {\tt|}
+     \{:type type-specifier\} {\tt|}
+     \{:documentation string\}
+    reader-function-name:: symbol
+    writer-function-name:: function-specifier
+    function-specifier:: \{symbol \}
+    initarg-name:: symbol
+    allocation-type:: \{:instance {\tt|} :class {\tt|} :prototype\}
+    class-option::
+     (:default-initargs initarg-list) {\tt|}
+     (:documentation string) 
+    initarg-list:: \{initarg-name default-initial-value-form\}*
+\endDocumentation
+\Usage{15}{\cd{(xlos:defclass
+ name prototypes slot-specifications &rest class-options)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:defgeneric}{Macro}
+\beginDocumentation
+This macro creates a ``generic function'', a call to send with the
+appropriate arguments.\endDocumentation
+\Usage{17}{\cd{(xlos:defgeneric
+ name arglist &body options)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defgeneric.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:defmethod}{Macro}
+\beginDocumentation
+This translates a defmethod form into the approprate defmeth form.\endDocumentation
+\Usage{16}{\cd{(xlos:defmethod
+ name ((obj-arg proto-name) . otherargs) &body body)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defgeneric.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:initialize-slot}{Function}
+\beginDocumentation
+This function does the work of initializing a slot.  It searches,
+the list of args for the first one matching initargs.  If found, it
+sets the slot to that value.  If not, it evaluates initform and sets
+the slot to that value. 
+  If the initial value does not match the type of the slot, it signals
+an error.\endDocumentation
+\Usage{22}{\cd{(xlos:initialize-slot obj slot-name initargs args initform)}}\endUsage
+\beginArguments
+\argument{\cd{obj}}\typeArg{\cd{T}}\endArg
+\argument{\cd{slot-name}}\typeArg{\cd{T}}\endArg
+\argument{\cd{initargs}}\typeArg{\cd{T}}\endArg
+\argument{\cd{args}}\typeArg{\cd{T}}\endArg
+\argument{\cd{initform}}\typeArg{\cd{T}}\endArg
+\endArguments
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:make-instance}{Function}
+\beginDocumentation
+This function is a quick and dirty implementation of make-instance.  It 
+  expects either an XLS object or a symbol whose value is an XLS object.  
+  It sends the object a :new method with args \<initargs\> and returns the 
+  result.\endDocumentation
+\Usage{20}{\cd{(xlos:make-instance obj &rest initargs)}}\endUsage
+\beginArguments
+\argument{\cd{obj}}\typeArg{\cd{(Or Symbol Object)}}\endArg
+\argument{\cd{initargs}}\typeArg{\cd{T}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{new-obj}}\midReturn{\cd{Obj}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:my-check-type}{Macro}
+\beginDocumentation
+This is a version of the check-type macro which will accept the
+  name (symbol) of an object as a type name.\endDocumentation
+\Usage{20}{\cd{(xlos:my-check-type
+ place spec &optional string)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:mytypep}{Function}
+\beginDocumentation
+This function performs the same as typep, only if the second
+  argument is the name (symbol) of a prototype, then it check to see
+  if val is an object of the appropriate kind.\endDocumentation
+\Usage{14}{\cd{(xlos:mytypep val typ)}}\endUsage
+\beginArguments
+\argument{\cd{val}}\typeArg{\cd{T}}\endArg
+\argument{\cd{typ}}\typeArg{\cd{T}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{(Member (Quote (T Nil)))}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:objtypep}{Function}
+\beginDocumentation
+Tests to see if val is an XLS object which is an instance of \<obj-name\>.\endDocumentation
+\Usage{15}{\cd{(xlos:objtypep val obj-name)}}\endUsage
+\beginArguments
+\argument{\cd{val}}\typeArg{\cd{T}}\endArg
+\argument{\cd{obj-name}}\typeArg{\cd{Symbol}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \typeReturn{\cd{(Member (Quote (T Nil)))}}\endtReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{system:pathname}{Type}
+\Usage{0}{\cd{(typep x 'system:pathname)}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:process-initargs}{Function}
+\beginDocumentation
+This function does the processing for the default initargs.  It
+searches through the list of initargs and extracts the ones which are
+not already on the list and appends them to the end.\endDocumentation
+\Usage{23}{\cd{(xlos:process-initargs default-initargs actual-args)}}\endUsage
+\beginArguments
+\argument{\cd{default-initargs}}\typeArg{\cd{List}}\endArg
+\argument{\cd{actual-args}}\typeArg{\cd{List}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{actual-args}}\midReturn{\cd{List}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:shared-initialize}{Function}
+\beginDocumentation
+The shared-initialize generic function takes care of initializing
+slot values.  It takes the keyword part of the initialization lambda
+list and sets up the initial values for the slots to either (a) the
+first appropriate keyword it finds or else (b) it executes the
+initform for the slot.\endDocumentation
+\Usage{24}{\cd{(xlos:shared-initialize obj &rest keyword-args)}}\endUsage
+\beginArguments
+\argument{\cd{obj}}\typeArg{\cd{Object}}\endArg
+\argument{\cd{keyword-args}}\typeArg{\cd{T}}\endArg
+\endArguments
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:shared-initialize}{Constant}
+\beginDocumentation
+The name for the shared-initialize method.\endDocumentation
+\Usage{0}{\cd{xlos:shared-initialize}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{:slot-type -\> (system:*object*)}{Message}
+\beginDocumentation
+Gets/Sets the type-specifier for the slot named \<slot-name\>.
+Results are undefined in \<type-specifier\> is not a legal type
+specifier.  This type specifier is only check when setting a slot
+through a constructor made by the defclass system.\endDocumentation
+\Usage{12}{\cd{(send <obj> :slot-type slot-name &optional type-specifier)}}\endUsage
+\beginArguments
+\argument{\cd{slot-name}}\typeArg{\cd{Symbol}}\endArg
+\argument{\cd{type-specifier}}\typeArg{\cd{(Or T Null)}}\endArg
+\endArguments
+\beginReturn
+\singleReturn \complexReturn{\cd{type-specifier}}\midReturn{\cd{T}}\endcReturn
+\endReturn
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{xlos:slot-types}{Constant}
+\beginDocumentation
+The name of a slot for storing type information.\endDocumentation
+\Usage{0}{\cd{xlos:slot-types}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{"Xlos"}{Package}
+\Usage{0}{\cd{(in-package "Xlos")}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defclass.lsp}
+\endDefinition
+
+
+\beginDefinition
+
+
+\DefNameBox{"Xlos"}{Package}
+\Usage{0}{\cd{(in-package "Xlos")}}\endUsage
+
+\Source{ /home/comet/rga6711/xlisp/xlos/defgeneric.lsp}
+\endDefinition
+

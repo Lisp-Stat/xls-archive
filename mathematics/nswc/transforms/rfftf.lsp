@@ -1,0 +1,10 @@
+(defun rfftf (n r wsave) (declare (type fixnum n))
+ (declare (type (simple-array double-float (*)) r))
+ (declare (type (simple-array double-float (*)) wsave))
+ (prog nil (if (= n 1) (go end_label))
+  (multiple-value-setq (n r wsave dummy_var dummy_var)
+   (rfftf1 n r wsave (fref wsave (+ n 1)) (fref wsave (+ (* 2 n) 1)))
+  )
+  (go end_label) end_label (return (values n r wsave))
+))
+

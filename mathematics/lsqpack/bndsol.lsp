@@ -1,0 +1,91 @@
+(defun bndsol (mode g mdg nb ip ir x n rnorm) (declare (type fixnum mode))
+ (declare (type (simple-array double-float (* *)) g))
+ (declare (type fixnum mdg)) (declare (type fixnum nb))
+ (declare (type fixnum ip)) (declare (type fixnum ir))
+ (declare (type (simple-array double-float (*)) x)) (declare (type fixnum n))
+ (declare (type double-float rnorm))
+ (prog
+  ((i2 0) (i1 0) (ix 0) (jg 0) (ie 0) (l 0) (s 0.0d0) (i 0) (ii 0) (irm1 0)
+   (np1 0) (rsq 0.0d0) (j 0) (zero 0.0d0)
+  )
+  (declare (type fixnum i2)) (declare (type fixnum i1))
+  (declare (type fixnum ix)) (declare (type fixnum jg))
+  (declare (type fixnum ie)) (declare (type fixnum l))
+  (declare (type double-float s)) (declare (type fixnum i))
+  (declare (type fixnum ii)) (declare (type fixnum irm1))
+  (declare (type fixnum np1)) (declare (type double-float rsq))
+  (declare (type fixnum j)) (declare (type double-float zero))
+  (comment
+   "     c.l.lawson and r.j.hanson, jet propulsion laboratory, 1973 jun 12"
+  )
+  (comment
+   "     to appear in @solving least squares problems@, prentice-hall, 1974"
+  )
+  (comment "          sequential solution of a banded least squares problem..")
+  (comment "          solution phase.   for the accumulation phase use bndacc."
+  )
+  (comment "")
+  (comment
+   "     mode = 1     solve r*x=y   where r and y are in the g( ) array"
+  )
+  (comment "                  and x will be stored in the x( ) array.")
+  (comment "            2     solve (r**t)*x=y   where r is in g( ),")
+  (comment
+   "                  y is initially in x( ), and x replaces y in x( ),"
+  )
+  (comment "            3     solve r*x=y   where r is in g( ).")
+  (comment
+   "                  y is initially in x( ), and x replaces y in x( )."
+  )
+  (comment "")
+  (comment "     the second subscript of g( ) must be dimensioned at least")
+  (comment "     nb+1 in the calling program.") (setf zero 0.0) (comment "")
+  (setf rnorm zero) (case mode (1) (2) (3))
+  (comment "                                   ********************* mode = 1")
+  (comment "                                   algc step 26")
+  (fdo ((j 1 (+ j 1))) ((> j n) nil)
+   (tagbody (fset (fref x j) (fref g j (+ nb 1))))
+  )
+  (setf rsq zero) (setf np1 (+ n 1)) (setf irm1 (+ ir (- 1)))
+  (if (> np1 irm1) (go label40))
+  (fdo ((j np1 (+ j 1))) ((> j irm1) nil)
+   (tagbody (setf rsq (+ rsq (expt (fref g j (+ nb 1)) 2))))
+  )
+  (setf rnorm (sqrt rsq)) label40
+  (comment "                                   ********************* mode = 3")
+  (comment "                                   alg. step 27")
+  (fdo ((ii 1 (+ ii 1))) ((> ii n) nil)
+   (tagbody (setf i (+ (+ n 1) (- ii)))
+    (comment "                                   alg. step 28") (setf s zero)
+    (setf l (max0 0 (+ i (- ip))))
+    (comment "                                   alg. step 29")
+    (if (= i n) (go label70))
+    (comment "                                   alg. step 30")
+    (setf ie (min0 (+ (+ n 1) (- i)) nb))
+    (fdo ((j 2 (+ j 1))) ((> j ie) nil)
+     (tagbody (setf jg (+ j l)) (setf ix (+ (+ i (- 1)) j))
+      (setf s (+ s (* (fref g i jg) (fref x ix))))
+    ))
+    (comment "                                   alg. step 31") label70
+    (arithmetic-if (fref g i (+ l 1)) (go label80) (go label130) (go label80))
+    label80 (fset (fref x i) (/ (+ (fref x i) (- s)) (fref g i (+ l 1))))
+  ))
+  (comment "                                   alg. step 32") (go end_label)
+  (comment "                                   ********************* mode = 2")
+  (fdo ((j 1 (+ j 1))) ((> j n) nil)
+   (tagbody (setf s zero) (if (= j 1) (go label110))
+    (setf i1 (max0 1 (+ (+ j (- nb)) 1))) (setf i2 (+ j (- 1)))
+    (fdo ((i i1 (+ i 1))) ((> i i2) nil)
+     (tagbody (setf l (+ (+ (+ j (- i)) 1) (max0 0 (+ i (- ip)))))
+      (setf s (+ s (* (fref x i) (fref g i l))))
+    ))
+    label110 (setf l (max0 0 (+ j (- ip))))
+    (arithmetic-if (fref g j (+ l 1)) (go label120) (go label130) (go label120)
+    )
+    label120 (fset (fref x j) (/ (+ (fref x j) (- s)) (fref g j (+ l 1))))
+  ))
+  (go end_label) (comment "") label130
+  (format 6 "~R,O,2,0,,'*E~A~A~A~A~A~A~A~A~A~A~A~A~A~A~A~A" mode i j l) ---->
+  (stop) end_label (return (values mode g mdg nb ip ir x n rnorm))
+))
+

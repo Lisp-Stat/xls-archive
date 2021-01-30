@@ -1,0 +1,29 @@
+(defun qromo
+ (func a b ss choose &key (eps 1.0E-6) (jmax 14) (jmaxp jmax) (km 4) (k km))
+ (declare (type double-float a)) (declare (type double-float b))
+ (declare (type double-float ss)) (declare (type double-float eps))
+ (declare (type fixnum jmax)) (declare (type fixnum jmaxp))
+ (declare (type fixnum km)) (declare (type fixnum k))
+ (prog
+  ((s (make-array '(jmaxp) :element-type 'double-float))
+   (h (make-array '(jmaxp) :element-type 'double-float)) (j 0)
+  )
+  (declare (type (simple-array double-float (*)) s))
+  (declare (type (simple-array double-float (*)) h)) (declare (type fixnum j))
+  (fset (fref h 1) 1.0)
+  (fdo ((j 1 (+ j 1))) ((> j jmax) nil)
+   (tagbody
+    (multiple-value-setq (func a b dummy_var j) (choose func a b (fref s j) j))
+    (cond
+     ((>= j k)
+      (multiple-value-setq (dummy_var dummy_var k dummy_var ss dss)
+       (polint (fref h (+ j (- km))) (fref s (+ j (- km))) k 0.0 ss dss)
+      )
+      (if (< (abs dss) (* eps (abs ss))) (go end_label))
+    ))
+    (fset (fref s (+ j 1)) (fref s j))
+    (fset (fref h (+ j 1)) (/ (fref h j) 9.0))
+  ))
+  (return (values func a b ss choose))
+))
+

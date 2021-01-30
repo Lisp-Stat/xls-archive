@@ -1,0 +1,17 @@
+"Elasticity of value added per labor effort and wage."
+industry logVAoverL logWage
+flour  3.6973 2.9617
+sugar 3.4795 2.8532
+paint 4.0004 3.1158
+cement 3.6609 3.0371
+glass 3.2321 2.8727
+ceramics 3.3418 2.9745
+plywood 3.4308 2.8287
+textile 3.3158 3.0888
+woolens 3.5062 3.0086
+rope 3.2352 2.9680
+chemical 3.8823 3.0909
+aluminum 3.7309 3.0881
+steel 3.7716 3.2256
+bicycle 3.6601 3.1025
+sewing_machine 3.7554 3.1354

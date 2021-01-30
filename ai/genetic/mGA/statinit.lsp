@@ -1,0 +1,7 @@
+(load "mga")
+(load "aux")
+(load "ops")
+(load "setup")
+(load "stats")
+(load "decode")
+(load "objfunc")

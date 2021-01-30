@@ -1,0 +1,1 @@
+/*	12 Jan 95 ... Created	*/#ifndef __SHAREDLIB__#define __SHAREDLIB__ConnectionID OpenLibrary(char *filePath);Ptr LibrarySymbolAddr(char *callName, SymClass symClass);int CloseLibrary(ConnectionID connID);#endif

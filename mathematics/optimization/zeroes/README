@@ -1,0 +1,8 @@
+bisection.lsp and falsep.lsp are from Gerald Roylance CLMATH
+library.
+
+zero.lsp is by Jan de Leeuw
+;;; This implements the root finders discussed in Numerical Recipes,
+;;; second edition, section 9.1 - 9.3. We add some embellishments
+;;; based on Thisted, and on the FZERO routine from the various
+;;; FORTRAN libraries.

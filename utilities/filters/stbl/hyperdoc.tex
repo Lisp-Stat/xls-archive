@@ -1,0 +1,70 @@
+\documentstyle{article}
+\def\href#1#2{\special{html:<a href="#1">}{#2}\special{html:</a>}}
+\begin{document}
+\section{Density Functions}
+Consider a data set of $1000$ numbers. We already know to pictorially
+summarize the distribution of these numbers by means of histograms.
+Here, for \href{file:hist.lsp}{example}, is a histogram of $1000$
+numbers. We can \href{file:smhist.lsp}{approximate} the histogram by a
+smooth curve that displays the shape of the distribution after ironing
+out some of the raggedness. Such smoothing loses some details in the
+histogram and therefore can be thought of as an idealized form of the
+histogram.  We can also say that the unevenness in the histogram is a
+consequence of the classes we have chosen and so the curve is really a
+better description of the data.  In a relative frequency histogram,
+the areas of the bars are proportional to the relative frequency of
+the classes. And if we add together all the relative frequencies, we
+get $1$. Therefore, it is natural to ask that our idealization of the
+histogram, the smooth curve have total area $1$ underneath it. The area
+under the curve between any two values on the $x$-axis is then equal
+to the proportion of observations falling between the two values. This
+curve is called the density curve of the distribution of the data.
+
+There are many density curves. Let us study an important one which is
+called the normal density.
+
+\subsection{The Normal Density}
+Let us first take a look at the normal density. Please click
+\href{file:stbl.lsp}{here} and continue reading this document for
+further instructions. 
+
+Now, if all went well, you should have a menu with the word {\bf
+  Tables} on it. Press your mouse on the word {\bf Tables} and drag it
+on to the {\bf Normal Distribution} menu item and release the mouse
+button.
+
+Do you see the density? It should have a bell-shape with a single
+peak. Notice how the density is {\em symmetric\/} about $0$; that is,
+the shape to the left of $0$ is the same as the shape to the right of
+$0$. The exact density of a normal curve is described by giving
+information about two quantities, the mean $\mu$, where the peak
+occurs and the standard deviation $\sigma$, which specifies how widely
+spread the curve is. The curve that you see now has $\mu=0$ and
+$\sigma=1$ and is called the standard normal distribution. The exact
+formula for a normal density curve with mean $\mu$ and standard
+deviation $\sigma$ is given by 
+\begin{equation}
+\phi(x) = \frac{1}{\sigma\sqrt{2\pi}}
+\exp{-\frac{1}{2}\biggl(\frac{x-\mu}{\sigma}\biggr)^2} 
+\label{eq:normal-density}
+\end{equation}
+
+The normal density curve has the following property, which is often
+referred to as the empirical rule. 
+
+\begin{center}
+\fbox{
+  \parbox[b]{4in}{
+    \paragraph{The $68$-$95$-$99$ Rule}
+    \begin{itemize}
+    \item \href{file:68.lsp}{$68$\%} of the observations fall within
+      $\sigma$ of the mean $\mu$.
+    \item \href{file:95.lsp}{$95$\%} of the observations fall within
+      $2\sigma$ of the mean $\mu$.
+    \item \href{file:99.lsp}{$99.7$\%} of the observations fall within
+      $3\sigma$ of the mean $\mu$.
+    \end{itemize}
+    }
+  }
+\end{center}
+\end{document}

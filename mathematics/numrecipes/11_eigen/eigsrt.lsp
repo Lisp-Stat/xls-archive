@@ -1,0 +1,22 @@
+(require "f2cl_macros")
+
+y(defun eigsrt (d v n np) (declare (type (simple-array double-float (*)) d))
+ (declare (type (simple-array double-float (* *)) v)) (declare (type fixnum n))
+ (declare (type fixnum np))
+ (prog ((j 0) (p 0.0d0) (k 0) (i 0)) (declare (type fixnum j))
+  (declare (type double-float p)) (declare (type fixnum k))
+  (declare (type fixnum i))
+  (fdo ((i 1 (+ i 1))) ((> i (+ n (- 1))) nil)
+   (tagbody (setf k i) (setf p (fref d i))
+    (fdo ((j (+ i 1) (+ j 1))) ((> j n) nil)
+     (tagbody (cond ((>= (fref d j) p) (setf k j) (setf p (fref d j)))))
+    )
+    (cond
+     ((/= k i) (fset (fref d k) (fref d i)) (fset (fref d i) p)
+      (fdo ((j 1 (+ j 1))) ((> j n) nil)
+       (tagbody (setf p (fref v j i)) (fset (fref v j i) (fref v j k))
+        (fset (fref v j k) p)
+  ))))))
+  (return (values d v n np))
+))
+

@@ -1,0 +1,212 @@
+(defun gaminv (a x x0 p q ierr) (declare (type double-float a))
+ (declare (type double-float x)) (declare (type double-float x0))
+ (declare (type double-float p)) (declare (type double-float q))
+ (declare (type fixnum ierr))
+ (prog
+  ((ln10 0.0d0) (eps0 (make-array '(2) :element-type 'float))
+   (amin (make-array '(2) :element-type 'float))
+   (bmin (make-array '(2) :element-type 'float))
+   (dmin (make-array '(2) :element-type 'float))
+   (emin (make-array '(2) :element-type 'float)) (tol 0.0d0) (h 0.0d0)
+   (r 0.0d0) (qn 0.0d0) (pn 0.0d0) (am1 0.0d0) (sum 0.0d0) (apn 0.0d0)
+   (1.0e%2 0.0d0) (ap3 0.0d0) (ap2 0.0d0) (ap1 0.0d0) (d 0.0d0) (s2 0.0d0)
+   (rta 0.0d0) (b4 0.0d0) (a3 0.0d0) (w 0.0d0) (c5 0.0d0) (c4 0.0d0) (c3 0.0d0)
+   (c2 0.0d0) (c1 0.0d0) (z 0.0d0) (s 0.0d0) (y 0.0d0) (u 0.0d0) (b 0.0d0)
+   (qg 0.0d0) (g 0.0d0) (xn 0.0d0) (eps 0.0d0) (iop 0) (0.4e%10 0.0d0)
+   (amax 0.0d0) (e2 0.0d0) (t_ 0.0d0) (xmax 0.0d0) (xmin 0.0d0) (e 0.0d0)
+  )
+  (declare (type float ln10)) (declare (type (simple-array float (*)) eps0))
+  (declare (type (simple-array float (*)) amin))
+  (declare (type (simple-array float (*)) bmin))
+  (declare (type (simple-array float (*)) dmin))
+  (declare (type (simple-array float (*)) emin))
+  (declare (type double-float tol)) (declare (type double-float h))
+  (declare (type double-float r)) (declare (type double-float qn))
+  (declare (type double-float pn)) (declare (type double-float am1))
+  (declare (type double-float sum)) (declare (type double-float apn))
+  (declare (type double-float 1.0e%2)) (declare (type double-float ap3))
+  (declare (type double-float ap2)) (declare (type double-float ap1))
+  (declare (type double-float d)) (declare (type double-float s2))
+  (declare (type double-float rta)) (declare (type double-float b4))
+  (declare (type double-float a3)) (declare (type double-float w))
+  (declare (type double-float c5)) (declare (type double-float c4))
+  (declare (type double-float c3)) (declare (type double-float c2))
+  (declare (type double-float c1)) (declare (type double-float z))
+  (declare (type double-float s)) (declare (type double-float y))
+  (declare (type double-float u)) (declare (type double-float b))
+  (declare (type double-float qg)) (declare (type double-float g))
+  (declare (type double-float xn)) (declare (type double-float eps))
+  (declare (type fixnum iop)) (declare (type double-float 0.4e%10))
+  (declare (type double-float amax)) (declare (type double-float e2))
+  (declare (type double-float t_)) (declare (type double-float xmax))
+  (declare (type double-float xmin)) (declare (type double-float e))
+  (setq ln10 2.302585) (setq c 0.5772157) (setq a3 0.2136235)
+  (setq a2 4.2834215) (setq a1 11.661672) (setq a0 3.3112593)
+  (setq b4 0.03611708) (setq b3 1.2736449) (setq b2 6.406916)
+  (setq b1 6.6105375) (replace eps0 '(1.0E-8) :end 0)
+  (replace eps0 '(1.0E-10) :end 0) (replace amin '(100.0) :end 0)
+  (replace amin '(500.0) :end 0) (replace bmin '(1.0E-13) :end 0)
+  (replace bmin '(1.0E-28) :end 0) (replace dmin '(1.0E-4) :end 0)
+  (replace dmin '(1.0E-6) :end 0) (replace emin '(0.006) :end 0)
+  (replace emin '(0.002) :end 0) (setq tol 1.0E-5) (setf e (spmpar 1))
+  (setf xmin (spmpar 2)) (setf xmax (spmpar 3)) (setf x 0.0)
+  (if (<= a 0.0) (go label500)) (setf t_ (+ (+ (dble p) (dble q)) (- 1.0d0)))
+  (if (> (abs t_) (amax1 e 1.0E-14)) (go label520)) (setf ierr 0)
+  (if (= p 0.0) (go end_label)) (if (= q 0.0) (go label400))
+  (if (= a 1.0) (go label410)) (setf e2 (* 2.0 e))
+  (setf amax (/ 4.0E-11 (* e e))) (setf iop 1) (if (> e 1.0E-10) (setf iop 2))
+  (setf eps (fref eps0 iop)) (setf xn x0) (if (> x0 0.0) (go label100))
+  (if (> a 1.0) (go label30)) (setf g (gamma (+ a 1.0))) (setf qg (* q g))
+  (if (= qg 0.0) (go label560)) (setf b (/ qg a))
+  (if (> qg (* 0.6 a)) (go label20))
+  (if (or (>= a 0.3) (< b 0.35)) (go label10)) (setf t_ (exp (- (+ b c))))
+  (setf u (* t_ (exp t_))) (setf xn (* t_ (exp u))) (go label100) label10
+  (if (>= b 0.45) (go label20)) (if (= b 0.0) (go label560))
+  (setf y (- (alog b))) (setf s (+ 0.5 (+ 0.5 (- a)))) (setf z (alog y))
+  (setf t_ (+ y (* (* -1 s) z))) (if (< b 0.15) (go label11))
+  (setf xn (+ (+ y (* (* -1 s) (alog t_))) (- (alog (+ 1.0 (/ s (+ t_ 1.0))))))
+  )
+  (go label200) label11 (if (<= b 0.01) (go label12))
+  (setf u
+   (/ (+ (* (+ t_ (* 2.0 (+ 3.0 (- a)))) t_) (* (+ 2.0 (- a)) (+ 3.0 (- a))))
+    (+ (* (+ t_ (+ 5.0 (- a))) t_) 2.0)
+  ))
+  (setf xn (+ (+ y (* (* -1 s) (alog t_))) (- (alog u)))) (go label200) label12
+  (setf c1 (* (* -1 s) z)) (setf c2 (* (* -1 s) (+ 1.0 c1)))
+  (setf c3
+   (* s (+ (* (+ (* 0.5 c1) (+ 2.0 (- a))) c1) (+ 2.5 (* (* -1 1.5) a))))
+  )
+  (setf c4
+   (* (* -1 s)
+    (+
+     (*
+      (+ (* (+ (/ c1 3.0) (+ 2.5 (* (* -1 1.5) a))) c1)
+       (+ (* (+ a (- 6.0)) a) 7.0)
+      )
+      c1
+     )
+     (/ (+ (* (+ (* 11.0 a) (- 46)) a) 47.0) 6.0)
+  )))
+  (setf c5
+   (* (* -1 s)
+    (+
+     (*
+      (+
+       (*
+        (+ (* (+ (/ (* -1 c1) 4.0) (/ (+ (* 11.0 a) (- 17.0)) 6.0)) c1)
+         (+ (* (+ (* (* -1 3.0) a) 13.0) a) (- 13.0))
+        )
+        c1
+       )
+       (* 0.5 (+ (* (+ (* (+ (* 2.0 a) (- 25.0)) a) 72.0) a) (- 61.0)))
+      )
+      c1
+     )
+     (/ (+ (* (+ (* (+ (* 25.0 a) (- 195.0)) a) 477.0) a) (- 379.0)) 12.0)
+  )))
+  (setf xn (+ (+ (/ (+ (/ (+ (/ (+ (/ c5 y) c4) y) c3) y) c2) y) c1) y))
+  (if (> a 1.0) (go label200)) (if (> b (fref bmin iop)) (go label200))
+  (setf x xn) (go end_label) label20 (if (> (* b q) 1.0E-8) (go label21))
+  (setf xn (exp (- (+ (/ q a) c)))) (go label23) label21
+  (if (<= p 0.9) (go label22))
+  (setf xn (exp (/ (+ (alnrel (- q)) (gamln1 a)) a))) (go label23) label22
+  (setf xn (exp (/ (alog (* p g)) a))) label23 (if (= xn 0.0) (go label510))
+  (setf t_ (+ 0.5 (+ 0.5 (/ (* -1 xn) (+ a 1.0))))) (setf xn (/ xn t_))
+  (go label100) label30 (if (<= q 0.5) (go label31)) (setf w (alog p))
+  (go label32) label31 (setf w (alog q)) label32
+  (setf t_ (sqrt (* (* -1 2.0) w)))
+  (setf s
+   (+ t_
+    (/ (* -1 (+ (* (+ (* (+ (* a3 t_) a2) t_) a1) t_) a0))
+     (+ (* (+ (* (+ (* (+ (* b4 t_) b3) t_) b2) t_) b1) t_) 1.0)
+  )))
+  (if (> q 0.5) (setf s (- s))) (setf rta (sqrt a)) (setf s2 (* s s))
+  (setf xn
+   (+
+    (+
+     (+ (+ (+ a (* s rta)) (/ (+ s2 (- 1.0)) 3.0))
+      (/ (* s (+ s2 (- 7.0))) (* 36.0 rta))
+     )
+     (/ (* -1 (+ (* (+ (* 3.0 s2) 7.0) s2) (- 16.0))) (* 810.0 a))
+    )
+    (/ (* s (+ (* (+ (* 9.0 s2) 256.0) s2) (- 433.0))) (* (* 38880.0 a) rta))
+  ))
+  (setf xn (amax1 xn 0.0)) (if (< a (fref amin iop)) (go label40)) (setf x xn)
+  (setf d (+ 0.5 (+ 0.5 (/ (* -1 x) a))))
+  (if (<= (abs d) (fref dmin iop)) (go end_label)) label40
+  (if (<= p 0.5) (go label50)) (if (< xn (* 3.0 a)) (go label200))
+  (setf y (- (+ w (gamln a)))) (setf d (amax1 2.0 (* a (+ a (- 1.0)))))
+  (if (< y (* ln10 d)) (go label41)) (setf s (+ 1.0 (- a))) (setf z (alog y))
+  (go label12) label41 (setf t_ (+ a (- 1.0)))
+  (setf xn (+ (+ y (* t_ (alog xn))) (- (alnrel (/ (* -1 t_) (+ xn 1.0))))))
+  (setf xn (+ (+ y (* t_ (alog xn))) (- (alnrel (/ (* -1 t_) (+ xn 1.0))))))
+  (go label200) label50 (setf ap1 (+ a 1.0))
+  (if (> xn (* 0.7 ap1)) (go label101)) (setf w (+ w (gamln ap1)))
+  (if (> xn (* 0.15 ap1)) (go label60)) (setf ap2 (+ a 2.0))
+  (setf ap3 (+ a 3.0)) (setf x (exp (/ (+ w x) a)))
+  (setf x
+   (exp (/ (+ (+ w x) (- (alog (+ 1.0 (* (/ x ap1) (+ 1.0 (/ x ap2))))))) a))
+  )
+  (setf x
+   (exp (/ (+ (+ w x) (- (alog (+ 1.0 (* (/ x ap1) (+ 1.0 (/ x ap2))))))) a))
+  )
+  (setf x
+   (exp
+    (/
+     (+ (+ w x)
+      (- (alog (+ 1.0 (* (/ x ap1) (+ 1.0 (* (/ x ap2) (+ 1.0 (/ x ap3))))))))
+     )
+     a
+  )))
+  (setf xn x) (if (> xn (* 0.01 ap1)) (go label60))
+  (if (<= xn (* (fref emin iop) ap1)) (go end_label)) (go label101) label60
+  (setf apn ap1) (setf t_ (/ xn apn)) (setf sum (+ 1.0 t_)) label61
+  (setf apn (+ apn 1.0)) (setf t_ (* t_ (/ xn apn))) (setf sum (+ sum t_))
+  (if (> t_ 1.0E-4) (go label61)) (setf t_ (+ w (- (alog sum))))
+  (setf xn (exp (/ (+ xn t_) a)))
+  (setf xn
+   (* xn (+ 1.0 (/ (* -1 (+ (+ (* a (alog xn)) (- xn)) (- t_))) (+ a (- xn)))))
+  )
+  (go label101) label100 (if (> p 0.5) (go label200)) label101
+  (if (<= p (* 1.0E10 xmin)) (go label550))
+  (setf am1 (+ (+ a (- 0.5)) (- 0.5))) label102 (if (<= a amax) (go label110))
+  (setf d (+ 0.5 (+ 0.5 (/ (* -1 xn) a)))) (if (<= (abs d) e2) (go label550))
+  label110 (if (>= ierr 20) (go label530)) (setf ierr (+ ierr 1))
+  (multiple-value-setq (a xn pn qn dummy_var) (gratio a xn pn qn 0))
+  (if (or (= pn 0.0) (= qn 0.0)) (go label550)) (setf r (rcomp a xn))
+  (if (= r 0.0) (go label550)) (setf t_ (/ (+ pn (- p)) r))
+  (setf w (* 0.5 (+ am1 (- xn))))
+  (if (and (<= (abs t_) 0.1) (<= (abs (* w t_)) 0.1)) (go label120))
+  (setf x (* xn (+ 1.0 (- t_)))) (if (<= x 0.0) (go label540))
+  (setf d (abs t_)) (go label121) label120 (setf h (* t_ (+ 1.0 (* w t_))))
+  (setf x (* xn (+ 1.0 (- h)))) (if (<= x 0.0) (go label540))
+  (if (and (>= (abs w) 1.0) (<= (* (* (abs w) t_) t_) eps)) (go end_label))
+  (setf d (abs h)) label121 (setf xn x) (if (> d tol) (go label102))
+  (if (<= d eps) (go end_label))
+  (if (<= (abs (+ p (- pn))) (* tol p)) (go end_label)) (go label102) label200
+  (if (<= q (* 1.0E10 xmin)) (go label550))
+  (setf am1 (+ (+ a (- 0.5)) (- 0.5))) label201 (if (<= a amax) (go label210))
+  (setf d (+ 0.5 (+ 0.5 (/ (* -1 xn) a)))) (if (<= (abs d) e2) (go label550))
+  label210 (if (>= ierr 20) (go label530)) (setf ierr (+ ierr 1))
+  (multiple-value-setq (a xn pn qn dummy_var) (gratio a xn pn qn 0))
+  (if (or (= pn 0.0) (= qn 0.0)) (go label550)) (setf r (rcomp a xn))
+  (if (= r 0.0) (go label550)) (setf t_ (/ (+ q (- qn)) r))
+  (setf w (* 0.5 (+ am1 (- xn))))
+  (if (and (<= (abs t_) 0.1) (<= (abs (* w t_)) 0.1)) (go label220))
+  (setf x (* xn (+ 1.0 (- t_)))) (if (<= x 0.0) (go label540))
+  (setf d (abs t_)) (go label221) label220 (setf h (* t_ (+ 1.0 (* w t_))))
+  (setf x (* xn (+ 1.0 (- h)))) (if (<= x 0.0) (go label540))
+  (if (and (>= (abs w) 1.0) (<= (* (* (abs w) t_) t_) eps)) (go end_label))
+  (setf d (abs h)) label221 (setf xn x) (if (> d tol) (go label201))
+  (if (<= d eps) (go end_label))
+  (if (<= (abs (+ q (- qn))) (* tol q)) (go end_label)) (go label201) label400
+  (setf x xmax) (go end_label) label410 (if (< q 0.9) (go label411))
+  (setf x (- (alnrel (- p)))) (go end_label) label411 (setf x (- (alog q)))
+  (go end_label) label500 (setf ierr (- 2)) (go end_label) label510
+  (setf ierr (- 3)) (go end_label) label520 (setf ierr (- 4)) (go end_label)
+  label530 (setf ierr (- 6)) (go end_label) label540 (setf ierr (- 7))
+  (go end_label) label550 (setf x xn) (setf ierr (- 8)) (go end_label) label560
+  (setf x xmax) (setf ierr (- 8)) (go end_label) end_label
+  (return (values a x x0 p q ierr))
+))
+

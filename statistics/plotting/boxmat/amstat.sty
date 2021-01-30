@@ -1,0 +1,235 @@
+%\def\section{
+%\@startsection{section}{1}{\z@}{-3.5ex plus -1ex minus
+%     -.2ex}{2.3ex plus .2ex}{\centering\bf}}
+
+%\def\section{\@dblarg\@mysection}
+%\def\@mysection[#1]#2{
+%\@startsection{section}{1}{\z@}{-3.5ex plus -1ex minus
+%     -.2ex}{2.3ex plus .2ex}{\centering\bf}[#1]{\uppercase{#2}}}
+
+\def\section{\secdef \@mysectionA \@mysectionB}
+\def\@mysectionA[#1]#2{
+\@startsection{section}{1}{\z@}{-3.5ex plus -1ex minus
+     -.2ex}{2.3ex plus .2ex}{\centering\bf}[#1]{\uppercase{#2}}}
+\def\@mysectionB#1{
+\@startsection{section}{1}{\z@}{-3.5ex plus -1ex minus
+     -.2ex}{2.3ex plus .2ex}{\centering\bf}*{\uppercase{#1}}}
+
+
+\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus
+   -.2ex}{1.5ex plus .2ex}{\bf}}
+
+%From art12.doc
+%\def\section{\@startsection {section}{1}{\z@}{-3.5ex plus -1ex minus
+%    -.2ex}{2.3ex plus .2ex}{\Large\bf}}
+%\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus
+%   -.2ex}{1.5ex plus .2ex}{\large\bf}}
+%\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus
+% -1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+%\def\paragraph{\@startsection
+%     {paragraph}{4}{\z@}{3.25ex plus 1ex minus .2ex}{-1em}{\normalsize\bf}}
+%\def\subparagraph{\@startsection
+%     {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus
+%     .2ex}{-1em}{\normalsize\bf}}
+
+
+
+\if@twocolumn
+\textwidth 7in
+\oddsidemargin	-.25in
+\evensidemargin -.25in
+\fi
+
+\def\maketitle{\par
+ \begingroup
+   \def\thefootnote{\fnsymbol{footnote}}
+   \def\@makefnmark{\hbox
+       to 0pt{$^{\@thefnmark}$\hss}}
+   \if@twocolumn
+     \twocolumn[\@maketitle]
+     \else %\newpage
+     \global\@topnum\z@        % Prevents figures from going at top of page.
+     \@maketitle \fi
+\thispagestyle{empty}
+\@thanks
+ \endgroup
+ \setcounter{footnote}{0}
+ \let\maketitle\relax
+ \let\@maketitle\relax
+\pagestyle{myheadings}\markboth{\@author}{\@runninghead}
+		      \markright{\@runninghead}
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax
+}
+
+\def\@maketitle{
+{\raggedleft
+\if@twocolumn
+   \LARGE \bf \@title
+\else
+   \Large \bf \@title
+\fi
+\par}
+  \vskip 1em		    % Vertical space after title.
+\begin{flushleft}
+  {\large		%\sc % each author set in \large, in a
+   \lineskip .5em	    % tabular environment
+   \begin{tabular}[t]{@{}l}
+     \@author\thanks\@thanksnote
+   \end{tabular} \par}
+\end{flushleft}
+ \par
+}
+
+\def\maketitlenonote{\par
+ \begingroup
+   \def\thefootnote{\fnsymbol{footnote}}
+   \def\@makefnmark{\hbox
+       to 0pt{$^{\@thefnmark}$\hss}}
+   \if@twocolumn
+     \twocolumn[\@maketitlenonote]
+     \else %\newpage
+     \global\@topnum\z@        % Prevents figures from going at top of page.
+     \@maketitlenonote \fi
+\thispagestyle{empty}
+\@thanks
+ \endgroup
+ \setcounter{footnote}{0}
+ \let\maketitle\relax
+ \let\@maketitle\relax
+\pagestyle{myheadings}\markboth{\@author}{\@runninghead}
+		      \markright{\@runninghead}
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax
+}
+
+
+\def\@maketitlenonote{
+{\raggedleft
+\if@twocolumn
+   \LARGE \bf \@title
+\else
+   \Large \bf \@title
+\fi
+\par}
+  \vskip 1em		    % Vertical space after title.
+\begin{flushleft}
+  {\large		%\sc % each author set in \large, in a
+   \lineskip .5em	    % tabular environment
+   \begin{tabular}[t]{@{}l}
+     \@author	 %\thanks\@thanksnote  %\thanksnote suppressed
+   \end{tabular} \par}
+\end{flushleft}
+ \par
+}
+
+\def\thanksnote#1{\gdef\@thanksnote{#1}}\thanksnote{}
+\def\institution#1{\gdef\@institution{#1}}\institution{}
+\def\runninghead#1{\gdef\@runninghead{#1}}
+\def\title#1{\gdef\@title{#1}\runninghead{\@title}}
+%\renewcommand{\baselinestretch}{1.0}
+
+\def\keywords#1{\vskip 1em \noindent KEY WORDS: #1.}
+
+\def\faketitle{\par
+%\begin{titlepage}\ \newpage\end{titlepage}
+\newpage
+ \let\faketitle\relax
+\pagestyle{myheadings}\markboth{\sc\@author}{\@runninghead}
+		      \markright{\@runninghead}
+ \gdef\@author{}\gdef\@title{}}
+
+\def\abstract{\vspace{-4.25ex}\section*{\hrulefill}}
+\def\endabstract{\par\noindent\rule{0pt}{0pt}\hrulefill}
+
+% modified from latex.tex line 5908
+% to print "." after section number in section head
+\def\@sect#1#2#3#4#5#6[#7]#8{\ifnum #2>\c@secnumdepth
+     \def\@svsec{}\else
+     \refstepcounter{#1}\edef\@svsec{\csname the#1\endcsname\hskip 1em }\fi
+\ifnum #2=1
+     \edef\sect@svsec{\csname the#1\endcsname . }
+\else
+     \edef\sect@svsec{\@svsec}
+\fi
+     \@tempskipa #5\relax
+      \ifdim \@tempskipa>\z@
+	\begingroup #6\relax
+	  \@hangfrom{\hskip #3\relax\sect@svsec}{\interlinepenalty \@M #8\par}
+	\endgroup
+       \csname #1mark\endcsname{#7}\addcontentsline
+	 {toc}{#1}{\ifnum #2>\c@secnumdepth \else
+		      \protect\numberline{\csname the#1\endcsname}\fi
+		    #7}\else
+	\def\@svsechd{#6\hskip #3\@svsec #8\csname #1mark\endcsname
+		      {#7}\addcontentsline
+			   {toc}{#1}{\ifnum #2>\c@secnumdepth \else
+			     \protect\numberline{\csname the#1\endcsname}\fi
+		       #7}}\fi
+     \@xsect{#5}}
+
+\def\and{AND }
+
+
+%    \@addtoreset{FOO}{BAR} : Adds counter FOO to the list of counters
+%			      \cl@BAR to be reset when counter bar is stepped.
+\newcommand{\addtoreset}[2]{\@addtoreset{#1}{#2}}
+
+
+
+
+%% From article.doc, lines 491--505
+\long\def\@makecaption#1#2{
+   \vskip 10pt
+   \setbox\@tempboxa\hbox{#1 #2}
+   \ifdim \wd\@tempboxa >\hsize   % IF longer than one line:
+       #1 #2\par		  %   THEN set as ordinary paragraph.
+   \else			  %   ELSE  center.
+       \hbox to\hsize{\hfil\box\@tempboxa\hfil}
+   \fi}
+\def\fnum@figure{Figure \thefigure.} %article.doc line 543
+\def\fnum@table{Table \thetable.} %article.doc line 557
+
+
+% subfig
+\newcounter{subfig}			 %article.doc lines 537
+\def\thesubfig{\@arabic\c@subfig}
+
+\def\fps@subfig{tbp}
+\def\ftype@subfig{1}		      % same ftype as figures
+\def\ext@subfig{lof}
+\def\fnum@subfig{\thesubfig.}
+\def\subfig{\@float{subfig}}
+\let\endsubfig\end@float
+\@namedef{subfig*}{\@dblfloat{subfig}}
+\@namedef{endsubfig*}{\end@dblfloat}
+
+\def\l@subfig{\@dottedtocline{1}{1.5em}{2.3em}}  %article.doc line 354--547
+
+\addtoreset{subfig}{figure}
+\renewcommand{\thesubfig}{\thefigure(\alph{subfig})}
+
+
+
+% subtab
+\newcounter{subtab}			 %article.doc lines 537
+\def\thesubtab{\@arabic\c@subtab}
+
+\def\fps@subtab{tbp}
+\def\ftype@subtab{2}			% same ftype as tables
+\def\ext@subtab{lot}
+\def\fnum@subtab{\thesubtab.}
+\def\subtab{\@float{subtab}}
+\let\endsubtab\end@float
+\@namedef{subtab*}{\@dblfloat{subtab}}
+\@namedef{endsubtab*}{\end@dblfloat}
+
+\def\l@subtab{\@dottedtocline{1}{1.5em}{2.3em}}  %article.doc line 354--547
+
+\addtoreset{subtab}{table}
+\renewcommand{\thesubtab}{\thetable(\alph{subtab})}
+
+%theorem appearance
+%modified from latex.tex lines 5692 to 5694
+\def\@begintheorem#1#2{\trivlist \item[\hskip \labelsep{\indent \it #1\ #2.}]}
+\def\@opargbegintheorem#1#2#3{\trivlist
+      \item[\hskip \labelsep{\indent \it #1\ #2\ (#3).}]}
+

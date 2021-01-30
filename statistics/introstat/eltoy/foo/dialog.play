@@ -1,0 +1,166 @@
+xlispstat
+XLISP version 2.1, Copyright (c) 1989, by David Betz
+XLISP-STAT version 2.1 Release 2, Copyright (c) 1989, by Luke Tierney.
+Several files will be loaded; this may take a few minutes.
+
+
+; loading "/usr/local/lib/xlispstat/common.lsp"
+; loading "/usr/local/lib/xlispstat/init.lsp"
+; loading "/usr/local/lib/xlispstat/help.lsp"
+; loading "/usr/local/lib/xlispstat/objects.lsp"
+; loading "/usr/local/lib/xlispstat/menubar.lsp"
+; loading "/usr/local/lib/xlispstat/statistics.lsp"
+; loading "/usr/local/lib/xlispstat/dialogs.lsp"
+; loading "/usr/local/lib/xlispstat/graphics.lsp"
+; loading "/usr/local/lib/xlispstat/graphics2.lsp"
+; loading "/usr/local/lib/xlispstat/graphics3.lsp"
+; loading "/usr/local/lib/xlispstat/regression.lsp"
+; loading "/usr/local/lib/xlispstat/autoload.lsp"
+> (help 'interval-slider-dialog)
+loading in help file information - this will take a minute ...done
+INTERVAL-SLIDER-DIALOG                                          [function-doc]
+Args: (data &key (text "Value") (title "Slider") action (points 30) (nice t))
+Opens modeless dialog with title TITLE, prompt TEXT, a text display and a
+scrollbar. The scrollbar scrolls through the interval DATA, a list of the form
+(LOW HIGH), sequence and displays the value. When a scroll event occurs
+ACTION is called with the current value in the interval as argument. If NICE
+is not NIL DATA and POINTS are revised to produce a nice set of values.
+NIL
+> (send interval-slider-dialog-proto :help)
+INTERVAL-SLIDER-DIALOG-PROTO
+Dialog window prototype.
+Help is available on the following:
+
+:ACTIVATE :ADD-METHOD :ADD-SLOT :ALLOCATE :ALLOCATED-P :CLEAR :CLOSE :COPY-TO-CLIP :CUT-TO-CLIP :DEFAULT-BUTTON :DELETE-DOCUMENTATION :DELETE-METHOD :DELETE-SLOT :DISPOSE :DOC-TOPICS :DOCUMENTATION :FIND :FRAME-LOCATION :FRAME-SIZE :GET-METHOD :HAS-METHOD :HAS-SLOT :HELP :HIDE-WINDOW :INTERNAL-DOC :ISNEW :LOCATION :METHOD-SELECTORS :MODAL-DIALOG :NEW :OWN-METHODS :OWN-SLOTS :PARENTS :PASTE-FROM-CLIP :PASTE-STREAM :PASTE-STRING :PRECEDENCE-LIST :PRINT :REMOVE :REPARENT :RETYPE :SELECTION-STREAM :SHOW :SHOW-WINDOW :SIZE :SLOT-NAMES :SLOT-VALUE :TITLE :UNDO :UPDATE PROTO 
+NIL
+> (send interval-slider-dialog-proto :help :activate)
+:ACTIVATE
+Method args: ()
+Does nothing.
+NIL
+> (send interval-slider-dialog-proto :help :default-button)
+:DEFAULT-BUTTON
+Message args: (button)
+Makes BUTTON the default button.
+NIL
+> (send interval-slider-dialog-proto :help :update)
+:UPDATE
+Method args: ()
+Does nothing.
+NIL
+> (send interval-slider-dialog-proto :help :dispose)
+:DISPOSE
+Method args: ()
+Closes and deallocates the dialog window.
+NIL
+> (send interval-slider-dialog-proto :help)
+INTERVAL-SLIDER-DIALOG-PROTO
+Dialog window prototype.
+Help is available on the following:
+
+:ACTIVATE :ADD-METHOD :ADD-SLOT :ALLOCATE :ALLOCATED-P :CLEAR :CLOSE :COPY-TO-CLIP :CUT-TO-CLIP :DEFAULT-BUTTON :DELETE-DOCUMENTATION :DELETE-METHOD :DELETE-SLOT :DISPOSE :DOC-TOPICS :DOCUMENTATION :FIND :FRAME-LOCATION :FRAME-SIZE :GET-METHOD :HAS-METHOD :HAS-SLOT :HELP :HIDE-WINDOW :INTERNAL-DOC :ISNEW :LOCATION :METHOD-SELECTORS :MODAL-DIALOG :NEW :OWN-METHODS :OWN-SLOTS :PARENTS :PASTE-FROM-CLIP :PASTE-STREAM :PASTE-STRING :PRECEDENCE-LIST :PRINT :REMOVE :REPARENT :RETYPE :SELECTION-STREAM :SHOW :SHOW-WINDOW :SIZE :SLOT-NAMES :SLOT-VALUE :TITLE :UNDO :UPDATE PROTO 
+NIL
+> (send interval-slider-dialog-proto :help :doc-topics)
+:DOC-TOPICS
+Method args: ()
+Returns all topics with documentation for this object.
+NIL
+> (send interval-slider-dialog-proto :help :modal-dialog)
+:MODAL-DIALOG
+Method args: ()
+Puts dialog into modal mode, waits for a dialog event, and returns the item
+in which the event occurred.
+NIL
+> (send interval-slider-dialog-proto :doc-topics)
+(:MODAL-DIALOG :DEFAULT-BUTTON :ALLOCATED-P :CLOSE :DISPOSE :REMOVE :ALLOCATE :ISNEW PROTO :FIND :UPDATE :ACTIVATE :SELECTION-STREAM :PASTE-STRING :PASTE-STREAM :CLEAR :PASTE-FROM-CLIP :COPY-TO-CLIP :CUT-TO-CLIP :UNDO :FRAME-SIZE :FRAME-LOCATION :SIZE :LOCATION :TITLE :HIDE-WINDOW :SHOW-WINDOW :REPARENT :INTERNAL-DOC :OWN-METHODS :OWN-SLOTS :PRECEDENCE-LIST :PARENTS :SHOW :DELETE-METHOD :DELETE-SLOT :ADD-METHOD :ADD-SLOT :HAS-METHOD :HAS-SLOT :GET-METHOD :METHOD-SELECTORS :SLOT-NAMES :SLOT-VALUE :PRINT :RETYPE :NEW :HELP :DELETE-DOCUMENTATION :DOCUMENTATION :DOC-TOPICS)
+> (send interval-slider-dialog-proto :help :documentation)
+:DOCUMENTATION
+Method args: (topic &optional val)
+Retrieves or sets object documentation for topic.
+NIL
+> (send interval-slider-dialog-proto :help :value)
+Sorry, no help available on :VALUE
+NIL
+> (send interval-slider-dialog-proto :help :action)
+Sorry, no help available on :ACTION
+NIL
+> (interval-slider-dialog '(0 30) :points 31 :action #'(lambda (x) (print x)))
+#<Object: 1288672, prototype = INTERVAL-SLIDER-DIALOG-PROTO>
+> 
+0 
+0 
+0 
+1 
+2 
+3 
+4 
+5 
+6 
+7 
+8 
+9 
+10 
+11 
+12 
+13 
+14 
+15 
+16 
+17 
+18 
+19 
+20 
+21 
+22 
+21 
+20 
+19 
+(setq foo (interval-slider-dialog '(0 30) :points 31 :action #'(lambda (x) (print x)))
+18 )
+#<Object: 2215016, prototype = INTERVAL-SLIDER-DIALOG-PROTO>
+> (send foo :value 50)
+
+30 30
+> (send foo :value 24)
+
+24 24
+> (send foo :
+19 
+14 
+9 
+4 
+0 
+14 
+22 
+17 
+12 
+7 
+2 
+0 
+29 
+30 
+29 
+28 
+27 
+
+15 
+)
+error: no method for this message - :
+> (send foo :data (10 50)
+)
+error: bad function - 10
+> (send foo :data '(10 50))
+error: no method for this message - :DATA
+> (send foo :default-button)
+error: too few arguments
+> (send foo :help :deafult-button)
+Sorry, no help available on :DEAFULT-BUTTON
+NIL
+> (send slider-dialog-proto :help :default-button)
+error: unbound variable - SLIDER-DIALOG-PROTO
+> (send foo :help :default-button)
+:DEFAULT-BUTTON
+Message args: (button)
+Makes BUTTON the default button.
+NIL
+> _ernie_5% 

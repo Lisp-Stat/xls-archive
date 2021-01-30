@@ -1,0 +1,7 @@
+(defun beta (z w) (declare (type double-float z))
+ (declare (type double-float w))
+ (prog ((beta 0.0d0)) (declare (type double-float beta))
+  (setf beta (exp (+ (+ (gammln z) (gammln w)) (- (gammln (+ z w))))))
+  (return beta)
+))
+

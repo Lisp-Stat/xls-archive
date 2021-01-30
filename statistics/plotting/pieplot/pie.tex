@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{pstricks}
+\begin{document}
+\psset{unit=1cm}
+\begin{pspicture}(-5.0,-5.0)(5.0,5.0)
+\SpecialCoor
+\psset{framesep=1.5pt}
+\newgray{mygray}{.00}
+\pswedge[fillstyle=solid,fillcolor=mygray]{4.5}{ 0.}{117.}
+\uput{5.0}[59.](0,0){US}
+\rput( 2.;59.){\psframebox*{\small 14}}
+\newgray{mygray}{.25}
+\pswedge[fillstyle=solid,fillcolor=mygray]{4.5}{117.}{142.}
+\uput{5.0}[130.](0,0){NL}
+\rput( 2.;130.){\psframebox*{\small 3}}
+\newgray{mygray}{.50}
+\pswedge[fillstyle=solid,fillcolor=mygray]{4.5}{142.}{226.}
+\uput{5.0}[184.](0,0){JP}
+\rput( 2.;184.){\psframebox*{\small 10}}
+\newgray{mygray}{.75}
+\pswedge[fillstyle=solid,fillcolor=mygray]{4.5}{226.}{293.}
+\uput{5.0}[260.](0,0){FR}
+\rput( 2.;260.){\psframebox*{\small 8}}
+\newgray{mygray}{1.00}
+\pswedge[fillstyle=solid,fillcolor=mygray]{4.5}{293.}{360.}
+\uput{5.0}[327.](0,0){GB}
+\rput( 2.;327.){\psframebox*{\small 8}}
+\end{pspicture}
+\end{document}

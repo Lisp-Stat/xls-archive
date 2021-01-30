@@ -1,0 +1,125 @@
+Copyright 1991 Russell G. Almond
+
+RATIONAL
+
+The basic concept of Elicitation Tool for You (ElToY) [Note: I mean
+"You" in the loose sense of de Finetti that Good uses; in this case,
+"You" is effectively the user] is that is provides a tools for
+elicitation of prior beliefs through interactive feedback.  The values
+of hyperparameters of a prior distribution are relatively abstract
+concepts, and even statisticians have only moderate intuition into
+their meanings.  One way to check consistancy of elicitation is
+through iterative feedback.  You propose a set of values for the
+hyperparameters and the computer displays the consequences of Your
+proposition, in terms of the shape and statistics of the prior
+distiribution, in terms of the effects on predictive distributions,
+and in terms of effects on the posterior distribution given
+hypothetical data.
+
+One further principle of the system is that everything is "active."
+If You change the posterior distribution, those changes should be
+reflected in the prior.  If You change the prior, the posterior and
+predictive distributions are changed.  If You change the hypothetical
+data, the changes should appear in the posterior distirbution.  This
+should allow You to formulate Your beliefs in a consistant fashion.
+
+There are two proposed uses for this tool, the first is as an
+educational device.  If You are a student, it will enable You to
+obtain a better feel for the standard conjugate families of
+distributions and Bayesian analysis in general.  The second is as an
+elicitation tool for getting at prior beliefs in graphical models.
+
+
+SUPPORTED DISTRIBUTIONS
+
+Version 0 is intended to support univariate conjugate prior-likelihood
+families:  beta-binomial, gamma-Poisson, gamma-exponential,
+normal-normal, gamma-normal.
+By Version 1 it should support bivariate conjugate priors, such as
+normalxgamma models.
+By Version 2 it should support mixtures of conjugate priors and
+mixture distributions in general.  As a matter of fact, Version 2
+should contian my proposed distribution mixture tool.
+
+
+STRUCTURE GRAPH
+
+
+			el-tool
+			/  |  \
+  		     /     |     \
+		  /        |        \
+              hyper-	 prior-    ( . . . ) ; list of
+	    parameters 	  tool 		\
+		.         / \            |
+		  .      /   \        data-link	-------------------+
+		parameters   prior-      |   \		     	   |
+			     display    data  post-parameters.     |
+			       |          \                   . post-tool
+			       |	   |	 	       	   |
+			     marginal-	    \	 	       	   |
+			     display      data-	 		post-display
+					  display		   |
+								   |
+								marginal-
+								display
+
+
+UPDATE STRATEGY
+
+Value updating works as follows.  Whenever an el-tool object receives
+a request to change data that it shares in common with a parent, it
+passes the change request to the parent.  The top level data object
+containing the value to be changed, then sends an update message to
+itself with the message it recieved as the arguments.  
+
+The update method re-sends the change message with the keyword :local
+placed before the data.  It then sends an update message to each of
+its children.
+
+Example:  Suppose we change the posterior mean.  The posterior
+display tool will then generate a change request for the posterior
+hyperparameters which it will send to the data-link.  The data-link is the
+highest object containing the posterior parameters.  Its method for
+making a change not marked as local, however, is to unlink and change
+the prior hyperparameters.  This in turn is done by sending a message
+to the el-tool to change the hyperparameters.  The el-tool then sends
+itself an update message.  It handles the update message by first
+sending itself a local :hyperparameters message and then sending and
+:update :hyperparameters message to each of its children.  This
+message is recieved by the data-link which sends itself a local
+:hyperparameters message.  It then sends itself a
+:posterior-hyperparameters message.  It then sends out an update
+message to all its children, including the posterior display, which in
+turn sends a parameters update message to the corresponding marginal
+distribution display.
+
+
+
+To see the update strategy in action, try tracing the :update,
+:parameters, :hyperparameters, :posterior-parameter and
+:prior-parameters messages.  All of these messages have extra
+information flags (turned on by the tracing) which help to illustrate
+the flow of messages through the tool tree.
+
+
+MAIN OBJECTS
+
+The main object in the system is an elicitation-tool.  An elicitaion
+tool spawns several sub-tools, a distribution-display tool for the
+prior, a distribution-display tool for the predictive distribution,
+and a distribution-display tool for the posterior working through a
+ficticious data set.  Additional ficticional data sets and posteriors
+can be formed.
+
+el-tool-proto
+	has slots for title
+	hyperparameters and descriptions
+	prior display tool
+	list of posterior display tools
+	prior distribution family
+	likelihood-family
+	parameter-names
+	data-names
+
+

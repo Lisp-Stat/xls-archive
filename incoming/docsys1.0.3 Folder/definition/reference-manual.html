@@ -1,0 +1,3383 @@
+<html>
+<head>
+<title> Xlispstat Documentation file </title>
+</head>
+<body>
+<center><h1> Xlispstat Documentation file </h1></center>
+<hr>
+
+<p><h2><a name="Var|df:*definition-hfuzz*">df:*definition-hfuzz* </a>(<i>Parameter</i>)</h2>
+<p><b>Documentation:</b><p>
+Amount of slop, or Hfuzz (in points), in TeX line breaking
+  algorithm.  Increasting this value will encourage TeX to stop
+  complaining about overfull hboxes.<p>
+<p><b>Usage: </b><p><center>df:*definition-hfuzz*</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/tex-print.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:affiliation|df:author-doc-proto">:affiliation -&gt; (df:author-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Author's Institution.<p>
+<p><b>Usage: </b><p><center>(send <obj> :affiliation &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:author-doc-proto">df:author-doc-proto </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+This object holds information about an author or reviewer of the code.<p>
+<p><b>Usage: </b><p><center>(send df:author-doc-proto :new  &key name affiliation email home-page)</center><p>
+<p><b>Slots:</b><p>
+<ul>
+<li><i>name</i> --
+            <Code>(:Name)</Code> --
+            String<br>Author's name.</li>
+<li><i>affiliation</i> --
+            <Code>(:Affiliation)</Code> --
+            String<br>Author's Institution.</li>
+<li><i>email</i> --
+            <Code>(:Email)</Code> --
+            String<br>Author's email address.</li>
+<li><i>home-page</i> --
+            <Code>(:Home-Page)</Code> --
+            String<br>Author's home-page URL.</li>
+</ul>
+<p><b>Methods:</b> :Home-Page, :Email, :Affiliation, :Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:authors|df:project-doc-proto">:authors -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of author-doc-proto describing the author(s) of the code.<p>
+<p><b>Usage: </b><p><center>(send <obj> :authors &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:build-project-definitions">df:build-project-definitions </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+This automatically extracts the exported object definitions from
+the source files for a project and fills in the appropriate
+documenation fields<p>
+<p><b>Usage: </b><p><center>(df:build-project-definitions doc)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>doc</i> -- Definitions:Project-Doc-Proto</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>doc</i>
+</li><li><i>defs</i>
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:build-project-definitions|df:project-doc-proto">df:build-project-definitions Df:Project-Doc-Proto </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+This automatically extracts the exported object definitions from
+the source files for a project and fills in the appropriate
+documenation fields<p>
+<p><b>Usage: </b><p><center>(df:build-project-definitions doc)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>doc</i> -- Definitions:Project-Doc-Proto</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>doc</i>
+</li><li><i>defs</i>
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:change-history|df:project-doc-proto">:change-history -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of strings, each
+describing the changes since the last version.<p>
+<p><b>Usage: </b><p><center>(send <obj> :change-history &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:class-definition">df:class-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defclass&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:class-definition :new )</center><p>
+
+<b>Parents:</b> Df:User-Type-Definition
+<p><b>Children:</b> Df:Class-Definition, Df:Condition-Definition<p>
+<p><b>Methods:</b> Df::Print-Html-Definition-Slot-Types, Df::Print-Tex-Definition-Slot-Types, Df:Make-Subdefinitions, Df:Make-Slot-Accessor-Definitions, Df:Definition-Usage, Df:Definition-Children, Df:Definition-Parents, Df::Definition-Methods, Df:Definition-Slots, Df:Definition-Documentation, Df:Definition-Definee, Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:condition-definition">df:condition-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;define-condition&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:condition-definition :new )</center><p>
+
+<b>Parents:</b> Df:Class-Definition
+<p><b>Methods:</b> Df:Definition-Usage, Df:Definition-Class-Nice-Name, Df:Definition-Children, Df:Definition-Parents, Df:Definition-Slots, Df:Definition-Documentation, Df:Definition-Definee, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:constant-definition">df:constant-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defconstant&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:constant-definition :new )</center><p>
+
+<b>Parents:</b> Df:Global-Variable-Definition
+<p><b>Methods:</b> Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:copyright|df:project-doc-proto">:copyright -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+String describing
+copyright information and licence to include in library including any
+restrictions on use (i.e., educational and research only, or no
+redistribution without permission.<p>
+<p><b>Usage: </b><p><center>(send <obj> :copyright &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:date|df:version-doc-proto">:date -&gt; (df:version-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+The date of the release.<p>
+<p><b>Usage: </b><p><center>(send <obj> :date &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:declare-check">df:declare-check </a>(<i>Macro</i>)</h2>
+<p><b>Documentation:</b><p>
+This macro generates type checking forms and has a syntax like &lt;declare&gt;.
+Unfortunately, we can't easily have it also generate the declarations.<p>
+<p><b>Usage: </b><p><center>(df:declare-check
+ &rest decls)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/defs.lsp<p>
+<hr>
+
+<p><h2><a name="Setf|df:definer-class">setf df:definer-class </a>(<i>Setf</i>)</h2>
+<p><b>Documentation:</b><p>
+Assign a definer class name to a definer symbol.<p>
+<p><b>Usage: </b><p><center>(setf (df:definer-class definer) class-name)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definer-class">df:definer-class </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the name of the definition class for the &lt;definer&gt; symbol.
+
+The predefined definer classes are: 
+Class-Definition for defclass,
+Constant-Definition for defconstant,
+Function-Definition for defun,
+Generic-Function-Definition for defgeneric,
+Macro-Definition for defmacro,
+Method-Definition for defmethod,
+Package-Definition for defpackage,
+Parameter-Definition for defparameter,
+Setf-Definition for defsetf,
+Structure-Definition for defstruct,
+Type-Definition for deftype,
+and
+Variable-Definition for defvar.<p>
+<p><b>Usage: </b><p><center>(df:definer-class definer)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>definer</i> -- Symbol</li>
+</ul>
+<p><b>Returns:</b> 
+<i>class-name</i> -- Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:definition">df:definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+Abstract root class for definition objects.<p>
+<p><b>Usage: </b><p><center>(send df:definition :new  &key definition-form definition-path)</center><p>
+<p><b>Slots:</b><p>
+<ul>
+<li><i>definition-form</i> --
+            <Code>(:Definition-Form)</Code> --
+            List<br>The Lisp form that results from reading the definition.</li>
+<li><i>definition-path</i> --
+            <Code>(:Definition-Path)</Code> --
+            (Or Pathname String)<br>Pathanme of the file from which the definition was read.</li>
+</ul>
+<p><b>Children:</b> Df:Class-Definition, Df:Generic-Function-Definition, Df:Global-Variable-Definition, Df:Method-Definition, Df:User-Type-Definition, Df:Type-Definition, Df:Prototype-Definition, Df:Setf-Definition, Df:Condition-Definition, Df:Structure-Definition, Df:Class-Definition, Df:Message-Definition, Df:Macro-Definition, Df:Parameter-Definition, Df:Package-Definition, Df:Variable-Definition, Df:Constant-Definition, Df:Function-Definition, Df:Lambda-List-Definition<p>
+<p><b>Methods:</b> Df:Print-Html-Definition, Df::Print-Html-Definition-Signals, Df::Print-Html-Definition-Methods, Df::Print-Html-Definition-Source-Path, Df::Print-Html-Definition-Documentation, Df::Print-Html-Definition-Children, Df::Print-Html-Definition-Parents, Df::Print-Html-Definition-Returns, Df::Print-Html-Definition-Slot-Types, Df::Print-Html-Definition-Arg-Types, Df::Print-Html-Definition-Usage, Df::Print-Html-Definition-Headline, Df:Print-Tex-Definition, Df::Print-Tex-Definition-Signals, Df::Print-Tex-Definition-Methods, Df::Print-Tex-Definition-Source-Path, Df::Print-Tex-Definition-Documentation, Df::Print-Tex-Definition-Children, Df::Print-Tex-Definition-Parents, Df::Print-Tex-Definition-Returns, Df::Print-Tex-Definition-Slot-Types, Df::Print-Tex-Definition-Arg-Types, Df::Print-Tex-Definition-Usage, Df::Print-Tex-Definition-Headline, :Print, Df:Definition&lt;, Df:Make-Subdefinitions, Df:Definition-Class-Nice-Name, Df::Definition-Methods, Df:Definition-Children, Df:Definition-Parents, Df:Definition-Slots, Df:Definition-Declarations, Df:Definition-Documentation, Df:Definition-Arg-Types, Df:Definition-Lambda-List, Df:Definition-Usage, Df:Definition-Symbol, Df::Definition-Name-&gt;Tag, Df:Definition-Name-&gt;String, Df:Definition-Name, Df:Definition-Definee, Df::Definition-Path, Df:Definition-Form, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition">df:definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The Lisp form that results from reading the definition.<p>
+<p><b>Usage: </b><p><center>(df:definition)</center><p>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition">df:definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Pathanme of the file from which the definition was read.<p>
+<p><b>Usage: </b><p><center>(df:definition)</center><p>
+<p><b>Returns:</b> 
+Object of Type: (Or Pathname String)
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-alpha<">df:definition-alpha&lt; </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Order definitions alphabetically by name.
+If the names are the same, call &lt;definition&lt;&gt;
+to resolve the ambiguity.<p>
+<p><b>Usage: </b><p><center>(df:definition-alpha< def0 def1)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def0</i> -- Definitions:Definition</li>
+<li><i>def1</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Member T Nil)
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/sort.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-arg-types">df:definition-arg-types </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a list of arg --- type pairs for the definition.<p>
+<p><b>Usage: </b><p><center>(df:definition-arg-types def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-arg-types|df:definition">df:definition-arg-types Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns ().<p>
+<p><b>Usage: </b><p><center>(df:definition-arg-types def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-arg-types|df:lambda-list-definition">df:definition-arg-types Df:Lambda-List-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Extract a list of lists of length 2, where each sublist is a name
+--- type pair. The types are gotten first from the arg specializers,
+if there are any, and are overridden by any top level type
+declarations.<p>
+<p><b>Usage: </b><p><center>(df:definition-arg-types def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Lambda-List-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-arg-types|df:macro-definition">df:definition-arg-types Df:Macro-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+I haven't figured out a good way to get at the equivalent of arg
+type declarations for macros, so this just returns nil.<p>
+<p><b>Usage: </b><p><center>(df:definition-arg-types def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Macro-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-arg-types|df:setf-definition">df:definition-arg-types Df:Setf-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+I haven't figured out a good way to get at the equivalent of arg
+type declarations for defsetf, so this just returns nil.<p>
+<p><b>Usage: </b><p><center>(df:definition-arg-types def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Setf-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-body">df:definition-body </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+This generic function extracts the body from a
+  lambda list definition.  It is used by a number of other methods to
+  provide for different &amp;body syntaxes.<p>
+<p><b>Usage: </b><p><center>(df:definition-body def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Lambda-List-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>form</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-body|df:lambda-list-definition">df:definition-body Df:Lambda-List-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Default method extracts (nthcdr 3)<p>
+<p><b>Usage: </b><p><center>(df:definition-body def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Lambda-List-Definition</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-body|df:method-definition">df:definition-body Df:Method-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-body def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Method-Definition</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-body|df:message-definition">df:definition-body Df:Message-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Default method extracts (nthcdr 3)<p>
+<p><b>Usage: </b><p><center>(df:definition-body def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Message-Definition</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-children">df:definition-children </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a list of names of children (eg. direct
+subclasses) of the definition.  For new Definition classes, it may
+return anything that is reasonably thought of as a name of a ``child''
+of the definition.  
+  If package is non-nil, will only search for definitions in a given
+(exported) package.<p>
+<p><b>Usage: </b><p><center>(df:definition-children def &optional package)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>package</i> -- (Or Symbol String Package)</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-children|df:definition">df:definition-children Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns ().<p>
+<p><b>Usage: </b><p><center>(df:definition-children def &optional package)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>package</i> -- T</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-children|df:class-definition">df:definition-children Df:Class-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the names of the direct subclasses. This method requires
+the class definition to be loaded and returns the names of all direct
+subclasses, not just those that have corresponding definition
+objects.<p>
+<p><b>Usage: </b><p><center>(df:definition-children def &optional package)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Class-Definition</li>
+<li><i>package</i> -- T</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-children|df:condition-definition">df:definition-children Df:Condition-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the names of the direct subclasses. This method requires
+the class definition to be loaded and returns the names of all direct
+subclasses, not just those that have corresponding definition
+objects.<p>
+<p><b>Usage: </b><p><center>(df:definition-children def &optional package)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Condition-Definition</li>
+<li><i>package</i> -- T</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-children|df:prototype-definition">df:definition-children Df:Prototype-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the names of the direct subclasses. This method requires
+the class definition to be loaded and returns the names of all direct
+subclasses, not just those that have corresponding definition
+objects.<p>
+<p><b>Usage: </b><p><center>(df:definition-children def &optional package)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Prototype-Definition</li>
+<li><i>package</i> -- T</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-class-nice-name">df:definition-class-nice-name </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a short string for the type of the definition,
+eg. ``Class'' for &lt;Class-Definition&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:definition">df:definition-class-nice-name Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Unknown-Definition-Type</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:class-definition">df:definition-class-nice-name Df:Class-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Class-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Class</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:condition-definition">df:definition-class-nice-name Df:Condition-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Condition-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>KR:Schema</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:constant-definition">df:definition-class-nice-name Df:Constant-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Constant-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Constant</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:function-definition">df:definition-class-nice-name Df:Function-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Function-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Function</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:generic-function-definition">df:definition-class-nice-name Df:Generic-Function-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Generic-Function-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:macro-definition">df:definition-class-nice-name Df:Macro-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Macro-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Macro</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:method-definition">df:definition-class-nice-name Df:Method-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Method-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:message-definition">df:definition-class-nice-name Df:Message-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Message-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Message</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:package-definition">df:definition-class-nice-name Df:Package-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Package-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Package</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/pack.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:parameter-definition">df:definition-class-nice-name Df:Parameter-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Parameter-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Parameter</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:prototype-definition">df:definition-class-nice-name Df:Prototype-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Prototype-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Prototype</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:setf-definition">df:definition-class-nice-name Df:Setf-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Setf-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Setf</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:structure-definition">df:definition-class-nice-name Df:Structure-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Structure-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Structure</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:type-definition">df:definition-class-nice-name Df:Type-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Type-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Type</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-class-nice-name|df:variable-definition">df:definition-class-nice-name Df:Variable-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-class-nice-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Variable-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>Variable</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-declarations">df:definition-declarations </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns all the decl-specs associated with the entire definition.
+A decl-spec is a list like (type Fixnum x).  By associated with the
+entire definition, we mean, for example, the declarations with scope
+over an entire function body, excluding those local to a particular
+&lt;let&gt;. At present, global declarations (from &lt;proclaim&gt; or &lt;declaim&gt;)
+are ignored.<p>
+<p><b>Usage: </b><p><center>(df:definition-declarations def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-declarations|df:definition">df:definition-declarations Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns ().<p>
+<p><b>Usage: </b><p><center>(df:definition-declarations def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-declarations|df:lambda-list-definition">df:definition-declarations Df:Lambda-List-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns all the decl-specs from &lt;declare&gt; forms that come before
+the first non-string non-&lt;declare&gt; form in the function body.  Forms
+that begin with &lt;declare-check&gt; are also treated as declarations.<p>
+<p><b>Usage: </b><p><center>(df:definition-declarations def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Lambda-List-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-declarations|df:setf-definition">df:definition-declarations Df:Setf-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Declarations are only allowed in the long version of defsetf.<p>
+<p><b>Usage: </b><p><center>(df:definition-declarations def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Setf-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-definee">df:definition-definee </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the lisp object that was created when the
+definition was loaded (which is assumed to have happen before the
+definition object was created), or nil if it is not possible to
+retrieve a lisp object corresponding to the definition. For example,
+one can get the appropriate class object by calling find-class on the
+&lt;definition-symbol&gt;, but, there is in general no portable way a lisp
+object associated with the result of evaluating a defstruct.<p>
+<p><b>Usage: </b><p><center>(df:definition-definee def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: T
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-definee|df:definition">df:definition-definee Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns nil.<p>
+<p><b>Usage: </b><p><center>(df:definition-definee def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-definee|df:class-definition">df:definition-definee Df:Class-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Get the corresponding class object.<p>
+<p><b>Usage: </b><p><center>(df:definition-definee def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Class-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Class
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-definee|df:condition-definition">df:definition-definee Df:Condition-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Get the corresponding class object.<p>
+<p><b>Usage: </b><p><center>(df:definition-definee def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Condition-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Class
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-definee|df:prototype-definition">df:definition-definee Df:Prototype-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Get the corresponding prototype object.<p>
+<p><b>Usage: </b><p><center>(df:definition-definee def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Prototype-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Object
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-definer">df:definition-definer </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the definer symbol, eg. &lt;defun&gt; or &lt;defclass&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-definer def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-documentation">df:definition-documentation </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the documentation string associated with &lt;def&gt;.
+Return a string of length zero if there is no documentation string.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:definition">df:definition-documentation Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default is the 4th item in the definition form, if it's a
+string, otherwise we return the empty string.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:class-definition">df:definition-documentation Df:Class-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the class documentation string or an empty string.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Class-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:condition-definition">df:definition-documentation Df:Condition-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the class documentation string or an empty string.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Condition-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:lambda-list-definition">df:definition-documentation Df:Lambda-List-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The documentation string is the first string that comes before the
+first non-&lt;declare&gt; form at the top of the function body, unless it's
+the returned value.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Lambda-List-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:generic-function-definition">df:definition-documentation Df:Generic-Function-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the empty string if no :documentation option is present.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Generic-Function-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:package-definition">df:definition-documentation Df:Package-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the value of the :documentation option or an empty string.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Package-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/pack.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:prototype-definition">df:definition-documentation Df:Prototype-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the class documentation string or an empty string.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Prototype-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:setf-definition">df:definition-documentation Df:Setf-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The doc string for defsetf is, in the long version of defsetf, the
+5th item in the definition form (if it`s a string), and, in the short
+version, the 4th item (again, if it's a string).<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Setf-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:structure-definition">df:definition-documentation Df:Structure-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the defstruct's doc string, or an empty string.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Structure-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-documentation|df:type-definition">df:definition-documentation Df:Type-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Type name strings should be capitalized.<p>
+<p><b>Usage: </b><p><center>(df:definition-documentation def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Type-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-form">df:definition-form </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+CLOS style reader for definition-form<p>
+<p><b>Usage: </b><p><center>(df:definition-form def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- T</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-initial-value">df:definition-initial-value </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+The initial value supplied for a global variable (or constant) definition.<p>
+<p><b>Usage: </b><p><center>(df:definition-initial-value def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: T
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-lambda-list">df:definition-lambda-list </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns an arglist for the definition, or nil.<p>
+<p><b>Usage: </b><p><center>(df:definition-lambda-list def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-lambda-list|df:definition">df:definition-lambda-list Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns ().<p>
+<p><b>Usage: </b><p><center>(df:definition-lambda-list def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-lambda-list|df:lambda-list-definition">df:definition-lambda-list Df:Lambda-List-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The lambda list is the third item in most definitions.<p>
+<p><b>Usage: </b><p><center>(df:definition-lambda-list def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Lambda-List-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-lambda-list|df:method-definition">df:definition-lambda-list Df:Method-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Finding a method's lambda list requires checking for qualifiers.<p>
+<p><b>Usage: </b><p><center>(df:definition-lambda-list def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Method-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-lambda-list|df:message-definition">df:definition-lambda-list Df:Message-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Finding a method's lambda list.<p>
+<p><b>Usage: </b><p><center>(df:definition-lambda-list def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Message-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-lambda-list|df:setf-definition">df:definition-lambda-list Df:Setf-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a lamdba list one would have for the equivalent setf
+method, that is, new value first, followed by the lambda list for the
+generalized variable.<p>
+<p><b>Usage: </b><p><center>(df:definition-lambda-list def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Setf-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-method-qualifier">df:definition-method-qualifier </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+The method qualifier, eg., &lt;after&gt;. Returns &lt;:primary&gt; if no
+qualifier present.<p>
+<p><b>Usage: </b><p><center>(df:definition-method-qualifier def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Method-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-name">df:definition-name </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the name of a definition object, which is
+usually either a symbol, eg. &lt;foo&gt; from (defun foo ...), (defclass Foo
+...), etc., or a list, eg. (setf foo) from (defmethod (setf foo) ...)
+or (defsetf foo ...).<p>
+<p><b>Usage: </b><p><center>(df:definition-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Or Symbol List)
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name|df:definition">df:definition-name Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+By default, the &lt;definition-name&gt; is the second item in the
+definition-form.<p>
+<p><b>Usage: </b><p><center>(df:definition-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Or Symbol List)
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name|df:definition">df:definition-name Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The &lt;definition-name&gt; of a method is a list whose first item is the
+symbol :method, whose second item is the function name, and whose
+remaining items are the specializers for the required arguments.<p>
+<p><b>Usage: </b><p><center>(df:definition-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name|df:definition">df:definition-name Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The &lt;definition-name&gt; of a method is a list whose first item is the
+symbol :message, whose second item is the function name, and whose
+remaining items are the specializers for the required arguments.<p>
+<p><b>Usage: </b><p><center>(df:definition-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name|df:setf-definition">df:definition-name Df:Setf-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The name of a defsetf definition is a list like (setf foo).<p>
+<p><b>Usage: </b><p><center>(df:definition-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Setf-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name|df:structure-definition">df:definition-name Df:Structure-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Getting the name of a defstruct requires a little analysis of the
+second item in the definition form.<p>
+<p><b>Usage: </b><p><center>(df:definition-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Structure-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-name->string">df:definition-name-&gt;string </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a string containing the name of a definition
+object, appropriately capitalized.<p>
+<p><b>Usage: </b><p><center>(df:definition-name->string def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name->string|df:definition">df:definition-name-&gt;string Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method simply calls format on the &lt;definition-name&gt;,
+printing in lower case.<p>
+<p><b>Usage: </b><p><center>(df:definition-name->string def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name->string|df:method-definition">df:definition-name-&gt;string Df:Method-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The name string for methods includes the specializers, so the
+different methods for a generic function can be distinguished.<p>
+<p><b>Usage: </b><p><center>(df:definition-name->string def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Method-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name->string|df:message-definition">df:definition-name-&gt;string Df:Message-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The name string for methods includes the specializers, so the
+different methods for a generic function can be distinguished.<p>
+<p><b>Usage: </b><p><center>(df:definition-name->string def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Message-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-name->string|df:package-definition">df:definition-name-&gt;string Df:Package-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Package name strings should be capitalized.<p>
+<p><b>Usage: </b><p><center>(df:definition-name->string def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Package-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/pack.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-parents">df:definition-parents </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a list of the names of the parents (eg. direct
+superclasses) of the definition.  For new Definition classes, it may
+return anything that is reasonably thought of as a name of a
+``parent'' of the definition.<p>
+<p><b>Usage: </b><p><center>(df:definition-parents def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-parents|df:definition">df:definition-parents Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns ().<p>
+<p><b>Usage: </b><p><center>(df:definition-parents def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-parents|df:class-definition">df:definition-parents Df:Class-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the names of the direct superclasses.<p>
+<p><b>Usage: </b><p><center>(df:definition-parents def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Class-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-parents|df:condition-definition">df:definition-parents Df:Condition-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the names of the direct superclasses.<p>
+<p><b>Usage: </b><p><center>(df:definition-parents def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Condition-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-parents|df:prototype-definition">df:definition-parents Df:Prototype-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the names of the direct superclasses.<p>
+<p><b>Usage: </b><p><center>(df:definition-parents def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Prototype-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-returns">df:definition-returns </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the :returns decl-spec or nil if there isn't one.<p>
+<p><b>Usage: </b><p><center>(df:definition-returns def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-slots">df:definition-slots </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a list of slot specs, which need to be
+interpreted in a Definition class specific manner (structure slot
+specs are different from class slot specs).<p>
+<p><b>Usage: </b><p><center>(df:definition-slots def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-slots|df:definition">df:definition-slots Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns ().<p>
+<p><b>Usage: </b><p><center>(df:definition-slots def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-slots|df:class-definition">df:definition-slots Df:Class-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the forms defining the slots of this class.<p>
+<p><b>Usage: </b><p><center>(df:definition-slots def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Class-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-slots|df:condition-definition">df:definition-slots Df:Condition-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the forms defining the slots of this class.<p>
+<p><b>Usage: </b><p><center>(df:definition-slots def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Condition-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-slots|df:prototype-definition">df:definition-slots Df:Prototype-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the forms defining the visible slots of this class.<p>
+<p><b>Usage: </b><p><center>(df:definition-slots def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Prototype-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-slots|df:structure-definition">df:definition-slots Df:Structure-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Return the forms defining the slots of this structure.<p>
+<p><b>Usage: </b><p><center>(df:definition-slots def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Structure-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-specializers">df:definition-specializers </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+This function finds the list of specializers for a method
+  function.<p>
+<p><b>Usage: </b><p><center>(df:definition-specializers def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Method-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>specializers</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-specializers|df:method-definition">df:definition-specializers Df:Method-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Clos style definition, specialiers come from lambda-list<p>
+<p><b>Usage: </b><p><center>(df:definition-specializers def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Method-Definition</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-specializers|df:message-definition">df:definition-specializers Df:Message-Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+XLISP style definition, specialiers come from second arg of defmeth<p>
+<p><b>Usage: </b><p><center>(df:definition-specializers def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Message-Definition</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-symbol">df:definition-symbol </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a symbol naming the definition.  For definitions
+whose &lt;definition-name&gt; is a symbol, &lt;definition-symbol&gt; is the same.
+For definitions whose &lt;definition-name&gt; is a list like (setf foo),
+&lt;definition-symbol&gt; is &lt;foo&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-symbol def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-symbol|df:definition">df:definition-symbol Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a symbol naming the definition.  For definitions whose
+&lt;definition-name&gt; is a symbol, &lt;definition-symbol&gt; is the same.  For
+definitions whose &lt;definition-name&gt; is a list like (setf foo),
+&lt;definition-symbol&gt; is &lt;foo&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-symbol def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-symbol|df:definition">df:definition-symbol Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+`name' could be a string, so need to intern it in keyword package
+to make package symbol.<p>
+<p><b>Usage: </b><p><center>(df:definition-symbol def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/pack.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-symbol-name">df:definition-symbol-name </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns the symbol-name of the &lt;definition-symbol&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-symbol-name def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: String
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-type-declarations">df:definition-type-declarations </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a list of the type decl specs. At the moment, a type decl
+spec must have the symbol &lt;type&gt; as it's first item.  In the future
+this may be extended to cover decl specs whose first entry is, for
+example, &lt;Fixnum&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-type-declarations def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition-usage">df:definition-usage </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns a string showing how to ``call'' the definition.
+              Second value is indentation to use if it goes to
+              multiple lines.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default for usage is just the &lt;definition-name-string&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/definition.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The example of package use is a call to &lt;in-package&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/pack.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Construct a string for a typical call to the macro.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Construct a string reflecting a typical function call.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Construct a string reflecting a typical function call.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The example of use of a type definition is a call to &lt;typep&gt;.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Construct a string reflecting a typical send call.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition-usage|df:definition">df:definition-usage Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Construct a string reflecting a typical function call.<p>
+<p><b>Usage: </b><p><center>(df:definition-usage def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<ul><li><i>usage</i> -- String
+</li><li><i>indent</i> -- Fixnum
+</li></ul><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/condition.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:definition<">df:definition&lt; </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Resolve the ambiguity in alphabetic ordering for
+multiple definitions with the same name.<p>
+<p><b>Usage: </b><p><center>(df:definition< def0 def1)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def0</i> -- Definitions:Definition</li>
+<li><i>def1</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Member T Nil)
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/sort.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition<|df:definition|system:t">df:definition&lt; Df:Definition System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method returns nil (not comparable).<p>
+<p><b>Usage: </b><p><center>(df:definition< def0 def1)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def0</i> -- Definitions:Definition</li>
+<li><i>def1</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/sort.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition<|df:generic-function-definition|system:t">df:definition&lt; Df:Generic-Function-Definition System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Generic Functions come before Methods.<p>
+<p><b>Usage: </b><p><center>(df:definition< def0 def1)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def0</i> -- Definitions:Generic-Function-Definition</li>
+<li><i>def1</i> -- Definitions:Method-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>t</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/sort.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition<|df:method-definition|system:t">df:definition&lt; Df:Method-Definition System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Method ordering attempts to mimic calling order for combinable
+methods and be alphabetic otherwise.<p>
+<p><b>Usage: </b><p><center>(df:definition< def0 def1)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def0</i> -- Definitions:Method-Definition</li>
+<li><i>def1</i> -- Definitions:Method-Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Member T Nil)
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/sort.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:definition<|df:user-type-definition|system:t">df:definition&lt; Df:User-Type-Definition System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+User defined types (deftype, defstruct, defclass) come before others.<p>
+<p><b>Usage: </b><p><center>(df:definition< def0 def1)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def0</i> -- Definitions:User-Type-Definition</li>
+<li><i>def1</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+<i>t</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/sort.lsp<p>
+<hr>
+
+<p><h2><a name="Pack|:Definitions">:Definitions </a>(<i>Package</i>)</h2>
+<p><b>Usage: </b><p><center>(in-package :Definitions)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/package.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:email|df:author-doc-proto">:email -&gt; (df:author-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Author's email address.<p>
+<p><b>Usage: </b><p><center>(send <obj> :email &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:examples|df:project-doc-proto">:examples -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of strings containing examples of common uses for the package.<p>
+<p><b>Usage: </b><p><center>(send <obj> :examples &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:exported-definition-">df:exported-definition? </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Has the &lt;definition-symbol&gt; of &lt;def&gt; been exported?<p>
+<p><b>Usage: </b><p><center>(df:exported-definition? def)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Member T Nil)
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/filter.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:exported-functions|df:project-doc-proto">:exported-functions -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of functions exported by the package.<p>
+<p><b>Usage: </b><p><center>(send <obj> :exported-functions &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:exported-objects|df:project-doc-proto">:exported-objects -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of objects exported by the package.<p>
+<p><b>Usage: </b><p><center>(send <obj> :exported-objects &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:files|df:project-doc-proto">:files -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of strings each with the name of a file 
+	    	(relative to documentation file) contained in the project.  
+	    	Autodocumentation feature uses these files for definitions.<p>
+<p><b>Usage: </b><p><center>(send <obj> :files &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:function-definition">df:function-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defun&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:function-definition :new )</center><p>
+
+<b>Parents:</b> Df:Lambda-List-Definition
+<p><b>Methods:</b> Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:functional-description|df:project-doc-proto">:functional-description -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+What the code is supposed to accomplish.<p>
+<p><b>Usage: </b><p><center>(send <obj> :functional-description &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:generic-function-definition">df:generic-function-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defgeneric&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:generic-function-definition :new )</center><p>
+
+<b>Parents:</b> Df:Lambda-List-Definition
+<p><b>Methods:</b> Df:Definition&lt;, Df:Definition-Documentation, Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:global-variable-definition">df:global-variable-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+An abstract super class for global variable definitions.<p>
+<p><b>Usage: </b><p><center>(send df:global-variable-definition :new )</center><p>
+
+<b>Parents:</b> Df:Definition
+<p><b>Children:</b> Df:Parameter-Definition, Df:Variable-Definition, Df:Constant-Definition<p>
+<p><b>Methods:</b> Df::Definition-Name-&gt;Tag, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:global-vars|df:project-doc-proto">:global-vars -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of var-doc-proto that describe global variables used by the package.<p>
+<p><b>Usage: </b><p><center>(send <obj> :global-vars &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:home-page|df:author-doc-proto">:home-page -&gt; (df:author-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Author's home-page URL.<p>
+<p><b>Usage: </b><p><center>(send <obj> :home-page &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:instructions|df:project-doc-proto">:instructions -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+User instructions for the package.<p>
+<p><b>Usage: </b><p><center>(send <obj> :instructions &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-arg-names">df:lambda-list-arg-names </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of all the arg names.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-arg-names lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:lambda-list-definition">df:lambda-list-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+An abstract super class for definitions that include lambda lists.<p>
+<p><b>Usage: </b><p><center>(send df:lambda-list-definition :new )</center><p>
+
+<b>Parents:</b> Df:Definition
+<p><b>Children:</b> Df:Generic-Function-Definition, Df:Method-Definition, Df:Type-Definition, Df:Setf-Definition, Df:Message-Definition, Df:Macro-Definition, Df:Function-Definition<p>
+<p><b>Methods:</b> Df:Definition-Usage, Df:Definition-Arg-Types, Df:Definition-Declarations, Df:Definition-Documentation, Df:Definition-Lambda-List, Df:Definition-Body, Df::Definition-Name-&gt;Tag, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-keyword-arg-names">df:lambda-list-keyword-arg-names </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of the names only of the &amp;keyword args.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-keyword-arg-names lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-keyword-args">df:lambda-list-keyword-args </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of the &amp;keyword args, with default values, etc.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-keyword-args lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-optional-arg-names">df:lambda-list-optional-arg-names </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of the names only of the &amp;optional args.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-optional-arg-names lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-optional-args">df:lambda-list-optional-args </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of the &amp;optional args, with default values, etc.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-optional-args lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-required-arg-names">df:lambda-list-required-arg-names </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+a list of the name oif the required args (specializers are stripped off.)<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-required-arg-names lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-required-args">df:lambda-list-required-args </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of the required args (with specializers when given).<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-required-args lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-rest-arg-name">df:lambda-list-rest-arg-name </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+The name of the &amp;rest or &amp;body arg.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-rest-arg-name lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-specializers">df:lambda-list-specializers </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of the specializers for the required args, with T given for any
+unspecialized args.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-specializers lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:lambda-list-whole-arg">df:lambda-list-whole-arg </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+The name of the &amp;whole arg in a (macro's) lambda list.<p>
+<p><b>Usage: </b><p><center>(df:lambda-list-whole-arg lambda-list)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>lambda-list</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: Symbol
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:macro-definition">df:macro-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defmacro&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:macro-definition :new )</center><p>
+
+<b>Parents:</b> Df:Lambda-List-Definition
+<p><b>Methods:</b> Df:Definition-Arg-Types, Df:Definition-Usage, Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:major|df:version-doc-proto">:major -&gt; (df:version-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+The 1 in version 1.0.2.<p>
+<p><b>Usage: </b><p><center>(send <obj> :major &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- Integer</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:make-definitions">df:make-definitions </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Make and return a list of the definition objects corresponding to
+the result of evaluating &lt;form&gt; (which was read from the file
+corresponding to &lt;path&gt;.<p>
+<p><b>Usage: </b><p><center>(df:make-definitions form path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>form</i> -- List</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>definitions</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:make-slot-accessor-definitions">df:make-slot-accessor-definitions </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Make definition objects corresponding to automatically
+generated accessor functions.<p>
+<p><b>Usage: </b><p><center>(df:make-slot-accessor-definitions def slot-spec path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:User-Type-Definition</li>
+<li><i>slot-spec</i> -- List</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>definitions</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:make-slot-accessor-definitions|df:class-definition|system:t|system:t">df:make-slot-accessor-definitions Df:Class-Definition System:T System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Make definition objects corresponding to automatically generated
+accessor functions for a class.<p>
+<p><b>Usage: </b><p><center>(df:make-slot-accessor-definitions def slot-spec path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Class-Definition</li>
+<li><i>slot-spec</i> -- List</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>definitions</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:make-slot-accessor-definitions|df:structure-definition|system:t|system:t">df:make-slot-accessor-definitions Df:Structure-Definition System:T System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Make definition objects corresponding to automatically generated
+accessor functions for a structure.<p>
+<p><b>Usage: </b><p><center>(df:make-slot-accessor-definitions def slot-spec path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Structure-Definition</li>
+<li><i>slot-spec</i> -- List</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>definitions</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:make-subdefinitions">df:make-subdefinitions </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Make definition objects for definitions automatically generated
+by the evaluation of the form corresponding to &lt;def&gt;.
+An example of a subdefinition is a slot accessor function
+automatically generated by a class definition.<p>
+<p><b>Usage: </b><p><center>(df:make-subdefinitions def path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>definitions</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:make-subdefinitions|df:definition|system:t">df:make-subdefinitions Df:Definition System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The method for structures returns a list of definition objects for
+the automatically generated constructor, copier, and predicate
+functions, if they are generated, and the slot accessor functions.<p>
+<p><b>Usage: </b><p><center>(df:make-subdefinitions def path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>definitions</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:make-subdefinitions|df:definition|system:t">df:make-subdefinitions Df:Definition System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The method for classes returns a list of definition objects for the
+slot accessor functions.<p>
+<p><b>Usage: </b><p><center>(df:make-subdefinitions def path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>definitions</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:make-subdefinitions|df:definition|system:t">df:make-subdefinitions Df:Definition System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+The default method for &lt;make-subdefinitions&gt; returns ().<p>
+<p><b>Usage: </b><p><center>(df:make-subdefinitions def path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>path</i> -- Pathname</li>
+</ul>
+<p><b>Returns:</b> 
+<i>nil</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/build.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:message-definition">df:message-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for defmeth.  Note call Message to avoid name
+  class with CLOS method.<p>
+<p><b>Usage: </b><p><center>(send df:message-definition :new )</center><p>
+
+<b>Parents:</b> Df:Method-Definition
+<p><b>Methods:</b> Df:Definition-Specializers, Df::Definition-Name-&gt;Tag, Df:Definition-Name-&gt;String, Df:Definition-Lambda-List, Df:Definition-Name, Df:Definition-Class-Nice-Name, Df:Definition-Usage, Df:Definition-Body, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:method-definition">df:method-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defmethod&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:method-definition :new )</center><p>
+
+<b>Parents:</b> Df:Lambda-List-Definition
+<p><b>Children:</b> Df:Message-Definition<p>
+<p><b>Methods:</b> Df:Definition&lt;, Df:Definition-Specializers, Df:Definition-Body, Df:Definition-Lambda-List, Df::Definition-Name-&gt;Tag, Df:Definition-Name-&gt;String, Df:Definition-Name, Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:minor|df:version-doc-proto">:minor -&gt; (df:version-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+The 0 in version 1.0.2.<p>
+<p><b>Usage: </b><p><center>(send <obj> :minor &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- Integer</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:motivation|df:project-doc-proto">:motivation -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Explanation why the code was written.<p>
+<p><b>Usage: </b><p><center>(send <obj> :motivation &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:name|df:author-doc-proto">:name -&gt; (df:author-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Author's name.<p>
+<p><b>Usage: </b><p><center>(send <obj> :name &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:nicknames|df:project-doc-proto">:nicknames -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of package nicknames.<p>
+<p><b>Usage: </b><p><center>(send <obj> :nicknames &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:os-dependencies|df:project-doc-proto">:os-dependencies -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Description of operating system dependencies.<p>
+<p><b>Usage: </b><p><center>(send <obj> :os-dependencies &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:package|df:project-doc-proto">:package -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Name of the package these
+functions live in.  Warning:  leaving your module in the user package
+could result in name conflicts with other packages and will make it
+more difficult for the automatic documentation process to work.<p>
+<p><b>Usage: </b><p><center>(send <obj> :package &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- (Or String T)</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:package-definition">df:package-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defpackage&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:package-definition :new )</center><p>
+
+<b>Parents:</b> Df:Definition
+<p><b>Methods:</b> Df:Definition-Usage, Df:Definition-Symbol, Df::Definition-Name-&gt;Tag, Df:Definition-Name-&gt;String, Df:Definition-Documentation, Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/pack.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:package-dependencies|df:project-doc-proto">:package-dependencies -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+List of package dependencies.<p>
+<p><b>Usage: </b><p><center>(send <obj> :package-dependencies &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:parameter-definition">df:parameter-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defparameter&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:parameter-definition :new )</center><p>
+
+<b>Parents:</b> Df:Global-Variable-Definition
+<p><b>Methods:</b> Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:print|df:definition">:print -&gt; (df:definition) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A generic method for printing Definition objects.<p>
+<p><b>Usage: </b><p><center>(send <obj> :print &optional stream)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>stream</i> -- (Or Stream T Nil)</li>
+</ul>
+<p><b>Returns:</b> 
+<i>def</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/tex-print.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:print|df:version-doc-proto">:print -&gt; (df:version-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A generic method for printing Definition objects.<p>
+<p><b>Usage: </b><p><center>(send <obj> :print &optional stream)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>stream</i> -- (Or Stream T Nil)</li>
+</ul>
+<p><b>Returns:</b> 
+<i>self</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:print-html-definition">df:print-html-definition </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Print-Html a definition object in html.<p>
+<p><b>Usage: </b><p><center>(df:print-html-definition def &key stream)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>stream</i> -- Stream</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/html-print.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:print-html-definition|df:definition">df:print-html-definition Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Print-Htmls out the reference manual entry for a definition object in html.<p>
+<p><b>Usage: </b><p><center>(df:print-html-definition def &key stream)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>stream</i> -- Stream</li>
+</ul>
+<p><b>Returns:</b> 
+<i>def</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/html-print.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:print-html-definitions">df:print-html-definitions </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Print-Html a html representation of the definition objects in &lt;defs&gt;
+on the file corresponding to &lt;path&gt;. 
+  Title is used as the title of the page.<p>
+<p><b>Usage: </b><p><center>(df:print-html-definitions defs path &key title)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>defs</i> -- List</li>
+<li><i>path</i> -- (Or String Pathname)</li>
+<li><i>title</i> -- String</li>
+</ul>
+<p><b>Returns:</b> 
+<i>defs</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/html-print.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:print-html-documentation">df:print-html-documentation </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Print an html representation of the project documentation &lt;do&gt;
+on the file corresponding to &lt;path&gt;.<p>
+<p><b>Usage: </b><p><center>(df:print-html-documentation def path &key brief include-user-manual)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- T</li>
+<li><i>path</i> -- (Or String Pathname)</li>
+<li><i>brief</i> -- (Or T Null)</li>
+<li><i>include-user-manual</i> -- (Or T Null)</li>
+</ul>
+<p><b>Returns:</b> 
+<i>defs</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/html-print-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:print-html-documentation|df:project-doc-proto|system:t">df:print-html-documentation Df:Project-Doc-Proto System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Print a Html representation of the project documenation &lt;do&gt;
+on the file corresponding to &lt;path&gt;.  
+
+If &lt;Brief&gt; is non-nil, then only the functional docs will be printed.<p>
+<p><b>Usage: </b><p><center>(df:print-html-documentation doc path &key brief include-user-manual)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>doc</i> -- Definitions:Project-Doc-Proto</li>
+<li><i>path</i> -- (Or String Pathname)</li>
+<li><i>brief</i> -- (Or T Null)</li>
+<li><i>include-user-manual</i> -- (Or T Null)</li>
+</ul>
+<p><b>Returns:</b> 
+<i>defs</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/html-print-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:print-tex-definition">df:print-tex-definition </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Print a definition object in TeX.<p>
+<p><b>Usage: </b><p><center>(df:print-tex-definition def &key stream)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>stream</i> -- Stream</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/tex-print.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:print-tex-definition|df:definition">df:print-tex-definition Df:Definition </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Prints out the reference manual entry for a definition object in TeX.<p>
+<p><b>Usage: </b><p><center>(df:print-tex-definition def &key stream)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- Definitions:Definition</li>
+<li><i>stream</i> -- Stream</li>
+</ul>
+<p><b>Returns:</b> 
+<i>def</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/tex-print.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:print-tex-definitions">df:print-tex-definitions </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Print a TeX representation of the definition objects in &lt;defs&gt;
+on the file corresponding to &lt;path&gt;.  &lt;Mode&gt; should be either :tex for
+Plain TeX or :latex for LaTeX.<p>
+<p><b>Usage: </b><p><center>(df:print-tex-definitions defs path &key mode)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>defs</i> -- List</li>
+<li><i>path</i> -- (Or String Pathname)</li>
+<li><i>mode</i> -- (Member (Quote (:Tex :Latex)))</li>
+</ul>
+<p><b>Returns:</b> 
+<i>defs</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/tex-print.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:print-tex-documentation">df:print-tex-documentation </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Print a TeX representation of the project documenation &lt;do&gt;
+on the file corresponding to &lt;path&gt;.  &lt;Mode&gt; should be either :tex for
+Plain TeX or :latex for LaTeX.<p>
+<p><b>Usage: </b><p><center>(df:print-tex-documentation def path &key mode brief include-user-manual)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>def</i> -- T</li>
+<li><i>path</i> -- (Or String Pathname)</li>
+<li><i>mode</i> -- (Member (Quote (:Tex :Latex)))</li>
+<li><i>brief</i> -- (Or T Null)</li>
+<li><i>include-user-manual</i> -- (Or T Null)</li>
+</ul>
+<p><b>Returns:</b> 
+<i>defs</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/tex-print-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:print-tex-documentation|df:project-doc-proto|system:t">df:print-tex-documentation Df:Project-Doc-Proto System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Documentation:</b><p>
+Print a TeX representation of the project documenation &lt;do&gt;
+on the file corresponding to &lt;path&gt;.  
+
+&lt;Mode&gt; should be either :tex for Plain TeX or :latex for LaTeX.
+If &lt;Brief&gt; is non-nil, then only the functional docs will be printed.<p>
+<p><b>Usage: </b><p><center>(df:print-tex-documentation doc path &key mode brief include-user-manual)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>doc</i> -- Definitions:Project-Doc-Proto</li>
+<li><i>path</i> -- (Or String Pathname)</li>
+<li><i>mode</i> -- (Member (Quote (:Tex :Latex)))</li>
+<li><i>brief</i> -- (Or T Null)</li>
+<li><i>include-user-manual</i> -- (Or T Null)</li>
+</ul>
+<p><b>Returns:</b> 
+<i>defs</i>
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/tex-print-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:project-doc-proto">df:project-doc-proto </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+This is the basic object for documenting a project.  This object
+can be used to produce printed documentation (via TeX) or on-line
+documentation (via HTML).<p>
+<p><b>Usage: </b><p><center>(send df:project-doc-proto :new  &key title authors version package nicknames package-dependencies motivation functional-description stat-description exported-objects exported-functions global-vars instructions examples xls-version os-dependencies warnings change-history see-also references copyright reviewed-by files source-home)</center><p>
+<p><b>Slots:</b><p>
+<ul>
+<li><i>title</i> --
+            <Code>(:Title)</Code> --
+            String<br>Title of the code.</li>
+<li><i>authors</i> --
+            <Code>(:Authors)</Code> --
+            List<br>A list of author-doc-proto describing the author(s) of the code.</li>
+<li><i>version</i> --
+            <Code>(:Version)</Code> --
+            Definitions:Version-Doc-Proto<br>Version of the code.</li>
+<li><i>package</i> --
+            <Code>(:Package)</Code> --
+            (Or String T)<br>Name of the package these
+functions live in.  Warning:  leaving your module in the user package
+could result in name conflicts with other packages and will make it
+more difficult for the automatic documentation process to work.</li>
+<li><i>nicknames</i> --
+            <Code>(:Nicknames)</Code> --
+            List<br>A list of package nicknames.</li>
+<li><i>package-dependencies</i> --
+            <Code>(:Package-Dependencies)</Code> --
+            List<br>List of package dependencies.</li>
+<li><i>motivation</i> --
+            <Code>(:Motivation)</Code> --
+            String<br>Explanation why the code was written.</li>
+<li><i>functional-description</i> --
+            <Code>(:Functional-Description)</Code> --
+            String<br>What the code is supposed to accomplish.</li>
+<li><i>stat-description</i> --
+            <Code>(:Stat-Description)</Code> --
+            String<br>Description of the statistical idea behind the code</li>
+<li><i>exported-objects</i> --
+            <Code>(:Exported-Objects)</Code> --
+            List<br>A list of objects exported by the package.</li>
+<li><i>exported-functions</i> --
+            <Code>(:Exported-Functions)</Code> --
+            List<br>A list of functions exported by the package.</li>
+<li><i>global-vars</i> --
+            <Code>(:Global-Vars)</Code> --
+            List<br>A list of var-doc-proto that describe global variables used by the package.</li>
+<li><i>instructions</i> --
+            <Code>(:Instructions)</Code> --
+            String<br>User instructions for the package.</li>
+<li><i>examples</i> --
+            <Code>(:Examples)</Code> --
+            List<br>A list of strings containing examples of common uses for the package.</li>
+<li><i>xls-version</i> --
+            <Code>(:Xls-Version)</Code> --
+            String<br>A list of version-doc-proto containing information on versions of xls that are compatible and incompatible with the package.</li>
+<li><i>os-dependencies</i> --
+            <Code>(:Os-Dependencies)</Code> --
+            String<br>Description of operating system dependencies.</li>
+<li><i>warnings</i> --
+            <Code>(:Warnings)</Code> --
+            List<br>A list of strings, each with a caveat for the well-intentioned but possibly naive user.</li>
+<li><i>change-history</i> --
+            <Code>(:Change-History)</Code> --
+            List<br>A list of strings, each
+describing the changes since the last version.</li>
+<li><i>see-also</i> --
+            <Code>(:See-Also)</Code> --
+            List<br>A list of strings, each containing a helpful alternative to the package.</li>
+<li><i>references</i> --
+            <Code>(:References)</Code> --
+            List<br>A list of strings, each with a reference to a book, article, paper, etc. of likely interest.</li>
+<li><i>copyright</i> --
+            <Code>(:Copyright)</Code> --
+            String<br>String describing
+copyright information and licence to include in library including any
+restrictions on use (i.e., educational and research only, or no
+redistribution without permission.</li>
+<li><i>reviewed-by</i> --
+            <Code>(:Reviewed-By)</Code> --
+            Definitions:Author-Doc-Proto<br>Who reviewed the package for the archive.</li>
+<li><i>files</i> --
+            <Code>(:Files)</Code> --
+            List<br>A list of strings each with the name of a file 
+	    	(relative to documentation file) contained in the project.  
+	    	Autodocumentation feature uses these files for definitions.</li>
+<li><i>source-home</i> --
+            <Code>(:Source-Home)</Code> --
+            Pathname<br>This should automatically capture the location of a project so we 
+	    	can do the appropriate source grabbing for the definitions.  Users 
+	    	should not need to set this, it should automatically be set when the
+	    	project-doc instance object is created.  This in rather assumes the the 
+	    	project-doc is created while reading a file in the top level 
+	    	directory of the project.</li>
+</ul>
+<p><b>Children:</b> Df:Project-Doc-Proto, Df:Project-Doc-Proto, Df:Project-Doc-Proto<p>
+<p><b>Methods:</b> Df::Print-Html-Documentation-Var-Docs, Df::Print-Html-Documentation-Vars, Df::Print-Html-Documentation-Fun-Docs, Df::Print-Html-Documentation-Funs, Df::Print-Html-Documentation-Object-Docs, Df::Print-Html-Documentation-Objects, Df::Print-Html-Documentation-Files, Df::Print-Html-Documentation-Package, Df::Print-Html-Documentation-Dependencies, Df::Print-Html-Documentation-Os, Df::Print-Html-Documentation-Xls, Df::Print-Html-Documentation-See, Df::Print-Html-Documentation-Changes, Df::Print-Html-Documentation-Warnings, Df::Print-Html-Documentation-Examples, Df::Print-Html-Documentation-Instructions, Df::Print-Html-Documentation-Refs, Df::Print-Html-Documentation-Stat, Df::Print-Html-Documentation-Motivation, Df::Print-Html-Documentation-Reviewers, Df::Print-Html-Documentation-Copyright, Df::Print-Html-Documentation-Functional, Df::Print-Html-Documentation-Version, Df::Print-Html-Documentation-Authors, Df::Print-Html-Documentation-Title, Df:Print-Html-Documentation, Df::Print-Tex-Documentation-Var-Docs, Df::Print-Tex-Documentation-Vars, Df::Print-Tex-Documentation-Fun-Docs, Df::Print-Tex-Documentation-Funs, Df::Print-Tex-Documentation-Object-Docs, Df::Print-Tex-Documentation-Objects, Df::Print-Tex-Documentation-Files, Df::Print-Tex-Documentation-Package, Df::Print-Tex-Documentation-Dependencies, Df::Print-Tex-Documentation-Os, Df::Print-Tex-Documentation-Xls, Df::Print-Tex-Documentation-See, Df::Print-Tex-Documentation-Changes, Df::Print-Tex-Documentation-Warnings, Df::Print-Tex-Documentation-Examples, Df::Print-Tex-Documentation-Instructions, Df::Print-Tex-Documentation-Refs, Df::Print-Tex-Documentation-Stat, Df::Print-Tex-Documentation-Motivation, Df::Print-Tex-Documentation-Reviewers, Df::Print-Tex-Documentation-Copyright, Df::Print-Tex-Documentation-Functional, Df::Print-Tex-Documentation-Version, Df::Print-Tex-Documentation-Authors, Df::Print-Tex-Documentation-Title, Df:Print-Tex-Documentation, Df:Build-Project-Definitions, :Source-Home, :Files, :Reviewed-By, :Copyright, :References, :See-Also, :Change-History, :Warnings, :Os-Dependencies, :Xls-Version, :Examples, :Instructions, :Global-Vars, :Exported-Functions, :Exported-Objects, :Stat-Description, :Functional-Description, :Motivation, :Package-Dependencies, :Nicknames, :Package, :Version, :Authors, :Title, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:prototype-definition">df:prototype-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for defproto<p>
+<p><b>Usage: </b><p><center>(send df:prototype-definition :new )</center><p>
+
+<b>Parents:</b> Df:User-Type-Definition
+<p><b>Methods:</b> Df::Print-Html-Definition-Slot-Types, Df::Print-Tex-Definition-Slot-Types, Df:Definition-Class-Nice-Name, Df:Definition-Usage, Df:Definition-Children, Df:Definition-Parents, Df::Definition-Methods, Df:Definition-Slots, Df:Definition-Documentation, Df:Definition-Definee, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/xls-object.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:read-definitions-from-file">df:read-definitions-from-file </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Read all the forms in the file corresponding to &lt;path&gt;, and create
+and return a list of definition objects corresponding to the result of
+evaluating those forms (for which &lt;definer-class&gt; does not return
+&lt;nil&gt;).<p>
+<p><b>Usage: </b><p><center>(df:read-definitions-from-file path)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>path</i> -- (Or String Pathname)</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/read.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:read-definitions-from-files">df:read-definitions-from-files </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Call &lt;read-definitions-from-file&gt; on each path in &lt;paths&gt;,
+concatenating together the results.<p>
+<p><b>Usage: </b><p><center>(df:read-definitions-from-files paths)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>paths</i> -- T</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/read.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:references|df:project-doc-proto">:references -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of strings, each with a reference to a book, article, paper, etc. of likely interest.<p>
+<p><b>Usage: </b><p><center>(send <obj> :references &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:release|df:version-doc-proto">:release -&gt; (df:version-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+a = alpha, b = beta, c = gamma for code 
+version; perhaps some
+other scheme for xls-version, say: x = code should work with this
+xls version ; y = code tested and works with this xls version ; z =
+code doesn't work with this xls version <p>
+<p><b>Usage: </b><p><center>(send <obj> :release &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:rev-level|df:version-doc-proto">:rev-level -&gt; (df:version-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+The 0 in version 1.0.2.<p>
+<p><b>Usage: </b><p><center>(send <obj> :rev-level &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- Integer</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:reviewed-by|df:project-doc-proto">:reviewed-by -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Who reviewed the package for the archive.<p>
+<p><b>Usage: </b><p><center>(send <obj> :reviewed-by &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- Definitions:Author-Doc-Proto</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:see-also|df:project-doc-proto">:see-also -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of strings, each containing a helpful alternative to the package.<p>
+<p><b>Usage: </b><p><center>(send <obj> :see-also &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:setf-definition">df:setf-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defsetf&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:setf-definition :new )</center><p>
+
+<b>Parents:</b> Df:Lambda-List-Definition
+<p><b>Methods:</b> Df:Definition-Declarations, Df:Definition-Documentation, Df:Definition-Arg-Types, Df:Definition-Lambda-List, Df:Definition-Name, Df:Definition-Class-Nice-Name, Df::Definition-Name-&gt;Tag, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/fun.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:source-home|df:project-doc-proto">:source-home -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+This should automatically capture the location of a project so we 
+	    	can do the appropriate source grabbing for the definitions.  Users 
+	    	should not need to set this, it should automatically be set when the
+	    	project-doc instance object is created.  This in rather assumes the the 
+	    	project-doc is created while reading a file in the top level 
+	    	directory of the project.<p>
+<p><b>Usage: </b><p><center>(send <obj> :source-home &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- Pathname</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:stat-description|df:project-doc-proto">:stat-description -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Description of the statistical idea behind the code<p>
+<p><b>Usage: </b><p><center>(send <obj> :stat-description &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:structure-definition">df:structure-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defstruct&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:structure-definition :new )</center><p>
+
+<b>Parents:</b> Df:User-Type-Definition
+<p><b>Methods:</b> Df:Make-Subdefinitions, Df:Make-Slot-Accessor-Definitions, Df:Definition-Slots, Df:Definition-Documentation, Df:Definition-Name, Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:title|df:project-doc-proto">:title -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Title of the code.<p>
+<p><b>Usage: </b><p><center>(send <obj> :title &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:type-check">df:type-check </a>(<i>Macro</i>)</h2>
+<p><b>Usage: </b><p><center>(df:type-check
+ type &rest args)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/defs.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:type-definition">df:type-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;deftype&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:type-definition :new )</center><p>
+
+<b>Parents:</b> Df:User-Type-Definition, Df:Lambda-List-Definition
+<p><b>Methods:</b> Df:Definition-Documentation, Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:user-type-definition">df:user-type-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+An abstract super class for user defined types.<p>
+<p><b>Usage: </b><p><center>(send df:user-type-definition :new )</center><p>
+
+<b>Parents:</b> Df:Definition
+<p><b>Children:</b> Df:Class-Definition, Df:Type-Definition, Df:Prototype-Definition, Df:Condition-Definition, Df:Structure-Definition, Df:Class-Definition<p>
+<p><b>Methods:</b> Df:Definition&lt;, Df:Definition-Usage, Df::Definition-Name-&gt;Tag, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/type.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:variable-definition">df:variable-definition </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+A definition class for &lt;defvar&gt;.<p>
+<p><b>Usage: </b><p><center>(send df:variable-definition :new )</center><p>
+
+<b>Parents:</b> Df:Global-Variable-Definition
+<p><b>Methods:</b> Df:Definition-Class-Nice-Name, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/global.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:version|df:project-doc-proto">:version -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Version of the code.<p>
+<p><b>Usage: </b><p><center>(send <obj> :version &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- Definitions:Version-Doc-Proto</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Type|df:version-doc-proto">df:version-doc-proto </a>(<i>Class</i>)</h2>
+<p><b>Documentation:</b><p>
+This object holds information on
+versions.  It is used to hold the version information for the code and
+for xls.  The meaning of the release slot changes with the context.<p>
+<p><b>Usage: </b><p><center>(send df:version-doc-proto :new  &key major minor rev-level date release)</center><p>
+<p><b>Slots:</b><p>
+<ul>
+<li><i>major</i> --
+            <Code>(:Major)</Code> --
+            Integer<br>The 1 in version 1.0.2.</li>
+<li><i>minor</i> --
+            <Code>(:Minor)</Code> --
+            Integer<br>The 0 in version 1.0.2.</li>
+<li><i>rev-level</i> --
+            <Code>(:Rev-Level)</Code> --
+            Integer<br>The 0 in version 1.0.2.</li>
+<li><i>date</i> --
+            <Code>(:Date)</Code> --
+            String<br>The date of the release.</li>
+<li><i>release</i> --
+            <Code>(:Release)</Code> --
+            String<br>a = alpha, b = beta, c = gamma for code 
+version; perhaps some
+other scheme for xls-version, say: x = code should work with this
+xls version ; y = code tested and works with this xls version ; z =
+code doesn't work with this xls version </li>
+</ul>
+<p><b>Methods:</b> Df:Version&gt;, :Print, :Release, :Date, :Rev-Level, :Minor, :Major, :Isnew, Xlos:Shared-Initialize<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|df:version>">df:version&gt; </a>(<i>Generic Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Returns T if &lt;ver1&gt; is more recent than &lt;ver2&gt;<p>
+<p><b>Usage: </b><p><center>(df:version> ver1 ver2)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>ver1</i> -- Definitions:Version-Doc-Proto</li>
+<li><i>ver2</i> -- Definitions:Version-Doc-Proto</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|df:version>|df:version-doc-proto|system:t">df:version&gt; Df:Version-Doc-Proto System:T </a>(<i>Primary Method</i>)</h2>
+<p><b>Usage: </b><p><center>(df:version> ver1 ver2)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>ver1</i> -- Definitions:Version-Doc-Proto</li>
+<li><i>ver2</i> -- T</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:warnings|df:project-doc-proto">:warnings -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of strings, each with a caveat for the well-intentioned but possibly naive user.<p>
+<p><b>Usage: </b><p><center>(send <obj> :warnings &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- List</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:xls-version|df:project-doc-proto">:xls-version -&gt; (df:project-doc-proto) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+A list of version-doc-proto containing information on versions of xls that are compatible and incompatible with the package.<p>
+<p><b>Usage: </b><p><center>(send <obj> :xls-version &optional new-value)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>new-value</i> -- String</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/definition/project-doc.lsp<p>
+
+</body>
+</html>

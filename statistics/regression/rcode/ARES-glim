@@ -1,0 +1,11 @@
+In R. D. Cook and S. Weisberg, \"ARES plots for generalized linear models,\"
+Computational Statistics and Data Analysis, 17 (1994), 303-317, we promise the
+existence of software for fitting ARES plots using Xlisp-Stat.
+
+This software is not yet ready for distribution, and will not be posted until
+the end of 1994.  When it is ready, it will require the use of the R-code,
+which is a copyrighted Xlisp-Stat program distributed with the following book:
+
+R. D. Cook and S. Weisberg (1994).  An Introduction to Regression Graphics.
+New York:  Wiley, ISBN 0-471-00839-7.  Expected publication date:  
+July 15, 1994.

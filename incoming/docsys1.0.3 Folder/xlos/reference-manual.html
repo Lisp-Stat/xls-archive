@@ -1,0 +1,255 @@
+<html>
+<head>
+<title> Xlispstat Documentation file </title>
+</head>
+<body>
+<center><h1> Xlispstat Documentation file </h1></center>
+<hr>
+
+<p><h2><a name="Lambda|xlos:defclass">xlos:defclass </a>(<i>Macro</i>)</h2>
+<p><b>Documentation:</b><p>
+This macro provides the defclass syntax for the XLISP-STAT object
+system.  It creates an appropriate defproto form, along with
+appropriate creation (:isnew) and accessor methods.  For more
+information, see Steele [1990], p 822.
+
+    Usage
+    defclass class-name ({superclass-name}*)({slot-specifier}*)[class-
+      option]
+    class-name:: symbol
+    superclass-name:: symbol
+    slot-specifier:: slot-name | (slot-name [slot-option])
+    slot-name:: symbol
+    slot-option::
+     {:reader reader-function-name}* |
+     {:writer writer-function-name}* |
+     {:accessor reader-function-name}* |
+     {:allocation allocation-type} |
+     {:initarg initarg-name}* |
+     {:initform form} |
+     {:type type-specifier} |
+     {:documentation string}
+    reader-function-name:: symbol
+    writer-function-name:: function-specifier
+    function-specifier:: {symbol }
+    initarg-name:: symbol
+    allocation-type:: {:instance | :class | :prototype}
+    class-option::
+     (:default-initargs initarg-list) |
+     (:documentation string) 
+    initarg-list:: {initarg-name default-initial-value-form}*
+<p>
+<p><b>Usage: </b><p><center>(xlos:defclass
+ name prototypes slot-specifications &rest class-options)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:defgeneric">xlos:defgeneric </a>(<i>Macro</i>)</h2>
+<p><b>Documentation:</b><p>
+This macro creates a ``generic function'', a call to send with the
+appropriate arguments.<p>
+<p><b>Usage: </b><p><center>(xlos:defgeneric
+ name arglist &body options)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defgeneric.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:defmethod">xlos:defmethod </a>(<i>Macro</i>)</h2>
+<p><b>Documentation:</b><p>
+This translates a defmethod form into the approprate defmeth form.<p>
+<p><b>Usage: </b><p><center>(xlos:defmethod
+ name ((obj-arg proto-name) . otherargs) &body body)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defgeneric.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:initialize-slot">xlos:initialize-slot </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+This function does the work of initializing a slot.  It searches,
+the list of args for the first one matching initargs.  If found, it
+sets the slot to that value.  If not, it evaluates initform and sets
+the slot to that value. 
+  If the initial value does not match the type of the slot, it signals
+an error.<p>
+<p><b>Usage: </b><p><center>(xlos:initialize-slot obj slot-name initargs args initform)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>obj</i> -- T</li>
+<li><i>slot-name</i> -- T</li>
+<li><i>initargs</i> -- T</li>
+<li><i>args</i> -- T</li>
+<li><i>initform</i> -- T</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:make-instance">xlos:make-instance </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+This function is a quick and dirty implementation of make-instance.  It 
+  expects either an XLS object or a symbol whose value is an XLS object.  
+  It sends the object a :new method with args &lt;initargs&gt; and returns the 
+  result.<p>
+<p><b>Usage: </b><p><center>(xlos:make-instance obj &rest initargs)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>obj</i> -- (Or Symbol Object)</li>
+<li><i>initargs</i> -- T</li>
+</ul>
+<p><b>Returns:</b> 
+<i>new-obj</i> -- Obj
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:my-check-type">xlos:my-check-type </a>(<i>Macro</i>)</h2>
+<p><b>Documentation:</b><p>
+This is a version of the check-type macro which will accept the
+  name (symbol) of an object as a type name.<p>
+<p><b>Usage: </b><p><center>(xlos:my-check-type
+ place spec &optional string)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:mytypep">xlos:mytypep </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+This function performs the same as typep, only if the second
+  argument is the name (symbol) of a prototype, then it check to see
+  if val is an object of the appropriate kind.<p>
+<p><b>Usage: </b><p><center>(xlos:mytypep val typ)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>val</i> -- T</li>
+<li><i>typ</i> -- T</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Member (Quote (T Nil)))
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:objtypep">xlos:objtypep </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+Tests to see if val is an XLS object which is an instance of &lt;obj-name&gt;.<p>
+<p><b>Usage: </b><p><center>(xlos:objtypep val obj-name)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>val</i> -- T</li>
+<li><i>obj-name</i> -- Symbol</li>
+</ul>
+<p><b>Returns:</b> 
+Object of Type: (Member (Quote (T Nil)))
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Type|system:pathname">system:pathname </a>(<i>Type</i>)</h2>
+<p><b>Usage: </b><p><center>(typep x 'system:pathname)</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:process-initargs">xlos:process-initargs </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+This function does the processing for the default initargs.  It
+searches through the list of initargs and extracts the ones which are
+not already on the list and appends them to the end.<p>
+<p><b>Usage: </b><p><center>(xlos:process-initargs default-initargs actual-args)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>default-initargs</i> -- List</li>
+<li><i>actual-args</i> -- List</li>
+</ul>
+<p><b>Returns:</b> 
+<i>actual-args</i> -- List
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Lambda|xlos:shared-initialize">xlos:shared-initialize </a>(<i>Function</i>)</h2>
+<p><b>Documentation:</b><p>
+The shared-initialize generic function takes care of initializing
+slot values.  It takes the keyword part of the initialization lambda
+list and sets up the initial values for the slots to either (a) the
+first appropriate keyword it finds or else (b) it executes the
+initform for the slot.<p>
+<p><b>Usage: </b><p><center>(xlos:shared-initialize obj &rest keyword-args)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>obj</i> -- Object</li>
+<li><i>keyword-args</i> -- T</li>
+</ul>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Var|xlos:shared-initialize">xlos:shared-initialize </a>(<i>Constant</i>)</h2>
+<p><b>Documentation:</b><p>
+The name for the shared-initialize method.<p>
+<p><b>Usage: </b><p><center>xlos:shared-initialize</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Method|:slot-type|system:*object*">:slot-type -&gt; (system:*object*) </a>(<i>Message</i>)</h2>
+<p><b>Documentation:</b><p>
+Gets/Sets the type-specifier for the slot named &lt;slot-name&gt;.
+Results are undefined in &lt;type-specifier&gt; is not a legal type
+specifier.  This type specifier is only check when setting a slot
+through a constructor made by the defclass system.<p>
+<p><b>Usage: </b><p><center>(send <obj> :slot-type slot-name &optional type-specifier)</center><p>
+<p><b>Arguments:</b><p>
+<ul>
+<li><i>slot-name</i> -- Symbol</li>
+<li><i>type-specifier</i> -- (Or T Null)</li>
+</ul>
+<p><b>Returns:</b> 
+<i>type-specifier</i> -- T
+<p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Var|xlos:slot-types">xlos:slot-types </a>(<i>Constant</i>)</h2>
+<p><b>Documentation:</b><p>
+The name of a slot for storing type information.<p>
+<p><b>Usage: </b><p><center>xlos:slot-types</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Pack|"Xlos"">"Xlos" </a>(<i>Package</i>)</h2>
+<p><b>Usage: </b><p><center>(in-package "Xlos")</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defclass.lsp<p>
+<hr>
+
+<p><h2><a name="Pack|"Xlos"">"Xlos" </a>(<i>Package</i>)</h2>
+<p><b>Usage: </b><p><center>(in-package "Xlos")</center><p>
+
+<p><i>Source file: </i>
+/home/comet/rga6711/xlisp/xlos/defgeneric.lsp<p>
+
+</body>
+</html>

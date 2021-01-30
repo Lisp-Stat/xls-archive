@@ -1,0 +1,31 @@
+(defun splint (xa ya y2a n x y)
+ (declare (type (simple-array double-float (*)) xa))
+ (declare (type (simple-array double-float (*)) ya))
+ (declare (type (simple-array double-float (*)) y2a)) (declare (type fixnum n))
+ (declare (type double-float x)) (declare (type double-float y))
+ (prog ((b 0.0d0) (a 0.0d0) (h 0.0d0) (k 0) (khi 0) (klo 0))
+  (declare (type double-float b)) (declare (type double-float a))
+  (declare (type double-float h)) (declare (type fixnum k))
+  (declare (type fixnum khi)) (declare (type fixnum klo)) (setf klo 1)
+  (setf khi n) label1
+  (cond
+   ((> (+ khi (- klo)) 1) (setf k (/ (+ khi klo) 2))
+    (cond ((> (fref xa k) x) (setf khi k)) (t (setf klo k))) (go label1)
+  ))
+  (setf h (+ (fref xa khi) (- (fref xa klo))))
+  (if (= h 0.0) (error "Bad XA input.")) (setf a (/ (+ (fref xa khi) (- x)) h))
+  (setf b (/ (+ x (- (fref xa klo))) h))
+  (setf y
+   (+ (+ (* a (fref ya klo)) (* b (fref ya khi)))
+    (/
+     (*
+      (+ (* (+ (expt a 3) (- a)) (fref y2a klo))
+       (* (+ (expt b 3) (- b)) (fref y2a khi))
+      )
+      (expt h 2)
+     )
+     6.0
+  )))
+  (return (values xa ya y2a n x y))
+))
+

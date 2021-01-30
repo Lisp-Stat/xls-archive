@@ -1,0 +1,34 @@
+Show data is a simple Xlisp-Stat tool to allow users unfamiliar with 
+the language to construct plots from their pre-defined variables.  The
+interface is graphical and allows a user to select the type of plot
+as well as which variables are to be plotted.  The program supports the
+following types of plots:
+
+1) Scatterplots
+2) Scatterplot Matricies
+3) Line/Time Plots
+4) Boxplots
+5) Histograms
+6) Spin Plots
+7) Quantile Plots
+8) Dot Plots
+9) Stem and Leaf Plots
+
+The 2 keywords 
+(a) :varnames 
+(b) :case-labels 
+are optional and should be lists of strings of length:
+(a) the number of variables submitted to the program, and
+(b) the number of cases for each variable
+
+    Variables do not have to be of the same length, but some plots will not
+accept variables of different lengths (eg. Scatterplot Matricies).  The name
+of each plot is printed in the listener window if the user wishes to send 
+messages to the plots.
+Calls to the program should be of the form:
+(show-data (list var1 var2 ... varn)
+           :varnames (list "Var1" "Var2" ... "Varn")
+           :case-labels (list "Obs1" "Obs2" ... "Obsk"))
+
+
+

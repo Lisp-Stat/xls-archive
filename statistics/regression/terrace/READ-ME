@@ -1,0 +1,32 @@
+Fri Jul 15 1994
+
+Welcome to TERRACE-TWO by James Hilden-Minton.
+
+TERRACE-TWO is an interact package in xlisp-stat for estimating
+and diagnosing two-level linear models. 
+
+For code, see                                     ter2.lsp
+For explication of code (~60 pages), see          ter2.ps
+For examples with growth curve data, load         box.lsp box.data
+                                                  rat.lsp rat.data
+For example with aerosol data, load               aerosol.lsp
+
+David Afshartous is writting a friendly user's guide. For
+now try loading  box.lsp  in xlisp-stat. A dialog box should
+pop up and lead you through many interactive model specification
+procedures. Graphical interface works in x-windows, and 
+portability is yet unknown.
+
+Let me know if you have any questions or suggestions or find 
+any bugs. This project is still in the early stages of development.
+
+
+
+James Hilden-Minton
+
+3189 S. Sepulveda #2
+Los Angeles, CA  90034
+
+(310) 397-5711
+
+jhilden@stat.ucla.edu

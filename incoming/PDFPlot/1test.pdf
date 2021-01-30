@@ -1,0 +1,208 @@
+%PDF-1.0
+% Graphics output produced by xlispstat & pdfplot.lsp
+1 0 obj
+<<
+/Type /Catalog
+/Pages 3 0 R
+/Outlines 2 0 R
+>>
+endobj
+2 0 obj
+<<
+/Type /Outlines
+/Count 0
+>>
+endobj
+3 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 7 0 R ]
+>>
+endobj
+4 0 obj
+[
+/PDF /Text
+]
+endobj
+5 0 obj
+<< 
+/Type /Font 
+/Subtype /Type1
+/Name /F1
+/BaseFont /Helvetica
+/Encoding /MacRomanEncoding
+>>
+endobj
+6 0 obj
+<< 
+/Type /Font 
+/Subtype /Type1
+/Name /F2
+/BaseFont /ZapfDingbats
+/Encoding /MacRomanEncoding
+>>
+endobj
+7 0 obj
+<<
+/Type /Page
+/Parent 3 0 R
+/Resources << /Font << /F1 5 0 R   /F2 6 0 R  >>   /ProcSet 4 0 R >>
+/MediaBox [ 0 0 569 324 ]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<< /Length 9 0 R >>
+stream
+%
+BT
+/F1 10 Tf
+ET
+%
+% Begin Lisp graphics output
+%
+1 0 0 -1 0 324 cm 
+
+%% :REDRAW-BACKGROUND
+ 1.0  1.0  1.0  RG  1.0  1.0  1.0  rg 
+ 0 0 569 324 re f
+ 0.0  0.0  0.0  RG  0.0  0.0  0.0  rg  1 w  [ 3 5 ] 0 d  0.0  1.0  1.0  RG  0.0  1.0  1.0  rg 31 293 m 31 30 l S 
+115 293 m 115 30 l S 
+200 293 m 200 30 l S 
+285 293 m 285 30 l S 
+369 293 m 369 30 l S 
+454 293 m 454 30 l S 
+539 293 m 539 30 l S 
+31 293 m 539 293 l S 
+31 228 m 539 228 l S 
+31 162 m 539 162 l S 
+31 96 m 539 96 l S 
+31 30 m 539 30 l S 
+ 0.0  0.0  0.0  RG  0.0  0.0  0.0  rg  1 w  [ ] 0 d  [ 3 5 ] 0 d  2 w  0.0  1.0  1.0  RG  0.0  1.0  1.0  rg 31 293 m 31 30 l S 
+31 293 m 539 293 l S 
+ 0.0  0.0  0.0  RG  0.0  0.0  0.0  rg  1 w  [ ] 0 d  0.0  0.0  0.0  RG  0.0  0.0  0.0  rg 
+%% :REDRAW-AXIS
+ 2 w 31 293 m 539 293 l S 
+31 293 m 31 298 l S 
+BT 1 0 0 -1 0 0 Tm 22 -311 Td ( 0.0) Tj ET
+115 293 m 115 298 l S 
+BT 1 0 0 -1 0 0 Tm 106 -311 Td ( 5.0) Tj ET
+200 293 m 200 298 l S 
+BT 1 0 0 -1 0 0 Tm 190 -311 Td (10.0) Tj ET
+285 293 m 285 298 l S 
+BT 1 0 0 -1 0 0 Tm 275 -311 Td (15.0) Tj ET
+369 293 m 369 298 l S 
+BT 1 0 0 -1 0 0 Tm 359 -311 Td (20.0) Tj ET
+454 293 m 454 298 l S 
+BT 1 0 0 -1 0 0 Tm 444 -311 Td (25.0) Tj ET
+539 293 m 539 298 l S 
+BT 1 0 0 -1 0 0 Tm 529 -311 Td (30.0) Tj ET
+31 293 m 31 30 l S 
+31 293 m 26 293 l S 
+BT 0 -1 -1 0 0 0 Tm -302 -18 Td ( 0.0) Tj ET
+31 228 m 26 228 l S 
+BT 0 -1 -1 0 0 0 Tm -238 -18 Td (10.0) Tj ET
+31 162 m 26 162 l S 
+BT 0 -1 -1 0 0 0 Tm -172 -18 Td (20.0) Tj ET
+31 96 m 26 96 l S 
+BT 0 -1 -1 0 0 0 Tm -106 -18 Td (30.0) Tj ET
+31 30 m 26 30 l S 
+BT 0 -1 -1 0 0 0 Tm -40 -18 Td (40.0) Tj ET
+ 1 w  0.0  0.0  0.0  RG  0.0  0.0  0.0  rg 
+%% :REDRAW-CONTENT
+
+%% :DRAW-DATA-LINES
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 31 293 m 47 288 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 47 288 m 64 271 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 64 271 m 81 265 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 81 265 m 98 268 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 98 268 m 115 251 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 115 251 m 132 254 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 132 254 m 149 247 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 149 247 m 166 240 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 166 240 m 183 227 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 183 227 m 200 230 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 200 230 m 217 248 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 217 248 m 234 225 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 234 225 m 251 223 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 251 223 m 268 230 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 268 230 m 285 212 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 285 212 m 301 227 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 301 227 m 318 207 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 318 207 m 335 173 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 335 173 m 352 174 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 352 174 m 369 161 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 369 161 m 386 158 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 386 158 m 403 120 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 403 120 m 420 139 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 420 139 m 437 114 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 437 114 m 454 82 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 454 82 m 471 113 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 471 113 m 488 103 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 488 103 m 505 99 l S 
+ 1.0  1.0  0.0  RG  1.0  1.0  0.0  rg  2 w  [ ] 0 d 505 99 m 522 84 l S 
+ 1 w  0.0  0.0  0.0  RG  0.0  0.0  0.0  rg  [ ] 0 d 
+%% :DRAW-DATA-POINTS
+ 31 293 m 31 293 3 3 re S 
+ 47 288 m 47 288 3 3 re S 
+ 64 271 m 64 271 3 3 re S 
+ 81 265 m 81 265 3 3 re S 
+ 98 268 m 98 268 3 3 re S 
+ 115 251 m 115 251 3 3 re S 
+ 132 254 m 132 254 3 3 re S 
+ 149 247 m 149 247 3 3 re S 
+ 166 240 m 166 240 3 3 re S 
+ 183 227 m 183 227 3 3 re S 
+ 200 230 m 200 230 3 3 re S 
+ 217 248 m 217 248 3 3 re S 
+ 234 225 m 234 225 3 3 re S 
+ 251 223 m 251 223 3 3 re S 
+ 268 230 m 268 230 3 3 re S 
+ 285 212 m 285 212 3 3 re S 
+ 301 227 m 301 227 3 3 re S 
+ 318 207 m 318 207 3 3 re S 
+ 335 173 m 335 173 3 3 re S 
+ 352 174 m 352 174 3 3 re S 
+ 369 161 m 369 161 3 3 re S 
+ 386 158 m 386 158 3 3 re S 
+ 403 120 m 403 120 3 3 re S 
+ 420 139 m 420 139 3 3 re S 
+ 437 114 m 437 114 3 3 re S 
+ 454 82 m 454 82 3 3 re S 
+ 471 113 m 471 113 3 3 re S 
+ 488 103 m 488 103 3 3 re S 
+ 505 99 m 505 99 3 3 re S 
+ 522 84 m 522 84 3 3 re S 
+ 0.0  0.0  0.0  RG  0.0  0.0  0.0  rg %
+%
+ BT 1 0 0 -1 0 324 Tm 10 314 Td (Plot produced by XLS pdfplot.lsp) Tj ET 
+
+%
+% End Lisp graphics output 
+%
+endstream
+endobj
+9 0 obj
+ 4835 
+endobj
+xref
+0 10
+0000000000 65535 f
+0000000063 00000 n
+0000000128 00000 n
+0000000174 00000 n
+0000000233 00000 n
+0000000263 00000 n
+0000000373 00000 n
+0000000486 00000 n
+0000000644 00000 n
+0000005615 00000 n
+trailer
+<<
+/Size 11
+/Root 1 0 R
+>>
+startxref
+5637
+%%EOF

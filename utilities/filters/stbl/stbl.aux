@@ -1,0 +1,773 @@
+\relax 
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {1}Introduction}{1}}
+\newlabel{sec:intro}{{1}{1}}
+\citation{moore}
+\@writefile{lof}{\string\contentsline\space {figure}{\string\numberline\space {1}{\ignorespaces Statistical Tables in {\string\ptt\space Lisp-Stat}}}{2}}
+\newlabel{fig:example}{{1}{2}}
+\newsublabel{NWstb7-LitG-1}{{}{2}}
+\newsublabel{NWstb7-HypK-1}{{}{2}}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {2}The Hyper-document}{3}}
+\newlabel{sec:hyper-doc}{{2}{3}}
+\newsublabel{NWstb7-HypE-1}{{}{3}}
+\nwixadd{\nwixu }{hist.lsp}{NWstb7-HypE-1}
+\nwixadd{\nwixu }{68.lsp}{NWstb7-HypE-1}
+\nwixadd{\nwixu }{95.lsp}{NWstb7-HypE-1}
+\nwixadd{\nwixu }{99.lsp}{NWstb7-HypE-1}
+\nwixadd{\nwixu }{smhist.lsp}{NWstb7-HypE-1}
+\nwixadd{\nwixu }{stbl}{NWstb7-HypE-1}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {3}The Code}{5}}
+\newlabel{sec:code}{{3}{5}}
+\newsublabel{NWstb7-CopI-1}{{}{5}}
+\nwixadd{\nwixd }{Copyright}{NWstb7-CopI-1}
+\nwixadd{\nwixd }{GNU}{NWstb7-CopI-1}
+\nwixadd{\nwixd }{FSF}{NWstb7-CopI-1}
+\newsublabel{NWstb7-Cod4-1}{{}{6}}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {3.1}Utility functions}{7}}
+\newlabel{sec:utils}{{3.1}{7}}
+\newsublabel{NWstb7-UtiH-1}{{}{7}}
+\nwixadd{\nwixd }{probability-p}{NWstb7-UtiH-1}
+\nwixadd{\nwixd }{strict-probability-p}{NWstb7-UtiH-1}
+\nwixadd{\nwixd }{nonzero-probability-p}{NWstb7-UtiH-1}
+\newsublabel{NWstb7-UtiH-2}{{}{7}}
+\nwixadd{\nwixd }{new-xlispstat}{NWstb7-UtiH-2}
+\newsublabel{NWstb7-UtiH-3}{{}{8}}
+\nwixadd{\nwixd }{val-of}{NWstb7-UtiH-3}
+\nwixadd{\nwixu }{new-xlispstat}{NWstb7-UtiH-3}
+\newsublabel{NWstb7-UtiH-4}{{}{8}}
+\nwixadd{\nwixd }{get-values-from}{NWstb7-UtiH-4}
+\nwixadd{\nwixu }{val-of}{NWstb7-UtiH-4}
+\newsublabel{NWstb7-UtiH-5}{{}{8}}
+\nwixadd{\nwixd }{get-numbers-from}{NWstb7-UtiH-5}
+\nwixadd{\nwixu }{val-of}{NWstb7-UtiH-5}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {3.2}Additional Useful Methods}{9}}
+\newlabel{sec:additional-methods}{{3.2}{9}}
+\newsublabel{NWstb7-Addg-1}{{}{9}}
+\nwixadd{\nwixd }{:colwidth}{NWstb7-Addg-1}
+\newsublabel{NWstb7-Addg-2}{{}{9}}
+\nwixadd{\nwixd }{:colwidth}{NWstb7-Addg-1}
+\newsublabel{NWstb7-Addg-3}{{}{9}}
+\nwixadd{\nwixd }{:colwidth}{NWstb7-Addg-1}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {3.3}The {\string\ptt\space {}dist-plot-proto} Prototype}{10}}
+\newlabel{sec:distproto}{{3.3}{10}}
+\newsublabel{NWstb7-DisX-1}{{}{10}}
+\nwixadd{\nwixd }{dist-plot-proto}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{dens}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{cdf}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{icdf}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{params}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{l-point}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{r-point}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{shade-color}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{num-points}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{important-abscissae}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{params-print-format}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{params-display-loc}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{answer}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{answer-display-loc}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{min-probability}{NWstb7-DisX-1}
+\nwixadd{\nwixd }{max-probability}{NWstb7-DisX-1}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {3.4}Methods for {\string\ptt\space {}dist-plot-proto}}{11}}
+\newlabel{sec:distprotomethods}{{3.4}{11}}
+\newsublabel{NWstb7-DisU-1}{{}{11}}
+\@writefile{toc}{\string\contentsline\space {subsubsection}{\string\numberline\space {3.4.1}Accessor and Modifier Methods.}{11}}
+\newlabel{sec:accessors}{{3.4.1}{11}}
+\newsublabel{NWstb7-Disq-1}{{}{11}}
+\nwixadd{\nwixd }{:colparams}{NWstb7-Disq-1}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-1}
+\nwixadd{\nwixu }{params}{NWstb7-Disq-1}
+\newsublabel{NWstb7-Disq-2}{{}{12}}
+\nwixadd{\nwixd }{:colanswer}{NWstb7-Disq-2}
+\nwixadd{\nwixu }{answer}{NWstb7-Disq-2}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-2}
+\newsublabel{NWstb7-Disq-3}{{}{12}}
+\nwixadd{\nwixd }{:colanswer-display-loc}{NWstb7-Disq-3}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-Disq-3}
+\nwixadd{\nwixu }{answer}{NWstb7-Disq-3}
+\nwixadd{\nwixu }{answer-display-loc}{NWstb7-Disq-3}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-3}
+\newsublabel{NWstb7-Disq-4}{{}{12}}
+\nwixadd{\nwixd }{:colparams-print-format}{NWstb7-Disq-4}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-4}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Disq-4}
+\nwixadd{\nwixu }{params}{NWstb7-Disq-4}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-Disq-4}
+\newsublabel{NWstb7-Disq-5}{{}{12}}
+\nwixadd{\nwixd }{:colparams-display-loc}{NWstb7-Disq-5}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-5}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Disq-5}
+\nwixadd{\nwixu }{params}{NWstb7-Disq-5}
+\nwixadd{\nwixu }{params-display-loc}{NWstb7-Disq-5}
+\newsublabel{NWstb7-Disq-6}{{}{13}}
+\nwixadd{\nwixd }{:coldens}{NWstb7-Disq-6}
+\nwixadd{\nwixu }{dens}{NWstb7-Disq-6}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-6}
+\newsublabel{NWstb7-Disq-7}{{}{13}}
+\nwixadd{\nwixd }{:colcdf}{NWstb7-Disq-7}
+\nwixadd{\nwixu }{cdf}{NWstb7-Disq-7}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-7}
+\newsublabel{NWstb7-Disq-8}{{}{13}}
+\nwixadd{\nwixd }{:colicdf}{NWstb7-Disq-8}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-8}
+\nwixadd{\nwixu }{icdf}{NWstb7-Disq-8}
+\newsublabel{NWstb7-Disq-9}{{}{13}}
+\nwixadd{\nwixd }{:colnum-points}{NWstb7-Disq-9}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-9}
+\nwixadd{\nwixu }{num-points}{NWstb7-Disq-9}
+\newsublabel{NWstb7-Disq-A}{{}{14}}
+\nwixadd{\nwixd }{:colimportant-abscissae}{NWstb7-Disq-A}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-A}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-Disq-A}
+\newsublabel{NWstb7-Disq-B}{{}{14}}
+\nwixadd{\nwixd }{:colshade-color}{NWstb7-Disq-B}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-B}
+\nwixadd{\nwixu }{shade-color}{NWstb7-Disq-B}
+\newsublabel{NWstb7-Disq-C}{{}{14}}
+\nwixadd{\nwixd }{:coll-point}{NWstb7-Disq-C}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-C}
+\nwixadd{\nwixu }{l-point}{NWstb7-Disq-C}
+\newsublabel{NWstb7-Disq-D}{{}{14}}
+\nwixadd{\nwixd }{:colr-point}{NWstb7-Disq-D}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-D}
+\nwixadd{\nwixu }{r-point}{NWstb7-Disq-D}
+\newsublabel{NWstb7-Disq-E}{{}{15}}
+\nwixadd{\nwixd }{:colmin-probability}{NWstb7-Disq-E}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-E}
+\nwixadd{\nwixu }{min-probability}{NWstb7-Disq-E}
+\newsublabel{NWstb7-Disq-F}{{}{15}}
+\nwixadd{\nwixd }{:colmax-probability}{NWstb7-Disq-F}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disq-F}
+\nwixadd{\nwixu }{max-probability}{NWstb7-Disq-F}
+\@writefile{toc}{\string\contentsline\space {subsubsection}{\string\numberline\space {3.4.2}Other Useful Methods.}{15}}
+\newlabel{sec:otherusefulmethods}{{3.4.2}{15}}
+\newsublabel{NWstb7-Othl-1}{{}{15}}
+\nwixadd{\nwixd }{:colxmin}{NWstb7-Othl-1}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-1}
+\nwixadd{\nwixu }{:colmin-probability}{NWstb7-Othl-1}
+\nwixadd{\nwixu }{min-probability}{NWstb7-Othl-1}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Othl-1}
+\nwixadd{\nwixu }{params}{NWstb7-Othl-1}
+\newsublabel{NWstb7-Othl-2}{{}{16}}
+\nwixadd{\nwixd }{:colxmax}{NWstb7-Othl-2}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-2}
+\nwixadd{\nwixu }{:colmax-probability}{NWstb7-Othl-2}
+\nwixadd{\nwixu }{max-probability}{NWstb7-Othl-2}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Othl-2}
+\nwixadd{\nwixu }{params}{NWstb7-Othl-2}
+\newsublabel{NWstb7-Othl-3}{{}{16}}
+\nwixadd{\nwixd }{:coldens-at}{NWstb7-Othl-3}
+\nwixadd{\nwixu }{:coldens}{NWstb7-Othl-3}
+\nwixadd{\nwixu }{dens}{NWstb7-Othl-3}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-3}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Othl-3}
+\nwixadd{\nwixu }{params}{NWstb7-Othl-3}
+\newsublabel{NWstb7-Othl-4}{{}{16}}
+\nwixadd{\nwixd }{:colcdf-at}{NWstb7-Othl-4}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-Othl-4}
+\nwixadd{\nwixu }{cdf}{NWstb7-Othl-4}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-4}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Othl-4}
+\nwixadd{\nwixu }{params}{NWstb7-Othl-4}
+\newsublabel{NWstb7-Othl-5}{{}{16}}
+\nwixadd{\nwixd }{:colicdf-at}{NWstb7-Othl-5}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-5}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-Othl-5}
+\nwixadd{\nwixu }{icdf}{NWstb7-Othl-5}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Othl-5}
+\nwixadd{\nwixu }{params}{NWstb7-Othl-5}
+\@writefile{toc}{\string\contentsline\space {subsubsection}{\string\numberline\space {3.4.3}The :isnew Method.}{17}}
+\newlabel{sec:distisnewmethod}{{3.4.3}{17}}
+\newsublabel{NWstb7-ImpO-1}{{}{17}}
+\nwixadd{\nwixd }{*min-probability*}{NWstb7-ImpO-1}
+\nwixadd{\nwixd }{*max-probability*}{NWstb7-ImpO-1}
+\nwixadd{\nwixu }{max-probability}{NWstb7-ImpO-1}
+\nwixadd{\nwixu }{min-probability}{NWstb7-ImpO-1}
+\newsublabel{NWstb7-ImpO-2}{{}{17}}
+\nwixadd{\nwixd }{*num-points*}{NWstb7-ImpO-2}
+\nwixadd{\nwixd }{*shade-color*}{NWstb7-ImpO-2}
+\nwixadd{\nwixu }{num-points}{NWstb7-ImpO-2}
+\nwixadd{\nwixu }{shade-color}{NWstb7-ImpO-2}
+\newsublabel{NWstb7-Disa-1}{{}{17}}
+\nwixadd{\nwixu }{cdf}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{dens}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{icdf}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{:colisnew}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{*max-probability*}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{max-probability}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{*min-probability*}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{min-probability}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{*num-points*}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{num-points}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{params}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{*shade-color*}{NWstb7-Disa-1}
+\nwixadd{\nwixu }{shade-color}{NWstb7-Disa-1}
+\newsublabel{NWstb7-Disa-2}{{}{18}}
+\nwixadd{\nwixu }{cdf}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{dens}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{icdf}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{max-probability}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{min-probability}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{num-points}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{params}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-Disa-2}
+\nwixadd{\nwixu }{shade-color}{NWstb7-Disa-2}
+\newsublabel{NWstb7-Disa-3}{{}{18}}
+\newsublabel{NWstb7-Disa-4}{{}{18}}
+\newsublabel{NWstb7-Disa-5}{{}{19}}
+\newsublabel{NWstb7-Disa-6}{{}{19}}
+\nwixadd{\nwixd }{:colisnew}{NWstb7-Disa-6}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Disa-6}
+\nwixadd{\nwixu }{params}{NWstb7-Disa-6}
+\nwixadd{\nwixu }{:colparams-display-loc}{NWstb7-Disa-6}
+\nwixadd{\nwixu }{params-display-loc}{NWstb7-Disa-6}
+\@writefile{toc}{\string\contentsline\space {subsubsection}{\string\numberline\space {3.4.4}Redrawing Methods.}{20}}
+\newlabel{sec:distredrawing}{{3.4.4}{20}}
+\newsublabel{NWstb7-Othl-6}{{}{20}}
+\nwixadd{\nwixd }{:coldisplay-params}{NWstb7-Othl-6}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-6}
+\nwixadd{\nwixu }{:colparams}{NWstb7-Othl-6}
+\nwixadd{\nwixu }{params}{NWstb7-Othl-6}
+\nwixadd{\nwixu }{:colparams-display-loc}{NWstb7-Othl-6}
+\nwixadd{\nwixu }{params-display-loc}{NWstb7-Othl-6}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-Othl-6}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-Othl-6}
+\newsublabel{NWstb7-Othl-7}{{}{20}}
+\nwixadd{\nwixd }{:coldisplay-answer}{NWstb7-Othl-7}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-Othl-7}
+\nwixadd{\nwixu }{answer}{NWstb7-Othl-7}
+\nwixadd{\nwixu }{:colanswer-display-loc}{NWstb7-Othl-7}
+\nwixadd{\nwixu }{answer-display-loc}{NWstb7-Othl-7}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-7}
+\newsublabel{NWstb7-Othl-8}{{}{21}}
+\nwixadd{\nwixd }{:coldraw-vert-arrow}{NWstb7-Othl-8}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-8}
+\newsublabel{NWstb7-ImpO-3}{{}{21}}
+\nwixadd{\nwixd }{*quantile-print-format*}{NWstb7-ImpO-3}
+\newsublabel{NWstb7-ImpO-4}{{}{21}}
+\nwixadd{\nwixd }{*probability-print-format*}{NWstb7-ImpO-4}
+\newsublabel{NWstb7-Othl-9}{{}{22}}
+\nwixadd{\nwixd }{:colhighlight-important-abscissae}{NWstb7-Othl-9}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-9}
+\nwixadd{\nwixu }{:coldraw-vert-arrow}{NWstb7-Othl-9}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-Othl-9}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-Othl-9}
+\nwixadd{\nwixu }{*quantile-print-format*}{NWstb7-Othl-9}
+\newsublabel{NWstb7-Othl-A}{{}{22}}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Othl-A}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-Othl-A}
+\nwixadd{\nwixu }{l-point}{NWstb7-Othl-A}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-Othl-A}
+\nwixadd{\nwixu }{r-point}{NWstb7-Othl-A}
+\nwixadd{\nwixu }{:colshade-under-plot}{NWstb7-Othl-A}
+\@writefile{lof}{\string\contentsline\space {figure}{\string\numberline\space {2}{\ignorespaces The Normal density function.}}{23}}
+\newlabel{fig:shading}{{2}{23}}
+\newsublabel{NWstb7-Othl-B}{{}{23}}
+\nwixadd{\nwixu }{:coldens}{NWstb7-Othl-B}
+\nwixadd{\nwixu }{dens}{NWstb7-Othl-B}
+\nwixadd{\nwixu }{:coldens-at}{NWstb7-Othl-B}
+\nwixadd{\nwixu }{:colshade-color}{NWstb7-Othl-B}
+\nwixadd{\nwixu }{shade-color}{NWstb7-Othl-B}
+\newsublabel{NWstb7-Othl-C}{{}{24}}
+\nwixadd{\nwixd }{:colshade-under-plot}{NWstb7-Othl-C}
+\nwixadd{\nwixu }{:coldens}{NWstb7-Othl-C}
+\nwixadd{\nwixu }{dens}{NWstb7-Othl-C}
+\nwixadd{\nwixu }{:coldens-at}{NWstb7-Othl-C}
+\nwixadd{\nwixu }{:colshade-color}{NWstb7-Othl-C}
+\nwixadd{\nwixu }{shade-color}{NWstb7-Othl-C}
+\newsublabel{NWstb7-Dise-1}{{}{25}}
+\nwixadd{\nwixd }{:colredraw-background}{NWstb7-Dise-1}
+\nwixadd{\nwixu }{answer}{NWstb7-Dise-1}
+\nwixadd{\nwixu }{:coldisplay-answer}{NWstb7-Dise-1}
+\nwixadd{\nwixu }{:coldisplay-params}{NWstb7-Dise-1}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Dise-1}
+\nwixadd{\nwixu }{params}{NWstb7-Dise-1}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-Dise-1}
+\newsublabel{NWstb7-Dise-2}{{}{25}}
+\nwixadd{\nwixd }{:colredraw-content}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:coldens}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{dens}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:coldens-at}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:colhighlight-important-abscissae}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{num-points}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:colshade-under-plot}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:colxmax}{NWstb7-Dise-2}
+\nwixadd{\nwixu }{:colxmin}{NWstb7-Dise-2}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {4}The Button Overlay}{26}}
+\newlabel{sec:button-proto}{{4}{26}}
+\newsublabel{NWstb7-ButZ-1}{{}{26}}
+\nwixadd{\nwixd }{:colbutton-overlay-proto}{NWstb7-ButZ-1}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {4.1}The Overlay Methods}{26}}
+\newlabel{sec:overlay-methods}{{4.1}{26}}
+\newsublabel{NWstb7-ButW-1}{{}{26}}
+\nwixadd{\nwixd }{:colisnew}{NWstb7-Disa-6}
+\newsublabel{NWstb7-ButW-2}{{}{27}}
+\nwixadd{\nwixd }{:colredraw}{NWstb7-ButW-2}
+\newsublabel{NWstb7-ButW-3}{{}{27}}
+\nwixadd{\nwixd }{:coldo-click}{NWstb7-ButW-3}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {5}Various Distributions}{28}}
+\newlabel{sec:variousdists}{{5}{28}}
+\newsublabel{NWstb7-UtiH-6}{{}{28}}
+\nwixadd{\nwixd }{:colquantile-answer}{NWstb7-UtiH-6}
+\nwixadd{\nwixu }{answer}{NWstb7-UtiH-6}
+\nwixadd{\nwixu }{*probability-print-format*}{NWstb7-UtiH-6}
+\nwixadd{\nwixu }{*quantile-print-format*}{NWstb7-UtiH-6}
+\newsublabel{NWstb7-UtiH-7}{{}{28}}
+\nwixadd{\nwixd }{:colprobability-answer}{NWstb7-UtiH-7}
+\nwixadd{\nwixu }{answer}{NWstb7-UtiH-7}
+\nwixadd{\nwixu }{*probability-print-format*}{NWstb7-UtiH-7}
+\nwixadd{\nwixu }{*quantile-print-format*}{NWstb7-UtiH-7}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {5.1}The Normal Distribution}{29}}
+\newlabel{sec:normal}{{5.1}{29}}
+\newsublabel{NWstb7-NorJ-1}{{}{29}}
+\nwixadd{\nwixd }{gaussian-density}{NWstb7-NorJ-1}
+\nwixadd{\nwixu }{dens}{NWstb7-NorJ-1}
+\newsublabel{NWstb7-NorJ-2}{{}{29}}
+\nwixadd{\nwixd }{gaussian-cdf}{NWstb7-NorJ-2}
+\nwixadd{\nwixu }{cdf}{NWstb7-NorJ-2}
+\newsublabel{NWstb7-NorJ-3}{{}{29}}
+\nwixadd{\nwixd }{gaussian-cdf}{NWstb7-NorJ-2}
+\nwixadd{\nwixu }{icdf}{NWstb7-NorJ-3}
+\newsublabel{NWstb7-NorJ-4}{{}{30}}
+\nwixadd{\nwixd }{normal-quantile-dialog}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{answer}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{get-numbers-from}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{icdf}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colicdf-at}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{l-point}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colparams}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{params}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{r-point}{NWstb7-NorJ-4}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-NorJ-4}
+\newsublabel{NWstb7-NorJ-5}{{}{32}}
+\nwixadd{\nwixd }{normal-proba-dialog}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{answer}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{cdf}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colcdf-at}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{get-values-from}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{l-point}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colparams}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{params}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{r-point}{NWstb7-NorJ-5}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-NorJ-5}
+\newsublabel{NWstb7-NorJ-6}{{}{33}}
+\nwixadd{\nwixd }{normal-distribution}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{cdf}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{:coldens}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{dens}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{icdf}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{num-points}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{:colparams}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{params}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-NorJ-6}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-NorJ-6}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {5.2}Student's $t$-distribution}{34}}
+\newlabel{sec:t}{{5.2}{34}}
+\newsublabel{NWstb7-T*dE-1}{{}{34}}
+\nwixadd{\nwixd }{t-quant-dialog}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{answer}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{get-numbers-from}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{icdf}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colicdf-at}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{l-point}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colparams}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{params}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{r-point}{NWstb7-T*dE-1}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-T*dE-1}
+\newsublabel{NWstb7-T*dE-2}{{}{36}}
+\nwixadd{\nwixd }{t-prob-dialog}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{answer}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{cdf}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colcdf-at}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{get-values-from}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{l-point}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colparams}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{params}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{r-point}{NWstb7-T*dE-2}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-T*dE-2}
+\newsublabel{NWstb7-T*dE-3}{{}{37}}
+\nwixadd{\nwixd }{t-distribution}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{cdf}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{:coldens}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{dens}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{icdf}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{num-points}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{:colparams}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{params}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-T*dE-3}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-T*dE-3}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {5.3}Chi-square distribution}{38}}
+\newlabel{sec:chisq}{{5.3}{38}}
+\newsublabel{NWstb7-ChiN-1}{{}{38}}
+\nwixadd{\nwixd }{chisq-quant-dialog}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{answer}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{get-numbers-from}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{icdf}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colicdf-at}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{l-point}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colparams}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{params}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{r-point}{NWstb7-ChiN-1}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-ChiN-1}
+\newsublabel{NWstb7-ChiN-2}{{}{40}}
+\nwixadd{\nwixd }{chisq-prob-dialog}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{answer}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{cdf}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colcdf-at}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{get-values-from}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{l-point}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colparams}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{params}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{r-point}{NWstb7-ChiN-2}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-ChiN-2}
+\newsublabel{NWstb7-ChiN-3}{{}{41}}
+\nwixadd{\nwixd }{chisq-distribution}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{cdf}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{:coldens}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{dens}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{icdf}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{num-points}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{:colparams}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{params}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-ChiN-3}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-ChiN-3}
+\@writefile{toc}{\string\contentsline\space {subsection}{\string\numberline\space {5.4}The $F$ Distribution}{42}}
+\newlabel{sec:f}{{5.4}{42}}
+\newsublabel{NWstb7-F*dE-1}{{}{42}}
+\nwixadd{\nwixd }{f-quant-dialog}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{answer}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{get-numbers-from}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{icdf}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colicdf-at}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{l-point}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colparams}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{params}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{r-point}{NWstb7-F*dE-1}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-F*dE-1}
+\newsublabel{NWstb7-F*dE-2}{{}{44}}
+\nwixadd{\nwixd }{f-prob-dialog}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{answer}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{cdf}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colcdf-at}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{get-values-from}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{l-point}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colparams}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{params}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{r-point}{NWstb7-F*dE-2}
+\nwixadd{\nwixu }{:colwidth}{NWstb7-F*dE-2}
+\newsublabel{NWstb7-F*dE-3}{{}{45}}
+\nwixadd{\nwixd }{f-distribution}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{cdf}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{:coldens}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{dens}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{icdf}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{num-points}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{:colparams}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{params}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-F*dE-3}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-F*dE-3}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {6}The Main Function}{46}}
+\newlabel{sec:main-func}{{6}{46}}
+\newsublabel{NWstb7-MaiD-1}{{}{46}}
+\nwixadd{\nwixd }{stbl}{NWstb7-MaiD-1}
+\newsublabel{NWstb7-InvK-1}{{}{46}}
+\nwixadd{\nwixu }{stbl}{NWstb7-InvK-1}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {7}Other Auxiliary Programs}{46}}
+\newlabel{sec:programs}{{7}{46}}
+\newsublabel{NWstb7-ProG-1}{{}{46}}
+\newlabel{NWstb7-ProG-1-u1}{{0}{46}}
+\nwixadd{\nwixd }{hist.lsp}{NWstb7-ProG-1}
+\newsublabel{NWstb7-ProI-1}{{}{47}}
+\nwixadd{\nwixd }{smhist.lsp}{NWstb7-ProI-1}
+\nwixadd{\nwixu }{dens}{NWstb7-ProI-1}
+\newsublabel{NWstb7-ProE-1}{{}{47}}
+\nwixadd{\nwixd }{68.lsp}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{answer}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{cdf}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:coldens}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{dens}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{icdf}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{l-point}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{num-points}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colparams}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{params}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-ProE-1}
+\nwixadd{\nwixu }{r-point}{NWstb7-ProE-1}
+\newsublabel{NWstb7-ProE.2-1}{{}{48}}
+\nwixadd{\nwixd }{95.lsp}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{answer}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{cdf}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:coldens}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{dens}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{icdf}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{l-point}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{num-points}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colparams}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{params}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-ProE.2-1}
+\nwixadd{\nwixu }{r-point}{NWstb7-ProE.2-1}
+\newsublabel{NWstb7-ProE.3-1}{{}{49}}
+\nwixadd{\nwixd }{99.lsp}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colanswer}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{answer}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colcdf}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{cdf}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:coldens}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{dens}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{dist-plot-proto}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colicdf}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{icdf}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colimportant-abscissae}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{important-abscissae}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:coll-point}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{l-point}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colnum-points}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{num-points}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colparams}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{params}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colparams-print-format}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{params-print-format}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colredraw}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{:colr-point}{NWstb7-ProE.3-1}
+\nwixadd{\nwixu }{r-point}{NWstb7-ProE.3-1}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {8}Miscellany}{49}}
+\newlabel{sec:misc}{{8}{49}}
+\newsublabel{NWstb7-UtiE-1}{{}{49}}
+\newsublabel{NWstb7-ButJ-1}{{}{49}}
+\newsublabel{NWstb7-DisN-1}{{}{50}}
+\newsublabel{NWstb7-DisI-1}{{}{50}}
+\newsublabel{NWstb7-StaN-1}{{}{50}}
+\nwixadds{c}{{Additional methods for built-in prototypes}{NWstb7-Addg-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-Addg-1}\nwixd {NWstb7-Addg-2}\nwixd {NWstb7-Addg-3}\nwixu {NWstb7-UtiE-1}}}
+\nwixadds{c}{{Button overlay file}{NWstb7-ButJ-1}{\nwixd {NWstb7-ButJ-1}}}
+\nwixadds{c}{{Button overlay prototype definition}{NWstb7-ButZ-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-ButZ-1}\nwixu {NWstb7-ButJ-1}}}
+\nwixadds{c}{{Button overlay prototype methods}{NWstb7-ButW-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-ButW-1}\nwixd {NWstb7-ButW-2}\nwixd {NWstb7-ButW-3}\nwixu {NWstb7-ButJ-1}}}
+\nwixadds{c}{{Chi-square distribution}{NWstb7-ChiN-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-ChiN-1}\nwixd {NWstb7-ChiN-2}\nwixd {NWstb7-ChiN-3}\nwixu {NWstb7-DisI-1}}}
+\nwixadds{c}{{Code}{NWstb7-Cod4-1}{\nwixu {NWstb7-HypK-1}\nwixd {NWstb7-Cod4-1}}}
+\nwixadds{c}{{Copyright for code}{NWstb7-CopI-1}{\nwixd {NWstb7-CopI-1}\nwixu {NWstb7-Cod4-1}\nwixu {NWstb7-ProG-1}\nwixu {NWstb7-ProI-1}\nwixu {NWstb7-ProE-1}\nwixu {NWstb7-ProE.2-1}\nwixu {NWstb7-ProE.3-1}\nwixu {NWstb7-UtiE-1}\nwixu {NWstb7-ButJ-1}\nwixu {NWstb7-DisN-1}\nwixu {NWstb7-DisI-1}\nwixu {NWstb7-StaN-1}}}
+\nwixadds{c}{{Distribution proto file}{NWstb7-DisN-1}{\nwixd {NWstb7-DisN-1}}}
+\nwixadds{c}{{Distribution prototype accessor and modifier methods}{NWstb7-Disq-1}{\nwixu {NWstb7-DisU-1}\nwixd {NWstb7-Disq-1}\nwixd {NWstb7-Disq-2}\nwixd {NWstb7-Disq-3}\nwixd {NWstb7-Disq-4}\nwixd {NWstb7-Disq-5}\nwixd {NWstb7-Disq-6}\nwixd {NWstb7-Disq-7}\nwixd {NWstb7-Disq-8}\nwixd {NWstb7-Disq-9}\nwixd {NWstb7-Disq-A}\nwixd {NWstb7-Disq-B}\nwixd {NWstb7-Disq-C}\nwixd {NWstb7-Disq-D}\nwixd {NWstb7-Disq-E}\nwixd {NWstb7-Disq-F}}}
+\nwixadds{c}{{Distribution prototype definition}{NWstb7-DisX-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-DisX-1}\nwixu {NWstb7-DisN-1}}}
+\nwixadds{c}{{Distribution prototype :isnew method}{NWstb7-Disa-1}{\nwixu {NWstb7-DisU-1}\nwixd {NWstb7-Disa-1}\nwixd {NWstb7-Disa-2}\nwixd {NWstb7-Disa-3}\nwixd {NWstb7-Disa-4}\nwixd {NWstb7-Disa-5}\nwixd {NWstb7-Disa-6}}}
+\nwixadds{c}{{Distribution prototype methods}{NWstb7-DisU-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-DisU-1}\nwixu {NWstb7-DisN-1}}}
+\nwixadds{c}{{Distribution prototype redrawing methods}{NWstb7-Dise-1}{\nwixu {NWstb7-DisU-1}\nwixd {NWstb7-Dise-1}\nwixd {NWstb7-Dise-2}}}
+\nwixadds{c}{{Distributions file}{NWstb7-DisI-1}{\nwixd {NWstb7-DisI-1}}}
+\nwixadds{c}{{F distribution}{NWstb7-F*dE-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-F*dE-1}\nwixd {NWstb7-F*dE-2}\nwixd {NWstb7-F*dE-3}\nwixu {NWstb7-DisI-1}}}
+\nwixadds{c}{{Hyper-document}{NWstb7-HypE-1}{\nwixu {NWstb7-HypK-1}\nwixd {NWstb7-HypE-1}}}
+\nwixadds{c}{{Hyper-document stuff}{NWstb7-HypK-1}{\nwixu {NWstb7-LitG-1}\nwixd {NWstb7-HypK-1}}}
+\nwixadds{c}{{Implementation constants}{NWstb7-ImpO-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-ImpO-1}\nwixd {NWstb7-ImpO-2}\nwixd {NWstb7-ImpO-3}\nwixd {NWstb7-ImpO-4}\nwixu {NWstb7-DisN-1}}}
+\nwixadds{c}{{Invoke main function}{NWstb7-InvK-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-InvK-1}\nwixu {NWstb7-StaN-1}}}
+\nwixadds{c}{{Literate Program}{NWstb7-LitG-1}{\nwixd {NWstb7-LitG-1}}}
+\nwixadds{c}{{Main function}{NWstb7-MaiD-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-MaiD-1}\nwixu {NWstb7-StaN-1}}}
+\nwixadds{c}{{Makefile}{NWstb7-Mak8-1}{\nwixu {NWstb7-LitG-1}\nwixd {NWstb7-Mak8-1}}}
+\nwixadds{c}{{Normal distribution}{NWstb7-NorJ-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-NorJ-1}\nwixd {NWstb7-NorJ-2}\nwixd {NWstb7-NorJ-3}\nwixd {NWstb7-NorJ-4}\nwixd {NWstb7-NorJ-5}\nwixd {NWstb7-NorJ-6}\nwixu {NWstb7-DisI-1}}}
+\nwixadds{c}{{Other useful methods for distribution prototype}{NWstb7-Othl-1}{\nwixu {NWstb7-DisU-1}\nwixd {NWstb7-Othl-1}\nwixd {NWstb7-Othl-2}\nwixd {NWstb7-Othl-3}\nwixd {NWstb7-Othl-4}\nwixd {NWstb7-Othl-5}\nwixd {NWstb7-Othl-6}\nwixd {NWstb7-Othl-7}\nwixd {NWstb7-Othl-8}\nwixd {NWstb7-Othl-9}\nwixd {NWstb7-Othl-A}\nwixd {NWstb7-Othl-B}\nwixd {NWstb7-Othl-C}}}
+\nwixadds{c}{{Program hist.lsp}{NWstb7-ProG-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-ProG-1}}}
+\nwixadds{c}{{Program 68.lsp}{NWstb7-ProE-1}{\nwixd {NWstb7-ProE-1}}}
+\nwixadds{c}{{Program 95.lsp}{NWstb7-ProE.2-1}{\nwixd {NWstb7-ProE.2-1}}}
+\nwixadds{c}{{Program 99.lsp}{NWstb7-ProE.3-1}{\nwixd {NWstb7-ProE.3-1}}}
+\nwixadds{c}{{Program smhist.lsp}{NWstb7-ProI-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-ProI-1}}}
+\nwixadds{c}{{Readme file}{NWstb7-ReaB-1}{\nwixu {NWstb7-LitG-1}\nwixd {NWstb7-ReaB-1}}}
+\nwixadds{c}{{Statistical tables file}{NWstb7-StaN-1}{\nwixd {NWstb7-StaN-1}}}
+\nwixadds{c}{{T distribution}{NWstb7-T*dE-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-T*dE-1}\nwixd {NWstb7-T*dE-2}\nwixd {NWstb7-T*dE-3}\nwixu {NWstb7-DisI-1}}}
+\nwixadds{c}{{Utilities file}{NWstb7-UtiE-1}{\nwixd {NWstb7-UtiE-1}}}
+\nwixadds{c}{{Utility functions}{NWstb7-UtiH-1}{\nwixu {NWstb7-Cod4-1}\nwixd {NWstb7-UtiH-1}\nwixd {NWstb7-UtiH-2}\nwixd {NWstb7-UtiH-3}\nwixd {NWstb7-UtiH-4}\nwixd {NWstb7-UtiH-5}\nwixd {NWstb7-UtiH-6}\nwixd {NWstb7-UtiH-7}\nwixu {NWstb7-UtiE-1}}}
+\nwixadds{i}{{Copyright}{Copyright}}
+\nwixadds{i}{{FSF}{FSF}}
+\nwixadds{i}{{GNU}{GNU}}
+\nwixadds{i}{{:answer}{:colanswer}}
+\nwixadds{i}{{answer}{answer}}
+\nwixadds{i}{{:answer-display-loc}{:colanswer-display-loc}}
+\nwixadds{i}{{answer-display-loc}{answer-display-loc}}
+\nwixadds{i}{{:button-overlay-proto}{:colbutton-overlay-proto}}
+\nwixadds{i}{{:cdf}{:colcdf}}
+\nwixadds{i}{{cdf}{cdf}}
+\nwixadds{i}{{:cdf-at}{:colcdf-at}}
+\nwixadds{i}{{chisq-distribution}{chisq-distribution}}
+\nwixadds{i}{{chisq-prob-dialog}{chisq-prob-dialog}}
+\nwixadds{i}{{chisq-quant-dialog}{chisq-quant-dialog}}
+\nwixadds{i}{{:dens}{:coldens}}
+\nwixadds{i}{{dens}{dens}}
+\nwixadds{i}{{:dens-at}{:coldens-at}}
+\nwixadds{i}{{:display-answer}{:coldisplay-answer}}
+\nwixadds{i}{{:display-params}{:coldisplay-params}}
+\nwixadds{i}{{dist-plot-proto}{dist-plot-proto}}
+\nwixadds{i}{{:do-click}{:coldo-click}}
+\nwixadds{i}{{:draw-vert-arrow}{:coldraw-vert-arrow}}
+\nwixadds{i}{{f-distribution}{f-distribution}}
+\nwixadds{i}{{f-prob-dialog}{f-prob-dialog}}
+\nwixadds{i}{{f-quant-dialog}{f-quant-dialog}}
+\nwixadds{i}{{gaussian-cdf}{gaussian-cdf}}
+\nwixadds{i}{{gaussian-density}{gaussian-density}}
+\nwixadds{i}{{get-numbers-from}{get-numbers-from}}
+\nwixadds{i}{{get-values-from}{get-values-from}}
+\nwixadds{i}{{:highlight-important-abscissae}{:colhighlight-important-abscissae}}
+\nwixadds{i}{{hist.lsp}{hist.lsp}}
+\nwixadds{i}{{:icdf}{:colicdf}}
+\nwixadds{i}{{icdf}{icdf}}
+\nwixadds{i}{{:icdf-at}{:colicdf-at}}
+\nwixadds{i}{{:important-abscissae}{:colimportant-abscissae}}
+\nwixadds{i}{{important-abscissae}{important-abscissae}}
+\nwixadds{i}{{:isnew}{:colisnew}}
+\nwixadds{i}{{:l-point}{:coll-point}}
+\nwixadds{i}{{l-point}{l-point}}
+\nwixadds{i}{{68.lsp}{68.lsp}}
+\nwixadds{i}{{95.lsp}{95.lsp}}
+\nwixadds{i}{{99.lsp}{99.lsp}}
+\nwixadds{i}{{*max-probability*}{*max-probability*}}
+\nwixadds{i}{{:max-probability}{:colmax-probability}}
+\nwixadds{i}{{max-probability}{max-probability}}
+\nwixadds{i}{{*min-probability*}{*min-probability*}}
+\nwixadds{i}{{:min-probability}{:colmin-probability}}
+\nwixadds{i}{{min-probability}{min-probability}}
+\nwixadds{i}{{new-xlispstat}{new-xlispstat}}
+\nwixadds{i}{{nonzero-probability-p}{nonzero-probability-p}}
+\nwixadds{i}{{normal-distribution}{normal-distribution}}
+\nwixadds{i}{{normal-proba-dialog}{normal-proba-dialog}}
+\nwixadds{i}{{normal-quantile-dialog}{normal-quantile-dialog}}
+\nwixadds{i}{{*num-points*}{*num-points*}}
+\nwixadds{i}{{:num-points}{:colnum-points}}
+\nwixadds{i}{{num-points}{num-points}}
+\nwixadds{i}{{:params}{:colparams}}
+\nwixadds{i}{{params}{params}}
+\nwixadds{i}{{:params-display-loc}{:colparams-display-loc}}
+\nwixadds{i}{{params-display-loc}{params-display-loc}}
+\nwixadds{i}{{:params-print-format}{:colparams-print-format}}
+\nwixadds{i}{{params-print-format}{params-print-format}}
+\nwixadds{i}{{:probability-answer}{:colprobability-answer}}
+\nwixadds{i}{{probability-p}{probability-p}}
+\nwixadds{i}{{*probability-print-format*}{*probability-print-format*}}
+\nwixadds{i}{{:quantile-answer}{:colquantile-answer}}
+\nwixadds{i}{{*quantile-print-format*}{*quantile-print-format*}}
+\nwixadds{i}{{:redraw}{:colredraw}}
+\nwixadds{i}{{:redraw-background}{:colredraw-background}}
+\nwixadds{i}{{:redraw-content}{:colredraw-content}}
+\nwixadds{i}{{:r-point}{:colr-point}}
+\nwixadds{i}{{r-point}{r-point}}
+\nwixadds{i}{{*shade-color*}{*shade-color*}}
+\nwixadds{i}{{:shade-color}{:colshade-color}}
+\nwixadds{i}{{shade-color}{shade-color}}
+\nwixadds{i}{{:shade-under-plot}{:colshade-under-plot}}
+\nwixadds{i}{{smhist.lsp}{smhist.lsp}}
+\nwixadds{i}{{stbl}{stbl}}
+\nwixadds{i}{{strict-probability-p}{strict-probability-p}}
+\nwixadds{i}{{t-distribution}{t-distribution}}
+\nwixadds{i}{{t-prob-dialog}{t-prob-dialog}}
+\nwixadds{i}{{t-quant-dialog}{t-quant-dialog}}
+\nwixadds{i}{{val-of}{val-of}}
+\nwixadds{i}{{:width}{:colwidth}}
+\nwixadds{i}{{:xmax}{:colxmax}}
+\nwixadds{i}{{:xmin}{:colxmin}}
+\bibcite{moore}{1}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {9}The Makefile}{51}}
+\newlabel{sec:makefile}{{9}{51}}
+\newsublabel{NWstb7-Mak8-1}{{}{51}}
+\nwixadd{\nwixu }{hist.lsp}{NWstb7-Mak8-1}
+\nwixadd{\nwixu }{68.lsp}{NWstb7-Mak8-1}
+\nwixadd{\nwixu }{95.lsp}{NWstb7-Mak8-1}
+\nwixadd{\nwixu }{99.lsp}{NWstb7-Mak8-1}
+\nwixadd{\nwixu }{smhist.lsp}{NWstb7-Mak8-1}
+\nwixadd{\nwixu }{stbl}{NWstb7-Mak8-1}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {10}The Readme file}{51}}
+\newlabel{sec:readme}{{10}{51}}
+\newsublabel{NWstb7-ReaB-1}{{}{51}}
+\nwixadd{\nwixu }{stbl}{NWstb7-ReaB-1}
+\@writefile{toc}{\string\contentsline\space {section}{\string\numberline\space {11}Discussion}{52}}
+\newlabel{sec:discussion}{{11}{52}}

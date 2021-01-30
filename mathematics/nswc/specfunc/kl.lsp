@@ -1,0 +1,42 @@
+(defun kl (l fk fl) (declare (type complex l)) (declare (type complex fk))
+ (declare (type complex fl))
+ (prog
+  ((ln4 0.0d0) (an 0.0d0) (l2 0.0d0) (s1 0.0d0) (s2 0.0d0) (w 0.0d0)
+   (hpi 0.0d0) (u 0.0d0) (y 0.0d0) (x 0.0d0) (c 0.0d0) (ri 0.0d0) (i 0)
+   (bn 0.0d0) (tol 0.0d0) (eps 0.0d0)
+  )
+  (declare (type float ln4)) (declare (type complex an))
+  (declare (type complex l2)) (declare (type complex s1))
+  (declare (type complex s2)) (declare (type complex w))
+  (declare (type double-float hpi)) (declare (type double-float u))
+  (declare (type double-float y)) (declare (type double-float x))
+  (declare (type double-float c)) (declare (type double-float ri))
+  (declare (type fixnum i)) (declare (type double-float bn))
+  (declare (type double-float tol)) (declare (type double-float eps))
+  (setq hpi 1.5707964) (setq ln4 1.3862944) (setf eps (spmpar 1))
+  (setf tol (amax1 eps 1.0E-14)) (setf l2 (* l l)) (setf s1 (complex 0.0 0.0))
+  (setf s2 (complex 0.0 0.0)) (setf an (complex 1.0 0.0)) (setf bn 0.0)
+  (fdo ((i 1 (+ i 1))) ((> i 50) nil)
+   (tagbody (setf ri i) (setf c (expt (/ (+ ri (- 0.5)) ri) 2))
+    (setf an (* c (* an l2)))
+    (setf bn (+ bn (/ 1.0 (* ri (+ (* 2.0 ri) (- 1.0)))))) (setf s1 (+ s1 an))
+    (setf s2 (+ s2 (* an bn)))
+    (if (< (+ (abs (real an)) (abs (aimag an))) tol) (go label20))
+  ))
+  label20 (setf s1 (+ s1 (complex 1.0 0.0))) (setf x (real l))
+  (setf y (aimag l)) (if (/= x 0.0) (go label30))
+  (setf w (cmplx (+ ln4 (- (alog (abs y)))) hpi)) (go label50) label30
+  (if (> (abs x) (abs y)) (go label31))
+  (setf u
+   (+ (+ ln4 (* (* -1 0.5) (alnrel (expt (/ x y) 2)))) (- (alog (abs y))))
+  )
+  (go label40) label31
+  (setf u
+   (+ (+ ln4 (* (* -1 0.5) (alnrel (expt (/ y x) 2)))) (- (alog (abs x))))
+  )
+  label40 (if (> x 0.0) (go label41))
+  (setf w (cmplx u (- (atan2 (- y) (- x))))) (go label50) label41
+  (setf w (cmplx u (- (atan2 y x)))) label50 (setf fk (+ (* w s1) (- s2)))
+  (setf fl (* hpi s1)) (return (values l fk fl))
+))
+

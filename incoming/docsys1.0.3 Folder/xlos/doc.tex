@@ -1,0 +1,116 @@
+\input /home/comet/rga6711/xlisp/definition/lispdef.tex
+\hfuzz=5pt
+
+
+\beginProject{ XLOS:  CLOS Macros for XLISP objects}
+\projectTitle{ XLOS:  CLOS Macros for XLISP objects}
+\projectAuthor{ Russell Almond}{ Educational Testing Service}{ almond@acm.org}
+\projectVersion{ Version 1.0.1 (Dec 18, 1998)}
+\beginMotivationDesc
+ (1) To provide a series of tools for easily
+  translating code written in CLOS (Common Lisp Object System) to the
+  XLISP object system.  (2) To provide some of the features of the
+  Defclass macro, such as automatic creation of accessor functions and
+  initialization functions and tightly coupled object defintition and
+  documentation. 
+\endMotivationDesc
+\projectCopyright{ This work is public domain.  The authors make no
+warantee as to its suitability for any particular purpose.}
+\projectReviewer{ }{ }
+\beginFunctionalDesc
+ Provides a Defclass macro for
+  defining prototypes and simplified versions of the defgeneric and
+  defmethod macros.  (These are limited to one dispatching argument
+  which must be a prototype.)  The macros work by translating the CLOS
+  style definitions into corresponding defproto, defun and defmeth
+  macros.  Thus XLOS only provides the syntatic sugar of CLOS while
+  retaining the prototype-instance flavor of XLISP. 
+\endFunctionalDesc
+\beginStatDesc
+ Providing a self-documenting defclass form
+  (as opposed to the more limited defprotot) will encourage better
+  documentation of XLS objects and will work well with the Definitions
+  documentation package.  It also simpilifies translation of Common
+  Lisp packages to XLS. 
+\endStatDesc
+\beginRefs
+\projectRef{ Steele, G.L., Jr. [1990] ``Common LISP:  The
+Language, Second Edition.'' Digital Press.}
+\projectRef{ Kiczales, G., J. des Rivieres, and D.G. Bobrow [1991]``The Art of the Metaobject Protocol.''  MIT Press. }
+\endRefs
+\beginInstructions
+ Including XLOS in the package use list for your
+  package gives you access to the defclass, defgeneric and defmethod
+  macros.  Syntax for these is described in Steele[1990] (or other
+  Common Lisp references. 
+\endInstructions
+\beginExamples
+\projectEx{ (xlos:defclass author-doc-proto ()
+	       ((name :accessor :name :initarg :name :type string 
+		      :initform ""
+		      :documentation "Author's name.")
+		(affiliation :accessor :affiliation 
+			     :initarg :affiliation :type string 
+			     :initform ""
+		      :documentation "Author's Institution.")
+		(email :accessor :email :initarg :email :type string 
+		      :initform ""
+		      :documentation "Author's email address.")
+		(home-page :accessor :home-page :initarg :home-page :type string 
+		      :initform ""
+		      :documentation "Author's home-page URL.")
+		)
+	       (:documentation "This object holds information about an author or reviewer of the code.")
+	       )}
+\projectEx{ The forgoing example would automatically create a
+  defproto statement, and defmeths for the :isnew, :name, etc
+  methods.}
+\projectEx{ (defgeneric print-tex-documentation-title (doc &key stream)
+  (declare (type Project-Doc-Proto doc)
+	   (type Stream  stream)
+	   (:returns (type Project-Doc-Proto doc)))
+  (:documentation "Prints (tex format) the title of this project description.")
+  )
+}
+\projectEx{ The second example defines an alias function for (send doc
+  print-tex-documenation :stream stream)}
+\projectEx{ (defmethod print-tex-documentation-title ((doc Project-Doc-Proto) 
+					&key (stream *standard-output*))
+  "Prints (tex format) the title of this project description."
+  (format stream "\projectTitle{ ~A}~%" (send doc :title))
+  doc)}
+\projectEx{ The last example is equivalent to (defmeth Project-Doc-Proto
+  print-tex-documenation-title ...)}
+\endExamples
+\beginWarnings
+\projectWarn{ Only syntatic sugar, still uses XLS object
+  system.}
+\projectWarn{ Only a subset of CLOS.  In particular, does
+  not allow for dispatch on multiple objects, or non-object types.
+  XLS type system and object system are not integerated.}
+\projectWarn{ Only allows generic functions to dispatch on
+  one argument.}
+\projectWarn{ Adds slot XLOS:SLOT-TYPES and method
+  :slot-type to *object*.  This may conflict with other packages.}
+\endWarnings
+\beginSeeAlsos
+\projectSee{ Definitions package contains
+  examples of usage.}
+\projectSee{ Kiczales, des Riveres and Bobrow [1991]
+  contains an alternative CLOSette implementation.}
+\endSeeAlsos
+\projectXLSVersion{ Tested with 3.52.5; unlikely to work with
+  earlier versions.}
+\projectOSVersion{ No known incompatabilities; tested on Unix
+  (Sun Solaris) and Mac.}
+\beginDepList \cd{ "Lisp" \hfudge } \endProjectList
+\projectPackage{ "Xlos"}{}
+\beginChanges
+\projectChange{ Version 1.0.1 Added shared-initialize generic function.}
+\endChanges
+\beginFileList \cd{"/Home/Comet/Rga6711/Xlisp/Xlos/Defclass.Lsp" \hfudge "/Home/Comet/Rga6711/Xlisp/Xlos/Defgeneric.Lsp" \hfudge } \endProjectList
+\beginObjectList \cd{Pathname \hfudge } \endProjectList
+\beginFunList \cd{Defclass \hfudge Defgeneric \hfudge Defmethod \hfudge Initialize-Slot \hfudge Make-Instance \hfudge My-Check-Type \hfudge Mytypep \hfudge Objtypep \hfudge Pathname \hfudge Process-Initargs \hfudge Shared-Initialize \hfudge } \endProjectList
+\beginVarList \cd{Shared-Initialize \hfudge Slot-Types \hfudge } \endProjectList
+\endProject
+

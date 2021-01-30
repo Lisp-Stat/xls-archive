@@ -1,0 +1,16 @@
+(defun locate (xx n x j) (declare (type (simple-array double-float (*)) xx))
+ (declare (type fixnum n)) (declare (type double-float x))
+ (declare (type fixnum j))
+ (prog ((jm 0) (ju 0) (jl 0)) (declare (type fixnum jm))
+  (declare (type fixnum ju)) (declare (type fixnum jl)) (setf jl 0)
+  (setf ju (+ n 1)) label10
+  (cond
+   ((> (+ ju (- jl)) 1) (setf jm (/ (+ ju jl) 2))
+    (cond (((xx (n) > xx (1)) .eqv. (x > xx (jm))) (setf jl jm))
+     (t (setf ju jm))
+    )
+    (go label10)
+  ))
+  (setf j jl) (return (values xx n x j))
+))
+

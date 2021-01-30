@@ -1,0 +1,27 @@
+(defun sub-sweep (b k 
+       &key (sub nil) (tolerances 1e-6) (reverse nil))
+(let* (
+       (a (copy-array b))
+       (order (first (array-dimensions a)))
+       (indlist (if sub sub (iseq order)))
+       (suba (select a indlist indlist))
+       (fac (if reverse -1 1))
+       )
+(dolist (i k a)
+(let* (
+       (jndlist (remove i indlist))
+       (aii (select a i i))
+       (ai* (select a i jndlist))
+       (a*i (select a jndlist i))
+       (a** (select a jndlist jndlist))
+       (bi* (first (row-list ai*)))
+       (b*i (first (column-list a*i)))
+       )
+(setf (select a i i) (/ aii))
+(if jndlist (progn
+             (setf (select a i jndlist) (- (/ ai* aii)))
+             (setf (select a jndlist i) (/ a*i aii))
+             (setf (select a jndlist jndlist) 
+                   (- a** (/ (outer-product b*i bi*) aii)))))
+))
+))

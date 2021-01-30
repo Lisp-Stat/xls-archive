@@ -1,0 +1,94 @@
+#########################################################################
+This is an ARCHIVE FILE created using the Unix command
+
+shar -c -p X SHARCHIVE.README XLISP.README xlisp-s.lsp \
+S2cl.S xlispstat-s-script.lsp userhome.lsp > xlisp.S.shar
+
+To restore all the files, save this archive script into 
+a file (which I will call FOO).  Delete any text above
+the first
+
+!bin/sh
+
+line (about 29 lines up from here) but do not delete the "!bin/sh"
+line.  It should be the first line of the file FOO.  Then issue the
+command
+
+/bin/sh  FOO
+
+The files necessary for setting up the Xlisp Lisp-Stat to S routines
+are: 
+
+XLISP.README             - General set up information
+xlisp-s.lsp              - Xlisp source code
+S2cl.S                   - S source code
+xlispstat-s-script.lsp   - Tested examples
+userhome.lsp             - Xlisp file to set up *HOME* variable
+
+
+SHORT SUMMARY
+-------------
+
+Xlisp - S : A series of routines to allow users of Xlisp or LispStat
+to interactively transfer data to and access functions in New S.
+Version 1.1 - Faster output from S
+
+
+
+DISTRIBUTION
+------------
+
+This software can be freely used for non-commercial purposes and
+can be freely distributed. 
+
+                                   NO WARRANTY
+
+     BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO
+     WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE
+     LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
+     HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT
+     WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+     BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+     AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS TO THE
+     QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
+     PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY
+     SERVICING, REPAIR OR CORRECTION.
+
+     IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN
+     WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY
+     MODIFY AND/OR REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE
+     LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL,
+     INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+     INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS
+     OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
+     YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH
+     ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN
+     ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+                      END OF TERMS AND CONDITIONS
+
+
+
+SUPPORT
+-------
+
+This package is supplied as-is, and no support is available from the
+authors.
+
+
+
+
+Steve McKinney
+Department of Biostatistics
+University of Washington
+November 12, 1991
+
+kilroy@biostat.washington.edu
+
+
+        \`|'/
+        (. .)
+   ---uuu-U-uuu---
+   kilroy was here
+
+
