@@ -1,0 +1,58 @@
+;; Anonymour Functions
+(plot-function #'(lambda (x) (+ (* 2 x) (^ x 2))) -2 3)
+
+;; Function Results
+(defun make-num-deriv (fun)
+  (let ((h 0.00001))
+    #'(lambda (x)
+      (/ (- (funcall fun (+ x h))
+            (funcall fun (- x h)))
+         (* 2 h)))))
+
+(setf f (make-num-deriv #'(lambda (x) (+ x (^ x 2)))))
+(funcall f 1)
+(funcall f 3)
+
+(defun make-norm-log-lik (x)
+  (let ((n (length x))
+        (x-bar (mean x))
+        (s-2 (^ (standard-deviation x) 2)))
+    #'(lambda (mu sigma-2)
+      (* -0.5
+         n
+         (+ (log sigma-2)
+            (/ (^ (- x-bar mu) 2) sigma-2)
+            (/ s-2 sigma-2))))))
+
+(setf f (make-norm-log-lik (normal-rand 20)))
+(spin-function f -0.5 0.5 0.5 4 :num-points 10 :spline nil)
+
+;; Survival
+(setf dt-list (coerce (select times (which (= 1 status))) 'list))
+(setf udt (sort-data (remove-duplicates dt-list :test #'=)))
+(setf d (mapcar #'(lambda (x) (count x dt-list :test #'=)) udt))
+(setf r (mapcar #'(lambda (x) (count x times :test #'<=)) udt))
+(setf km (accumulate #'* (/ (- r d) r)))
+(setf fh (exp (- (cumsum (/ d r)))))
+
+(* (^ km 2) (cumsum (/ d r (pmax (- r d) 1))))
+(* (^ km 2) (cumsum (/ d (^ r 2))))
+
+(defun make-steps (x y)
+  (let* ((n (length x))
+         (i (iseq (+ (* 2 n) 1))))
+    (list (append '(0) (repeat x (repeat 2 n)))
+          (select (repeat (append '(1) y) (repeat 2 (+ n 1))) i))))
+
+(plot-lines (make-steps udt km))
+
+;; Weibull Regression
+;;; Data
+(defun llw (x y s log-a b)
+  (let* ((a (exp log-a))
+         (eta (matmult x b))
+         (log-mu (+ (* a (log y)) eta)))
+    (+ (* (sum s) log-a) (sum (- (* s log-mu) (exp log-mu))))))
+
+(newtonmax #'(lambda (theta) (llw x times status (first theta) (rest theta)))
+           (list 0 (/ (sum status) (sum times)) 0))

@@ -1,0 +1,26 @@
+.BG
+.FN nwaylist
+.TL
+construct n-way list from formula
+.CS
+nwaylist(formula, data=sys.parent())
+.AG formula
+the formula describing the dependent variable and the cell structure.
+The only model operators that make sense here are "`+'" and "`:'".  Use of other
+operators will produce lists with excessive numbers of empty cells.
+.AG data
+if supplied, a data frame in which the variables named in the formula
+are to be found.
+If `data' is omitted, the current search list is used; for example,
+a data frame may have been attached or variables may be objects
+in the working database.
+.RT
+an array of lists.  The `dim' and `dimnames' of the list are based on
+the `terms' in the `formula'.  The contents of each component in the list
+is the vector of all elements in the `response' of the `formula'.
+.SA
+`boxmat'.
+.EX
+nwaylist(y~a+b:c)
+.KW boxmat
+.WR

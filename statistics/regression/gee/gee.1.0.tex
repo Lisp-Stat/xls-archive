@@ -1,0 +1,788 @@
+\documentclass[10pt]{article}
+\usepackage{graphics}
+\title{XLISP-Stat tools for building Generalised Estimating Equation models}
+\author{Thomas Lumley\\ Department of Biostatistics\\University of Washington\\Box 357232\\Seattle WA 98195--7232}
+\begin{document}
+\maketitle
+\begin{abstract}
+This paper describes a set of LispStat tools for building Generalised Estimating Equation models to analyse longitudinal or clustered measurements.  The user interface is based on the built-in regression and generalised linear model prototypes, with the addition of object-based error functions, correlation structures and model formula tools. Residual and deletion diagnostic plots are available on the cluster and observation level and use the dynamic graphics capability of LispStat.
+\end{abstract}
+\section{Introduction}
+Generalised Estimating Equations models, proposed by Liang and Zeger in 1986, are probably the simplest method for analysing data collected in groups where observations within a group may be correlated but observations in separate groups are independent.  A complete description of the method is given in their two 1986 papers.  The basic principle of the method is a generalisation of the fact that weighted least squares analyses give unbiased parameter estimates no matter what weights are used.  Generalised linear models, such as logistic regression, have similar robustness properties, giving asymptotically correct parameter estimates even when the data are correlated.  This means that it is possible to estimate regression parameters using any convenient or plausible assumptions about the true correlation between observations and get the right answer even when the assumptions are not correct.  It is only necessary to use a ``model-robust'' or ``agnostic'' estimate of the standard errors.  It would be unreasonable to expect this freedom of choice to be without cost and it turns out that there is a moderate gain in efficiency resulting from choosing a working correlation structure close to the true one.
+
+Useful references include the two original papers (Zeger \& Liang  1986, Liang \& Zeger 1986) and two recent books: Diggle, Liang \& Zeger (1994) and Fahrmeir \& Tutz (1994). As far as I know the most elementary treatment anywhere in the literature is still Zeger \& Liang (1986).
+
+When the observations are all independent (ie only one observation per group) the GEE method reduces to a GLM with the  Royall/Huber/White ``agnostic'' (``model-free'', ``model-robust'', ``heteroscedascity-free'', ``infinitesimal jackknife''\ldots) sandwich estimate of standard errors.  This provides the easiest way of constructing these extremely useful estimators in XLISP-Stat.  In this situation the parameter estimates are the same as the usual GLM ones and the naive standard errors are the usual GLM standard errors.  This makes it possible to use the \texttt{gee-proto} to construct generalised linear models. This is only worthwhile when you want to use a non-standard link function: the \texttt{gee-model} wrapper function handles arbitrary link and variance functions, unlike the wrapper functions for the \texttt{glim-proto}
+
+\section{Components of a GEE model}
+This similarity to the well-known generalised linear models makes GEEs very easy to use and to program.  The XLISP-Stat code  accompanying this document adapts the ideas of Tierney's (1989) regression model and generalised linear model prototypes  and defines a general \texttt{gee-proto} prototype. To create \texttt{gee-model} one supplies the data and a choice of link function, variance function and correlation structure.  The first two components are familiar from generalised linear models; the third is specific to GEEs. The independence correlation structure or \emph{independence working model} is the simplest one, corresponding to estimating the regression parameters as if the data were independent. The exchangeable working model estimates a single correlation parameter and so behaves as if all the within-group correlations are identical.  This is similar to a Normal-theory model with a single random effect for the intercept and is a good way to analyse cluster-sampled or cluster-randomised studies.
+ 
+The saturated working model is only appropriate when the number of observations in each group is the same and there is a well-defined order within each group. It estimates the whole within-group correlation matrix and so allows the correlation between, say,  the first and second observations to be different from that between any other pair.  In large data sets this is the most efficient method and for Normal data it is equivalent to maximum likelihood (if the right correlation estimator is used, a point discussed in more detail below).
+
+Other possible working correlation structures come from analogies to time series include 1-dependence, when the correlation is assumed to be zero except for adjacent observations, the more general \emph{m}-dependence when correlations are estimated out to a separation of \emph{m} observations, and continuous and discrete-time autoregressive structures.
+
+
+\section{How to use it}
+There is a wrapper function \texttt{gee-model} which takes the following arguments
+
+\begin{tabular}{lll}
+\hline
+\texttt{:x} & sequence,  & predictor variables\\
+ & list of sequences \\
+ & matrix, or &\\
+ & model-formula &\\
+\texttt{:y} & sequence & response variable\\
+\texttt{:g} & sequence & grouping variable\\
+\texttt{:times}& sequence & for longitudinal data:\\
+                       & & observation number or time\\
+\texttt{:link} & link object & link function\\
+\texttt{:error} & error (variance) object & variance function\\
+\texttt{:correlation} & correlation object & working correlation\\
+\texttt{:offset} & sequence & offset (default 0)\\
+\texttt{:prior-weights} & sequence & prior weights (default 1s) \\
+\texttt{:intercept} & logical & include an intercept? (default {\tt t})\\
+\texttt{:verbose} &logical & be chatty?  (default {\tt t})\\
+\texttt{:print} & logical & display the results?  (default {\tt t})\\
+\texttt{:allow-missing} & logical & allow missing observations\\
+                                && (only affects some correlations)\\
+\texttt{:init-beta} & sequence & initial guess for $\beta$\\
+\texttt{:count-limit} & integer & maximum number of iterations\\
+&& (default  30)\\
+\texttt{:predictor-names} & list of strings & names\\
+\hline
+\end{tabular}
+
+You must specify the first three arguments and at least one of \texttt{:link} and \texttt{:error}. If only \texttt{:error} is specified the canonical link is used, if only \texttt{:link} is specified then the appropriate error function is chosen. If \texttt{:correlation} is not specified then the independence working model is used. If \texttt{:verbose} is true then messages are printed out about these choices.
+
+The independence and exchangeable correlation structures ignore the observation \texttt{:times} argument, for other structures it is always required (in contrast to other packages). This is a feature, not a bug. The GEE functions written for other general-purpose packages mostly assume the data are sorted so that each group is contiguous and in the right order. In my experience data do not naturally occur that way: if the times column is in the data set it is easy to use it, if it isn't it is hard to be confident that you have the ordering correct (and virtually impossible with missing observations). The performance implications of this are discussed below.
+
+Note that for binomial data $y=r/n$ you should use the observed proportion not the observed count as the response and then specify the denominators using \texttt{:prior-weights}. Correlated binomial data (other than binary)  are comparatively rare; the individual binary observations are usually available.
+
+The default pairs of variance and link functions are:
+
+\texttt{\begin{tabular}{ll}
+\hline
+binomial-error & logit-link\\
+  & cloglog-link\\
+  & probit-link\\
+poisson-error & log-link\\
+normal-error & identity-link\\
+gaussian-error &\\
+gamma-error & inverse-link\\
+\hline
+\end{tabular}}
+
+where \texttt{gaussian-error} is identical to \texttt{normal-error}. In addition there are power link and variance functions given by \texttt{(power-link k)} for $\mu=\eta^k$ (with \texttt{inverse-link} and \texttt{sqrt-link} as special cases) and \texttt{(power-error k)} for $V(\mu)=\mu^k$. These do not have default counterparts. The use of power link and variance functions in modelling data with non-Normal, skew error distribution was discussed by Nelder (1994).
+
+ Any link function can be used with any variance function but the results may be silly.  The link functions are taken  from the \texttt{glim-proto} system but have had  extra methods \texttt{:valideta} and \texttt{:validmu} added to allow domain checking.
+
+ The available working correlation structures are currently \texttt{independence-corr},\\
+ \texttt{exchangeable-corr}, \texttt{m-dependence} and \texttt{stat-m-dependence}, \texttt{saturated-ml-corr} and\\ \texttt{saturated-corr}, \texttt{fixed-corr} and \texttt{AR-1-corr}. The difference between the two saturated correlation structures, both of which estimate an unstructured correlation matrix, is discussed in more detail below.  The parameter \texttt{:allow-missing} controls the assumptions made when the observation times are not the same for every group.  Under the exchangeable and independence models it has no effect; under the other models unbalanced data are not allowed when \texttt{:allow-missing} is \texttt{nil}.  When \texttt{:allow-missing} is \texttt{t} unbalanced data are allowed and the correlation parameters are estimated from the available data. This is valid if the data are missing completely at random but not otherwise (unless the working correlation model is true).
+
+ The basic m-dependence structure is non-stationary m-dependence. It takes an argument (m) and so two-dependence, for example, would be specified as \texttt{(m-dependence 2)}.   To specify stationary 2-dependence use \texttt{(stat-m-dependence 2)} or  \texttt{(m-dependence 2 :stationary t)}.  A known correlation matrix can be specified using the fixed correlation structure: \texttt{(fixed-corr R)} uses R as the correlation matrix.  This is not very useful except as a quick and dirty way of using a  complicated correlation structures (eg nested clustering). It is included for completeness and because it was easy.  Note that R need not be a correlation matrix, it just has to be positive definite. This could be useful if the scale parameter varied across times, for example. For the fixed correlation structure the scale parameter estimate is fixed at 1 for simplicity. This has no effect on the parameter estimates or the robust standard errors but does affect the naive standard errors.
+
+There is no need for the observation times to be consecutive integers. In fact they need not be integers at all, or even numbers. The requirements are that \texttt{equalp} is a valid test for equality and that \texttt{rank} will rank them. This means in practice that they must be all numbers or all strings and that if they are string the correct order is alphabetic.  Some correlation structures in future may use the numerical values of the times in which case they will have to be numbers. 
+Group identifiers must be strings or numbers too; they are also compared with \texttt{equalp}. 
+
+
+
+Some examples, using a data set distributed with the original SAS GEE macro by Karim and Zeger. The data give the number of hospital visits of 73 children over four time periods together with the age and sex of the child and the smoking status of the mother.\\
+\begin{verbatim}
+> (def gee0a (gee-model :x (list sex smoke age time2 time3 time4) 
+:y num-visits :g id :times times :link log-link :error poisson-error
+ :correlation exchangeable-corr :predictor-names (list "sex" "smoker" 
+"age" "2nd vs 1st" "3rd vs 1st" "4th vs 1st")))
+Iteration 1: quasideviance = 517.114
+Iteration 2: quasideviance = 478.436
+Iteration 3: quasideviance = 475.935
+Iteration 4: quasideviance = 475.970
+Iteration 5: quasideviance = 475.982
+Iteration 6: quasideviance = 475.982
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                  0.245980      (0.383535)          (0.363382)
+sex                      -0.194216      (0.208003)          (0.222975)
+smoker                    0.168846      (0.244118)          (0.242226)
+age                        2.963862E-3  (6.653705E-3)       (6.265295E-3)
+2nd vs 1st               -0.435318      (0.195649)          (0.188774)
+3rd vs 1st               -0.307485      (0.202848)          (0.181464)
+4th vs 1st                -1.12847      (0.221787)          (0.243342)
+
+Scale Estimate:            1.83171    
+Independence model deviance:   475.982    
+Number of cases:               292
+Link:                    #<Glim Link Object: LOG-LINK>
+Variance function:       Poisson error
+Exchangeable Working Model:  correlation =  0.2257
+GEE0A
+> 
+\end{verbatim}
+Most of this is fairly clear. The ``Independence model deviance'' is the result of applying the deviance function for the independence working model to the fitted model. These will at least give some idea of the relative differences between models.  The scale factor is the variance of the Pearson residuals, the reciprocal of the parameter $\phi$ in Zeger \& Liang (1986) and the analogue of the residual mean square in linear regression.  The ``naive standard error'' is the standard error that would be estimated from a parametric analysis if the working correlation structure were true.  
+
+Another example:\\
+\begin{verbatim}
+> (def gee2a (gee-model :x (list sex smoke age time2 time3 time4)
+ :y num-visits :g id :times times :link log-link :error poisson-error
+ :correlation (stat-m-dependence 2) :predictor-names (list "sex" 
+"smoker" "age" "2nd vs 1st" "3rd vs 1st" "4th vs 1st")))
+Iteration 1: quasideviance = 517.114
+Iteration 2: quasideviance = 478.517
+Iteration 3: quasideviance = 475.988
+Iteration 4: quasideviance = 475.944
+Iteration 5: quasideviance = 475.941
+Iteration 6: quasideviance = 475.941
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                  0.246413      (0.425101)          (0.349471)
+sex                      -0.176885      (0.218639)          (0.213840)
+smoker                    0.153786      (0.261751)          (0.230775)
+age                        2.934218E-3  (7.046725E-3)       (5.989854E-3)
+2nd vs 1st               -0.435318      (0.195649)          (0.190156)
+3rd vs 1st               -0.307485      (0.202848)          (0.185687)
+4th vs 1st                -1.12847      (0.221787)          (0.270775)
+
+Scale Estimate:            1.82809    
+Independence model deviance:   475.941    
+Number of cases:               292
+Link:                    #<Glim Link Object: LOG-LINK>
+Variance function:       Poisson error
+Stationary  2 - dependence Working Model: 
+ correlation matrix =
+#2a(
+    (  1.0      0.21      0.19      0.00    )
+    ( 0.21       1.0      0.21      0.19    )
+    ( 0.19      0.21       1.0      0.21    )
+    ( 0.00      0.19      0.21       1.0    )
+   )
+GEE2A
+> 
+\end{verbatim}
+
+For the stationary 2-dependence working model we see that the estimated correlations are printed. Adding \texttt{:verbose nil} to the arguments will suppress everything before the line \texttt{GEE Estimates}. Adding \texttt{:print nil} will suppress everything from that point on (only really useful if you are doing further programming using the resulting object).
+
+
+The function returns a \texttt{gee-proto} object which responds to a lot of messages, including many of the messages implemented for generalised linear models. Some description of most of the methods is available using the \texttt{:help} method (eg \texttt{(send mygeeobject :help :scale)} describes the \texttt{:scale} method. To find all the methods which have help omit the topic specifier: \texttt{(send gee-proto :help)}.
+
+There is also a method for producing confidence intervals for the coefficients, transformed to any appropriate scale. The message \texttt{:conf-interval} gives the estimates and a 95\% confidence interval. There are three optional keyword arguments: \texttt{:coverage} specifies the desired coverage, \texttt{:names} is \texttt{nil} to prevent predictor names being returned  and \texttt{:transform} specifies a function to apply to the confidence interval. To produce 90\% confidence intervals for the odds ratio in a logistic regression model you would use the message \texttt{:conf-interval :coverage 0.9 :transform \#'exp}. 
+
+There are further examples in the test file \texttt{geetest.lsp}. This includes most of the test examples for an S-PLUS \texttt{gee()} function by Carey and Macdermott that is available from \texttt{statlib} (\texttt{ftp:lib.stat.cmu.edu}). Good agreement with the S-PLUS results is obtained. The code has also had limited testing against the statistical package SPIDA (Statistical Laboratory, Macquarie University, Sydney, Australia) which has a built-in GEE procedure. 
+
+\section{Model formulae}
+It is possible to use a model formula object to include factor (class) and interaction terms more easily in a model.  The support is still a bit primitive: it's less simple than either SAS or S-PLUS and less complete, allowing interactions but not nesting. The function \texttt{as-formula} creates formula objects which contain a design matrix \texttt{:design-matrix}, a list of column labels \texttt{:name-list}, a list of block (eg factor or interaction) names \texttt{:block-names} and a list of lists of column numbers specifying each block \texttt{:block-indices}. This should have been an extension of Tierney's design matrix tools written for \texttt{glim-proto} but I didn't realise they were there so I wrote new functions for creating indicators and interactions.  The form of a call to \texttt{as-formula} is 
+\begin{verbatim}
+(as-formula '((factor a) (factor b) (term x) (interaction (list a b))
+ (interaction (list a x) :is-factor (list t nil))))
+\end{verbatim}
+where \texttt{A} and \texttt{B} are factor variables and \texttt{X} is a metric (continuous) variable.  This model would be written \verb=~A+B+X+A:B+A:X= in S-PLUS if \texttt{A} and \texttt{B} had already been defined as factors. The keyword argument \texttt{:is-factor} to \texttt{interaction} indicates whether of the terms in the interaction should be treated as factors. It is optional; the default is to treat them all as factors. The reason for this default is partly that it is more common and partly that making a mistake is more likely to be obvious.
+The argument to \texttt{(as-formula)} must be quoted, as in the example. This appears to be unavoidable as otherwise the arguments will get evaluated. The Right Thing would be to write a parser that could accept strings as arguments.
+
+The \texttt{gee-model} command and \texttt{gee-proto} object have some built-in recognition of formula objects, such as the ability to use a formula object as the \texttt{:x} argument to \texttt{gee-model}. The file \texttt{modelformula.lsp} which defines the objects also contains methods for \texttt{regression\--model-proto} and some  more primitive functions which may be useful for creating and manipulating design matrices. In particular the functions \texttt{interaction}, \texttt{factor} and \texttt{term} can be used on their own to create contrast matrices and variable names.
+
+The main difference caused by using a model formula argument to \texttt{gee-model} is that the default output changes to report  the Wald chisquare and p-value for each block. This is produced by the message \texttt{:display-with-formula :block-only nil}. To get only the test statistics, use the message \texttt{:display-with-formula :block-only t}. To get the old display use \texttt{:display}. The default value of the \texttt{block-only} keyword is controlled by a global variable \verb=*gee-display-block-only*= which is initially \texttt{nil}.
+
+The first of the two examples given above can be replaced by the following code
+\begin{verbatim}
+> (def modelx (as-formula '((factor gender) (factor smoker) (term age) 
+(factor times))))
+>  (def gee1 (gee-model :x modelx :y num-visits :g id :times times 
+:link log-link :error poisson-error :correlation exchangeable-corr))
+Iteration 1: quasideviance = 517.114
+Iteration 2: quasideviance = 478.436
+Iteration 3: quasideviance = 475.935
+Iteration 4: quasideviance = 475.970
+Iteration 5: quasideviance = 475.982
+Iteration 6: quasideviance = 475.982
+
+GEE Estimates:
+
+Block               Wald Chisq     p-value
+Intercept             0.41133      0.5213
+      Variable            Estimate       Std.Err.       p-value
+     Intercept             0.24598      (0.383535)     0.5213
+GENDER                0.87183      0.3504
+      Variable            Estimate       Std.Err.       p-value
+     (GENDER M)           -0.19422      (0.208003)     0.3504
+SMOKER                0.47839      0.4892
+      Variable            Estimate       Std.Err.       p-value
+     (SMOKER Y)            0.16885      (0.244118)     0.4892
+AGE                   0.19842      0.6560
+      Variable            Estimate       Std.Err.       p-value
+     AGE                    2.96386E-3  (6.653705E-3)  0.6560
+TIMES                  26.659      0.0000
+      Variable            Estimate       Std.Err.       p-value
+     (TIMES 2)            -0.43532      (0.195649)     0.0261
+     (TIMES 3)            -0.30748      (0.202848)     0.1296
+     (TIMES 4)             -1.1285      (0.221787)     0.0000
+
+Scale Estimate:            1.83171    
+Independence model deviance:   475.982    
+Number of cases:               292
+Link:                    #<Glim Link Object: LOG-LINK>
+Variance function:       Poisson error
+Exchangeable Working Model:  correlation =  0.2257
+GEE1
+>
+\end{verbatim}
+where \texttt{GENDER} and \texttt{SMOKER} are character versions of the variables \texttt{SEX} and \texttt{SMOKE} used in the earlier model.  The predictor names are automatically generated from the variable names and values. This is particularly useful when the variable names and values are easily interpretable as in this example.
+
+\section{Diagnostics}
+Deletion diagnostics are available as well as a variety of flavours of residual. Current graphical methods are
+
+\begin{tabular}{ll}
+\hline
+\texttt{:plot-raw-residuals} & $y-\hat y$\\
+\texttt{:plot-pearson-residuals} & same as the independence case\\
+\texttt{:plot-deviance-residuals} & same as the independence case\\
+\texttt{:plot-standardised-residuals} & Pearson residuals standardised by\\
+                        & working correlation\\
+\texttt{:plot-leverage} & Leverage statistics\\
+\texttt{:plot-dbeta} &  $\Delta \beta$s\\
+\texttt{:plot-cooks-distance} & Cook's distance (influence)\\
+\hline
+\end{tabular}
+
+The standardised residuals are the Pearson residuals multiplied by the Cholesky square-root of the inverse of the correlation matrix. They are approximately independent with equal variance if the working model is roughly true. 
+
+The last three methods are generalisations of the leverage (diagonal of hat matrix), DBETA (change in coefficient when point is deleted) and Cook's distance (influence) statistics for linear and generalised linear models.  The formulae are from  Preisser \& Qaqish (1996 preprint) and are natural generalisations of the independent data versions (though the derivations and calculations are rather more complicated).  The methods take a keyword  argument \texttt{:unit} of 0 for individual observation deletion  and 1 for group deletion. Constants \texttt{+group+} and \texttt{+cluster+},  and \texttt{+not-group+} and \texttt{+observation+} have been defined to make these easier to use (eg \texttt{:unit +group+}). The default is diagnostics for individual observations.
+
+The residual plots and \texttt{plot-dbeta} take a keyword argument \texttt{:variable}. The argument for \texttt{:variable} is a list of indices specifying which delta-betas to plot or which variables to plot the residuals against. For \texttt{:plot-dbetas} variable 0 is the intercept, for \texttt{:plot-}foo\texttt{-residuals} it is the linear predictor. If \texttt{variable} is not specified the delta-betas plot uses all variables; the residual plots just use the linear predictor.  In addition, \texttt{:plot-}foo\texttt{-residuals} has a \texttt{:smooth} keyword which indicates whether a lowess smoother should be added to the plot. The default is \texttt{t} for both \texttt{show-labels} and \texttt{smooth}. Any other arguments given to these functions will be passed to a call to \texttt{plot-points}. An example is given in Figure~\ref{picture}, based on the example given above for the model formula system.
+
+\begin{figure}[tb!]
+\caption{Deviance residuals against linear predictor with group highlighting. Plot created by \texttt{(send gee1 :plot-deviance-residuals)} and selecting point 15 with the mouse.}
+\label{picture}
+% GNUPLOT: LaTeX picture
+\setlength{\unitlength}{0.240900pt}
+\ifx\plotpoint\undefined\newsavebox{\plotpoint}\fi
+\sbox{\plotpoint}{\rule[-0.175pt]{0.350pt}{0.350pt}}%
+\begin{picture}(1500,900)(0,0)
+\sbox{\plotpoint}{\rule[-0.175pt]{0.350pt}{0.350pt}}%
+\put(264,368){\rule[-0.175pt]{282.335pt}{0.350pt}}
+\put(967,158){\rule[-0.175pt]{0.350pt}{151.526pt}}
+\put(264,158){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(242,158){\makebox(0,0)[r]{-2}}
+\put(1416,158){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(264,263){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(242,263){\makebox(0,0)[r]{-1}}
+\put(1416,263){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(264,368){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(242,368){\makebox(0,0)[r]{0}}
+\put(1416,368){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(264,473){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(242,473){\makebox(0,0)[r]{1}}
+\put(1416,473){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(264,577){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(242,577){\makebox(0,0)[r]{2}}
+\put(1416,577){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(264,682){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(242,682){\makebox(0,0)[r]{3}}
+\put(1416,682){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(264,787){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(242,787){\makebox(0,0)[r]{4}}
+\put(1416,787){\rule[-0.175pt]{4.818pt}{0.350pt}}
+\put(264,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(264,113){\makebox(0,0){-1.2}}
+\put(264,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(381,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(381,113){\makebox(0,0){-1}}
+\put(381,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(498,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(498,113){\makebox(0,0){-0.8}}
+\put(498,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(616,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(616,113){\makebox(0,0){-0.6}}
+\put(616,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(733,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(733,113){\makebox(0,0){-0.4}}
+\put(733,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(850,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(850,113){\makebox(0,0){-0.2}}
+\put(850,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(967,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(967,113){\makebox(0,0){0}}
+\put(967,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1084,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1084,113){\makebox(0,0){0.2}}
+\put(1084,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1202,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1202,113){\makebox(0,0){0.4}}
+\put(1202,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1319,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1319,113){\makebox(0,0){0.6}}
+\put(1319,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1436,158){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(1436,113){\makebox(0,0){0.8}}
+\put(1436,767){\rule[-0.175pt]{0.350pt}{4.818pt}}
+\put(264,158){\rule[-0.175pt]{282.335pt}{0.350pt}}
+\put(1436,158){\rule[-0.175pt]{0.350pt}{151.526pt}}
+\put(264,787){\rule[-0.175pt]{282.335pt}{0.350pt}}
+\put(105,272){\rotatebox{90}{\makebox(0,0)[l]{\shortstack{Deviance residuals}}}}
+\put(850,68){\makebox(0,0){Linear predictor}}
+\put(1132,425){\makebox(0,0)[l]{12}}
+\put(877,556){\makebox(0,0)[l]{13}}
+\put(952,670){\makebox(0,0)[l]{14}}
+\put(471,779){\makebox(0,0)[l]{15}}
+\put(264,158){\rule[-0.175pt]{0.350pt}{151.526pt}}
+\put(1064,207){\circle{18}}
+\put(809,238){\circle{18}}
+\put(883,230){\circle{18}}
+\put(402,276){\circle{18}}
+\put(1032,446){\circle{18}}
+\put(777,242){\circle{18}}
+\put(852,233){\circle{18}}
+\put(371,459){\circle{18}}
+\put(1096,632){\circle{18}}
+\put(842,564){\circle{18}}
+\put(916,226){\circle{18}}
+\put(435,642){\circle{18}}
+\put(1132,425){\circle{18}}
+\put(877,556){\circle{18}}
+\put(952,670){\circle{18}}
+\put(471,779){\circle{18}}
+\put(1139,335){\circle{18}}
+\put(885,476){\circle{18}}
+\put(959,220){\circle{18}}
+\put(478,270){\circle{18}}
+\put(1049,443){\circle{18}}
+\put(795,397){\circle{18}}
+\put(870,385){\circle{18}}
+\put(388,277){\circle{18}}
+\put(1193,325){\circle{18}}
+\put(938,373){\circle{18}}
+\put(1013,214){\circle{18}}
+\put(532,265){\circle{18}}
+\put(1121,199){\circle{18}}
+\put(866,232){\circle{18}}
+\put(941,223){\circle{18}}
+\put(459,271){\circle{18}}
+\put(1131,197){\circle{18}}
+\put(875,231){\circle{18}}
+\put(950,608){\circle{18}}
+\put(469,271){\circle{18}}
+\put(1058,351){\circle{18}}
+\put(803,239){\circle{18}}
+\put(879,478){\circle{18}}
+\put(397,276){\circle{18}}
+\put(1049,209){\circle{18}}
+\put(795,240){\circle{18}}
+\put(870,231){\circle{18}}
+\put(388,277){\circle{18}}
+\put(1103,431){\circle{18}}
+\put(849,632){\circle{18}}
+\put(923,225){\circle{18}}
+\put(442,273){\circle{18}}
+\put(1224,404){\circle{18}}
+\put(969,219){\circle{18}}
+\put(1044,209){\circle{18}}
+\put(563,263){\circle{18}}
+\put(1191,411){\circle{18}}
+\put(936,223){\circle{18}}
+\put(1011,214){\circle{18}}
+\put(530,266){\circle{18}}
+\put(1073,579){\circle{18}}
+\put(817,237){\circle{18}}
+\put(892,381){\circle{18}}
+\put(411,275){\circle{18}}
+\put(1051,352){\circle{18}}
+\put(797,240){\circle{18}}
+\put(871,231){\circle{18}}
+\put(390,277){\circle{18}}
+\put(1058,207){\circle{18}}
+\put(803,239){\circle{18}}
+\put(879,230){\circle{18}}
+\put(397,276){\circle{18}}
+\put(1055,352){\circle{18}}
+\put(800,396){\circle{18}}
+\put(875,557){\circle{18}}
+\put(394,277){\circle{18}}
+\put(1060,351){\circle{18}}
+\put(805,239){\circle{18}}
+\put(879,230){\circle{18}}
+\put(399,276){\circle{18}}
+\put(1058,207){\circle{18}}
+\put(803,396){\circle{18}}
+\put(879,230){\circle{18}}
+\put(397,276){\circle{18}}
+\put(1206,603){\circle{18}}
+\put(951,221){\circle{18}}
+\put(1026,212){\circle{18}}
+\put(545,435){\circle{18}}
+\put(1110,504){\circle{18}}
+\put(856,630){\circle{18}}
+\put(930,467){\circle{18}}
+\put(449,553){\circle{18}}
+\put(1150,194){\circle{18}}
+\put(896,228){\circle{18}}
+\put(970,367){\circle{18}}
+\put(489,547){\circle{18}}
+\put(1154,420){\circle{18}}
+\put(899,228){\circle{18}}
+\put(974,367){\circle{18}}
+\put(493,442){\circle{18}}
+\put(1252,312){\circle{18}}
+\put(997,216){\circle{18}}
+\put(1072,206){\circle{18}}
+\put(591,260){\circle{18}}
+\put(1269,393){\circle{18}}
+\put(1014,213){\circle{18}}
+\put(1090,434){\circle{18}}
+\put(608,259){\circle{18}}
+\put(1125,732){\circle{18}}
+\put(869,231){\circle{18}}
+\put(944,372){\circle{18}}
+\put(463,551){\circle{18}}
+\put(1131,425){\circle{18}}
+\put(876,625){\circle{18}}
+\put(951,670){\circle{18}}
+\put(470,550){\circle{18}}
+\put(1196,188){\circle{18}}
+\put(940,223){\circle{18}}
+\put(1015,213){\circle{18}}
+\put(534,265){\circle{18}}
+\put(1199,410){\circle{18}}
+\put(944,222){\circle{18}}
+\put(1019,449){\circle{18}}
+\put(538,265){\circle{18}}
+\put(1248,313){\circle{18}}
+\put(993,216){\circle{18}}
+\put(1068,206){\circle{18}}
+\put(587,260){\circle{18}}
+\put(1262,466){\circle{18}}
+\put(1007,214){\circle{18}}
+\put(1082,436){\circle{18}}
+\put(601,427){\circle{18}}
+\put(1135,197){\circle{18}}
+\put(879,556){\circle{18}}
+\put(955,462){\circle{18}}
+\put(474,270){\circle{18}}
+\put(1264,394){\circle{18}}
+\put(1009,214){\circle{18}}
+\put(1084,204){\circle{18}}
+\put(603,259){\circle{18}}
+\put(1190,607){\circle{18}}
+\put(935,223){\circle{18}}
+\put(1010,451){\circle{18}}
+\put(529,437){\circle{18}}
+\put(1154,332){\circle{18}}
+\put(899,380){\circle{18}}
+\put(974,219){\circle{18}}
+\put(493,269){\circle{18}}
+\put(1149,421){\circle{18}}
+\put(894,381){\circle{18}}
+\put(968,604){\circle{18}}
+\put(487,269){\circle{18}}
+\put(1289,173){\circle{18}}
+\put(1033,446){\circle{18}}
+\put(1108,430){\circle{18}}
+\put(627,257){\circle{18}}
+\put(1102,201){\circle{18}}
+\put(847,234){\circle{18}}
+\put(922,225){\circle{18}}
+\put(440,450){\circle{18}}
+\put(1321,297){\circle{18}}
+\put(1067,206){\circle{18}}
+\put(1142,561){\circle{18}}
+\put(661,418){\circle{18}}
+\put(1131,197){\circle{18}}
+\put(876,230){\circle{18}}
+\put(951,221){\circle{18}}
+\put(470,271){\circle{18}}
+\put(1123,198){\circle{18}}
+\put(868,385){\circle{18}}
+\put(942,784){\circle{18}}
+\put(461,271){\circle{18}}
+\put(1131,337){\circle{18}}
+\put(876,384){\circle{18}}
+\put(951,371){\circle{18}}
+\put(470,271){\circle{18}}
+\put(1133,337){\circle{18}}
+\put(878,230){\circle{18}}
+\put(953,221){\circle{18}}
+\put(472,271){\circle{18}}
+\put(1110,200){\circle{18}}
+\put(856,482){\circle{18}}
+\put(930,224){\circle{18}}
+\put(449,448){\circle{18}}
+\put(1247,313){\circle{18}}
+\put(992,455){\circle{18}}
+\put(1067,349){\circle{18}}
+\put(586,261){\circle{18}}
+\put(1125,198){\circle{18}}
+\put(871,384){\circle{18}}
+\put(946,222){\circle{18}}
+\put(465,271){\circle{18}}
+\put(1152,493){\circle{18}}
+\put(897,228){\circle{18}}
+\put(972,367){\circle{18}}
+\put(491,269){\circle{18}}
+\put(1187,485){\circle{18}}
+\put(932,467){\circle{18}}
+\put(1007,361){\circle{18}}
+\put(526,541){\circle{18}}
+\put(1262,310){\circle{18}}
+\put(1007,527){\circle{18}}
+\put(1082,204){\circle{18}}
+\put(601,259){\circle{18}}
+\put(1173,553){\circle{18}}
+\put(918,376){\circle{18}}
+\put(993,216){\circle{18}}
+\put(511,267){\circle{18}}
+\put(1307,384){\circle{18}}
+\put(1053,352){\circle{18}}
+\put(1127,338){\circle{18}}
+\put(646,255){\circle{18}}
+\put(1118,199){\circle{18}}
+\put(862,481){\circle{18}}
+\put(937,223){\circle{18}}
+\put(456,272){\circle{18}}
+\put(1149,333){\circle{18}}
+\put(894,381){\circle{18}}
+\put(968,460){\circle{18}}
+\put(487,547){\circle{18}}
+\put(1159,331){\circle{18}}
+\put(903,227){\circle{18}}
+\put(979,218){\circle{18}}
+\put(498,268){\circle{18}}
+\put(1142,196){\circle{18}}
+\put(886,229){\circle{18}}
+\put(961,220){\circle{18}}
+\put(481,270){\circle{18}}
+\put(1189,325){\circle{18}}
+\put(933,374){\circle{18}}
+\put(1008,594){\circle{18}}
+\put(528,438){\circle{18}}
+\put(1131,197){\circle{18}}
+\put(876,556){\circle{18}}
+\put(951,371){\circle{18}}
+\put(470,271){\circle{18}}
+\put(1290,682){\circle{18}}
+\put(1035,521){\circle{18}}
+\put(1110,430){\circle{18}}
+\put(629,257){\circle{18}}
+\put(1176,328){\circle{18}}
+\put(921,469){\circle{18}}
+\put(996,362){\circle{18}}
+\put(515,439){\circle{18}}
+\put(1185,189){\circle{18}}
+\put(930,374){\circle{18}}
+\put(1005,361){\circle{18}}
+\put(524,266){\circle{18}}
+\put(1187,326){\circle{18}}
+\put(932,224){\circle{18}}
+\put(1007,361){\circle{18}}
+\put(526,266){\circle{18}}
+\put(1112,200){\circle{18}}
+\put(857,233){\circle{18}}
+\put(932,224){\circle{18}}
+\put(451,448){\circle{18}}
+\put(1179,190){\circle{18}}
+\put(925,546){\circle{18}}
+\put(1000,215){\circle{18}}
+\put(519,267){\circle{18}}
+\put(1152,333){\circle{18}}
+\put(897,228){\circle{18}}
+\put(972,219){\circle{18}}
+\put(491,269){\circle{18}}
+\put(1297,457){\circle{18}}
+\put(1042,210){\circle{18}}
+\put(1117,428){\circle{18}}
+\put(636,422){\circle{18}}
+\put(1201,187){\circle{18}}
+\put(946,222){\circle{18}}
+\put(1020,213){\circle{18}}
+\put(539,265){\circle{18}}
+\put(1161,193){\circle{18}}
+\put(905,227){\circle{18}}
+\put(981,218){\circle{18}}
+\put(499,442){\circle{18}}
+\put(1118,340){\circle{18}}
+\put(862,386){\circle{18}}
+\put(937,373){\circle{18}}
+\put(456,272){\circle{18}}
+\put(1252,312){\circle{18}}
+\put(997,216){\circle{18}}
+\put(1072,438){\circle{18}}
+\put(591,260){\circle{18}}
+\put(1123,198){\circle{18}}
+\put(868,558){\circle{18}}
+\put(942,223){\circle{18}}
+\put(461,271){\circle{18}}
+\put(1125,426){\circle{18}}
+\put(869,385){\circle{18}}
+\put(944,222){\circle{18}}
+\put(463,271){\circle{18}}
+\put(1235,181){\circle{18}}
+\put(980,218){\circle{18}}
+\put(1054,208){\circle{18}}
+\put(573,262){\circle{18}}
+\sbox{\plotpoint}{\rule[-0.350pt]{0.700pt}{0.700pt}}%
+\put(1321,369){\usebox{\plotpoint}}
+\put(1316,369){\rule[-0.350pt]{1.124pt}{0.700pt}}
+\put(1311,368){\rule[-0.350pt]{1.124pt}{0.700pt}}
+\put(1307,367){\rule[-0.350pt]{1.124pt}{0.700pt}}
+\put(1302,366){\rule[-0.350pt]{1.205pt}{0.700pt}}
+\put(1297,365){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1290,364){\rule[-0.350pt]{1.686pt}{0.700pt}}
+\put(1289,363){\usebox{\plotpoint}}
+\put(1284,362){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1279,361){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1274,360){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1269,359){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1264,358){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1257,357){\rule[-0.350pt]{1.686pt}{0.700pt}}
+\put(1252,356){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1248,355){\rule[-0.350pt]{0.964pt}{0.700pt}}
+\put(1247,354){\usebox{\plotpoint}}
+\put(1241,353){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(1235,352){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(1229,351){\rule[-0.350pt]{1.325pt}{0.700pt}}
+\put(1224,350){\rule[-0.350pt]{1.325pt}{0.700pt}}
+\put(1219,349){\rule[-0.350pt]{1.084pt}{0.700pt}}
+\put(1215,348){\rule[-0.350pt]{1.084pt}{0.700pt}}
+\put(1210,347){\rule[-0.350pt]{1.084pt}{0.700pt}}
+\put(1206,346){\rule[-0.350pt]{1.084pt}{0.700pt}}
+\put(1201,345){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1196,344){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1193,343){\rule[-0.350pt]{0.723pt}{0.700pt}}
+\put(1189,342){\rule[-0.350pt]{0.964pt}{0.700pt}}
+\put(1179,341){\rule[-0.350pt]{2.409pt}{0.700pt}}
+\put(1176,340){\rule[-0.350pt]{0.723pt}{0.700pt}}
+\put(1173,339){\rule[-0.350pt]{0.723pt}{0.700pt}}
+\put(1167,338){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(1161,337){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(1156,336){\rule[-0.350pt]{1.084pt}{0.700pt}}
+\put(1154,335){\usebox{\plotpoint}}
+\put(1149,334){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1142,333){\rule[-0.350pt]{1.686pt}{0.700pt}}
+\put(1135,332){\rule[-0.350pt]{1.686pt}{0.700pt}}
+\put(1133,331){\usebox{\plotpoint}}
+\put(1127,330){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(1123,329){\rule[-0.350pt]{0.964pt}{0.700pt}}
+\put(1118,328){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1112,327){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(1103,326){\rule[-0.350pt]{2.168pt}{0.700pt}}
+\put(1102,325){\usebox{\plotpoint}}
+\put(1093,324){\rule[-0.350pt]{2.168pt}{0.700pt}}
+\put(1090,323){\rule[-0.350pt]{0.723pt}{0.700pt}}
+\put(1082,322){\rule[-0.350pt]{1.927pt}{0.700pt}}
+\put(1073,321){\rule[-0.350pt]{2.168pt}{0.700pt}}
+\put(1068,320){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1060,319){\rule[-0.350pt]{1.927pt}{0.700pt}}
+\put(1055,318){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(1044,317){\rule[-0.350pt]{2.650pt}{0.700pt}}
+\put(1035,316){\rule[-0.350pt]{2.168pt}{0.700pt}}
+\put(1026,315){\rule[-0.350pt]{2.168pt}{0.700pt}}
+\put(1014,314){\rule[-0.350pt]{2.891pt}{0.700pt}}
+\put(1000,313){\rule[-0.350pt]{3.373pt}{0.700pt}}
+\put(981,314){\rule[-0.350pt]{4.577pt}{0.700pt}}
+\put(980,315){\usebox{\plotpoint}}
+\put(972,316){\rule[-0.350pt]{1.927pt}{0.700pt}}
+\put(964,317){\rule[-0.350pt]{1.807pt}{0.700pt}}
+\put(961,318){\rule[-0.350pt]{0.843pt}{0.700pt}}
+\put(955,319){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(951,320){\rule[-0.350pt]{0.964pt}{0.700pt}}
+\put(946,321){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(941,322){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(936,323){\rule[-0.350pt]{1.204pt}{0.700pt}}
+\put(925,324){\rule[-0.350pt]{2.650pt}{0.700pt}}
+\put(918,325){\rule[-0.350pt]{1.686pt}{0.700pt}}
+\put(905,326){\rule[-0.350pt]{3.132pt}{0.700pt}}
+\put(897,327){\rule[-0.350pt]{1.927pt}{0.700pt}}
+\put(886,328){\rule[-0.350pt]{2.650pt}{0.700pt}}
+\put(876,329){\rule[-0.350pt]{2.409pt}{0.700pt}}
+\put(862,330){\rule[-0.350pt]{3.373pt}{0.700pt}}
+\put(833,331){\rule[-0.350pt]{6.825pt}{0.700pt}}
+\put(825,330){\rule[-0.350pt]{2.007pt}{0.700pt}}
+\put(817,329){\rule[-0.350pt]{2.007pt}{0.700pt}}
+\put(809,328){\rule[-0.350pt]{1.927pt}{0.700pt}}
+\put(803,327){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(797,326){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(789,325){\rule[-0.350pt]{1.927pt}{0.700pt}}
+\put(783,324){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(777,323){\rule[-0.350pt]{1.445pt}{0.700pt}}
+\put(719,322){\rule[-0.350pt]{13.972pt}{0.700pt}}
+\put(661,323){\rule[-0.350pt]{13.972pt}{0.700pt}}
+\put(646,324){\rule[-0.350pt]{3.613pt}{0.700pt}}
+\put(545,325){\rule[-0.350pt]{24.331pt}{0.700pt}}
+\put(529,324){\rule[-0.350pt]{3.854pt}{0.700pt}}
+\put(449,325){\rule[-0.350pt]{19.272pt}{0.700pt}}
+\put(411,326){\rule[-0.350pt]{9.154pt}{0.700pt}}
+\put(371,327){\rule[-0.350pt]{9.636pt}{0.700pt}}
+\end{picture}
+
+\end{figure}
+
+The plots produced by these methods are linked, so that selections in one plot show up in the others.  The residual plots also have an additional mouse mode ``group highlighting'' where selecting a point also selects all the other points in the same group.  The linking is different from the usual LispStat mechanism in that all group-level plots are linked and all observation-level plots are linked but plots at different levels are not linked to each other.  The gee object contains lists of observation-level and group-level plots that are separate from the linking list maintained by LispStat.  To link another plot (eg a scatterplot of covariates) use the \texttt{:bind-plot-to-gee} message
+\begin{verbatim}
+(send mygee :bind-plot-to-gee a-plot +group+)
+\end{verbatim}
+links \texttt{a-plot} to the group-level plots and similarly
+\begin{verbatim}
+(send mygee :bind-plot-to-gee a-plot +observation+)
+\end{verbatim}
+links it to the observation-level diagnostic plots.
+
+The same method names without the \texttt{plot-} prefix return the values of the diagnostics.  The individual observation diagnostics are returned in a list or matrix in the same order as the data set; the group diagnostics have the group identifier attached and are in no reliable order. The plotting methods call two plotting functions which may be useful for other purposes: \texttt{index-plot} and \texttt{scatter-smooth}. The former takes a single argument and plots it against the integers; the second behaves like \texttt{plot-points} but also adds a lowess smooth to the plot. 
+
+\section{Notes on Internal Workings}
+The main computations are carried out in the method \texttt{:compute-step-beta}. This does not use the iteratively reweighted least squares method of \texttt{glim-proto} which would require rewriting \texttt{regression-proto} to handle non-diagonal weight matrices (feasible) and would involve inverting $n\times n$ matrices (undesirable).  As observations in different groups are independent the weight matrix is block diagonal and so is mostly easily dealt with in blocks correponding to the groups.  This only requires inverting the correlation matrix for each group and the final quasi-information matrix, all of which are small. The algorithm is as described by Liang \& Zeger (1986). Variable names in \texttt{compute-step-beta} are generally based on the notation in that paper. Some of the correlation estimates are slightly modified from the original paper to agree with other software. 
+
+  The information required for the deletion diagnostics is computed by the same function as updates the regression parameter estimates. At the moment this information is not computed in the usual fitting process and another iteration is required the first time any deletion diagnostics are calculated. It would be possible to calculate this information while the model is fitted. This would cause extra garbage collection but would save time in plotting diagnostics. To do this, set the global variable \texttt{*gee-diagnostics-while-fitting*} to \texttt{t}. Variable names in the deletion diagnostic methods are based on the notation of Preisser \& Qaqish, and so differ from those in the rest of the code.
+
+As mentioned above, the gee functions do not assume that the data are presorted by group and observation time and instead require that observation times are supplied. This is because missing data handling is practically impossible without having a record of observation times (a recent version of the SAS macro introduces observation times to handle missing cases). It is also safer:  other packages will give you the wrong answer with no warning if the data are not sorted by time within group.  The way this is now implemented is not very efficient: asymptotically the calculation time is dominated by the time taken to find each group. More efficient code using hash tables would be possible. In practical examples, though, this is not a real issue. For very large data sets it is clearly worth assuming the data are sorted but it is also worth writing special-purpose compiled code.
+
+As the observations within a group may vary in number and be in random order the correlation structures use an association list to match up the \texttt{:times} variable with the appropriate indices for selecting a submatrix of the correlation matrix.  This produces very  simple code for the method that returns the inverse correlation matrix and also simplifies the code for estimating correlations.  
+
+Despite various inefficiencies described above the code is fairly fast. A test data set with 72 groups of 5 observations and 5 variables using the autoregressive correlation structure (one of the slowest) took about 5 seconds per iteration on a (shared) Sparcstation 10 or about 6 seconds per iteration on a 75mHz Pentium PC running Linux. This data set had the same number of observations in each group; unbalanced data require an extra matrix inversion for each group that is smaller than the largest one and so would be slightly slower.
+ The speed is only improved about 20\% after compiling the code, presumably because it is mostly vectorised and so none of the inefficiency is easy to optimise away.
+
+
+One feature of GEEs and the generalised linear models from which they arose is the ability to combine arbitrary link and variance functions. Some care is needed to ensure that the numerical estimation doesn't crash when strange combinations of link and variance are chosen.   The \texttt{:compute-step-beta} method contains a check that the new values of the regression coefficient produce valid values for the linear predictor and the fitted mean. If this is not the case then the step size is halved and the check repeated until the values are valid. A warning message is also printed. 
+ The choice of starting values for the regression parameters is also complicated when the link and variance can be chosen arbitrarily (this is a disadvantage of not using iterated reweighted least squares).  The program deals with three cases.  For all the commonest models $\beta=0$ gives valid estimates. For models where this is not the case (eg gamma/reciprocal link, power variance/power link) the initial values depend on whether the model contains an intercept. If it does then all the other regression parameters are set to 0 and the intercept is chosen to give valid starting values.  If there is no intercept then a valid set of starting values need not exist. The program tries $\beta_i={g(\bar y)}/{p\bar x_i}$ (where $g(\cdot)$ is the link function) and if this doesn't work it gives up and asks for starting values to be specified.  
+
+
+The saturated correlation model estimates all the pairwise correlation parameters separately. There is a unique sensible estimate of the covariance matrix (assuming a balanced design) but not of the correlation matrix.  The problem is that the diagonal elements of the covariance matrix are assumed equal under the model but will not be estimated as equal.  The method used in the S-PLUS library and attributed to Karim's SAS macro is to estimate the dispersion $\phi$ by the variance of the Pearson residuals, to estimate the correlations $\rho_{ij}$ by
+$\rho_{ij}=\textrm{cov}(r_{i},r_{j})/\phi$ for $i\neq j$ where $r_i$ are the set of Pearson residuals at time $i$ and to set $\rho_{ii}=1$.  I think this would be the ML estimate of the correlations for Normal data with constant variance. Liang \& Zeger (1986) used a similar estimate but didn't set the diagonals to 1. This gives the maximum likelihood estimate of the covariance matrix if the dispersion is not assumed constant over time. A third possibility would be to use the Normal maxmimum likelihood estimate of the correlation matrix. It is not clear which is best, but most of the programs  have settled on the same choice, which makes software testing easier. There is one significant disadvantage of this choice: it is the only one where the ``correlation matrix'' need not be positive definite.  This can happen when the sample size is not large relative to the number of correlations being estimated especially if the true time-specific variances are not all the same. It can only happen for three or more time points as for two time points the arithmetic-geometric mean inequality guarantees that the estimated correlation will be less than the usual estimate. The usual choice (diagonals forced to 1) is correlation structure \texttt{saturated-corr}, the covariance matrix divided by the scale parameter (the estimate given by Liang \& Zeger and Fahrmeir \& Tutz) is \texttt{saturated-ml-corr}
+
+
+Much of the default behaviour is under the control of global variables. These are defined and documented at the end of the source file and control the printing of iteration information, the default working correlation, the default converge tolerance and maximum iteration count and the default display methods.The variable names are all of the form \texttt{*gee-$\ldots$*} They are defined at the end of the file because the default correlation cannot be selected until after the correlation objects have been defined.
+
+
+\section{Acknowledgements}
+The author is  supported by a Howard Hughes Medical Institute Predoctoral Fellowship in the Biological Sciences.  Thanks to Anthony Rossini, Charlie Hall and John Preisser for help with diagnostics.
+
+\section{References}
+
+Diggle, P., Liang, K-Y., Zeger, S.L. (1994) \emph{Analysis of Longitudinal Data} Oxford University Press, Oxford.
+
+Fahrmeir, L.,  Tutz, G. (1994) \emph{Multivariate Statistical Modelling based on Generalized Linear Models} Springer, New York.
+
+Liang, K-Y., Zeger, S.L., (1986) ``Longitudinal analysis using generalized linear models.'' \emph{Biometrika} 73: 13--22.  
+
+Nelder, J.A. (1994) ``An alternative view of the splicing data.'' \emph{Applied Statistics}. 43: 469--476.
+
+Preisser, J.S., Qaqish, B.F., (in press) ``Deletion diagnostics for generalized estimating equations''. 
+
+Tierney, L. (1989) \emph{XLISP-Stat: A Statistical Environment based on the XLISP language.} Technical Report No. 528. University of Minnesota School of Statistics.
+
+Zeger, S.L., Liang K-Y., (1986) ``Longitudinal data analysis for discrete and continuous outcomes'' \emph{Biometrics} 42: 121--130.
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

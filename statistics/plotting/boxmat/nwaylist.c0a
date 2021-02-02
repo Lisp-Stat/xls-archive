@@ -1,0 +1,19 @@
+.BG
+.FN nwaylist.c0a
+.TL
+list from array, with appended 0
+.CS
+nwaylist.c0a(x)
+.AG x
+numeric array.
+.RT
+list with same dimensions as `x'.  Each element of the list is
+constructed as `c(0,x[i])' for non-missing `x[i]', or as `numeric(0)'
+for missing `x[i]'.
+.EX
+boxmat(nwaylist.c0a(data.matrix), boxf=boxplotm)
+  # plot values of data.matrix
+  # the height of each box is proportional to the numerical value
+  # of the data in the corresponding cell of the matrix
+.KW `boxmat', `boxplotm'.
+.WR

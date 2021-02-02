@@ -26,7 +26,7 @@ the profiles."
             'vector)))
       ))
   ))
-    
+
 (defun array-subscript (m k)
 "Args: array integer
 Returns the subscript of the element of

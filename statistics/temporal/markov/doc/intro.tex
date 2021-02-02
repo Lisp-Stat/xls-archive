@@ -1,0 +1,62 @@
+This paper describes in detail the software we have written for
+graphically simulating some Markov Chains.  The original motivation
+for this work came from a question posed by the second author while a
+student in a course on Probability and Stochastic Processes taught by
+the first author.  Therefore, we suspect that this software will
+probably find its best use as a pedagogical tool in introductory
+courses on Probability and Stochastic Processes. 
+
+We had some objectives in writing such a detailed paper.  We
+hope that such detailed description will enable people to use our
+software effectively and isolate bugs, if any; that this would provide
+first-time users with a non-trivial example of the power of {\tt
+  Lisp-Stat}\cite{luke} and the object-oriented paradigm inherent in
+it; and that 
+other users can build upon our design and add features or other
+methods that they may find lacking, in which case, we would be glad to
+hear about such.
+
+This software is free and can be obtained by anybody from {\tt
+  statlib} by anonymous {\tt ftp} or by e-mail. A sample {\tt ftp}
+session is given below.
+\begin{verbatim}
+% ftp lib.stat.cmu.edu
+Connected to TEMPER.STAT.CMU.EDU.
+220- temper.stat.cmu.edu FTP server ready.
+220 StatLib users please send e-mail address as password.
+Name (lib.stat.cmu.edu:naras): statlib
+331 Please send your email address, for bug reports and logs.
+Password: (Type your e-mail address here)
+230 Guest login ok, access restrictions apply.
+ftp> cd xlispstat
+250 CWD command successful.
+ftp> bin
+200 Type set to I.
+ftp> get markov.shar
+ftp> quit
+221 Goodbye.
+%
+\end{verbatim}
+
+For more information on the {\tt statlib} server, see the list of
+answers to ``Frequently Asked Questions about S'' maintained by Shanti
+Gomatam\cite{shanti}. 
+
+This paper is organized as follows.  In section~\ref{sec:codedesc}, we
+describe in detail each of the modules that make up the software. In
+section~\ref{sec:applications}, we present three applications that
+demonstrate the use of our software. Finally, we make some remarks and
+touch upon future developments in section~\ref{sec:remarks}.
+
+
+
+
+
+
+
+
+
+
+
+
+

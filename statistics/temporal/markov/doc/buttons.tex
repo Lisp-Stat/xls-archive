@@ -1,0 +1,122 @@
+The file {\tt buttons.lsp} contains the code for the design of the
+control buttons.  These buttons are rectangular and sit in the
+topmost row of the window.  The user may click on any of these buttons
+to invoke actions associated with the buttons.  It
+is also possible for a button to have no action to perform, as is the
+case with the {\tt Time} button, which merely indicates the time.
+
+The {\tt button-obj-proto} is a prototype is defined as follows.
+\begin{verbatim}
+(defproto button-obj-proto '(boss title loc-and-size 
+                                  click-action)) 
+\end{verbatim}
+The slot {\tt boss} is the identity of the window in which the button
+will sit.  The {\tt title} slot holds the title for the button.  The
+{\tt loc-and-size} slot holds a list of four values: the $x$, $y$
+coordinates of the top left corner of the button and the width and
+height of the button in the {\em boss\/} window. The {\tt
+  click-action} slot holds an action to be performed when the mouse
+is clicked on the button.  This value of this slot is actually {\tt
+  funcall}ed to perform the action. 
+
+\subsubsection{The {\tt :isnew} method}
+\label{subsubsec:buttons-isnew}
+\begin{verbatim}
+(defmeth button-obj-proto :isnew (title loc-and-size action)
+  (setf (slot-value 'title) title)
+  (setf (slot-value 'loc-and-size) loc-and-size)
+  (setf (slot-value 'click-action) action))
+\end{verbatim}
+The {\tt :isnew} method for {\tt button-obj-proto} requires three
+arguments, a title string, a list of four values containing the $x$
+and $y$ coordinates of the top left corner of the button, the width of the
+button and the height of the button in the window where it is to be
+installed, and a function that will perform some action when the mouse
+is clicked on the button.  These arguments are stored in the
+appropriate slots for future use. 
+
+\subsubsection{The {\tt :title} method}
+\label{subsubsec:buttons-title}
+\begin{verbatim}
+(defmeth button-obj-proto :title (&optional title)
+  (if title
+      (setf (slot-value 'title) title)
+    (slot-value 'title)))
+\end{verbatim}
+This method sets and retrieves the title for the button. The title is
+set if it is supplied.
+
+\subsubsection{The {\tt :do-click} method}
+\label{subsubsec:buttons-do-click}
+\begin{verbatim}
+(defmeth button-obj-proto :do-click ()
+  (funcall (slot-value 'click-action)))
+\end{verbatim}
+This method performs the action associated with the button.  It is
+called when the user clicks the mouse on the button.  Since the action
+to be performed is stored in the {\tt click-action} slot, this method
+just {\tt funcall}s the value in that slot.
+
+\subsubsection{The {\tt :loc-and-size} method}
+\label{subsubsec:buttons-loc-and-size}
+\begin{verbatim}
+(defmeth button-obj-proto :loc-and-size (&optional loc-size)
+  (if loc-size
+      (setf (slot-value 'loc-and-size) loc-size)
+    (slot-value 'loc-and-size)))
+\end{verbatim}
+This method sets and retrieves the value of the slot {\tt loc-size}.
+Recall that {\tt loc-size} should be a list of four values.
+
+\subsubsection{The {\tt :redraw} method}
+\label{subsubsec:buttons-redraw}
+\begin{verbatim}
+(defmeth button-obj-proto :redraw (window)
+  (let* ((dc (send window :draw-color))
+         (ls (send self :loc-and-size))
+         (x (first ls))
+         (y (second ls))
+         (w (third ls))
+         (h (fourth ls))
+         (cx (+ x (round (* .5 w))))
+         (cy (+ y (round (* .5 h)))))
+
+    (send window :draw-color *button-back-color*)
+    (send window :paint-rect x y w h)
+    (send window :draw-color *button-text-color*)
+    (send window :draw-text
+          (slot-value 'title)
+          cx (+ cy (round (* .5 
+                             (send window :text-ascent)))) 1 0)
+    (send window :draw-color dc)
+    (send window :frame-rect x y w h)
+    nil))
+\end{verbatim}
+This method is in charge of redrawing the button in the window where
+it is installed as appropriate.  The colors to be used are available
+in the global variables {\tt *button-back-color} and {\tt
+  *button-text-color} denoting the background color and the text color
+respectively. The window is sent the message to draw a framed
+rectangle whose background color is {\tt *button-back-color*} and then
+the text is drawn centered horizontally in the button using {\tt
+  *button-text-color*}. The default drawing color is restored at the
+end. 
+
+\subsubsection{The {\tt :my-click} method}
+\label{subsubsec:buttons-my-click}
+\begin{verbatim}
+(defmeth button-obj-proto :my-click (x y m1 m2)
+  (let* ((ls (send self :loc-and-size))
+         (left-x (first ls))
+         (bot-y (second ls))
+         (rt-x (+ left-x (third ls)))
+         (top-y (+ bot-y (fourth ls))))
+    (if (and (< left-x x rt-x) (< bot-y y top-y))
+        t
+      nil)))
+\end{verbatim}
+This method is used to detect whether the user clicked the mouse in
+the button. All it does is check whether the coordinates where the
+button was clicked in the window are inside the rectangle encompassing
+the button.  If so, it returns {\tt t}, otherwise, it returns {\tt
+  nil}.

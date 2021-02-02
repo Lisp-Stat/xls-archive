@@ -1,0 +1,42 @@
+-------------------------------------------------
+gee.1.0.lsp 	
+Lisp-Stat code for generalised estimating equation models
+
+modelformula.lsp
+Model formula code (required)
+
+gee.1.0.dvi, .tex,.ps 	
+modelformula.txt,.ps
+Documentation
+
+geetest.lsp	
+Test file
+
+geetest.out, modelexamples.out   
+Test output
+
+testdata.dat	
+Test data (from the Splus gee() library by Carey & Macdermott)
+
+COPYING  	
+GNU public licence version 2
+
+README   	
+This file
+
+
+These files may be used and distributed under the terms of the GNU
+public license version 2 (see file COPYING for details).  This is free
+software, provided in the hope that it will be useful but there is NO
+WARRANTY whatsoever.
+
+If you find problems or have suggestions for improving the code please
+tell me.
+
+The current version of this package can always be found at
+http://www.biostat.washington.edu/~thomas/gee.html
+
+
+Thomas Lumley
+thomas@biostat.washington.edu
+--------------------------------------------------

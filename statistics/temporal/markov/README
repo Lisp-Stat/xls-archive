@@ -1,0 +1,29 @@
+This software will enable you to simulate some Markov Chains in
+Xlisp-Stat. Complete documentation and two examples are included.
+
+The documentation for the software is in the directory doc.
+The file paper.tex includes a postscript figure that may tax
+or even confuse your printer. The problem, I think, is the 
+color window dump which seems to bomb on some of our printers
+too, especially the ones doing ps emulation.
+
+If you wish to LaTeX paper.tex, you'd need dvips, available from
+labrea.stanford.edu for anonymous ftp.
+
+If you do not wish to read the documentation currently and wish
+to jump right into it (after unpacking), the files gambler.lsp
+and thm.lsp are the ones to load in Xlisp-Stat.
+
+If you find any bugs or problems, I'd appreciate hearing
+about it.  I have tested the software on a Mac as well as a
+Unix workstation. I have not had the chance to test it on
+a PC, so I'd appreciate hearing about that.
+
+---
+B. Narasimhan                                   naras@cda.mrs.umn.edu
+Division of Math and Science
+The University of Minnesota at Morris
+Morris, MN 56267
+
+Phone: (612) 589-6306 (work)
+       (612) 589-2073 (home)

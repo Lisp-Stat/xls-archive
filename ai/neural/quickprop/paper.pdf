@@ -1,0 +1,4836 @@
+%PDF-1.3
+%âãÏÓ
+2 0 obj
+<<
+/Length 2262
+>>
+stream
+BT
+/TT2 1 Tf
+13 0 0 13 197.83 614.41 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(An Empirical Study of Learning Speed)Tj
+1.7092 -2.42 TD
+(in Back-Propagation Networks)Tj
+10 0 0 10 268.91 550.34 Tm
+(Scott E. Fahlman)Tj
+0.279 -2.16 TD
+(September 1988)Tj
+-0.153 -2.16 TD
+(CMU-CS-88-162)Tj
+1.722 -11.988 TD
+(Abstract)Tj
+/TT4 1 Tf
+-20.539 -2.572 TD
+0.2086 Tw
+(Most connectionist or "neural network" learning systems use some form of the back-propagation algorithm.)Tj
+-1 -1.286 TD
+0.1476 Tw
+(However, back-propagation learning is too slow for many applications, and it scales up poorly as tasks become)Tj
+T*
+0.0435 Tw
+[(larger and more complex.  The factors governing learning speed are poorly understood.  I have begun a systematic,)]TJ
+T*
+0.0696 Tw
+(empirical study of learning speed in backprop-like algorithms, measured against a variety of benchmark problems.)Tj
+T*
+0.0881 Tw
+(The goal is twofold: to develop faster learning algorithms and to contribute to the development of a methodology)Tj
+T*
+0 Tw
+(that will be of value in future studies of this kind.)Tj
+1 -2.388 TD
+0.0409 Tw
+[(This paper is a progress report describing the results obtained during the first six months of this study.  To date I)]TJ
+-1 -1.286 TD
+0.0191 Tw
+(have looked only at a limited set of benchmark problems, but the results on these are encouraging: I have developed)Tj
+T*
+0.0266 Tw
+(a new learning algorithm that is faster than standard backprop by an order of magnitude or more and that appears to)Tj
+T*
+0 Tw
+(scale up very well as the problem size increases.)Tj
+1 -6.164 TD
+0.0894 Tw
+(This research was sponsored in part by the National Science Foundation under Contract Number EET-8716324)Tj
+-1 -1.105 TD
+0.004 Tw
+(and by the Defense Advanced Research Projects Agency \(DOD\), ARPA Order No. 4976 under Contract F33615-87-)Tj
+T*
+0.2201 Tw
+(C-1499 and monitored by the Avionics Laboratory, Air Force Wright Aeronautical Laboratories, Aeronautical)Tj
+T*
+0 Tw
+(Systems Division \(AFSC\), Wright-Patterson AFB, OH 45433-6543.)Tj
+1 -2.207 TD
+0.0756 Tw
+(The views and conclusions contained in this document are those of the authors and should not be interpreted as)Tj
+-1 -1.105 TD
+0 Tw
+(representing the official policies, either expressed or implied, of these agencies or of the U.S.  Government.)Tj
+ET
+endstream
+endobj
+3 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+9 0 obj
+<<
+/Length 4653
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(1)Tj
+/TT2 1 Tf
+12 0 0 12 72 711.96 Tm
+(1. Introduction)Tj
+/TT6 1 Tf
+10 0 0 10 82 699.1 Tm
+0.0863 Tw
+(Note: In this paper I will not attempt to review the basic ideas of connectionism or back-propagation learning.)Tj
+-1 -1.286 TD
+0.0032 Tw
+(See [3] for a brief overview of this area and [10], chapters 1 - 8, for a detailed treatment.  When I refer to "standard)Tj
+T*
+0 Tw
+(back-propagation" in this paper, I mean the back-propagation algorithm with momentum, as described in [9].)Tj
+/TT4 1 Tf
+1 -2.388 TD
+0.0186 Tw
+(The greatest single obstacle to the widespread use of connectionist learning networks in real-world applications is)Tj
+-1 -1.286 TD
+0.0263 Tw
+[(the slow speed at which the current algorithms learn.  At present, the fastest learning algorithm for most purposes is)]TJ
+T*
+0.1953 Tw
+[(the algorithm that is generally known as "back-propagation" or "backprop" )195.3([6, )195.3(7, )195.3(9, )195.3(18]. )-444.7(The back-propagation)]TJ
+T*
+0.0208 Tw
+[(learning algorithm runs faster than earlier learning methods, but it is still much slower than we would like.  Even on)]TJ
+T*
+0.1271 Tw
+(relatively simple problems, standard back-propagation often requires the complete set of training examples to be)Tj
+T*
+0.1061 Tw
+[(presented hundreds or thousands of times.  This means that we are limited to investigating rather small networks)]TJ
+T*
+0.0017 Tw
+(with only a few thousand trainable weights.  Some problems of real-world importance can be tackled using networks)Tj
+T*
+0.0687 Tw
+(of this size, but most of the tasks for which connectionist technology might be appropriate are much too large and)Tj
+T*
+0 Tw
+(complex to be handled by our current learning-network technology.)Tj
+1 -2.388 TD
+0.0162 Tw
+(One solution is to run our network simulations on faster computers or to implement the network elements directly)Tj
+-1 -1.286 TD
+0.0263 Tw
+[(in VLSI chips.  A number of groups are working on faster implementations, including a group at CMU that is using)]TJ
+T*
+0.0186 Tw
+[(the 10-processor Warp machine )18.6([13]. )-269.4(This work is important, but even if we had a network implemented directly in)]TJ
+T*
+0.201 Tw
+[(hardware our slow learning algorithms would still limit the range of problems we could attack.  Advances in)]TJ
+T*
+0.0835 Tw
+[(learning algorithms and in implementation technology are complementary. )-333.5(If we can combine hardware that runs)]TJ
+T*
+0.0307 Tw
+(several orders of magnitude faster and learning algorithms that scale up well to very large networks, we will be in a)Tj
+T*
+0 Tw
+(position to tackle a much larger universe of possible applications.)Tj
+1 -2.388 TD
+0.0133 Tw
+[(Since January of 1988 I have been conducting an empirical study of learning speed in simulated networks.  I have)]TJ
+-1 -1.286 TD
+0.0168 Tw
+(studied the standard backprop algorithm and a number of variations on standard back-propagation, applying these to)Tj
+T*
+0.0156 Tw
+[(a set of moderate-sized benchmark problems.  Many of the variations that I have investigated were first proposed by)]TJ
+T*
+0.0098 Tw
+(other researchers, but until now there have been no systematic studies to compare these methods, individually and in)Tj
+T*
+0.1163 Tw
+[(various combinations, against a standard set of learning problems.  Only through such systematic studies can we)]TJ
+T*
+0 Tw
+(hope to understand which methods work best in which situations.)Tj
+1 -2.388 TD
+0.1016 Tw
+[(This paper is a report on the results obtained in the first six months of this study.  Perhaps the most important)]TJ
+-1 -1.286 TD
+0.0583 Tw
+(result is the identification of a new learning method -- actually a combination of several ideas -- that on a range of)Tj
+T*
+0.1114 Tw
+[(encoder/decoder problems is faster than standard back-propagation by an order of magnitude or more.  This new)]TJ
+T*
+0.0411 Tw
+(method also appears to scale up much better than standard backprop as the size and complexity of the learning task)Tj
+T*
+0 Tw
+(grows.)Tj
+1 -2.388 TD
+0.0344 Tw
+[(I must emphasize that this is a progress report.  The learning-speed study is far from complete.  Until now I have)]TJ
+-1 -1.286 TD
+0.0852 Tw
+[(concentrated most of my effort on a single class of benchmarks, namely the encoder/decoder problems.  Like any)]TJ
+T*
+0.1787 Tw
+(family of benchmarks taken in isolation, encoder/decoder problems have certain peculiarities that may bias the)Tj
+T*
+0.0001 Tw
+[(results of the study. )-249.9(Until a more comprehensive set of benchmarks has been run, it would be premature to draw any)]TJ
+T*
+0 Tw
+(sweeping conclusions or make any strong claims about the widespread applicability of these techniques.)Tj
+ET
+endstream
+endobj
+10 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+13 0 obj
+<<
+/Length 5165
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(2)Tj
+/TT2 1 Tf
+12 0 0 12 72 711.96 Tm
+(2. Methodology)Tj
+11 0 0 11 72 675.79 Tm
+(2.1. What Makes a Good Benchmark?)Tj
+/TT4 1 Tf
+10 0 0 10 82 662.93 Tm
+0.3112 Tw
+(At present there is no widely accepted methodology for measuring and comparing the speed of various)Tj
+-1 -1.286 TD
+0.1549 Tw
+[(connectionist learning algorithms.  Some researchers have proposed new algorithms based only on a theoretical)]TJ
+T*
+0.1127 Tw
+[(analysis of the problem.  It is sometimes hard to determine how well these theoretical models fit actual practice.)]TJ
+T*
+0.0884 Tw
+(Other researchers implement their ideas and run one or two benchmarks to demonstrate the speed of the resulting)Tj
+T*
+0.2024 Tw
+[(system. )-451.6(Unfortunately, no two researchers ever seem to choose the same benchmark or, if they do, they use)]TJ
+T*
+0.028 Tw
+[(different parameters or adopt different criteria for success.  This makes it very hard to determine which algorithm is)]TJ
+T*
+0 Tw
+(best for a given application.)Tj
+1 -2.388 TD
+0.372 Tw
+(The measurement problem is compounded by widespread confusion about the speed of standard back-)Tj
+-1 -1.286 TD
+0.2926 Tw
+[(propagation. )-543.4(Selection of the back-propagation learning parameters is something of a black art, and small)]TJ
+T*
+0.066 Tw
+[(differences in these parameters can lead to large differences in learning times.  It is not uncommon to see learning)]TJ
+T*
+0.2311 Tw
+(times reported in the literature that differ by an order of magnitude or more on the same problem and with)Tj
+T*
+0 Tw
+(essentially the same learning method.)Tj
+1 -2.388 TD
+0.2326 Tw
+(The net effect of all this confusion is that we are faced with a vast, uncharted space of possible learning)Tj
+-1 -1.286 TD
+0.0611 Tw
+(algorithms in which only a few isolated points have been explored, and even for those points it is hard to compare)Tj
+T*
+0.0569 Tw
+[(the claims of the various explorers.  What we need now is a careful, systematic effort to fill in the rest of the map.)]TJ
+T*
+0.0218 Tw
+(The primary goal of this study is to develop faster learning algorithms for connectionist networks, but I also hope to)Tj
+T*
+0 Tw
+(contribute to the development of a new, more coherent methodology for studies of this kind.)Tj
+1 -2.388 TD
+0.0587 Tw
+(One good way to begin is to select a family of benchmark problems that learning-speed researchers can use in a)Tj
+-1 -1.286 TD
+0.054 Tw
+[(standard way to evaluate their algorithms.  We should try to choose benchmarks that will give us good insight into)]TJ
+T*
+0 Tw
+(how various learning algorithms will perform on the real-world tasks we eventually want to tackle.)Tj
+1 -2.388 TD
+0.1859 Tw
+(At present, the benchmark that appears most often in the literature is the exclusive-or problem, often called)Tj
+-1 -1.286 TD
+0.0133 Tw
+("XOR" : we are given a network with two input units, one or two hidden units, and one output unit, and the problem)Tj
+T*
+0.0553 Tw
+(is to train the weights in this network so that the output unit will turn on if one or the other of the inputs is on, but)Tj
+T*
+0.0851 Tw
+[(not both.  Some researchers, notably Tesauro and Janssens )85.1([16], generalize this to the N-input parity problem: the)]TJ
+T*
+0 Tw
+(output is to be on if an odd number of inputs are on.)Tj
+1 -2.388 TD
+0.0243 Tw
+[(The XOR/parity problem looms large in the history and theory of connectionist models \(see )24.3([11] for an important)]TJ
+-1 -1.286 TD
+0.1389 Tw
+(piece of this history\), but if our goal is to develop good learning algorithms for real-world pattern-classification)Tj
+T*
+0.2274 Tw
+[(tasks, XOR/parity is the wrong problem to concentrate on. )-478.6(Classification tasks take advantage of a learning)]TJ
+T*
+0.0585 Tw
+(network’s ability to generalize from the input patterns it has seen during training to nearby patterns in the space of)Tj
+T*
+0.059 Tw
+[(possible inputs.  Such networks must occasionally make sharp distinctions between very similar input patterns, but)]TJ
+T*
+0.0779 Tw
+[(this is the exception rather than the rule.  XOR and parity, on the other hand, have exactly the opposite character:)]TJ
+T*
+0.0105 Tw
+(generalization is actually punished, since the nearest neighbors of an input pattern must produce the opposite answer)Tj
+T*
+0 Tw
+(from the pattern itself.)Tj
+1 -2.388 TD
+0.2179 Tw
+(Other popular benchmark problems, such as the "Penzias" or cluster-counting task have some of this same)Tj
+-1 -1.286 TD
+0.0002 Tw
+(anti-generalizing quality.  Here again, the change of any one bit will almost always make a big change in the answer.)Tj
+T*
+0.0371 Tw
+(As part of a suite of benchmarks, such tasks are valuable, but if used in isolation they may encourage us to develop)Tj
+T*
+0 Tw
+(learning algorithms that do not generalize well.)Tj
+1 -2.388 TD
+0.0782 Tw
+(In my view, we would do better to concentrate on what I will call "noisy associative memory" benchmarks: we)Tj
+-1 -1.286 TD
+0.0988 Tw
+(select a set of input patterns, perhaps binary strings chosen at random, and expand each of these into a cluster of)Tj
+T*
+0.104 Tw
+(similar inputs by adding random noise or flipping some of the input bits; we then train the network to produce a)Tj
+ET
+endstream
+endobj
+14 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+16 0 obj
+<<
+/Length 5661
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(3)Tj
+-23.15 -3.6 TD
+0.1328 Tw
+[(different output pattern for each of these input clusters.  We might occasionally ask the network to map several)]TJ
+0 -1.286 TD
+0.0092 Tw
+[(different clusters into the same output.  Some of the noise-modified input patterns are not used during training; these)]TJ
+T*
+0.2671 Tw
+(can be used later to determine whether the network is capturing the "central idea" of the cluster or is just)Tj
+T*
+0.014 Tw
+[(memorizing the specific input patterns it has seen.  I believe that performance of a learning algorithm on this type of)]TJ
+T*
+0 Tw
+(problem will correlate very well with performance on real-world pattern classification tasks.)Tj
+1 -2.388 TD
+0.1715 Tw
+[(This family of benchmarks can be scaled in various ways. )-421.5(We can vary the number of pattern-clusters, the)]TJ
+-1 -1.286 TD
+0.1653 Tw
+[(number of input and output units, and the amount of noise added to the inputs. )-415.7(We can treat this as a digital)]TJ
+T*
+0.1076 Tw
+[(problem, in which the inputs are either 0 or 1, or we can use analog input patterns.  We can vary the number of)]TJ
+T*
+0.0291 Tw
+[(hidden units and the number of layers.  Obviously, it will take some time before we have accumulated a solid set of)]TJ
+T*
+0 Tw
+(baseline results against which new algorithms can be measured.)Tj
+/TT2 1 Tf
+11 0 0 11 72 550.21 Tm
+(2.2. The Encoder/Decoder Task)Tj
+/TT4 1 Tf
+10 0 0 10 82 537.35 Tm
+0.0289 Tw
+(In the coming months I intend to concentrate on "noisy associative memory" benchmarks, plus some benchmarks)Tj
+-1 -1.286 TD
+0.089 Tw
+[(adapted from real-world applications in domains such as speech understanding and road following. )-340(However, for)]TJ
+T*
+0.0775 Tw
+[(the early stages of the study it seemed wise to stick with encoder/decoder problems.  This family of problems has)]TJ
+T*
+0.0897 Tw
+(been popular in the connectionist community for some years, so we have a base of shared experience in applying)Tj
+T*
+0 Tw
+(older learning algorithms to them.)Tj
+1 -2.388 TD
+0.1291 Tw
+(The encoder/decoder problems, often called simply "encoders", will be familiar to most readers of this report.)Tj
+-1 -1.286 TD
+0.1067 Tw
+(When I speak of an "N-M-N encoder", I mean a network with three layers of units and two layers of modifiable)Tj
+T*
+0.015 Tw
+[(weights. )-266(There are N units in the input layer, M hidden units, and N units in the output layer.  There is a connection)]TJ
+T*
+0.0026 Tw
+(from every input unit to every hidden unit and a connection from every hidden unit to every output unit.  In addition,)Tj
+T*
+0.1607 Tw
+[(each unit has a modifiable threshold.  There are no direct connections from the input units to the output units.)]TJ
+T*
+0 Tw
+(Normally, M is smaller than than N, so the network has a bottleneck through which information must flow.)Tj
+1 -2.388 TD
+0.0527 Tw
+(This network is presented with N distinct input patterns, each of which has only one of the input units turned on)Tj
+-1 -1.286 TD
+0.0855 Tw
+[(\(set to 1.0\); the other input bits are turned off \(set to 0.0\).  The task is to duplicate the input pattern in the output)]TJ
+T*
+0.0848 Tw
+[(units. )-333.2(Since all information must flow through the hidden units, the network must develop a unique encoding for)]TJ
+T*
+0.1042 Tw
+(each of the N patterns in the M hidden units and a set of connection weights that, working together, perform the)Tj
+T*
+0 Tw
+(encoding and decoding operations.)Tj
+1 -2.388 TD
+0.038 Tw
+(If an encoder network has)Tj
+/TT6 1 Tf
+10.825 0 TD
+0 Tw
+(M)Tj
+/TT4 1 Tf
+0.983 0 TD
+[(=)-150(log)]TJ
+/TT6 1 Tf
+2.542 0 TD
+(N)Tj
+/TT4 1 Tf
+0.667 0 TD
+0.0381 Tw
+[(, I will speak of it as a "tight" encoder.  For example, the 8-3-8 and 16-4-16)]TJ
+8 0 0 8 220 295.08 Tm
+0 Tw
+(2)Tj
+10 0 0 10 72 285.67 Tm
+0.0504 Tw
+[(encoders are tight in this sense.  If the hidden units assume only two values, 1 and 0, then the network must assign)]TJ
+0 -1.286 TD
+0.0127 Tw
+[(every input pattern to one of the N possible binary codes in the hidden layer, wasting none of the codes.  In practice,)]TJ
+T*
+0.169 Tw
+(a backprop network will often use three or more distinct analog values in some of the hidden units, so "tight")Tj
+T*
+0.0002 Tw
+(encoder networks are not really forced to search for optimal binary encodings.  It is even possible to learn to perform)Tj
+T*
+0.055 Tw
+(the encoder/decoder task in an "ultra-tight" network such as 8-2-8, though this takes much longer than learning the)Tj
+T*
+0 Tw
+(same task in an 8-3-8 network.)Tj
+1 -2.388 TD
+0.0899 Tw
+(In a real-world pattern classification task, we will usually give the network enough hidden units to perform the)Tj
+-1 -1.286 TD
+0.0647 Tw
+[(task easily.  We do not want to provide too many hidden units -- that allows the network to memorize the training)]TJ
+T*
+0.044 Tw
+(examples rather than extracting the general features that will allow it to handle cases it has not seen during training)Tj
+T*
+0.0556 Tw
+(-- but neither do we want to force the network to spend a lot of extra time trying to find an optimal representation.)Tj
+T*
+0.1417 Tw
+(This suggests that relatively "loose" encoder problems, such as 10-5-10 or 64-8-64, might be more realistic and)Tj
+T*
+0.0125 Tw
+[(informative benchmarks than tight or ultra-tight encoders.  Much of the work reported here was done on the 10-5-10)]TJ
+T*
+0.0491 Tw
+[(encoder, which is not too tight and not too small.  This made it possible to run a large number of experiments with)]TJ
+T*
+0 Tw
+(this same problem, including some using very slow learning algorithms.)Tj
+1 -2.388 TD
+0.0948 Tw
+(The standard encoder problem has one unusual feature that is not seen in typical pattern classification tasks: in)Tj
+ET
+endstream
+endobj
+17 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+19 0 obj
+<<
+/Length 5809
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(4)Tj
+-23.15 -3.6 TD
+0.1206 Tw
+(each learning example, only one of the connections on the input side carries a non-zero activation for any given)Tj
+0 -1.286 TD
+0.0676 Tw
+[(training pattern.  In the standard back-propagation algorithm, only this one input-side weight is modified by errors)]TJ
+T*
+0.0346 Tw
+[(due to that pattern.  This separation of effects makes the standard encoder/decoder somewhat easier than the typical)]TJ
+T*
+0.0167 Tw
+[(pattern-classification task, and therefore perhaps unrealistic as a benchmark.  In an effort to understand what kind of)]TJ
+T*
+0.106 Tw
+(bias this may be introducing, I have also looked at)Tj
+/TT6 1 Tf
+21.419 0 TD
+0.107 Tw
+(complement encoder)Tj
+/TT4 1 Tf
+8.767 0 TD
+(problems, in which the input and output)Tj
+-30.186 -1.286 TD
+0.0571 Tw
+[(patterns are all ones except for a single zero in some position.  As we will see, complement encoders require more)]TJ
+T*
+0 Tw
+(learning time than standard encoders, but the difference can be minimized if the right learning techniques are used.)Tj
+1 -2.388 TD
+0.0499 Tw
+(In all of the encoder and complement encoder problems, learning times are reported in)Tj
+/TT6 1 Tf
+35.552 0 TD
+0 Tw
+(epochs)Tj
+/TT4 1 Tf
+2.7769 0 TD
+0.05 Tw
+[(. )-300(An epoch is one)]TJ
+-39.3289 -1.286 TD
+0.1336 Tw
+[(presentation of the entire set of N training patterns.  All of the algorithms that I have studied to date perform a)]TJ
+T*
+0.0781 Tw
+(forward pass and a backward pass on each pattern, collecting error data; the weights are updated at the end of the)Tj
+T*
+0 Tw
+(epoch, after the entire set of N patterns has been seen.)Tj
+/TT2 1 Tf
+11 0 0 11 72 537.35 Tm
+(2.3. When is the Learning Complete?)Tj
+/TT4 1 Tf
+10 0 0 10 82 524.49 Tm
+0.0605 Tw
+(One source of confusion in the learning-speed studies done to date is that each researcher has chosen a different)Tj
+-1 -1.286 TD
+0.1711 Tw
+[(criterion for "successful" learning of a task.  In complex pattern-classification tasks, this is a hard problem for)]TJ
+T*
+0.0066 Tw
+[(several reasons.  First, if the inputs are noisy, it may be impossible to perform a perfect classification.  Second, if the)]TJ
+T*
+0.0001 Tw
+[(outputs are analog in nature, the accuracy required will depend on the demands of the specific task. )-250.9(Finally, in many)]TJ
+T*
+0.049 Tw
+(tasks one can manipulate the learning parameters to trade off speed and accuracy against generalization; again, any)Tj
+T*
+0.0435 Tw
+[(reasonable criterion for success will depend on the demands of the particular problem.  I believe that researchers in)]TJ
+T*
+0.0522 Tw
+(this field need to discuss these issues and arrive at some consensus about how various benchmark problems should)Tj
+T*
+0 Tw
+(be run and evaluated.)Tj
+1 -2.388 TD
+0.1927 Tw
+(On something like an encoder/decoder problem there should be little difficulty in agreeing upon criteria for)Tj
+-1 -1.286 TD
+0.0086 Tw
+[(success, but no such agreement exists at present.  Some researchers accept any output over 0.50000 as a one and any)]TJ
+T*
+0.0475 Tw
+[(output below that threshold as a zero.  However, if we were to apply this criterion to real analog hardware devices,)]TJ
+T*
+0.0056 Tw
+(the slightest bit of additional noise could drive some bits to the other side of the threshold.  Other researchers require)Tj
+T*
+0.0125 Tw
+[(that each output be very close to the specified target value.  For networks performing a task with binary outputs, this)]TJ
+T*
+0.0758 Tw
+(seems unnecessarily strict; some learning algorithms may produce useful outputs quickly, but take much longer to)Tj
+T*
+0.0618 Tw
+[(adjust the output values to within the specified tolerances.  Still other researchers declare success when the sum of)]TJ
+T*
+0.135 Tw
+[(the squared error for all the outputs falls below some fixed value.  This seems an odd choice, since in a binary)]TJ
+T*
+0.0793 Tw
+(application we want each of the individual outputs to be correct; we don’t want to trade more error on one output)Tj
+T*
+0 Tw
+(against less error on another.)Tj
+1 -2.388 TD
+0.0478 Tw
+(Another possibility is to consider a network to have learned the problem when, for each input pattern, the output)Tj
+-1 -1.286 TD
+0.0048 Tw
+(of the "correct" unit is larger than any other output.  This criterion is sometimes met much earlier in the training than)Tj
+T*
+0.0156 Tw
+[(any criterion based upon a fixed threshold.  However, if we were to use this criterion for training an actual hardware)]TJ
+T*
+0.1327 Tw
+(network, we would need some additional circuitry to select the largest output; it seems better to let the learning)Tj
+T*
+0.0304 Tw
+[(network itself do this job, if possible.  In addition, this criterion is not applicable in problems with multiple one-bits)]TJ
+T*
+0 Tw
+(in the output pattern.)Tj
+1 -2.388 TD
+0.0626 Tw
+(I suggest that for problems with binary outputs, we adopt a "threshold and margin" criterion similar to that used)Tj
+-1 -1.286 TD
+0.0057 Tw
+(by digital logic designers: if the total range of the output units is 0.0 to 1.0, any value below 0.4 is considered to be a)Tj
+T*
+0.0249 Tw
+(zero and any value above 0.6 is considered to be a one; values between 0.4 and 0.6 are considered to be "marginal",)Tj
+T*
+0.1844 Tw
+[(and are not counted as correct during training. )-434.6(If the output range is different, we scale these two thresholds)]TJ
+T*
+0.0947 Tw
+[(appropriately. )-343.3(By creating a "no man’s land" between the two classes of outputs, we produce a network that can)]TJ
+T*
+0 Tw
+(tolerate a small amount of noise in the outputs.)Tj
+1 -2.388 TD
+0.0555 Tw
+[(All of the examples in this paper use this 0.4 - 0.6 criterion to measure success.  Training continues until, for an)]TJ
+-1 -1.286 TD
+0.113 Tw
+(entire epoch, we observe that every output is correct; then we stop and declare learning to have been successful.)Tj
+ET
+endstream
+endobj
+20 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+22 0 obj
+<<
+/Length 5510
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(5)Tj
+-23.15 -3.6 TD
+0.0148 Tw
+(Since back-propagation networks are deterministic, we will get the same successful results in all future trials as long)Tj
+0 -1.286 TD
+0 Tw
+(as we do not change the weights.)Tj
+/TT2 1 Tf
+11 0 0 11 72 664.11 Tm
+(2.4. How Should We Report Learning Times?)Tj
+/TT4 1 Tf
+10 0 0 10 82 651.25 Tm
+(The)Tj
+/TT6 1 Tf
+1.855 0 TD
+(epoch)Tj
+/TT4 1 Tf
+2.3877 0 TD
+0.0504 Tw
+(, defined as a single presentation of each of the I/O patterns in the training set, is a convenient unit by)Tj
+-5.2427 -1.286 TD
+0.0465 Tw
+[(which to measure learning time for the benchmarks reported here.  An alternative is to use the)]TJ
+/TT6 1 Tf
+38.615 0 TD
+0.046 Tw
+(pattern presentation)Tj
+/TT4 1 Tf
+-38.615 -1.286 TD
+0.157 Tw
+[(as the basic unit of learning time.  This is the presentation of a single I/O pattern, with the associated forward)]TJ
+T*
+0.0002 Tw
+(propagation of results and back-propagation of error, and \(sometimes\) the modification of weights.  The presentation)Tj
+T*
+0.0616 Tw
+(is a more natural measure to use in problems that do not have a finite training set, or that do not cycle through the)Tj
+T*
+0.132 Tw
+[(entire training set between weight-updates.  As long as it is made clear what units are being reported, it is easy)]TJ
+T*
+0.0574 Tw
+(enough to convert from epochs to presentations, so researchers can choose whatever units they like without fear of)Tj
+T*
+0 Tw
+(confusion.)Tj
+1 -2.388 TD
+0.1619 Tw
+(In measuring a new learning algorithm against a particular benchmark problem, it is desirable to run a large)Tj
+-1 -1.286 TD
+0.1711 Tw
+[(number of trials with the weights initialized to different random values in each case.  Any single trial may be)]TJ
+T*
+0.1211 Tw
+(misleading: the choice of initial weights might have a greater influence on the time required than any difference)Tj
+T*
+0.0252 Tw
+[(between two algorithms.  Most of the results reported in this paper are averages over 25 or 100 trials; for some very)]TJ
+T*
+0 Tw
+(large or very slow problems, I have been forced to use fewer trials.)Tj
+1 -2.388 TD
+0.0085 Tw
+[(Reporting of learning times is a simple enough matter when all of the trials succeed.  That is the case for all of the)]TJ
+-1 -1.286 TD
+0.0328 Tw
+[(encoder examples I have run. )-282.2(In this case, it is useful to report the average learning time over all the trials, the best)]TJ
+T*
+0.0989 Tw
+[(and worst results, and the standard deviation or some other measure of the variation in results. )-347.1(Unfortunately, in)]TJ
+T*
+0.0277 Tw
+(some problems such as XOR, the network will occasionally become stuck in a local minimum from which it cannot)Tj
+T*
+0.1751 Tw
+[(escape. )-426.9(These learning trials never converge, so the learning time is infinite.  A few other trials may take an)]TJ
+T*
+0 Tw
+(anomalously long time; mixing these long trials into an average may give a distorted picture of the data.)Tj
+1 -2.388 TD
+0.0716 Tw
+[(How should such results be reported?  One option, used by Robert Jacobs )71.6([5], is simply to report the failures in)]TJ
+-1 -1.286 TD
+0.1071 Tw
+[(one column and the average of the successful trials in another.  The problem with this is that it becomes hard to)]TJ
+T*
+0.0032 Tw
+[(choose between a learning method with fewer failures and one with a better average. )-253.8(In addition, it becomes unclear)]TJ
+T*
+0 Tw
+(whether the average has been polluted by a few very long near-failures.)Tj
+1 -2.388 TD
+0.0292 Tw
+[(A second option is adopted by Tesauro and Janssens )29.2([16]. )-278.8(Instead of averaging the times for N trials in the usual)]TJ
+-1 -1.286 TD
+0.017 Tw
+[(way, they define the "average" training time to be the inverse of the average training rate.  The training rate for each)]TJ
+T*
+0.0227 Tw
+[(trial is defined as the inverse of the time required for that trial.  This method gives us a single, well defined number,)]TJ
+T*
+0.0947 Tw
+(even if the set of trials includes some trials that are very long or infinite; the learning rate for these trials goes to)Tj
+T*
+0.0474 Tw
+[(zero. )-298.6(However, this kind of average emphasizes short trials and de-emphasizes long ones, so results computed this)]TJ
+T*
+0.0891 Tw
+[(way look much faster than if a conventional average were used.  Note also that if two algorithms are equally fast)]TJ
+T*
+0.2295 Tw
+(when measured by a conventional average, the training-rate average will rate the more consistent of the two)Tj
+T*
+0.038 Tw
+[(algorithms as slower.  Algorithms that take risky, unsound steps to get very short convergence times on a few trials)]TJ
+T*
+0 Tw
+(are favored, even if these algorithms do very poorly by other measures.)Tj
+1 -2.388 TD
+0.0708 Tw
+(The option I favor, for lack of a better idea, is to allow the learning program to restart a trial, with new random)Tj
+-1 -1.286 TD
+0.053 Tw
+[(weights, whenever the network has failed to converge after a certain number of epochs.  The time reported for that)]TJ
+T*
+0.1315 Tw
+[(trial must include the time spent before the restart and after it. )-380.5(We can consider these restarts to be part of the)]TJ
+T*
+0.0869 Tw
+(learning algorithm; the restart threshold is just another parameter that the experimenter can adjust for best results.)Tj
+T*
+0.0957 Tw
+(This seems realistic: when faced with a method that usually converges in 20 epochs or less, but that occasionally)Tj
+T*
+0.0618 Tw
+[(gets stuck, it seems only natural to give up and start over at some point.  The XOR results reported below use this)]TJ
+T*
+0 Tw
+(method of reporting.)Tj
+ET
+endstream
+endobj
+23 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+25 0 obj
+<<
+/Length 3009
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(6)Tj
+/TT2 1 Tf
+11 0 0 11 72 712.63 Tm
+(2.5. Implementation)Tj
+/TT4 1 Tf
+10 0 0 10 82 699.77 Tm
+0.0819 Tw
+(All of the experiments reported here were run on a back-propagation simulator that I developed specifically for)Tj
+-1 -1.286 TD
+0.0331 Tw
+[(this purpose.  The simulator was written in CMU Common Lisp and runs on the IBM RT PC workstation under the)]TJ
+T*
+0.1836 Tw
+[(Mach operating system and the X10.4 window system.  The machines that were used in this study have been)]TJ
+T*
+0.054 Tw
+(provided by IBM as part of a joint research agreement with the Computer Science Department of Carnegie-Mellon)Tj
+T*
+0 Tw
+(University.)Tj
+1 -2.388 TD
+0.2061 Tw
+[(The simulator will soon be converted to use the X11 window system via the CLX interface.  It should be)]TJ
+-1 -1.286 TD
+0.0582 Tw
+(relatively easy to port this code to any other implementation of Common Lisp, though I have not taken the time to)Tj
+T*
+0 Tw
+(make the code 100% portable.)Tj
+1 -2.388 TD
+0.2068 Tw
+[(Because it is coded in Common Lisp, the simulator is very flexible.  It is easy to try out several program)]TJ
+-1 -1.286 TD
+0.125 Tw
+[(variations in a few hours.  With the displays turned off, the simulator runs the back-propagation algorithm for a)]TJ
+T*
+0.1836 Tw
+(10-5-10 encoder at roughly 3 epochs per second, a processing rate of about 3500 connection-presentations per)Tj
+T*
+0.0197 Tw
+[(second. )-268.3(This is fast enough for experimentation on small benchmarks, especially with the new algorithms that learn)]TJ
+T*
+0.0473 Tw
+[(such tasks in relatively few epochs.  For larger problems and real applications, we will need a faster simulator.  By)]TJ
+T*
+0.062 Tw
+(hand-coding the inner loops in assembler, it should be possible to speed up my simulator considerably, perhaps by)Tj
+T*
+0.1412 Tw
+[(as much as a factor of ten. )-390.8(Beyond that point, we will have to move the inner loops to a faster machine.  For)]TJ
+T*
+0.2205 Tw
+(comparison, the Warp machine is now running standard back-propagation at a rate of 17 million connection-)Tj
+T*
+0.1682 Tw
+[(presentations per second )168.2([13], almost 5000 times faster than my simulator, but it is a very difficult machine to)]TJ
+T*
+0 Tw
+(program.)Tj
+1 -2.388 TD
+0.0605 Tw
+[(My simulator is designed to make it easy for the experimenter to see what is going on inside of the network.  A)]TJ
+-1 -1.286 TD
+0.0013 Tw
+(set of windows displays the changing values of the unit outputs and other per-unit statistics.  Another set of windows)Tj
+T*
+0.0147 Tw
+[(displays the weights, weight changes, and other per-weight statistics.  A control panel is provided through which the)]TJ
+T*
+0.0119 Tw
+(operator can alter the learning parameters in real time or single-step the processing to see more clearly what is going)Tj
+T*
+0.0093 Tw
+[(on. )-258.7(These displays have been of immense value in helping me to understand what problems were developing during)]TJ
+T*
+0 Tw
+(the learning procedure and what might be done about them.)Tj
+ET
+endstream
+endobj
+26 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+28 0 obj
+<<
+/Length 8634
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(7)Tj
+/TT2 1 Tf
+12 0 0 12 72 711.96 Tm
+(3. Experiments and Results)Tj
+11 0 0 11 72 675.79 Tm
+(3.1. Tuning of Backprop Learning Parameters)Tj
+/TT4 1 Tf
+10 0 0 10 82 662.93 Tm
+0.048 Tw
+(The first task undertaken in this study was to understand how the learning parameters affected learning time in a)Tj
+-1 -1.286 TD
+0.044 Tw
+[(relatively small benchmark, the 10-5-10 encoder.  There are three parameters of interest:)]TJ
+/TT7 1 Tf
+36.257 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.439 0 TD
+0.045 Tw
+(, the learning rate;)Tj
+/TT7 1 Tf
+7.706 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+0.045 Tw
+(, the)Tj
+-45.0329 -1.286 TD
+0 Tw
+(momentum factor; and)Tj
+/TT6 1 Tf
+9.36 0 TD
+(r)Tj
+/TT4 1 Tf
+0.3892 0 TD
+(, the range of the random initial weights.)Tj
+-8.7492 -2.388 TD
+0.1139 Tw
+(At the start of each learning trial, each of the weights and thresholds in the network is initialized to a random)Tj
+-1 -1.286 TD
+0 Tw
+(value chosen from the range -)Tj
+/TT6 1 Tf
+11.9116 0 TD
+(r)Tj
+/TT4 1 Tf
+0.6404 0 TD
+(to +)Tj
+/TT6 1 Tf
+1.5918 0 TD
+(r)Tj
+/TT4 1 Tf
+0.3892 0 TD
+(.)Tj
+-13.533 -2.388 TD
+0.0706 Tw
+(The formula for updating the weights is)Tj
+/TT7 1 Tf
+16.632 0 TD
+0 Tw
+<0036>Tj
+/TT6 1 Tf
+0.6118 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+0.15 Tc
+(\)=)Tj
+/TT7 1 Tf
+1.1974 0 TD
+0 Tc
+[<003c00a1>-150<002c>]TJ
+/TT6 1 Tf
+1.6319 0 TD
+(E)Tj
+/TT4 1 Tf
+0.7611 0 TD
+(/)Tj
+/TT7 1 Tf
+0.428 0 TD
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+0.15 Tc
+(\)+)Tj
+/TT7 1 Tf
+1.197 0 TD
+<005f0036>Tj
+/TT6 1 Tf
+1.3927 0 TD
+0 Tc
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT7 1 Tf
+0.2778 0 TD
+<003c>Tj
+/TT4 1 Tf
+0.5488 0 TD
+0.071 Tw
+(1\), where)Tj
+/TT7 1 Tf
+4.1687 0 TD
+0 Tw
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(E)Tj
+/TT4 1 Tf
+0.7609 0 TD
+(/)Tj
+/TT7 1 Tf
+0.428 0 TD
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+0.071 Tw
+(\) is the error derivative)Tj
+-37.352 -1.286 TD
+0 Tw
+(for that weight, accumulated over the whole epoch.  Sometimes I refer to this derivative the "slope" of that weight.)Tj
+1 -2.388 TD
+0.0915 Tw
+(Because standard back-propagation learning is rather slow, I did not exhaustively scan the 3-dimensional space)Tj
+-1 -1.286 TD
+0.048 Tw
+(defined by)Tj
+/TT6 1 Tf
+4.595 0 TD
+0 Tw
+(r)Tj
+/TT4 1 Tf
+0.3892 0 TD
+(,)Tj
+/TT7 1 Tf
+0.5478 0 TD
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+0.048 Tw
+(, and)Tj
+/TT7 1 Tf
+2.2901 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.439 0 TD
+0.0481 Tw
+[(. )-297.9(A cursory exploration was done, with only a few trials at each point tested, in order to find)]TJ
+-8.892 -1.286 TD
+0.021 Tw
+[(the regions that were most promising.  This suggested that an)]TJ
+/TT6 1 Tf
+25.007 0 TD
+0 Tw
+(r)Tj
+/TT4 1 Tf
+0.66 0 TD
+0.021 Tw
+(value of 1.0, an)Tj
+/TT7 1 Tf
+6.527 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.902 0 TD
+0.0206 Tw
+(value between 0.0 and 0.5, and an)Tj
+/TT7 1 Tf
+-33.096 -1.286 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.709 0 TD
+0.0202 Tw
+[(value somewhere around 1.0 would produce the fastest learning for this problem. )-271.8(Many researchers have reported)]TJ
+-0.709 -1.286 TD
+0.048 Tw
+(good results at)Tj
+/TT7 1 Tf
+6.227 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.929 0 TD
+0.0471 Tw
+(values of 0.8 or 0.9, but on this problem I found that such a high)Tj
+/TT7 1 Tf
+26.705 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.928 0 TD
+0.047 Tw
+(led to very poor results, often)Tj
+-34.789 -1.286 TD
+0 Tw
+(requiring a thousand epochs or more.)Tj
+1 -2.388 TD
+0.0308 Tw
+[(The promising area was then explored more intensively, with 25 trials at each point tested.  Surprisingly, the best)]TJ
+-1 -1.286 TD
+0 Tw
+(result was obtained with)Tj
+/TT7 1 Tf
+9.999 0 TD
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+(=0.0, or no momentum at all:)Tj
+-6.5169 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+3.863 Tc
+<00a1005f>Tj
+/TT6 1 Tf
+8.821 0 TD
+0 Tc
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+90.09 412.54 m
+521.91 412.54 l
+170.07 412.54 m
+170.07 429.57 l
+214.05 412.54 m
+214.05 429.57 l
+258.03 412.54 m
+258.03 429.57 l
+302.01 412.54 m
+302.01 429.57 l
+345.99 412.54 m
+345.99 429.57 l
+389.97 412.54 m
+389.97 429.57 l
+433.95 412.54 m
+433.95 429.57 l
+477.93 412.54 m
+477.93 429.57 l
+S
+BT
+10 0 0 10 114.25 401.69 Tm
+[(10-5-10)-4115(25)-3273(1.7)-3148(0.0)-3148(1.0)-3023(265)-3148(80)-3148(129)-3148(46)]TJ
+ET
+90.09 395.51 431.82 34.06 re
+170.07 395.51 m
+170.07 412.54 l
+214.05 395.51 m
+214.05 412.54 l
+258.03 395.51 m
+258.03 412.54 l
+302.01 395.51 m
+302.01 412.54 l
+345.99 395.51 m
+345.99 412.54 l
+389.97 395.51 m
+389.97 412.54 l
+433.95 395.51 m
+433.95 412.54 l
+477.93 395.51 m
+477.93 412.54 l
+S
+BT
+10 0 0 10 82 371.63 Tm
+0.1487 Tw
+(This notation says that, with 25 trials and the parameters specified, the longest trial required 265 epochs, the)Tj
+-1 -1.286 TD
+0.053 Tw
+[(shortest required 80 epochs, the average over all the runs was 129 epochs, and the standard deviation was 46.  The)]TJ
+T*
+0.0098 Tw
+(standard deviations are included only to give the reader a crude idea of the variation in the values; the distribution of)Tj
+T*
+0 Tw
+(learning times seldom looks like a normal distribution, often exhibiting multiple humps, for example.)Tj
+1 -2.388 TD
+(The same average learning time was obtained for an)Tj
+/TT7 1 Tf
+21.133 0 TD
+<005f>Tj
+/TT4 1 Tf
+0.881 0 TD
+(of 0.5 and a smaller)Tj
+/TT7 1 Tf
+8.165 0 TD
+<00a1>Tj
+/TT4 1 Tf
+0.689 0 TD
+(value:)Tj
+-27.755 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+3.863 Tc
+<00a1005f>Tj
+/TT6 1 Tf
+8.821 0 TD
+0 Tc
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+90.09 282.9 m
+521.91 282.9 l
+170.07 282.9 m
+170.07 299.93 l
+214.05 282.9 m
+214.05 299.93 l
+258.03 282.9 m
+258.03 299.93 l
+302.01 282.9 m
+302.01 299.93 l
+345.99 282.9 m
+345.99 299.93 l
+389.97 282.9 m
+389.97 299.93 l
+433.95 282.9 m
+433.95 299.93 l
+477.93 282.9 m
+477.93 299.93 l
+S
+BT
+10 0 0 10 114.25 272.05 Tm
+[(10-5-10)-4115(25)-3273(1.1)-3148(0.5)-3148(1.0)-3023(275)-3148(85)-3148(129)-3148(40)]TJ
+ET
+90.09 265.87 431.82 34.06 re
+170.07 265.87 m
+170.07 282.9 l
+214.05 265.87 m
+214.05 282.9 l
+258.03 265.87 m
+258.03 282.9 l
+302.01 265.87 m
+302.01 282.9 l
+345.99 265.87 m
+345.99 282.9 l
+389.97 265.87 m
+389.97 282.9 l
+433.95 265.87 m
+433.95 282.9 l
+477.93 265.87 m
+477.93 282.9 l
+S
+BT
+10 0 0 10 82 241.99 Tm
+0.065 Tw
+(If we hold)Tj
+/TT7 1 Tf
+4.555 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.946 0 TD
+0.065 Tw
+(at 0.0 and vary)Tj
+/TT7 1 Tf
+6.453 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.439 0 TD
+0.0656 Tw
+(, we see a U-shaped curve, rising to an average learning time of 242 at)Tj
+/TT7 1 Tf
+29.394 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.439 0 TD
+0.066 Tw
+(=0.5 and)Tj
+-43.226 -1.286 TD
+0.092 Tw
+(rising more steeply to a value of 241 at)Tj
+/TT7 1 Tf
+16.687 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.439 0 TD
+0.092 Tw
+[(=1.3. )-342(If we increase)]TJ
+/TT7 1 Tf
+8.882 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.973 0 TD
+0.0917 Tw
+(up to 0.5 or so, we see that we are actually in a)Tj
+-26.981 -1.286 TD
+0.054 Tw
+[(U-shaped valley whose lowest point is always close to 130 epochs.  Above)]TJ
+/TT7 1 Tf
+30.92 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+0.0544 Tw
+(=0.5, the floor of the valley begins to)Tj
+-31.5509 -1.286 TD
+0 Tw
+(rise steeply.)Tj
+1 -2.388 TD
+0.01 Tw
+(Varying the)Tj
+/TT6 1 Tf
+5.019 0 TD
+0 Tw
+(r)Tj
+/TT4 1 Tf
+0.649 0 TD
+0.0093 Tw
+[(parameter by small amounts made very little difference in any of these trials.  Changing)]TJ
+/TT6 1 Tf
+35.523 0 TD
+0 Tw
+(r)Tj
+/TT4 1 Tf
+0.648 0 TD
+0.009 Tw
+(by a large)Tj
+-42.839 -1.286 TD
+0.0935 Tw
+[(amount, either up or down, led to greatly increased learning times. )-344.5(A value of 1.0 or 2.0 seemed as good as any)]TJ
+T*
+0 Tw
+(other and better than most.)Tj
+1 -2.388 TD
+0.0416 Tw
+[(Plaut, Nowlan, and Hinton )41.6([12] present some analysis suggesting that it may be beneficial to use different values)]TJ
+-1 -1.286 TD
+0 Tw
+(of)Tj
+/TT7 1 Tf
+1.207 0 TD
+<00a1>Tj
+/TT4 1 Tf
+0.813 0 TD
+0.124 Tw
+[(for different weights in the network.  Specifically, they suggest that the)]TJ
+/TT7 1 Tf
+30.206 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.813 0 TD
+0.1248 Tw
+(value used in tuning each weight)Tj
+-33.039 -1.286 TD
+0.1194 Tw
+[(should be inversely proportional to the fan-in of the unit receiving activation via that weight.  I tried this with a)]TJ
+T*
+0.0743 Tw
+(variety of parameter values, but for the 10-5-10 network using standard backprop, it consistently performed worse)Tj
+T*
+0.019 Tw
+(than using a single, constant)Tj
+/TT7 1 Tf
+11.65 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.708 0 TD
+0.0185 Tw
+[(value for all of the weights.  As we will see below, this "split epsilon" technique does)]TJ
+ET
+endstream
+endobj
+29 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+32 0 obj
+<<
+/Length 7455
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(8)Tj
+-23.15 -3.6 TD
+(turn out to be useful on networks such as the 128-7-128, where the variation in fan-in is very large.)Tj
+1 -2.388 TD
+0.0136 Tw
+(The same paper suggests that the parameter values should be varied as the network learns:)Tj
+/TT7 1 Tf
+36.558 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.895 0 TD
+0.014 Tw
+(should be very small)Tj
+-38.453 -1.286 TD
+0.1229 Tw
+[(at first, and should be increased after the network has chosen a direction.  The best schedule for increasing)]TJ
+/TT7 1 Tf
+45.13 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+1.003 0 TD
+(is)Tj
+-46.133 -1.286 TD
+0.2206 Tw
+[(apparently different for each problem.  I did not explore this idea extensively since the quickprop algorithm,)]TJ
+T*
+0.1639 Tw
+(described below, seems to do roughly the same job, but in a way that adapts itself to the problem, rather than)Tj
+T*
+0 Tw
+(requiring the human operator to do this job.)Tj
+/TT2 1 Tf
+11 0 0 11 72 601.65 Tm
+(3.2. Eliminating the "Flat Spot")Tj
+/TT4 1 Tf
+10 0 0 10 82 588.79 Tm
+0.0694 Tw
+(Once I was able to display the weights and unit outputs during the course of the learning, one problem with the)Tj
+-1 -1.286 TD
+0.1506 Tw
+(standard backprop algorithm became very clear: units were being turned off hard during the early stages of the)Tj
+T*
+0.057 Tw
+[(learning, and they were getting stuck in the zero state.  The more hidden units there were in the network, the more)]TJ
+T*
+0 Tw
+(likely it was that some output units would get stuck.)Tj
+1 -2.388 TD
+0.1486 Tw
+[(This problem is due to the "flat spots" where the derivative of the sigmoid function approaches zero.  In the)]TJ
+-1 -1.286 TD
+0.1332 Tw
+(standard back-propagation algorithm, as we back-propagate the error through the network, we multiply the error)Tj
+T*
+0.086 Tw
+(seen by each unit)Tj
+/TT6 1 Tf
+7.509 0 TD
+0 Tw
+(j)Tj
+/TT4 1 Tf
+0.614 0 TD
+0.085 Tw
+(by the derivative of the sigmoid function at)Tj
+/TT6 1 Tf
+18.234 0 TD
+0 Tw
+(o)Tj
+/TT4 1 Tf
+0.872 0 TD
+0.085 Tw
+(, the current output of unit)Tj
+/TT6 1 Tf
+11.259 0 TD
+0 Tw
+(j)Tj
+/TT4 1 Tf
+0.2778 0 TD
+0.085 Tw
+[(. )-335(This derivative is)]TJ
+/TT6 1 Tf
+8 0 0 8 340.57 497.16 Tm
+0 Tw
+(j)Tj
+/TT4 1 Tf
+10 0 0 10 72 487.75 Tm
+0.036 Tw
+(equal to)Tj
+/TT6 1 Tf
+3.516 0 TD
+0 Tw
+(o)Tj
+/TT4 1 Tf
+0.872 0 TD
+(\(1)Tj
+/TT7 1 Tf
+0.983 0 TD
+<003c>Tj
+/TT6 1 Tf
+0.699 0 TD
+(o)Tj
+/TT4 1 Tf
+0.722 0 TD
+0.036 Tw
+(\); I call this the)Tj
+/TT6 1 Tf
+6.485 0 TD
+(sigmoid-prime function)Tj
+/TT4 1 Tf
+9.3964 0 TD
+0.037 Tw
+[(. )-286(Note that the value of the sigmoid-prime function goes to)]TJ
+/TT6 1 Tf
+8 0 0 8 112.16 484.3 Tm
+2.9147 Tc
+0 Tw
+(jj)Tj
+/TT4 1 Tf
+10 0 0 10 72 474.89 Tm
+0 Tc
+0.0778 Tw
+[(zero as the unit’s output approaches 0.0 or to 1.0.  Even if such an output value represents the maximum possible)]TJ
+0 -1.286 TD
+0.1243 Tw
+(error, a unit whose output is close to 0.0 or 1.0 will pass back only a tiny fraction of this error to the incoming)Tj
+T*
+0.0652 Tw
+[(weights and to units in earlier layers.  Such a unit will theoretically recover, but it may take a very long time; in a)]TJ
+T*
+0 Tw
+(machine with roundoff error and the potential for truncating very small values, such units may never recover.)Tj
+1 -2.388 TD
+0.0277 Tw
+[(What can we do about this?  One possibility, suggested by James McClelland and tested by Michael Franzini )27.7([4],)]TJ
+-1 -1.286 TD
+0.0638 Tw
+[(is to use an error measure that goes to infinity as the sigmoid-prime function goes to zero. )-313.2(This is mathematically)]TJ
+T*
+0.0011 Tw
+(elegant, and it seemed to work fairly well, but it is hard to implement.  I chose to explore a simpler solution: alter the)Tj
+T*
+0.025 Tw
+[(sigmoid-prime function so that it does not go to zero for any output value.  The first modification I tried worked the)]TJ
+T*
+0.0483 Tw
+[(best: I simply added a constant 0.1 to the sigmoid prime value before using it to scale the error.  Instead of a curve)]TJ
+T*
+0 Tw
+(that goes from 0.0 up to 0.25 and back down to 0.0, we now have a curve that goes from 0.1 to 0.35 and back to 0.1.)Tj
+1 -2.388 TD
+0.1406 Tw
+[(This modification made a dramatic difference, cutting the learning time almost in half.  Once again we see a)]TJ
+-1 -1.286 TD
+0.176 Tw
+(valley in)Tj
+/TT7 1 Tf
+4.074 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+(-)Tj
+/TT7 1 Tf
+0.333 0 TD
+<00a1>Tj
+/TT4 1 Tf
+0.8651 0 TD
+0.176 Tw
+(space running from)Tj
+/TT7 1 Tf
+8.554 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+0.176 Tw
+(=0.0 up to about)Tj
+/TT7 1 Tf
+7.5181 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+0.1762 Tw
+(=0.5, and once again the best learning speed is roughly)Tj
+-23.2369 -1.286 TD
+0 Tw
+(constant as)Tj
+/TT7 1 Tf
+4.666 0 TD
+<005f>Tj
+/TT4 1 Tf
+0.881 0 TD
+(increases over this range.  The two best values obtained were the following:)Tj
+-1.434 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+3.863 Tc
+<00a1005f>Tj
+/TT6 1 Tf
+8.821 0 TD
+0 Tc
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+90.09 272.26 m
+521.91 272.26 l
+170.07 272.26 m
+170.07 289.29 l
+214.05 272.26 m
+214.05 289.29 l
+258.03 272.26 m
+258.03 289.29 l
+302.01 272.26 m
+302.01 289.29 l
+345.99 272.26 m
+345.99 289.29 l
+389.97 272.26 m
+389.97 289.29 l
+433.95 272.26 m
+433.95 289.29 l
+477.93 272.26 m
+477.93 289.29 l
+S
+BT
+10 0 0 10 114.25 261.41 Tm
+[(10-5-10)-4115(25)-3273(1.5)-3148(0.0)-3148(1.0)-3023(115)-3148(50)-3398(75)-3398(14)]TJ
+ET
+90.09 255.23 m
+521.91 255.23 l
+S
+BT
+10 0 0 10 114.25 244.38 Tm
+[(10-5-10)-4115(25)-3273(0.9)-3148(0.4)-3148(1.0)-3023(120)-3148(50)-3398(74)-3398(14)]TJ
+ET
+90.09 238.2 431.82 51.09 re
+170.07 238.2 m
+170.07 272.26 l
+214.05 238.2 m
+214.05 272.26 l
+258.03 238.2 m
+258.03 272.26 l
+302.01 238.2 m
+302.01 272.26 l
+345.99 238.2 m
+345.99 272.26 l
+389.97 238.2 m
+389.97 272.26 l
+433.95 238.2 m
+433.95 272.26 l
+477.93 238.2 m
+477.93 272.26 l
+S
+BT
+10 0 0 10 82 214.32 Tm
+0.1067 Tw
+[(I tried other ways of altering the sigmoid-prime function as well.  The most radical was simply to replace this)]TJ
+-1 -1.286 TD
+0.094 Tw
+(function with a constant value of 0.5; in effect, this eliminates the multiplication by the derivative of the sigmoid)Tj
+T*
+0 Tw
+[(altogether. )-250(The best performance obtained with this variation was the following:)]TJ
+4.113 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+3.863 Tc
+<00a1005f>Tj
+/TT6 1 Tf
+8.821 0 TD
+0 Tc
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+90.09 162.33 m
+521.91 162.33 l
+170.07 162.33 m
+170.07 179.36 l
+214.05 162.33 m
+214.05 179.36 l
+258.03 162.33 m
+258.03 179.36 l
+302.01 162.33 m
+302.01 179.36 l
+345.99 162.33 m
+345.99 179.36 l
+389.97 162.33 m
+389.97 179.36 l
+433.95 162.33 m
+433.95 179.36 l
+477.93 162.33 m
+477.93 179.36 l
+S
+BT
+10 0 0 10 114.25 151.48 Tm
+[(10-5-10)-4115(25)-3273(0.5)-3148(0.4)-3148(1.0)-3023(170)-3148(50)-3398(89)-3398(34)]TJ
+ET
+90.09 145.3 431.82 34.06 re
+170.07 145.3 m
+170.07 162.33 l
+214.05 145.3 m
+214.05 162.33 l
+258.03 145.3 m
+258.03 162.33 l
+302.01 145.3 m
+302.01 162.33 l
+345.99 145.3 m
+345.99 162.33 l
+389.97 145.3 m
+389.97 162.33 l
+433.95 145.3 m
+433.95 162.33 l
+477.93 145.3 m
+477.93 162.33 l
+S
+BT
+10 0 0 10 82 121.42 Tm
+0.0417 Tw
+[(I next tried replacing sigmoid-prime with a function that returned a random number in the range 0.0 to 1.0.  This)]TJ
+-1 -1.286 TD
+0.0016 Tw
+(did not do as well, probably because some learning trials were wasted when the random number happened to be very)Tj
+T*
+0 Tw
+[(small. )-250(The best result obtained with this scheme was the following:)]TJ
+ET
+endstream
+endobj
+33 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+35 0 obj
+<<
+/Length 6832
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 303.5 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(9)Tj
+-19.037 -3.999 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+3.863 Tc
+<00a1005f>Tj
+/TT6 1 Tf
+8.821 0 TD
+0 Tc
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+90.09 702.97 m
+521.91 702.97 l
+170.07 702.97 m
+170.07 720 l
+214.05 702.97 m
+214.05 720 l
+258.03 702.97 m
+258.03 720 l
+302.01 702.97 m
+302.01 720 l
+345.99 702.97 m
+345.99 720 l
+389.97 702.97 m
+389.97 720 l
+433.95 702.97 m
+433.95 720 l
+477.93 702.97 m
+477.93 720 l
+S
+BT
+10 0 0 10 114.25 692.12 Tm
+[(10-5-10)-4115(25)-3273(0.4)-3148(0.7)-3148(1.0)-3023(340)-3148(75)-3148(163)-3148(75)]TJ
+ET
+90.09 685.94 431.82 34.06 re
+170.07 685.94 m
+170.07 702.97 l
+214.05 685.94 m
+214.05 702.97 l
+258.03 685.94 m
+258.03 702.97 l
+302.01 685.94 m
+302.01 702.97 l
+345.99 685.94 m
+345.99 702.97 l
+389.97 685.94 m
+389.97 702.97 l
+433.95 685.94 m
+433.95 702.97 l
+477.93 685.94 m
+477.93 702.97 l
+S
+BT
+10 0 0 10 82 662.06 Tm
+0.0788 Tw
+(Finally, I tried replacing the sigmoid-prime function with the sum of a constant 0.25 and a random value in the)Tj
+-1 -1.286 TD
+0 Tw
+(range 0.0 to 0.5.  This did about as well as the constant alone:)Tj
+4.113 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+3.863 Tc
+<00a1005f>Tj
+/TT6 1 Tf
+8.821 0 TD
+0 Tc
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+90.09 622.93 m
+521.91 622.93 l
+170.07 622.93 m
+170.07 639.96 l
+214.05 622.93 m
+214.05 639.96 l
+258.03 622.93 m
+258.03 639.96 l
+302.01 622.93 m
+302.01 639.96 l
+345.99 622.93 m
+345.99 639.96 l
+389.97 622.93 m
+389.97 639.96 l
+433.95 622.93 m
+433.95 639.96 l
+477.93 622.93 m
+477.93 639.96 l
+S
+BT
+10 0 0 10 114.25 612.08 Tm
+[(10-5-10)-4115(25)-3273(0.5)-3148(0.6)-3148(1.0)-3023(135)-3148(50)-3398(90)-3398(27)]TJ
+ET
+90.09 605.9 431.82 34.06 re
+170.07 605.9 m
+170.07 622.93 l
+214.05 605.9 m
+214.05 622.93 l
+258.03 605.9 m
+258.03 622.93 l
+302.01 605.9 m
+302.01 622.93 l
+345.99 605.9 m
+345.99 622.93 l
+389.97 605.9 m
+389.97 622.93 l
+433.95 605.9 m
+433.95 622.93 l
+477.93 605.9 m
+477.93 622.93 l
+S
+BT
+10 0 0 10 82 582.02 Tm
+0.0146 Tw
+(In all cases, the same kind of valley in)Tj
+/TT7 1 Tf
+15.685 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+(-)Tj
+/TT7 1 Tf
+0.333 0 TD
+<00a1>Tj
+/TT4 1 Tf
+0.7041 0 TD
+0.015 Tw
+(space was observed, and I was always able to find an)Tj
+/TT7 1 Tf
+21.659 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.704 0 TD
+0.015 Tw
+(value that gave)Tj
+-40.716 -1.286 TD
+0 Tw
+(a near-optimal performance with)Tj
+/TT7 1 Tf
+13.385 0 TD
+<005f>Tj
+/TT4 1 Tf
+0.6309 0 TD
+(=0.0.)Tj
+-13.0159 -2.388 TD
+0.1069 Tw
+(The primary lesson from these experiments is that it is very useful to eliminate the flat spots by one means or)Tj
+-1 -1.286 TD
+0.1342 Tw
+[(another. )-383.8(In standard backprop, we must carefully choose the learning parameters to avoid the problem of stuck)]TJ
+T*
+0.0782 Tw
+[(units; with the modified sigmoid-prime function, we can optimize the parameters for best performance overall.  A)]TJ
+T*
+0.0522 Tw
+(slight modification of the classic sigmoid-prime function did the job best, but replacing this step with a constant or)Tj
+T*
+0.0527 Tw
+[(with a constant plus noise only reduces the learning speed by about 20%.  This suggests that this general family of)]TJ
+T*
+0.0098 Tw
+(learning algorithms is very robust, and will give you decent results however you scale the error, as long as you don’t)Tj
+T*
+0.1316 Tw
+[(change the sign or eliminate the error signal by letting the sigmoid-prime function go to zero.  Of course, these)]TJ
+T*
+0 Tw
+(results may not hold for other problems or for multi-layer networks.)Tj
+/TT2 1 Tf
+11 0 0 11 72 419.09 Tm
+(3.3. Using a Non-Linear Error Function)Tj
+/TT4 1 Tf
+10 0 0 10 82 406.23 Tm
+0.15 Tw
+(As mentioned in the previous section, several researchers have eliminated the flat spots in the sigmoid-prime)Tj
+-1 -1.286 TD
+0.0365 Tw
+(function, at least for the units in the output layer of the network, by using an error function that grows to infinity as)Tj
+T*
+0.0398 Tw
+[(the difference between the desired and observed outputs goes to 1.0 or -1.0.  As the error approaches these extreme)]TJ
+T*
+0.1406 Tw
+(values, the product of this non-linear error function and sigmoid-prime remains finite, so some error signal gets)Tj
+T*
+0 Tw
+(through and the unit does not get stuck.)Tj
+1 -2.388 TD
+0.0522 Tw
+(David Plaut suggested to me that the non-linear error function might speed up learning even though the problem)Tj
+-1 -1.286 TD
+0.0226 Tw
+[(of stuck units had been handled by other means.  The idea was that for small differences between the output and the)]TJ
+T*
+0.002 Tw
+(desired output, the error should behave linearly, but as the difference increased, the error function should grow faster)Tj
+T*
+0 Tw
+(than linearly, heading toward infinity as errors approach their maximum values.)Tj
+1 -2.388 TD
+0.0917 Tw
+[(One function that meets these requirements is hyperbolic arctangent of the difference.  I tried using that, rather)]TJ
+-1 -1.286 TD
+0.0952 Tw
+[(than the difference itself, as the error signal fed into the output units in the network. )-345.8(Since this function was not)]TJ
+T*
+0.0551 Tw
+(competing against one going to zero, I did not let it grow arbitrarily large; I cut it off at -.9999999 and +.9999999,)Tj
+T*
+0 Tw
+(and used values of -17.0 and +17.0 for more extreme differences.)Tj
+1 -2.388 TD
+0.1145 Tw
+[(This did indeed have a modest beneficial effect. )-365.5(On the 10-5-10 encoder, using backprop with the hyperbolic)]TJ
+-1 -1.286 TD
+0.2562 Tw
+(arctan error function and adding 0.1 to sigmoid-prime, I was able to get the following result, about a 25%)Tj
+T*
+0 Tw
+(improvement:)Tj
+4.113 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+3.863 Tc
+<00a1005f>Tj
+/TT6 1 Tf
+8.821 0 TD
+0 Tc
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+90.09 154 m
+521.91 154 l
+170.07 154 m
+170.07 171.03 l
+214.05 154 m
+214.05 171.03 l
+258.03 154 m
+258.03 171.03 l
+302.01 154 m
+302.01 171.03 l
+345.99 154 m
+345.99 171.03 l
+389.97 154 m
+389.97 171.03 l
+433.95 154 m
+433.95 171.03 l
+477.93 154 m
+477.93 171.03 l
+S
+BT
+10 0 0 10 114.25 143.15 Tm
+[(10-5-10)-4115(25)-3273(0.6)-3148(0.0)-3148(1.0)-3273(85)-3398(40)-3023(58.7)-3023(13)]TJ
+ET
+90.09 136.97 431.82 34.06 re
+170.07 136.97 m
+170.07 154 l
+214.05 136.97 m
+214.05 154 l
+258.03 136.97 m
+258.03 154 l
+302.01 136.97 m
+302.01 154 l
+345.99 136.97 m
+345.99 154 l
+389.97 136.97 m
+389.97 154 l
+433.95 136.97 m
+433.95 154 l
+477.93 136.97 m
+477.93 154 l
+S
+BT
+10 0 0 10 82 113.09 Tm
+0.0131 Tw
+(I have not tried applying nonlinear error functions to units in interior layers of the network, but plan to investigate)Tj
+-1 -1.286 TD
+0.0755 Tw
+[(this in the near future.  Some sort of non-linear error function may be of value in increasing the learning speed of)]TJ
+T*
+0 Tw
+(networks with multiple hidden layers.)Tj
+ET
+endstream
+endobj
+36 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+38 0 obj
+<<
+/Length 7161
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(10)Tj
+/TT2 1 Tf
+11 0 0 11 72 712.63 Tm
+(3.4. The Quickprop Algorithm)Tj
+/TT4 1 Tf
+10 0 0 10 82 699.77 Tm
+0.0401 Tw
+(Back-propagation and its relatives work by calculating the partial first derivative of the overall error with respect)Tj
+-1 -1.286 TD
+0.0626 Tw
+[(to each weight.  Given this information we can do gradient descent in weight space.  If we take infinitesimal steps)]TJ
+T*
+0.119 Tw
+(down the gradient, we are guaranteed to reach a local minimum, and it has been empirically determined that for)Tj
+T*
+0.1981 Tw
+(many problems this local minimum will be a global minimum, or at least a "good enough" solution for most)Tj
+T*
+0 Tw
+(purposes.)Tj
+1 -2.388 TD
+0.0607 Tw
+(Of course, if we want to find a solution in the shortest possible time, we do not want to take infinitesimal steps;)Tj
+-1 -1.286 TD
+0.1218 Tw
+[(we want to take the largest steps possible without overshooting the solution.  Unfortunately, a set of partial first)]TJ
+T*
+0.041 Tw
+(derivatives collected at a single point tells us very little about how large a step we may safely take in weight space.)Tj
+T*
+0.265 Tw
+(If we knew something about the higher-order derivatives -- the curvature of the error function -- we could)Tj
+T*
+0 Tw
+(presumably do much better.)Tj
+1 -2.388 TD
+0.1482 Tw
+[(Two kinds of approaches to this problem have been tried.  The first approach tries to dynamically adjust the)]TJ
+-1 -1.286 TD
+0.1961 Tw
+(learning rate, either globally or separately for each weight, based in some heuristic way on the history of the)Tj
+T*
+0.108 Tw
+[(computation. )-358(The momentum term used in standard back-propagation is a form of this strategy; so are the fixed)]TJ
+T*
+0.047 Tw
+[(schedules for parameter adjustment that are recommended in )47([12], though in this case the adjustment is based upon)]TJ
+T*
+0.1244 Tw
+[(the experience of the programmer rather than that of the network.  Franzini )124.4([4] has investigated a technique that)]TJ
+T*
+0.103 Tw
+(heuristically adjusts the global)Tj
+/TT7 1 Tf
+12.856 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.792 0 TD
+0.1023 Tw
+(parameter, increasing it whenever two successive gradient vectors are nearly the)Tj
+-13.648 -1.286 TD
+0.0669 Tw
+[(same and decreasing it otherwise.  Jacobs )66.9([5] has conducted an empirical study comparing standard backprop with)]TJ
+T*
+0.0852 Tw
+[(momentum to a rule that dynamically adjusts a separate learning-rate parameter for each weight.  Cater )85.2([2] uses a)]TJ
+T*
+0.0587 Tw
+[(more complex heuristic for adjusting the learning rate.  All of these methods improve the overall learning speed to)]TJ
+T*
+0 Tw
+(some degree.)Tj
+1 -2.388 TD
+0.066 Tw
+(The other kind of approach makes explicit use of the second derivative of the error with respect to each weight.)Tj
+-1 -1.286 TD
+0.1421 Tw
+(Given this information, we can select a new set of weights using Newton’s method or some more sophisticated)Tj
+T*
+0.2185 Tw
+[(optimization technique.  Unfortunately, it requires a very costly global computation to derive the true second)]TJ
+T*
+0.0072 Tw
+[(derivative, so some approximation is used.  Parker )7.2([8], Watrous )7.2([17], and Becker and LeCun )7.2([1] have all been active)]TJ
+T*
+0.0513 Tw
+[(in this area.  Watrous has implemented two such algorithms and tried them on the XOR problem.  He claims some)]TJ
+T*
+0.1715 Tw
+(improvement over back-propagation, but it does not appear that his methods will scale up well to much larger)Tj
+T*
+0 Tw
+(problems.)Tj
+1 -2.388 TD
+0.0339 Tw
+[(I have developed an algorithm that I call "quickprop" that has some connection to both of these traditions.  It is a)]TJ
+-1 -1.286 TD
+0.0505 Tw
+[(second-order method, based loosely on Newton’s method, but in spirit it is more heuristic than formal.  Everything)]TJ
+T*
+0.0327 Tw
+(proceeds as in standard back-propagation, but for each weight I keep a copy of the)Tj
+/TT7 1 Tf
+33.703 0 TD
+0 Tw
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(E)Tj
+/TT4 1 Tf
+0.7609 0 TD
+(/)Tj
+/TT7 1 Tf
+0.428 0 TD
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT7 1 Tf
+0.2778 0 TD
+<003c>Tj
+/TT4 1 Tf
+0.5488 0 TD
+0.032 Tw
+(1\), the error derivative)Tj
+-37.7068 -1.286 TD
+0.0558 Tw
+(computed during the previous training epoch, along with the difference between the current and previous values of)Tj
+T*
+0 Tw
+(this weight.  The)Tj
+/TT7 1 Tf
+6.972 0 TD
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(E)Tj
+/TT4 1 Tf
+0.7609 0 TD
+(/)Tj
+/TT7 1 Tf
+0.428 0 TD
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+(\) value for the current training epoch is also available at weight-update time.)Tj
+-9.427 -2.388 TD
+0.0126 Tw
+(I then make two risky assumptions: first, that the error vs. weight curve for each weight can be approximated by a)Tj
+-1 -1.286 TD
+0.0069 Tw
+(parabola whose arms open upward; second, that the change in the slope of the error curve, as seen by each weight, is)Tj
+T*
+0.02 Tw
+[(not affected by all the other weights that are changing at the same time.  For each weight, independently, we use the)]TJ
+T*
+0.033 Tw
+(previous and current error slopes and the weight-change between the points at which these slopes were measured to)Tj
+T*
+0.0028 Tw
+(determine a parabola; we then jump directly to the minimum point of this parabola.  The computation is very simple,)Tj
+T*
+0 Tw
+(and it uses only the information local to the weight being updated:)Tj
+/TT6 1 Tf
+6.958 -1.52 TD
+(S)Tj
+/TT4 1 Tf
+0.5 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+(\))Tj
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+124.87 149.21 m
+172.73 149.21 l
+S
+BT
+/TT7 1 Tf
+10 0 0 10 92 147.01 Tm
+<0036>Tj
+/TT6 1 Tf
+0.6118 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+(\) =)Tj
+/TT7 1 Tf
+6.4334 0 TD
+<0036>Tj
+/TT6 1 Tf
+0.6118 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT7 1 Tf
+0.2778 0 TD
+<003c>Tj
+/TT4 1 Tf
+0.5488 0 TD
+(1\))Tj
+/TT6 1 Tf
+-7.4745 -0.66 TD
+(S)Tj
+/TT4 1 Tf
+0.5 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT7 1 Tf
+0.2778 0 TD
+<003c>Tj
+/TT4 1 Tf
+0.5488 0 TD
+(1\))Tj
+/TT7 1 Tf
+0.9833 0 TD
+<003c>Tj
+/TT6 1 Tf
+0.699 0 TD
+(S)Tj
+/TT4 1 Tf
+0.5 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+(\))Tj
+-8.7398 -2.388 TD
+(where)Tj
+/TT6 1 Tf
+2.777 0 TD
+(S)Tj
+/TT4 1 Tf
+0.5 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT4 1 Tf
+0.2778 0 TD
+0.084 Tw
+(\) and)Tj
+/TT6 1 Tf
+2.4452 0 TD
+0 Tw
+(S)Tj
+/TT4 1 Tf
+0.5 0 TD
+(\()Tj
+/TT6 1 Tf
+0.333 0 TD
+(t)Tj
+/TT7 1 Tf
+0.2778 0 TD
+<003c>Tj
+/TT4 1 Tf
+0.5488 0 TD
+0.0845 Tw
+(1\) are the current and previous values of)Tj
+/TT7 1 Tf
+17.0613 0 TD
+0 Tw
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(E)Tj
+/TT4 1 Tf
+0.7609 0 TD
+(/)Tj
+/TT7 1 Tf
+0.428 0 TD
+<002c>Tj
+/TT6 1 Tf
+0.4941 0 TD
+(w)Tj
+/TT4 1 Tf
+0.667 0 TD
+0.085 Tw
+[(. )-335(Of course, this new value is only a crude)]TJ
+-28.8981 -1.286 TD
+0.2497 Tw
+(approximation to the optimum value for the weight, but when applied iteratively this method is surprisingly)Tj
+T*
+0 Tw
+[(effective. )-250(Notice that the old)]TJ
+/TT7 1 Tf
+11.914 0 TD
+<005f>Tj
+/TT4 1 Tf
+0.881 0 TD
+(parameter is gone, though we will need to keep)Tj
+/TT7 1 Tf
+19.163 0 TD
+<00a1>Tj
+/TT4 1 Tf
+0.689 0 TD
+(\(see below\).)Tj
+ET
+endstream
+endobj
+39 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+43 0 obj
+<<
+/Length 6688
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(11)Tj
+-21.9 -3.6 TD
+0.1959 Tw
+(Using this update formula, if the current slope is somewhat smaller than the previous one, but in the same)Tj
+-1 -1.286 TD
+0.0834 Tw
+[(direction, the weight will change again in the same direction.  The step may be large or small, depending on how)]TJ
+T*
+0.0331 Tw
+[(much the slope was reduced by the previous step.  If the current slope is in the opposite direction from the previous)]TJ
+T*
+0.0435 Tw
+[(one, that means that we have crossed over the minimum and that we are now on the opposite side of the valley.  In)]TJ
+T*
+0.0557 Tw
+[(this case, the next step will place us somewhere between the current and previous positions.  The third case occurs)]TJ
+T*
+0.0314 Tw
+[(when the current slope is in the same direction as the previous slope, but is the same size or larger in magnitude.  If)]TJ
+T*
+0.1388 Tw
+(we were to blindly follow the formula in this case, we would end up taking an infinite step or actually moving)Tj
+T*
+0 Tw
+(backwards, up the current slope and toward a local maximum.)Tj
+1 -2.388 TD
+0.036 Tw
+[(I have experimented with several ways of handling this third situation.  The method that seems to work best is to)]TJ
+-1 -1.286 TD
+0.075 Tw
+(create a new parameter, which I call)Tj
+/TT8 1 Tf
+15.241 0 TD
+0 Tw
+(µ)Tj
+/TT4 1 Tf
+0.5762 0 TD
+0.0756 Tw
+[(, the "maximum growth factor". )-326.4(No weight step is allowed to be greater in)]TJ
+-15.8172 -1.286 TD
+0.061 Tw
+(magnitude than)Tj
+/TT8 1 Tf
+6.566 0 TD
+0 Tw
+(µ)Tj
+/TT4 1 Tf
+0.887 0 TD
+0.0601 Tw
+(times the previous step for that weight; if the step computed by the quickprop formula would be)Tj
+-7.453 -1.286 TD
+0.011 Tw
+(too large, infinite, or uphill on the current slope, we instead use)Tj
+/TT8 1 Tf
+25.712 0 TD
+0 Tw
+(µ)Tj
+/TT4 1 Tf
+0.837 0 TD
+0.0115 Tw
+(times the previous step as the size of the new step.)Tj
+-26.549 -1.286 TD
+0.0438 Tw
+(The idea is that if, instead of flattening out, the error curve actually becomes steeper as you move down it, you can)Tj
+T*
+0.0858 Tw
+[(afford to accelerate, but within limits.  Since there is some "noise" coming from the simultaneous update of other)]TJ
+T*
+0.154 Tw
+[(units, we don’t want to extrapolate too far from a finite baseline.  Experiments show that if)]TJ
+/TT8 1 Tf
+39.196 0 TD
+0 Tw
+(µ)Tj
+/TT4 1 Tf
+0.979 0 TD
+0.153 Tw
+(is too large, the)Tj
+-40.175 -1.286 TD
+0.024 Tw
+[(network behaves chaotically and fails to converge.  The optimal value of)]TJ
+/TT8 1 Tf
+29.643 0 TD
+0 Tw
+(µ)Tj
+/TT4 1 Tf
+0.85 0 TD
+0.0242 Tw
+(depends to some extent upon the type of)Tj
+-30.493 -1.286 TD
+0 Tw
+(problem, but a value of 1.75 works well for a wide range of problems.)Tj
+1 -2.388 TD
+0.0245 Tw
+(Since quickprop changes weights based on what happened during the previous weight update, we need some way)Tj
+-1 -1.286 TD
+0.0424 Tw
+[(to bootstrap the process.  In addition, we need a way to restart the learning process for a weight that has previously)]TJ
+T*
+0.0821 Tw
+(taken a step of size zero but that now is seeing a non-zero-slope because something has changed elsewhere in the)Tj
+T*
+0.0387 Tw
+[(network. )-287.3(The obvious move is to use gradient descent, based on the current slope and some learning rate)]TJ
+/TT7 1 Tf
+43.033 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.439 0 TD
+0.039 Tw
+(, to start)Tj
+-43.472 -1.286 TD
+0 Tw
+(the process and to restart the process for any weight that has a previous step size of zero.)Tj
+1 -2.388 TD
+0.1221 Tw
+[(It took me several tries to get this "ignition" process working well.  Originally I picked a small threshold and)]TJ
+-1 -1.286 TD
+0.2481 Tw
+(switched from the quadratic approximation to gradient descent whenever the previous weight fell below this)Tj
+T*
+0.1401 Tw
+[(threshold. )-391.9(This worked fairly well, but I came to suspect that odd things were happening in the vicinity of the)]TJ
+T*
+0.144 Tw
+[(threshold, especially for very large encoder problems.  I replaced this mechanism with one that always added a)]TJ
+T*
+0.0395 Tw
+[(gradient descent term to the step computed by the quadratic method. )-288.5(This worked well when a weight was moving)]TJ
+T*
+0.0582 Tw
+(down a slope, but it led to oscillation when the weight overshot the minimum and had to come back: the quadratic)Tj
+T*
+0.1553 Tw
+(method would accurately locate the bottom of the parabola, and the gradient descent term would then push the)Tj
+T*
+0 Tw
+(weight past this point.)Tj
+1 -2.388 TD
+0.0148 Tw
+(My current version of quickprop always adds)Tj
+/TT7 1 Tf
+18.517 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.704 0 TD
+0.015 Tw
+(times the current slope to the)Tj
+/TT7 1 Tf
+11.922 0 TD
+0 Tw
+<0036>Tj
+/TT6 1 Tf
+0.6118 0 TD
+(w)Tj
+/TT4 1 Tf
+0.9322 0 TD
+0.015 Tw
+(value computed by the quadratic)Tj
+-33.687 -1.286 TD
+0.0347 Tw
+(formula, unless the current slope is opposite in sign from the previous slope; in that case, the quadratic term is used)Tj
+T*
+0 Tw
+(alone.)Tj
+1 -2.388 TD
+0.1126 Tw
+[(One final refinement is required.  For some problems, quickprop will allow some of the weights to grow very)]TJ
+-1 -1.286 TD
+0.0668 Tw
+[(large. )-317.2(This leads to floating-point overflow errors in the middle of a training session.  I fix this by adding a small)]TJ
+T*
+0 Tw
+(weight-decay term to the slope computed for each weight.  This keeps the weights within an acceptable range.)Tj
+1 -2.388 TD
+0.1924 Tw
+(Quickprop can suffer from the same "flat spot" problems as standard backprop, so I always run it with the)Tj
+-1 -1.286 TD
+0 Tw
+(sigmoid-prime function modified by the addition of 0.1, as described in the previous section.)Tj
+1 -2.388 TD
+(With the normal linear error function, the following result was the best one obtained using quickprop:)Tj
+3.113 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+<00a1>Tj
+/TT8 1 Tf
+4.33 0 TD
+(µ)Tj
+/TT6 1 Tf
+4.491 0 TD
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+90.09 121.05 m
+521.91 121.05 l
+170.07 121.05 m
+170.07 138.08 l
+214.05 121.05 m
+214.05 138.08 l
+258.03 121.05 m
+258.03 138.08 l
+302.01 121.05 m
+302.01 138.08 l
+345.99 121.05 m
+345.99 138.08 l
+389.97 121.05 m
+389.97 138.08 l
+433.95 121.05 m
+433.95 138.08 l
+477.93 121.05 m
+477.93 138.08 l
+S
+BT
+10 0 0 10 114.25 110.2 Tm
+[(10-5-10)-3865(100)-3023(1.5)-2898(1.75)-2898(2.0)-3273(72)-3398(13)-3023(22.1)-2898(8.9)]TJ
+ET
+90.09 104.02 431.82 34.06 re
+170.07 104.02 m
+170.07 121.05 l
+214.05 104.02 m
+214.05 121.05 l
+258.03 104.02 m
+258.03 121.05 l
+302.01 104.02 m
+302.01 121.05 l
+345.99 104.02 m
+345.99 121.05 l
+389.97 104.02 m
+389.97 121.05 l
+433.95 104.02 m
+433.95 121.05 l
+477.93 104.02 m
+477.93 121.05 l
+S
+BT
+10 0 0 10 82 80.14 Tm
+(With the addition of the hyperbolic arctan error function, quickprop did better still:)Tj
+ET
+endstream
+endobj
+44 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+/TT8 45 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+47 0 obj
+<<
+/Length 6752
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(12)Tj
+-18.787 -3.999 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+<00a1>Tj
+/TT8 1 Tf
+4.33 0 TD
+(µ)Tj
+/TT6 1 Tf
+4.491 0 TD
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+90.09 702.97 m
+521.91 702.97 l
+170.07 702.97 m
+170.07 720 l
+214.05 702.97 m
+214.05 720 l
+258.03 702.97 m
+258.03 720 l
+302.01 702.97 m
+302.01 720 l
+345.99 702.97 m
+345.99 720 l
+389.97 702.97 m
+389.97 720 l
+433.95 702.97 m
+433.95 720 l
+477.93 702.97 m
+477.93 720 l
+S
+BT
+10 0 0 10 114.25 692.12 Tm
+[(10-5-10)-3865(100)-2773(0.35)-2648(1.75)-2898(2.0)-3273(21)-3648(9)-3023(14.01)-2648(2.1)]TJ
+ET
+90.09 685.94 431.82 34.06 re
+170.07 685.94 m
+170.07 702.97 l
+214.05 685.94 m
+214.05 702.97 l
+258.03 685.94 m
+258.03 702.97 l
+302.01 685.94 m
+302.01 702.97 l
+345.99 685.94 m
+345.99 702.97 l
+389.97 685.94 m
+389.97 702.97 l
+433.95 685.94 m
+433.95 702.97 l
+477.93 685.94 m
+477.93 702.97 l
+S
+BT
+10 0 0 10 82 662.06 Tm
+0.0529 Tw
+(This result is better by about a factor of 4 than any time I obtained with a modified but non-quadratic version of)Tj
+-1 -1.286 TD
+0.0054 Tw
+[(backprop, and it is almost an order of magnitude better than the value of 129 I obtained for standard backprop.  With)]TJ
+T*
+0.036 Tw
+(quickprop, only the)Tj
+/TT7 1 Tf
+8.163 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.725 0 TD
+0.036 Tw
+(parameter seems to require problem-specific tuning, and even)Tj
+/TT7 1 Tf
+25.254 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.725 0 TD
+0.0353 Tw
+(does not have to be tuned too)Tj
+-34.867 -1.286 TD
+0 Tw
+(carefully for reasonably good results.)Tj
+/TT2 1 Tf
+11 0 0 11 72 587.31 Tm
+(3.5. Scaling Experiments)Tj
+/TT4 1 Tf
+10 0 0 10 82 574.45 Tm
+0.0963 Tw
+(The next step was to see how well the combination of quickprop, adding 0.1 to sigmoid-prime, and hyperbolic)Tj
+-1 -1.286 TD
+0.0623 Tw
+[(arctan error would scale up to larger encoder problems.  I decided to run a series of "tight" encoders: 4-2-4, 8-3-8,)]TJ
+T*
+0.0411 Tw
+[(and so on.  For the larger problems in the series, the fan-in for the hidden units was much greater than the fan-in to)]TJ
+T*
+0.028 Tw
+(the output units, and it proved beneficial to divide the value of)Tj
+/TT7 1 Tf
+25.528 0 TD
+0 Tw
+<00a1>Tj
+/TT4 1 Tf
+0.717 0 TD
+0.028 Tw
+(by the fan-in of the unit that is receiving activation)Tj
+-26.245 -1.286 TD
+0 Tw
+(from the weight being updated.  It also proved useful to gradually reduce)Tj
+/TT7 1 Tf
+29.439 0 TD
+<00a1>Tj
+/TT4 1 Tf
+0.689 0 TD
+(as the problem size increased.)Tj
+-29.128 -2.388 TD
+(The results obtained for this series were as follows:)Tj
+3.113 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+<00a1>Tj
+/TT8 1 Tf
+4.33 0 TD
+(µ)Tj
+/TT6 1 Tf
+4.491 0 TD
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+90.09 472.86 m
+521.91 472.86 l
+170.07 472.86 m
+170.07 489.89 l
+214.05 472.86 m
+214.05 489.89 l
+258.03 472.86 m
+258.03 489.89 l
+302.01 472.86 m
+302.01 489.89 l
+345.99 472.86 m
+345.99 489.89 l
+389.97 472.86 m
+389.97 489.89 l
+433.95 472.86 m
+433.95 489.89 l
+477.93 472.86 m
+477.93 489.89 l
+S
+BT
+10 0 0 10 119.25 462.01 Tm
+[(4-2-4)-4365(100)-3023(2.0)-2898(1.75)-2898(2.0)-3273(36)-3648(8)-3023(15.93)-2648(6.2)]TJ
+ET
+90.09 455.83 m
+521.91 455.83 l
+S
+BT
+10 0 0 10 119.25 444.98 Tm
+[(8-3-8)-4365(100)-3023(2.0)-2898(1.75)-2898(2.0)-3273(42)-3398(12)-2773(21.99)-2648(5.6)]TJ
+ET
+90.09 438.8 m
+521.91 438.8 l
+S
+BT
+10 0 0 10 114.25 427.95 Tm
+[(16-4-16)-3865(100)-3023(1.2)-2898(1.75)-2898(2.0)-3273(48)-3398(20)-2773(28.93)-2648(5.4)]TJ
+ET
+90.09 421.77 m
+521.91 421.77 l
+S
+BT
+10 0 0 10 114.25 410.92 Tm
+[(32-5-32)-4115(25)-3273(1.0)-2898(1.75)-2898(2.0)-3273(38)-3398(26)-2773(30.48)-2648(3.1)]TJ
+ET
+90.09 404.74 m
+521.91 404.74 l
+S
+BT
+10 0 0 10 114.25 393.89 Tm
+[(64-6-64)-4115(10)-3023(0.75)-2648(1.75)-2898(2.0)-3273(37)-3398(28)-2773(33.90)-2648(2.9)]TJ
+ET
+90.09 387.71 m
+521.91 387.71 l
+S
+BT
+10 0 0 10 109.25 376.86 Tm
+[(128-7-128)-3865(5)-3523(0.5)-2898(1.75)-2898(2.0)-3273(43)-3398(36)-2773(40.20)-2648(2.8)]TJ
+ET
+90.09 370.68 m
+521.91 370.68 l
+S
+BT
+10 0 0 10 109.25 359.83 Tm
+[(256-8-256)-3865(5)-3523(0.3)-2898(1.75)-2898(2.0)-3273(44)-3398(40)-2773(42.00)-2648(1.6)]TJ
+ET
+90.09 353.65 431.82 136.24 re
+170.07 353.65 m
+170.07 472.86 l
+214.05 353.65 m
+214.05 472.86 l
+258.03 353.65 m
+258.03 472.86 l
+302.01 353.65 m
+302.01 472.86 l
+345.99 353.65 m
+345.99 472.86 l
+389.97 353.65 m
+389.97 472.86 l
+433.95 353.65 m
+433.95 472.86 l
+477.93 353.65 m
+477.93 472.86 l
+S
+BT
+10 0 0 10 82 329.77 Tm
+0.0543 Tw
+[(These times are significantly better than any others I have seen for tight encoder problems.  The literature of the)]TJ
+-1 -1.286 TD
+0.0238 Tw
+[(field gives very few specific timings for such problems, especially for large ones.  The best time I have obtained for)]TJ
+T*
+0.0426 Tw
+[(the 16-4-16 encoder with standard backprop is 794.6 epochs \(average time over 10 trials\).  With the sigmoid-prime)]TJ
+T*
+0 Tw
+(function modified to add 0.1, the time goes down to 539.2.)Tj
+1 -2.388 TD
+0.0817 Tw
+(David Plaut, who has run many backprop simulations during his graduate student career at CMU, is able to get)Tj
+-1 -1.286 TD
+0.0088 Tw
+[(times "generally in the low 40’s" on the 16-4-16 encoder using backprop with a non-linear error function.  However,)]TJ
+T*
+0.0671 Tw
+(he accomplishes this by watching the progress of each learning trial on the display and adjusting)Tj
+/TT7 1 Tf
+39.902 0 TD
+0 Tw
+<005f>Tj
+/TT4 1 Tf
+0.948 0 TD
+0.067 Tw
+(by hand as the)Tj
+-40.85 -1.286 TD
+0.1313 Tw
+[(learning progresses.  This method is hard to replicate, and it is unclear how well it scales up.  I suspect that an)]TJ
+T*
+0.1438 Tw
+(analysis of Plait’s real-time adjustments would show that he is doing something very similar to what quickprop)Tj
+T*
+0 Tw
+(does.)Tj
+1 -2.388 TD
+0.012 Tw
+[(Juergen Schmidhuber )12([14] has investigated this same class of problems up to 64-6-64 using two methods: first, he)]TJ
+-1 -1.286 TD
+0.0096 Tw
+(used standard backprop, but he adjusted the weights after every presentation of a training example rather than after a)Tj
+T*
+0.1873 Tw
+(full epoch; second, he used a learning technique of his own that measures the total error, rather than the first)Tj
+T*
+0.0047 Tw
+(derivative, and tries to converge toward a zero of the error function.  On the 16-4-16 encoder, Schmidhuber reports a)Tj
+T*
+0.0834 Tw
+(learning time of 239 epochs for backprop and 146 for his own method; on 64-6-64, he gets 750 for backprop and)Tj
+T*
+0 Tw
+(220 for his own method.)Tj
+1 -2.388 TD
+0.0821 Tw
+(The most exciting aspect of the learning times in the table above are the way they scale up as the problem size)Tj
+-1 -1.286 TD
+0.0902 Tw
+[(increases. )-339.8(If we take N as the number of patterns to be learned, the learning time measured in epochs is actually)]TJ
+ET
+endstream
+endobj
+48 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+/TT8 45 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+50 0 obj
+<<
+/Length 6196
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(13)Tj
+-22.9 -3.6 TD
+0.115 Tw
+(growing more slowly than log)Tj
+/TT6 1 Tf
+12.665 0 TD
+0 Tw
+(N)Tj
+/TT4 1 Tf
+0.667 0 TD
+0.1147 Tw
+[(. )-365.3(In the past, it was generally believed that for tight encoder problems this time)]TJ
+-13.332 -1.286 TD
+0 Tw
+(would grow exponentially with the problem size, or at least linearly.)Tj
+1 -2.388 TD
+0.1211 Tw
+(Of course, the measurement of learning time in epochs can be deceiving. The number of training examples in)Tj
+-1 -1.286 TD
+0.0387 Tw
+(each epoch grows by a factor of N, and the time required to run each forward-backward pass on a serial machine is)Tj
+T*
+0.0487 Tw
+(proportional to the number of connections -- also roughly a factor of N. This means that on a serial machine, using)Tj
+8 0 0 8 482.06 641.27 Tm
+3.3112 Tc
+0 Tw
+(22)Tj
+10 0 0 10 72 637.82 Tm
+0 Tc
+0.0197 Tw
+(the techniques described here, the actual clock time required grows by a factor somewhere between)Tj
+/TT6 1 Tf
+40.339 0 TD
+0 Tw
+(N)Tj
+/TT4 1 Tf
+1.336 0 TD
+(and)Tj
+/TT6 1 Tf
+1.713 0 TD
+(N)Tj
+/TT4 1 Tf
+1.067 0 TD
+(log)Tj
+/TT6 1 Tf
+1.428 0 TD
+(N)Tj
+/TT4 1 Tf
+0.667 0 TD
+(.)Tj
+-46.55 -1.286 TD
+0.0402 Tw
+(On a parallel network, the clock time required grows by a factor between)Tj
+/TT6 1 Tf
+30.016 0 TD
+0 Tw
+(N)Tj
+/TT4 1 Tf
+0.958 0 TD
+(and)Tj
+/TT6 1 Tf
+1.735 0 TD
+(N)Tj
+/TT4 1 Tf
+0.667 0 TD
+(log)Tj
+/TT6 1 Tf
+1.428 0 TD
+(N)Tj
+/TT4 1 Tf
+0.667 0 TD
+0.041 Tw
+[(. )-291(If this scaling result holds)]TJ
+-35.471 -1.286 TD
+0.1618 Tw
+(larger networks and for other kinds of problems, that is good news for the future applicability of connectionist)Tj
+T*
+0 Tw
+(techniques.)Tj
+1 -2.388 TD
+0.0662 Tw
+(In order to get a feeling for how the learning time was affected by the number of units in the single hidden-unit)Tj
+-1 -1.286 TD
+0.1253 Tw
+[(layer, I ran the 8-M-8 problem for different M values.  Again, these results are for quickprop, hyperbolic arctan)]TJ
+T*
+0 Tw
+(error, 0.1 added to sigmoid-prime, and epsilon divided by the fan-in.)Tj
+4.113 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+<00a1>Tj
+/TT8 1 Tf
+4.33 0 TD
+(µ)Tj
+/TT6 1 Tf
+4.491 0 TD
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+90.09 523.37 m
+521.91 523.37 l
+170.07 523.37 m
+170.07 540.4 l
+214.05 523.37 m
+214.05 540.4 l
+258.03 523.37 m
+258.03 540.4 l
+302.01 523.37 m
+302.01 540.4 l
+345.99 523.37 m
+345.99 540.4 l
+389.97 523.37 m
+389.97 540.4 l
+433.95 523.37 m
+433.95 540.4 l
+477.93 523.37 m
+477.93 540.4 l
+S
+BT
+10 0 0 10 119.25 512.52 Tm
+[(8-2-8)-4615(25)-3273(1.0)-2898(1.75)-2898(4.0)-3023(155)-3148(26)-2773(102.8)-2398(37.7)]TJ
+ET
+90.09 506.34 m
+521.91 506.34 l
+S
+BT
+10 0 0 10 119.25 495.49 Tm
+[(8-3-8)-4365(100)-3023(2.0)-2898(1.75)-2898(2.0)-3273(42)-3398(12)-2773(21.99)-2648(5.6)]TJ
+ET
+90.09 489.31 m
+521.91 489.31 l
+S
+BT
+10 0 0 10 119.25 478.46 Tm
+[(8-4-8)-4365(100)-3023(3.0)-2898(1.75)-2898(2.0)-3273(23)-3398(10)-2773(14.88)-2648(2.8)]TJ
+ET
+90.09 472.28 m
+521.91 472.28 l
+S
+BT
+10 0 0 10 119.25 461.43 Tm
+[(8-5-8)-4365(100)-3023(3.0)-2898(1.75)-2898(2.0)-3273(19)-3648(9)-3023(12.29)-2648(2.0)]TJ
+ET
+90.09 455.25 m
+521.91 455.25 l
+S
+BT
+10 0 0 10 119.25 444.4 Tm
+[(8-6-8)-4365(100)-3023(3.0)-2898(1.75)-2898(2.0)-3273(15)-3648(7)-3023(10.13)-2648(1.6)]TJ
+ET
+90.09 438.22 m
+521.91 438.22 l
+S
+BT
+10 0 0 10 119.25 427.37 Tm
+[(8-8-8)-4365(100)-3023(3.0)-2898(1.75)-2898(2.0)-3273(12)-3648(6)-3273(8.79)-2898(1.3)]TJ
+ET
+90.09 421.19 m
+521.91 421.19 l
+S
+BT
+10 0 0 10 116.75 410.34 Tm
+[(8-16-8)-4115(100)-3023(3.0)-2898(1.75)-2898(2.0)-3273(10)-3648(4)-3273(6.28)-2898(1.0)]TJ
+ET
+90.09 404.16 431.82 136.24 re
+170.07 404.16 m
+170.07 523.37 l
+214.05 404.16 m
+214.05 523.37 l
+258.03 404.16 m
+258.03 523.37 l
+302.01 404.16 m
+302.01 523.37 l
+345.99 404.16 m
+345.99 523.37 l
+389.97 404.16 m
+389.97 523.37 l
+433.95 404.16 m
+433.95 523.37 l
+477.93 404.16 m
+477.93 523.37 l
+S
+BT
+10 0 0 10 82 380.28 Tm
+0.031 Tw
+(The most interesting result here is that the learning time goes down monotonically with increasing M, even when)Tj
+-1 -1.286 TD
+0.0403 Tw
+(M is much greater than N. Some researchers have suggested that, beyond a certain point, it actually makes learning)Tj
+T*
+0.0356 Tw
+[(slower if you add more hidden units. )-285.4(This belief probably came about because in standard backprop, the additional)]TJ
+T*
+0.0301 Tw
+[(hidden units tend to push the output units deeper into the flat spot.  Of course, on a serial simulation, the clock time)]TJ
+T*
+0 Tw
+(may increase as more units are added because of the extra connections that must be simulated.)Tj
+/TT2 1 Tf
+11 0 0 11 72 292.67 Tm
+(3.6. The Complement Encoder Problem)Tj
+/TT4 1 Tf
+10 0 0 10 82 279.81 Tm
+0.0342 Tw
+(As I mentioned earlier, the standard encoder problem has the peculiar feature that only one of the connections on)Tj
+-1 -1.286 TD
+0.0145 Tw
+[(the input side is active for each of the training patterns.  Since the quickprop scheme is based on the assumption that)]TJ
+T*
+0.0463 Tw
+(the weight changes are not strongly coupled to one another, we might guess that quickprop looks better on encoder)Tj
+T*
+0.1345 Tw
+[(problems than on anything else.  To test this, I ran a series of experiments on the 10-5-10 complement encoder)]TJ
+T*
+0.1565 Tw
+[(problem, in which each of the input and output patterns is a string of one-bits, with only a single zero.  If the)]TJ
+T*
+0 Tw
+(standard encoder is unusually easy for quickprop, then the complement encoder should be unusually hard.)Tj
+1 -2.388 TD
+0.2204 Tw
+(The 10-5-10 complement encoder problem was run for each of the following learning algorithms: standard)Tj
+-1 -1.286 TD
+0.1205 Tw
+(backprop, backprop with 0.1 added to the sigmoid-prime function, the same with the hyperbolic arctangent error)Tj
+T*
+0.0254 Tw
+[(function, and quickprop with hyperbolic arctan error.  In each case 25 trials were run, and a quick search was run to)]TJ
+T*
+0.0403 Tw
+[(determine the best learning parameters for each method.  Epsilon values marked with an asterisk are divided by the)]TJ
+T*
+0.147 Tw
+[(fan-in. )-398(These results are summarized in the table below; for comparison, the rightmost column shows the time)]TJ
+T*
+0 Tw
+(required by each method for the normal encoder problem.)Tj
+ET
+endstream
+endobj
+51 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+/TT8 45 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+53 0 obj
+<<
+/Length 6488
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(14)Tj
+-16.449 -3.999 TD
+(Method)Tj
+/TT7 1 Tf
+11.134 0 TD
+<00a1>Tj
+/TT8 1 Tf
+3.348 0 TD
+(µ)Tj
+/TT4 1 Tf
+0.826 0 TD
+(or)Tj
+/TT7 1 Tf
+1.083 0 TD
+<005f>Tj
+/TT6 1 Tf
+3.564 0 TD
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1177.3(Normal)]TJ
+ET
+0 G
+0 J 0 j 0.5 w 10 M []0 d
+1 i 
+76.08 702.97 m
+535.92 702.97 l
+228.06 702.97 m
+228.06 720 l
+272.04 702.97 m
+272.04 720 l
+316.02 702.97 m
+316.02 720 l
+360 702.97 m
+360 720 l
+403.98 702.97 m
+403.98 720 l
+447.96 702.97 m
+447.96 720 l
+491.94 702.97 m
+491.94 720 l
+S
+BT
+10 0 0 10 80.07 692.12 Tm
+[(Standard. BP)-11095.2(0.9)-3148(0.1)-3148(1.0)-3023(656)-2898(140)-2523(334.4)-2148(129.0)]TJ
+ET
+76.08 685.94 m
+535.92 685.94 l
+S
+BT
+10 0 0 10 80.07 675.09 Tm
+[(BP, Sig-Prime+0.1)-8780.2(1.1)-3148(0.0)-3148(1.0)-3023(462)-2898(111)-2523(196.2)-2398(74.0)]TJ
+ET
+76.08 668.91 m
+535.92 668.91 l
+S
+BT
+10 0 0 10 80.07 658.06 Tm
+[(BP, Sig-Prime+0.1, Hyper Err)-4004.3(0.15)-2898(0.6)-3148(1.0)-3023(267)-3148(73)-2773(134.9)-2398(58.7)]TJ
+ET
+76.08 651.88 m
+535.92 651.88 l
+S
+BT
+10 0 0 10 80.07 641.03 Tm
+[(QP, Hyper Err)-10068.8(0.01*)-2648(2.5)-3148(2.0)-3023(103)-3148(36)-3023(63.6)-2398(14.01)]TJ
+ET
+76.08 634.85 m
+535.92 634.85 l
+S
+BT
+10 0 0 10 80.07 624 Tm
+[(QP, Hyper Err, Symmetric)-5430.6(5.0*)-2648(1.15)-2898(0.5)-3273(31)-3398(15)-3023(20.8)-2648(20.8)]TJ
+ET
+76.08 617.82 459.84 102.18 re
+228.06 617.82 m
+228.06 702.97 l
+272.04 617.82 m
+272.04 702.97 l
+316.02 617.82 m
+316.02 702.97 l
+360 617.82 m
+360 702.97 l
+403.98 617.82 m
+403.98 702.97 l
+447.96 617.82 m
+447.96 702.97 l
+491.94 617.82 m
+491.94 702.97 l
+S
+BT
+10 0 0 10 82 593.94 Tm
+0.0615 Tw
+[(For each method tried, learning the complement encoder took more than twice as long as the normal encoder.  I)]TJ
+-1 -1.286 TD
+0.011 Tw
+(believe that this is because, in the complement encoder, the information gathered during each trial is unable to affect)Tj
+T*
+0.0556 Tw
+[(the one weight to which it is most relevant, so such information can have only an indirect effect.  In the quickprop)]TJ
+T*
+0 Tw
+(case, it takes over 4 times as long to learn the complement encoder as to learn the normal encoder.)Tj
+1 -2.388 TD
+0.1732 Tw
+(The last row in the table shows the time required using quickprop, hyperbolic arctan error, and units whose)Tj
+-1 -1.286 TD
+0.0565 Tw
+[(activation function is symmetric around zero, ranging from -0.5 to +0.5 rather than from 0.0 to 1.0.  The input and)]TJ
+T*
+0 Tw
+(output patterns, and the thresholds used to detect successful learning are shifted down by 0.5 as well.)Tj
+1 -2.388 TD
+0.1338 Tw
+[(Stornetta and Huberman )133.8([15] advocate the use of such symmetric units.  The empirical results they report are)]TJ
+-1 -1.286 TD
+0.0152 Tw
+[(sketchy, but they claim speedups ranging from 10% to 50%, depending on the problem. )-265.8(It occurred to me that, with)]TJ
+T*
+0.0643 Tw
+(symmetric units, the encoder and complement encoder problems would be equivalent, but it was not clear whether)Tj
+T*
+0.119 Tw
+(this meant that the complement encoder would be learned four times faster or that the regular encoder would be)Tj
+T*
+0.0102 Tw
+[(learned four times slower.  As the table shows, the result is between the two extremes, but closer to the speed for the)]TJ
+T*
+0 Tw
+(normal encoder.)Tj
+1 -2.388 TD
+0.0204 Tw
+(It seems likely that the normal encoder is one of the few problems that is well-suited to the asymmetric activation)Tj
+-1 -1.286 TD
+0 Tw
+(functions, and that symmetric activation should be used for most problems.)Tj
+/TT2 1 Tf
+11 0 0 11 72 344.67 Tm
+(3.7. The Exclusive-Or Problem)Tj
+/TT4 1 Tf
+10 0 0 10 82 331.81 Tm
+0.0864 Tw
+(I have argued that the XOR problem receives too much attention in learning-speed studies, but since this is the)Tj
+-1 -1.286 TD
+0.025 Tw
+[(most popular benchmark at present, I felt that I must try XOR using these new methods.  In this problem, even with)]TJ
+T*
+0.034 Tw
+(very conservative parameter settings, there were still some trials that got caught in a local minimum and showed no)Tj
+T*
+0 Tw
+(signs of convergence, so I used the restart method described in section 2.4.)Tj
+1 -2.388 TD
+0.0722 Tw
+(Using quickprop with hyperbolic arctan error, epsilon divided by fan-in, and symmetric activation, and with the)Tj
+-1 -1.286 TD
+0 Tw
+(restart limit set at 40 epochs, I got the following result for XOR with two hidden units:)Tj
+4.113 -2.009 TD
+[(Problem)-3337.3(Trials)]TJ
+/TT7 1 Tf
+12.071 0 TD
+<00a1>Tj
+/TT8 1 Tf
+4.33 0 TD
+(µ)Tj
+/TT6 1 Tf
+4.491 0 TD
+(r)Tj
+/TT4 1 Tf
+3.676 0 TD
+[(Max)-2648(Min)-1871(Average)-1691.3(S. D.)]TJ
+ET
+90.09 230.22 m
+521.91 230.22 l
+170.07 230.22 m
+170.07 247.25 l
+214.05 230.22 m
+214.05 247.25 l
+258.03 230.22 m
+258.03 247.25 l
+302.01 230.22 m
+302.01 247.25 l
+345.99 230.22 m
+345.99 247.25 l
+389.97 230.22 m
+389.97 247.25 l
+433.95 230.22 m
+433.95 247.25 l
+477.93 230.22 m
+477.93 247.25 l
+S
+BT
+10 0 0 10 119.52 219.37 Tm
+[(XOR)-4392.7(100)-3023(4.0)-2898(2.25)-2898(1.0)-3273(66)-3398(10)-2773(24.22)-2398(16.3)]TJ
+ET
+90.09 213.19 431.82 34.06 re
+170.07 213.19 m
+170.07 230.22 l
+214.05 213.19 m
+214.05 230.22 l
+258.03 213.19 m
+258.03 230.22 l
+302.01 213.19 m
+302.01 230.22 l
+345.99 213.19 m
+345.99 230.22 l
+389.97 213.19 m
+389.97 230.22 l
+433.95 213.19 m
+433.95 230.22 l
+477.93 213.19 m
+477.93 230.22 l
+S
+BT
+10 0 0 10 82 189.31 Tm
+(In 100 trials there were 14 restarts.  The median learning time was 19 epochs.)Tj
+0 -2.388 TD
+0.0181 Tw
+(The time of 24.22 epochs compares very favorably with other times reported for this problem using backprop and)Tj
+-1 -1.286 TD
+0.1373 Tw
+[(backprop-like algorithms.  Jacobs )137.3([5] reports a time of 538.9 \(plus one failure\) for standard backprop and 250.4)]TJ
+T*
+0.0257 Tw
+[(\(plus two failures\) for his "delta-bar-delta" algorithm.  Tesauro and Janssens )25.7([16] report an time of 95 epochs, using)]TJ
+T*
+0.1305 Tw
+[(their rate-based averaging function.  Watrous )130.5([17] reports a learning time of 3495 epochs for a slightly different)]TJ
+T*
+0.1544 Tw
+(version of XOR that uses a single hidden unit and some additional connections; his "BFGS" method learns the)Tj
+T*
+0.031 Tw
+[(problem in 36 epochs, but this involves a very expensive non-local computation for each update epoch. )-283(Rumelhart,)]TJ
+T*
+0.0914 Tw
+[(Hinton, and Williams )91.4([9] report that Yves Chauvin got learning times around 245 for the XOR problem with two)]TJ
+T*
+0.0247 Tw
+[(hidden units.  Of course, all of these studies used slightly different success criteria, usually stricter than the criterion)]TJ
+ET
+endstream
+endobj
+54 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+/TT7 30 0 R
+/TT8 45 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+56 0 obj
+<<
+/Length 2864
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(15)Tj
+-22.9 -3.6 TD
+(I used.)Tj
+/TT2 1 Tf
+12 0 0 12 72 676.3 Tm
+(4. Conclusions and Future Work)Tj
+/TT4 1 Tf
+10 0 0 10 82 663.44 Tm
+0.0887 Tw
+(On the problems tested to date, the learning algorithms described here run much faster than standard backprop,)Tj
+-1 -1.286 TD
+0.0967 Tw
+[(and scale up much better. )-347.3(These results are encouraging, but are not conclusive because we have only tested the)]TJ
+T*
+0.0217 Tw
+[(new techniques against a very small, and perhaps atypical, set of benchmark problems. )-271.3(The most important task for)]TJ
+T*
+0.1208 Tw
+(the immediate future is to apply the new algorithms, perhaps with some additional modifications, to a variety of)Tj
+T*
+0.0278 Tw
+[(additional benchmarks and then to some real-world applications.  If the speedup and scaling results hold up in these)]TJ
+T*
+0.0779 Tw
+(tests, then we will have achieved something of a breakthrough, especially when these algorithms are implemented)Tj
+T*
+0 Tw
+(on the fastest available machines.)Tj
+1 -2.388 TD
+0.0016 Tw
+(The development of these new algorithms was driven not by a theoretical analysis, but by observing problems that)Tj
+-1 -1.286 TD
+0.0433 Tw
+[(occurred in standard back-propagation learning and by attempting to cure these problems one by one.  The result is)]TJ
+T*
+0.0487 Tw
+[(admittedly something of a patchwork.  Now that we have seen what can be accomplished, it would be useful to try)]TJ
+T*
+0.0208 Tw
+[(to develop a theoretical understanding of some of these tricks.  For example, it might be possible to develop a better)]TJ
+T*
+0.0071 Tw
+[(understanding of the expected performance of quickprop for various classes of problems.  This sort of understanding)]TJ
+T*
+0 Tw
+(should ultimately lead us to more elegant and faster learning algorithms.)Tj
+1 -2.388 TD
+0.2761 Tw
+(Among the issues that will become more important in the future are incremental learning -- adding new)Tj
+-1 -1.286 TD
+0.0265 Tw
+(knowledge to a network that has already been trained -- and the development of networks that handle recognize and)Tj
+T*
+0.0589 Tw
+[(produce time-varying sequences of inputs, rather than individual patterns.  It will be interesting to see whether any)]TJ
+T*
+0 Tw
+(of these learning techniques are applicable in these more complex domains.)Tj
+/TT2 1 Tf
+12 0 0 12 72 398.8 Tm
+(Acknowledgments)Tj
+/TT4 1 Tf
+10 0 0 10 82 385.94 Tm
+0.0514 Tw
+(I would like to thank Geoff Hinton for sparking my interest in networks of this kind and Dave Touretzky for his)Tj
+-1 -1.286 TD
+0.0468 Tw
+[(persistent efforts to promote an active interchange of ideas within the local connectionist community.  David Plaut,)]TJ
+T*
+0.0123 Tw
+(Mark Derthick, Barak Pearlmutter, and Kevin Lang offered valuable suggestions and helped to acquaint me with the)Tj
+T*
+0 Tw
+(folklore of back-propagation learning systems.)Tj
+ET
+endstream
+endobj
+57 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+59 0 obj
+<<
+/Length 3990
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(16)Tj
+/TT2 1 Tf
+12 0 0 12 72 711.96 Tm
+(References)Tj
+/TT4 1 Tf
+10 0 0 10 72 694.05 Tm
+[([1])-1834(Becker, S. and LeCun, Y.)]TJ
+3 -1.105 TD
+(The Feasibility of Applying Numerical Optimization Techniques to Back-Propagation.)Tj
+T*
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings, 1988 Connectionist Models Summer School)Tj
+/TT4 1 Tf
+22.9966 0 TD
+0.25 Tw
+[(. Morgan-Kaufman, )250(1988.)]TJ
+-24.0796 -1.105 TD
+0 Tw
+(\(to appear\).)Tj
+-3 -1.791 TD
+[([2])-1834(Cater, J. P.)]TJ
+3 -1.105 TD
+(Successfully Using Peak Learning Rates of 10 \(and greater\) in Back-Propagation Networks with the)Tj
+1.5 -1.105 TD
+(Heuristic Learning Algorithm.)Tj
+-1.5 -1.105 TD
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings of the IEEE International Conference on Neural Networks)Tj
+/TT4 1 Tf
+28.606 0 TD
+(, pages 645-651.  San Diego, CA,)Tj
+-28.189 -1.105 TD
+(1987.)Tj
+-4.5 -1.791 TD
+[([3])-1834(Fahlman, S. E. and Hinton, G. E.)]TJ
+3 -1.105 TD
+(Connectionist Architectures for Artificial Intelligence.)Tj
+/TT6 1 Tf
+T*
+(IEEE Computer)Tj
+/TT4 1 Tf
+6.666 0 TD
+(20\(1\):100-109, January, 1987.)Tj
+-9.666 -1.791 TD
+[([4])-1834(Franzini, M. A.)]TJ
+3 -1.105 TD
+(Speech Recognition with Back Propagation.)Tj
+T*
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings, Ninth Annual Conference of IEEE Engineering in Medicine and Biology Society)Tj
+/TT4 1 Tf
+37.6016 0 TD
+0.25 Tw
+(. 1987.)Tj
+-41.6846 -1.791 TD
+0 Tw
+[([5])-1834(Jacobs, R. A.)]TJ
+/TT6 1 Tf
+3 -1.105 TD
+(Increased rates of Convergence Through Learning Rate Adaptation)Tj
+/TT4 1 Tf
+27.1353 0 TD
+(.)Tj
+-27.1353 -1.105 TD
+(Technical Report COINS TR 87-117, University of Massachusetts at Amherst, Dept. of Computer and)Tj
+1.5 -1.105 TD
+(Information Science, Amherst, MA, 1987.)Tj
+-4.5 -1.791 TD
+[([6])-1834(LeCun, Y.)]TJ
+3 -1.105 TD
+(Une procedure d’apprentissage pour reseau a seauil assymetrique \(A learning procedure for asymmetric)Tj
+1.5 -1.105 TD
+(threshold network\).)Tj
+-1.5 -1.105 TD
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings of Cognitiva 85)Tj
+/TT4 1 Tf
+11.4707 0 TD
+(, pages 599-604.  Paris, 1985.)Tj
+-15.5537 -1.791 TD
+[([7])-1834(Parker, D. B.)]TJ
+/TT6 1 Tf
+3 -1.105 TD
+(Learning-Logic)Tj
+/TT4 1 Tf
+6.2778 0 TD
+(.)Tj
+-6.2778 -1.105 TD
+(Technical Report TR-47, Massachusetts Institute of Technology, Center for Computational Research in)Tj
+1.5 -1.105 TD
+(Economics and Management Science, Cambridge, MA, 1985.)Tj
+-4.5 -1.791 TD
+[([8])-1834(Parker, D. B.)]TJ
+3 -1.105 TD
+(Optimal ALgorithms for Adaptive Networks: Second Order Back Propagation, Second Order Direct)Tj
+1.5 -1.105 TD
+(Propagation, and Second Order Hebbian Learning.)Tj
+-1.5 -1.105 TD
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings of the IEEE International Conference on Neural Networks)Tj
+/TT4 1 Tf
+28.606 0 TD
+(, pages 593-600.  San Diego, CA,)Tj
+-28.189 -1.105 TD
+(1987.)Tj
+-4.5 -1.791 TD
+[([9])-1834(Rumelhart, D. E., Hinton, G. E., and Williams, R. J.)]TJ
+3 -1.105 TD
+(Learning Internal Representations by Error Propagation.)Tj
+T*
+(In Rumelhart, D. E. and McClelland, J. L. \(editor\),)Tj
+/TT6 1 Tf
+20.553 0 TD
+(Parallel Distributed Processing: Explorations in the)Tj
+-19.053 -1.105 TD
+(Microstructure of Cognition)Tj
+/TT4 1 Tf
+11.333 0 TD
+(, chapter 8. MIT Press, Cambridge, MA, and London, England, 1986.)Tj
+-15.833 -1.791 TD
+[([10])-1334(Rumelhart, D. E. and McClelland, J. L.)]TJ
+/TT6 1 Tf
+3 -1.105 TD
+(Parallel Distributed Processing: Explorations in the Microstructure of Cognition.)Tj
+/TT4 1 Tf
+T*
+(MIT Press, Cambridge, MA, and London, England, 1986.)Tj
+-3 -1.791 TD
+[([11])-1334(Minsky, M. L. and Papert, S.)]TJ
+/TT6 1 Tf
+3 -1.105 TD
+(Perceptrons.)Tj
+/TT4 1 Tf
+T*
+(MIT Press, Cambridge, MA, and London, England, 1969.)Tj
+-3 -1.791 TD
+[([12])-1334(Plaut, D. C., Nowlan, S. J., and Hinton, G. E.)]TJ
+/TT6 1 Tf
+3 -1.105 TD
+(Experiments on Learning by Back-Propagation)Tj
+/TT4 1 Tf
+18.9966 0 TD
+(.)Tj
+-18.9966 -1.105 TD
+(Technical Report CMU-CS-86-126, Carnegie-Mellon University, Computer Science Dept., Pittsburgh, PA,)Tj
+1.5 -1.105 TD
+(1986.)Tj
+ET
+endstream
+endobj
+60 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+/TT6 11 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+62 0 obj
+<<
+/Length 1914
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 301 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(17)Tj
+-22.9 -3.6 TD
+[([13])-1334(Pomerleau, D. A., Gusciora, G. L., Touretzky, D. S, and Kung, H. T.)]TJ
+3 -1.105 TD
+(Neural network simulation at Warp speed:  How we got 17 million connections per second.)Tj
+T*
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings of the IEEE International Conference on Neural Networks)Tj
+/TT4 1 Tf
+28.606 0 TD
+[(. )-250(San Diego, CA, 1988.)]TJ
+-29.689 -1.105 TD
+(\(to appear\).)Tj
+-3 -1.791 TD
+[([14])-1334(Schmidhuber, J.)]TJ
+/TT6 1 Tf
+3 -1.105 TD
+(Accelerated Learning in back-Propagation Nets)Tj
+/TT4 1 Tf
+19.2739 0 TD
+(.)Tj
+-19.2739 -1.105 TD
+(Technical Report , Technische Universitaet Muenchen, Institut Fuer Informatik, Munich, Federal Republic)Tj
+1.5 -1.105 TD
+(of Germany, 1988.)Tj
+-4.5 -1.791 TD
+[([15])-1334(Stornetta, W. S., and Huberman, B. A.)]TJ
+3 -1.105 TD
+(An Improved Three-Layer Back-Propagation Algorithm.)Tj
+T*
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings of the IEEE International Conference on Neural Networks)Tj
+/TT4 1 Tf
+28.606 0 TD
+(, pages 637-644.  San Diego, CA,)Tj
+-28.189 -1.105 TD
+(1987.)Tj
+-4.5 -1.791 TD
+[([16])-1334(Tesauro, G. and Janssens, B.)]TJ
+3 -1.105 TD
+(Scaling Relationships in Back-Propagation Learning.)Tj
+/TT6 1 Tf
+T*
+(Complex Systems 2)Tj
+/TT4 1 Tf
+7.971 0 TD
+(:39-44, 1988.)Tj
+-10.971 -1.791 TD
+[([17])-1334(Watrous, R. L.)]TJ
+3 -1.105 TD
+(Learning Algorithms for Connectionist Networks: Applied Gradient Methods for Non-Linear Optimizaiton.)Tj
+T*
+(In)Tj
+/TT6 1 Tf
+1.083 0 TD
+(Proceedings of the IEEE International Conference on Neural Networks)Tj
+/TT4 1 Tf
+28.606 0 TD
+(, pages 619-627.  San Diego, CA,)Tj
+-28.189 -1.105 TD
+(1987.)Tj
+-4.5 -1.791 TD
+[([18])-1334(Werbos, P. J.)]TJ
+/TT6 1 Tf
+3 -1.105 TD
+(Beyond Regression: New Tools for Prediction and Analysis in the Behavioral Sciences)Tj
+/TT4 1 Tf
+34.6885 0 TD
+(.)Tj
+-34.6885 -1.105 TD
+(PhD thesis, Harvard University, 1984.)Tj
+ET
+endstream
+endobj
+63 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT4 5 0 R
+/TT6 11 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+65 0 obj
+<<
+/Length 1199
+>>
+stream
+BT
+/TT4 1 Tf
+10 0 0 10 304.61 749.14 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(i)Tj
+/TT2 1 Tf
+12 0 0 12 260.33 711.96 Tm
+(Table of Contents)Tj
+11 0 0 11 88.5 700.28 Tm
+(1. Introduction)Tj
+40.5455 0 TD
+(1)Tj
+-40.5455 -1.0618 TD
+(2. Methodology)Tj
+40.5455 0 TD
+(2)Tj
+10 0 0 10 107 677.8 Tm
+[(2.1. What Makes a Good Benchmark?)-26493.8(2)]TJ
+0 -1.08 TD
+[(2.2. The Encoder/Decoder Task)-29328.3(3)]TJ
+T*
+[(2.3. When is the Learning Complete?)-26939.2(4)]TJ
+T*
+[(2.4. How Should We Report Learning Times?)-23299(5)]TJ
+T*
+(2.5. Implementation)Tj
+42.8 0 TD
+(6)Tj
+11 0 0 11 88.5 622.92 Tm
+[(3. Experiments and Results)-28878(7)]TJ
+10 0 0 10 107 612.12 Tm
+[(3.1. Tuning of Backprop Learning Parameters)-22994.3(7)]TJ
+0 -1.08 TD
+[(3.2. Eliminating the "Flat Spot")-29133(8)]TJ
+T*
+[(3.3. Using a Non-Linear Error Function)-25772.2(9)]TJ
+T*
+[(3.4. The Quickprop Algorithm)-29271.2(10)]TJ
+T*
+[(3.5. Scaling Experiments)-31744.3(12)]TJ
+T*
+[(3.6. The Complement Encoder Problem)-25357.6(13)]TJ
+T*
+[(3.7. The Exclusive-Or Problem)-29107.1(14)]TJ
+11 0 0 11 88.5 535.64 Tm
+[(4. Conclusions and Future Work)-26070.8(15)]TJ
+0 -1.0618 TD
+(Acknowledgments)Tj
+40.0455 0 TD
+(15)Tj
+-40.0455 -1.0618 TD
+(References)Tj
+40.0455 0 TD
+(16)Tj
+ET
+endstream
+endobj
+66 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+6 0 obj
+<<
+/Type /ExtGState
+/SA false
+/SM 0.02
+/OP false
+/op false
+/OPM 1
+/BG2 /Default
+/UCR2 /Default
+/HT /Default
+/TR2 /Default
+>>
+endobj
+67 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 750
+/CapHeight 676
+/Descent -250
+/Flags 262178
+/FontBBox [-168 -218 1000 935]
+/FontName /Times-Bold
+/ItalicAngle 0
+/StemV 133
+/XHeight 461
+/StemH 139
+>>
+endobj
+68 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 750
+/CapHeight 662
+/Descent -250
+/Flags 34
+/FontBBox [-168 -218 1000 898]
+/FontName /Times-Roman
+/ItalicAngle 0
+/StemV 84
+/XHeight 450
+/StemH 84
+>>
+endobj
+69 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 750
+/CapHeight 653
+/Descent -250
+/Flags 98
+/FontBBox [-169 -217 1010 883]
+/FontName /Times-Italic
+/ItalicAngle -15
+/StemV 76
+/XHeight 441
+/StemH 76
+>>
+endobj
+70 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 701
+/CapHeight 0
+/Descent -298
+/Flags 4
+/FontBBox [-167 -299 1094 827]
+/FontName /DOHJPA+Symbol
+/ItalicAngle 0
+/StemV 0
+/FontFile2 71 0 R
+>>
+endobj
+71 0 obj
+<<
+/Filter /FlateDecode
+/Length 20699
+/Length1 40112
+>>
+stream
+H‰äW}tÕ¿3»3;³;»Y9
+UH8‡jE¨`BÅ’ÒÀ‰©iË¡fwŞfGf?˜™%Z%%R¾#hŠ©¥[«)¥)¥ÔRH
+M"b‹‚´|T@¥„bé}³³›z<µş™÷ÎÌïıŞ½ïÍ½÷İ7ó ¸oNğ?òè½÷W2€¹{g-
+TÌğVœk|O&"ßÀ)F°xÀ=£é`,#B±¨rş»K— PıT(^i½ç­­ OlA}¨ÔªCÖ-¸`õ GC˜ÈÊñí«š ’8~t;¤=ìs óQ†„#frµ»¼ù;¨_ğxÂ0WÍC :Q®i± LZ•C Ï7£MÏDäd\8"¾‰ó=†ò‚1åC‰/	 µ
+€°1*GÈ”¢!€u¨ïˆë$~± _ÀrÔ.ÅõX¼zßÌa õİ(ÿ*8œõÌJàÀÉng—âŒËÓÈƒû r
+šøQ3ëÃ[‹Ó<^­€íÎ®áj ¿Uhs†ÜÀ¿@9ûáXKØñ0Z`&œcšàYfg– ôØMĞ†×³ åhn8ÛğšÁîÅ!	Ø˜¨Õ ,;M`ÿj¦|ìx¶‘Yì|fL‡|¸ËÙ—á1Øâˆ@!¼ÌÎ„ÇYpğò3Z0Ì²â¸â“¸°6C
+"3ìLW	t2	Ã18	£`€`—À8Èle3ï2åìØÅt3û™RÖpzÒÂm…ÛÙ9€)·Ãxp:ÒòR”çÃİh?½Bèû^n=ú?…9£FÂZX…ık¡”ÛŒlc8ZR@Ö»‘¯AVË•Á.xÊá 7ĞÂ'øY–l«£‰)ÄV-×ÆP¾ÆĞŞgòca°ó.v&¿çÚÌ=Èf« ®°µÜæ¬àR~LWË˜tL&C9·%·bd#ÎÀÉ‡Ë\9¼Ægı¸6¯dcó:w†•ØI¼ç¸óL's/ÿ¾‰éä€­…fÿ t3…üf,ïãÃøÜ Fpá÷{æ/ Ü~CÑ±ñèôt¨‚e˜#!‹p7ğÚXÜM'€åJaƒ\UeØ¤í*ÅSÄ­oRA,nÌ	 *k!+cY¼x Ëq¦–L~W=î“´:ˆiĞÓG‹çx6"> ?¾S¼; ÏF#]ò_ÈÆ¤¦^+&Î„¾“)û²1Á5ŠæÉÃ}=&!-7Àü>‹e}=&Æ lLú|{=‰V÷õ˜àG)ÏY÷cLéë1IŸ$İßùbŸ_?ı¦c(=…İåÌT#Zï´˜zæ¤É 3õÚ«ÌTúÍÇâ°Nødº¸2¸sqã;ßpøÄï!¾óñ€Ù‹¹œ-W+>-º…õ/’IÖ¼Ÿ³ “9k`©©á£1S!¡Ú¸ÀÆZŸ²q¡?²q‘‹m\bãR—Ù¸ÜÆ6ÖÙø´+m\eã36>kc½?¶qµÏÙ¸ÆÆçm\kã:l|ÁÆõ6¾hãçÄ„û‰05n¨Z,:ò%>¢F&ù©¨Ã s²¶QérĞTcÑŸ	j4¤FU³:Å‡´˜®Fîj‰ÀË.E•#ø÷ÃtóÎˆË
+yU”u=Vˆ™áÆtS#!ó—.«™ˆor[]Åãã¯Òr%VİÌ+¤R'ä×b\KÔ£‰7H§ÿ„Ù$ºe×!’ĞL5®UÿV¢¿_1Ú(k[=q´A•5E…~ÇšFÌm¼¢ÎUò{ı¶†¿æAPçÊ‰É<rçHZ’íÑ4büÑc™5—è&Iî,F¿ç‘äN_©*W¢5fB6s8S<Ü"<„Ñš=ÊíÖ.OQ‰n˜ºl»}AUj$cûŸİiNmH$nVÄl“Ô(ú‰nSŸÚ¹Dáuu{ôFÌ=>„4’Ìğ½"úf$ØÜ'eT)Û/e){ÃEğñ$jpÓX¤Ûorr´R#*uYQ±ã¯^Tª†e„®†ú‚øƒk­•Åßò¡7
+‰Èúl‹¿íÂ*‰ yÈE'ÊÚa—3#²~Ç­Å*i>íH¦-G•¿‰v;¦ÿ=Z% Ñd9še4_¹3,?îÍ´-KNdiât¸´Ø<­$'EË:ø””õBïz{@ú·×¤ï‹F"‚c¤OÓ"Q:ƒ?ÓKHòl/	˜x¸3f3­øa.%ÉriÀ<ç¡”¤Uÿ!eIDUÎ÷Šæ?]!Éæ¤F.º-o,«?hZài—Ü™–¿œm“ä¿²í€yE²lµFšñOrIvæ°€ùoŸmª­Ûu'ÉO¯ã³;m¾­}ÕÛËĞ›k9Â€ÙãúZúM“yƒ‹ks+€Óîa._/¹±¦G:«ğ„Ú½’îâ¹
+®‚2§u9ulßT:ö·Óêú²Ğî©s7zêÄ=b«4ZLyê¸
+wìëò}İSç©“Ê<G…ÓbRlõ¸]¼Tæ.—¶‰­\…÷Ô[Œ³•¸û[3uñÂ4¾^Lq%bŠöˆEÂ4ë)xS.^,ò„İ]®÷ğ:ëÚä¸ßµ	û?ÓÃÿ¥zÎŠç—…v¶‘FA²‹¿1o˜¢Úùzj‡'ŒÏ‘ö[h÷ƒ˜òƒ{±w˜»KÚ–·G*“Ê¼ÃèİÎ­”K¥¾ox‡ÑˆzÂb
+GfçwåJ¨\ª÷„ù!½ŸeUi#Wâ¸»h½Y^Ç•Ö!òğàpò {¿ûì+‡Ï_ò;şKgÁM=ø£TÜË˜Ïœ² †ÚmûŠÛœ\Ü­ç]ø?LÄ’E7vçd•;l5YŸ<M[ç(Ío¦·ÛÆ8pN?bş©İ²ôÍİCO–./“]jøä¥€šÜ©¢ä2U:˜¼£sòÛò;»·né<óâ¥;w^l–òè“¨0 æa–ÎÙŸŞ:¬é‹`q'8ú7;éÁÌ*C¾£q×Û62ş]ÿ¡¾l`›8Ï8ş¼¶/æŸLÊÈÙ¹A€… +í2rqœà0Z2
+*í:‘„O­k›† ¥ä54ˆ$„
+j e“:TF×ª*œ`@[Z	&¢É@W*Ğ¨C·5ÆŞsg›¤ˆĞŞW÷á÷yïy~ÿçı¸óñÎœî ·ª3.ÉjŠñ˜¬R´è¥J¥»F,	zÜùå¢‹ì^Ï&ú	ö±L¶õHá÷¿Ğ}±à2·à*ıã$¹£uÖ‘1‹¢{wk“¥Y¯7ú’4Õ`têaîeX­ ù­4õRà=©DF¶k}¶`aÁ!ŒTy¿—Õä¹Èˆí~Œ¿¨QF £â'ü:u”	«ù:#*ŞPîÉ?N®loñûe¾Ò„t¼Ñi0Ú5Ù`äºcÇau+°j?@JÅtÆÆğ #=¾y¸½õø2GÚ—Û”/w¦¡LvÏç;²	ÈXwUq»Q²¶å®Ë¯]BF>òiõÁ.UÓFx‚5õ¡?.“*v¨•í¯VæŸ;‹Û³ÔP°Qq!cÖ§Õ/NúUG¨Û>éĞõmlã‡_ğ”(TEd¬uPK(BÈ¥âEX£Îè¯Øå9s4ßS¤t.¯›¾F°+;”mò,º…z•ÄdW¶*Íícg’Ñ!6Y×k! £¸¢¼ÆÒR¨×=£ƒniÏÏ=¶9z¯¹2Âg‡¹µ@İ².âÓsš>=şÍwÊœi—.VÄ®ÎÙ”gw+…€Z`ï]U»¢?‚c´jdf¿¿_ÊEtÆ/ÅÏ”Å“\Ş.U–vĞÔF	ù6y®v"`×Ëİ[åæ=Èè¬ëĞËÄœÒ&+ıÑr32:BNiƒÿXçR¹¯&èoÏ—üÕPËVÌãAÎe5¤i>}¬íRs¹£Âóèx«]è¬pUKÈX¢Ô{–ö«¢£F®½6Ğ~ı¤
+P°·¼Ä’óqšy¿æ¡3õU–D€,ÛÇ4İíkğd'Úâ'>´û.ÈÍndT’Œ¾ghS1wlzN¢¸Ù!áR
+5€yöÅnÅç/\†Œr¨¥©2?ß) #ÒazÆ×Ëšgz*&:?àî 2OaŞ×®áFJÄ1ìóÇó®5’Dœ¹¨ã—‹'dFFì`Å±ÙÛ˜áQÌão~æÛªhÔÈc_2.Ñê¤A³CÏ£l;…0 .BÆ¸f6Úù®&}ÍHÈ8 À“Œådœ`·›¼iÆ·¨‡EUØÓ›øæz:Ş8TLb\ëú†NÇ”Ö£cL°[5²f½è2jV{‘Ç›<-;€ëóqAzÍTtãÉM’ .,\Ø:çDæÛ8UAY–Ÿï$ÿ_GòPãqÜ{
+|ÜÕ\%¯»ôùxp×óã7xæUìy¼lÉO}íÜ9vkx  ¯\ß¥ûk/ÌOÍG}Ù›“Jû…R ñó§¦¶_’	Â²£çcÒx%KÀ*uóñe}ïAgœ}>É˜:ë6¼¸«¿ŠGŸ^m©Æu=;V×[—è5-¶¢mËÑş]+NŸÌÊú:q®+ÖUñ´óá³ga(ò·Î¢ã—_wıº÷ÊªÚ>Ü{"ÅaÀ¡&×µÇ_GâÓ$S«ÏZØÆ>Ø’›\×u‰ %ÑE!l¬kÊåhH®½5byç^÷H±ÜMm÷òà›ìÆÍÍ…$wD}·“
+rŠRj£Cƒœ¡|Û ¤ò¦§]8ÒEKXj#CÂè.sû‘QåİdÒätw¼¹¹daôhTÔn0*rE’‘2ÂØ©oŠ4£­Hâ–a$ãÙ–«Êù#9b¹”6„¿lHÉÒOˆØ" U§áã4¹¶?	£2ªƒO§:Ü6ŒáNhX›xÑ(Ûáª;@»“BÀ
+v9aL‡‘Ï‹¯ì™ğÌ…'a,†gğ»f%¬ ¼!ØMĞ
+m°öÁ»ğ>tÃ_àœ…óp®À¿!N,ÄA yä‡d
+y„xI™Cæ“òYI^"	‘WHÙIŞ ûÈÛä ù3é"ÇÈÇä4é%È%r•ü‡j¡6ê¤9ÔMÇĞéCT¥åt6GŸ¢?§UtÉ=¨ÏÑ•ô èú*m£¿£oÑ÷hı„¡_ĞĞ>ÚOÌÌ2Ù÷ØLfcÙD6•±ÌÏ`ØRö<[ÍêÙ+¬…µ±7Ù;ìûd§Y„]dWØ §\äÃ¹›Oà“ùş^ÆåOñ¥ü9ş"¯çùf¾ïáûø»üOü ÿ€wğN~˜ã'ø'üïåşw~‰_æQşOş/>À¯ó¸‰šÌ¦S&V'á‰›JºßwPg&’A,TÀ™;Œ˜):§"Pf-bTzãÌPVjÆcÍ0ŒÔú£Vb¥™xo5A·b«…ÃXz/¶šˆ•è‘2t_8Öfìƒşˆ	¯B²¦,úU·CoİV¦·ß‰ÂÛèG.T‰Iu:ŒaÅ(6’…xè
+Ø‚a·¤É˜Í”AlÄÊDT"ê¹Ãì‰ØGW>ä@Å†ÙEÔ¢GÑ3aø§zê5ìØÏ<X9ÆâXÑf"Ül5£7j66ıLĞ†ÏÁ4êë8ÙxºpY·ãÙŒmKîÑq_Š7Ån¼z¹$ãßè}/Âí»í+h©{³-êB-“;ynäs[ìÿN‹s¨¡@F-ó:¹TÕ"òû¤…ë×İhñÑ’%¨¨Å_ŠZî–Ü~˜vk‹~Ùß\îRIDÒ}Ñ2\×b¿7xWZFıo³l©¨aıœúÃ4rk•)-)£ÁÉºz¾Û8œÖÒ_¾5‚ÄÆèZ²d¿×—Ô¶t0ÍøãÑÒp^té7=şZBñG£¤º®®Ä…˜gm¿Tk‰®)*Îı*‘èÛzÅÅ	m´ä0Ø5#ı/óõÛÄu üûŞ»Ø\œs’zgğœËR´±ê£Ô_BÙ–­ ­?&mÕ9AalÌÚhŠ’KHœdrHR:Él‰?ºµ[¡lÚÚ?Æ968UÓÁ¦µbÒTlE‚i ÕlÕÍí½³Bù¥m•¶gÉ²Ïï~|üŞ÷û¾OcïîÜZ»A†ÕhĞ–\}Û~Û²}üÆnë¬n}yÇ³2æ!ÃóØÀ^”¾áÂ–EXn™X°©´ş(Š&¯iéáì&›^ºÌ‹J¬ ­–TQrHb\‚áz»_Ó,FÙ 8o‘tÙº—eõ¥‡L³š˜nÊàäÒóÑ£\LÀÒğ°K„z|:l¶Ç†—I¸~ù˜…†¥V?´2ËÕ‰¶æšœå‚8á¨ezû¢³İÚeÂ{º5Ëâ‘:Åe[ZEı’ŞàqxœıÉ8ç·ù| lÀ‘í;—,,³(ì¿°›,^PT€H-º&xBÖ¯f©dİm·-İ™zj¡7*ÌzÕ²Tc­ËæüªaÈË,Cœ1'´útf9{óÂ’åÒõÇzÛÁ™ò	V9%x%9‹À,JƒâÒcSGÜĞàq•;!"éô*ŠÏ’`ÎÈYĞ¹D§­1D6éóB0÷N&í×/î#gÑ…!j‘OÅÔ’ñn^Èˆ"Ÿ“dÇ1Ÿ·ô„ªëùF}²´È>æøBÅ|¶ïØ1}~¶æ;;¹ŠnZ‡ø£m‰­ÛfIš#K–ÙJÙÑfo¬+=N-‚¡Ä÷%Ú‹½60ŠµRğøzŸoL9¿Ú].WÌ¹§»CY]‘rósFÂÆ,¤öâá’®WŠÏİlLGb§ûN¾uìæklZräÔ¢~QóIe[2/ÒıeÈh€‡ÍHÿT6gyv¤s³x¾*(ğÑtmZérôJ“ÎÃPéÔb'WÑod´ÔWµu»æ•¦m&ßÖ\.j‡,Ë£FK$—Û°,•—µ½Zu´×m*«j+£=@-f4î¡–Ú2f9³+¥)^Es/<×?hYlåç\îôk£c£›´t$˜şcàÂÅwÊ\Dm~Ä,‚¥ôLß™³*'ÃˆÙ¦3èLv¥ÇPÂ²<aÓ6úìåAA<¹t7ÑS›u£‚¥/0«úL~bGin™P¨¥u›ÉY–ÑGM2ï?"z™¥L0Ôm½²m.¥ ÂI3¾bK4ş,«uf–.PAV|4hÍ1›'îRÒ¯NM¹uj	¾¨d2»‰«:ÑmYÌÁ£âğ^ZÛ.êXeQÄ‘E~º.™7X–§õ¿ÎÎï»&/]Dı"µÃì!7züq1å-ìd/#;<Ì"ÑqIZÙf©İ?½¸úµ[&µèÌz¥ıJL"CŸäÓÂJÎ²ÂeµâakN-b%/.gáã‚òÆ«;¨%6ñ[–`Şb«Ş¯
+0ÇMóÒM«XçûÌ„*ƒÖ,&ÍÌp–%ŞEõy£Á¿aÕ˜e€ZúÌA˜¥sŒ®/³ÃæK[éÌòÍ—§é£ÙaÈŠ—ËÂâgø=û¯g‚K:.ÍšBuö äWÂVìGãî~ì<'şÁŠ}ÔÂ·`Á–·HÔ’¶,ÁéH]ğõeTsÈ n”ZúÆ¯Æ¥F—‘ÎÆ¥$?ÇŒı)Éß¬
+®ìWW"ÈYÔ6B_?ÑA>KWÉuùq‰'ÛhíÒ_dYmÍBŞ2 òs¡„KÒu¨äg<Êj	ê-§¡?Zç#¹œ—b„Zö[9sŠ ´ÏQ‹³”Ç%j©›rúËÆ<ÁÓÛON4USKp„ÅK;8B©q3`ïañÂ~dr&é°æ2®IÕÒ >YFÔUdÜÂâ¥M„ÍÉK!^†Dš“iºg–³Ë,1¬ò‘©z	Â&µ½­A¡ÓKó˜‚Pt§›Ğµ’Zº¤"†EÅZ+íYE¨è1Á£u°<¶ör¹»ãåÊ±_øÖTŒ{üÏÿùhl¾ú©o?w*FsrhÑ1¼×Kt¥"ºtĞ¡ÿB;´g‰@KÃÓë›?:B×—°º"šm§@ó˜"ƒLoIˆ‰ù<V„yºV&Ü]+YNT-BkşŞvkØñøŒH-©ëæc×Á˜}ÎKïå7š¿˜f<›Ï6öšãÙcY±1Ğë­Ïfö¬¹¨Èj¦hæ/¡ÊH2VQüOŞßh‡X,âOı®•t¶V"ĞØA_4öíY.WYµqK<öXh³=Ñ­òİ}…õÅ\i“³4‰ùõcŞ‹R`ÿÈ²àÛ^`–Û{1,^V<,ÿ|Ÿ¦ƒU„äzu 2{XláÏw’õ5…şô‘Øcİ£êÆÖ“ó_P:uÇ	VíSr‹YN€³­›YÄ%­Çş+K‡úPËı/u·¥Ä¤ãeêò=»ê8Äµ)êQp¨‚®E´åî®Îjö;-Aı^”Ò7å-Å¸VÁÒòĞ»æ[î¦Ô0Aæ©¥/K«æÿwš=÷®{!ÊŸ­Şm1ôĞBî£ã×*Xî³£»»,ëdÕ²ƒ&,³ü/ÛC÷•÷nˆV¨Ô¼êøÿ±ü‡q|Ş"|‚LÃáø4­æëáóĞ[éñIxšnf: öÂĞƒ—à(œ€Wà4ü~g`.À{ğ>ünÀ"ZJ‘=ŠêP=jB_F_C»Ñ÷Ğ GGĞ	ôKô[4ƒŞBï¢Kè*úº…	¶ãR¼¯Å
+nÀÍøø	üşîÂßÆßÅ½xOà)<_Çoâ~ÿ	§ğU|/’"²’¬""‘>Wù,yŒÔ“ÒBÚÉ3¤ƒ<G%Óäy“ü$É;ä]ò>ù+ù€Ü Y®ˆsp.®†[Ëmäš¹/qOrAn÷}nˆ›ä~ÌıŒûgposïı‹öªŠêºÂçŞwßÛ·?¸oRVËÌ¾]‘¶©lPˆÚ‚ÑÔÎÈ+™N&¢6­N,°Ñİ¢€:J"#¬šV:ÓhgêÄ¤- ¨ÑÑ™LkgÌ@ZcÒ;QÆŸ×s/¢Æ¨sÏ÷öİŸs¾{îïÇ>aÿb—ÙMY•“d]&Ï”‹ä9r™¼H^"×ÈA9"¿!ï’;å·å÷äcòGr¿ü©|A¾()_‘‡ä›
+QdEQœJ²’¢x¯2I™¢LU²•§”™ÊÓJ‘R¢ÌGyd¼¬Ü‘@¿Áxˆ2UH˜‰…ØÉ8P	:&f°PE¨Œ%f#ü‹ÈTX°J,@lhÁŠÏqÄŠª€çT8ğÿ8àjÁ+ÖQ1Ç†~lD‘4d6´há¶ÌÂ–Š5y{c+
+æ¨Â*oa#fj&ŒbÛ‡éáúÏ=ñŞHÀ£0šH˜‡JT|«!Ç/şqLÔÉx¹M²“láä}åDÁ¾!…‹8hÄ†V¨•ZI"®+ b<•xœˆ‰‘0Î
+–à((xµ¥60É¢L<Í¼n
+VÃhâëØàÇšq#äwà~l=–âÿO.²)êÑÂ¡oÍÅƒo·‘¦?n$Ú˜séH\8[ÄûÆ6f¸7n|Où÷º¾#!k©| "¾8’œÆ½»%ÍY¯İ¯Áí›àh
+Ôˆ“Çñ›…&Ìê#*@m’Ç ¹yÜö§ï0R['^ËÀéáïEpŒ#IîYxq6T2H”“ÿÃsH/<öƒ½µ¹Æº¹ïÌq§|6Ô×eœ³Ãk\ˆ$Ì¸!~m÷5©î6ğë|PT°…©Í–ø9É€ômzô¦âQ äÖê5—;èHL<yy—omG$j,•Ç¤§4+’ÒÌÀõyoMá¢y=¬4äÑ¢¾½`¼Ùéô•µ„µ®İ~U !·‘Ø48®«%uí„æiUÒ!k¸ŞlB$Ç&,ó—Ue–ÆãFi}èµÅQ$åÀâ "™z^ IüËµ¬(İÖ®öĞ¾à.ÍåRi¨Äâ[[Ÿ–áìZ’’Šµ²Êİõˆdé¼3:~ñƒª´7wõıywq[šY×TeJóá¶Sº‰ìô¤Ò}ù£L–¶.İøLUææ÷İ}‡¯\¹ÚÏŠVe-ğ0ğkAq–l]àq5äÿW I=ûvØÚµs{ÇøYƒmª/htÃzK^KÃù¶`lï3–'>*ÔÊu¿/Ä‘ly½h~U´s½oÇÊuYå­Y•æ‰µaWÖšcııµ†á0ÂöÛîT£÷˜Œºœ”ÕÍ…Ë÷'¥kº¯©>µhn Ì³Ôğ-2ö-{:Ê®Æùù‡8’eÉ[J½'vÚ{!=¦x"ŞËAò›ó…³¾–z_Ä+™lyâo!Í«/q«|tÂ‘â=Ñß)¾ŠòÙÓ5$£IUæoÃ Ç¤„@faÅ5•ğÑYd{©ıDU–Ë¥i®bÕnh«×;ÒIy»‚£S^q°Ì<&Éú¤-×Ò¦Kfé»MŸD¼ZõİÔ[âğ¬E$gÉUójA¦	$áğ‘Šhgä6‡–¯’îä«}]M|L&Ğ½«qş-Ï<ÛKóÎTe$aUM×3æfgÉªŠ=­ààH¾±jiZVƒŠH~Û;=êÕ].P}¥íZ½¯Ùá4óëĞ¼f=¤Ÿ}1[Ãá‹£%>_ùÑxLtµüÉW6|?ìj,… ÑXPãk§¶úbu	®ô$]÷…˜©ß¯…BàÑHÄ-FÇ Ÿ'Ó†gìøğÂÏO¾ª‚^]›3ueÊ	€I7jß3ŒÜcë^èêr‡?Ë=•Ÿ³â ±1ÿìòA¨Ú?gF8²2óİÔÍ3O©Ë>Ü±â¸nÚáîÖê(ß?pµÜRù*VA¿°æè[nû¶÷ûøŒÔmõjD•ÏX›7/
+ÉÄ^$¾Ç6ìN÷Ùı\ù¦Qç'.Uk’çS=C4ÔîmÂâ†ã[Éhşª ŒÉ3’pUcHüÜi¾î›ËHêKIåğ‡}ÿî¶Ê5iÓ¡sjƒgh;Œmğ©Òeï†zTDâ#aú±nşÖï‡äA‰8Ã¼ÒÓuÁ‡ªÿí%âFR÷¸¼$@"|Ra2ª)¹0YU …dVeğ,ÆØÿ~Ë‘[½¿‚W¡"ğ:lF†ƒNØï ¿:'¡O0¬Oáø
+nïÍNâ"n2‘LF¦•K¸qÍ%Ï’ä§¤Š¼HjÈ+d-©#¯‘(2¯­d;i#»È^ò6ù#y—ô£är†ü•œ#ÿ$ÿ&—ÈWä:1(PF-AœÔ…ŒÎCSéd:…fÓ™‚×- •´š® «éZÚ@Ãt#İJÛÙíAn· ¢GèQz†¥ıô¤CEv—$¥H>éI)[ÊÌ¬¹Y¥T--GvV'E¤&©9Z›“~/”º¤Òidig¥äiƒÒUé:25`Ùš™Ù˜9Y"KanæeÙ$ö=6e²l–ÃrÙ˜Ÿ°Ù(ó@º‡HÄ¥$Êø}LÈÌÈ‚øbB%¼é+p—	óÅ­ËğV|ÃŒ³HE;&Tâ¹Â0óâ¹*/çÌ†¹	C†Äëq{ªàœ·q5áè‰ûæ²°Í[¨å¾—RÑ6ïE6‡,rXk3Û°_¡¼ŸœgÆ±›dÂ:ÃüÏ‚<Gp,¸‹wÆûÏÅŠ5MöAôGØª`¼FXª|[Ç*TáŒ–Sò8%Q&¼LÁõkåRÈªŒ[œ·Jo¢=¾ñå=Ü0ëÊüüò,’öµåº¨DE¥ÜË­jbãÎ§ÜÁ¯­zo’ÄÙ‘ÿÂcÛ4zÔ@PŞğÑ¯ı ¾Õ1M×„ßá7ÿù¬ñ®´èæ‰®`ÏÂ¿k”'[C—.véNıøäPßÕü2uÓÇ—.ıÚøÂ´ée£AVïÇ†é û¾S£­×ÅR
+áhPœ‘ØN‡œšÁ°C‡wÆ4ì£¡Ä³:Ğ¯3]ø•.OGb;ã­yÍÈ”ÈOV¤7‡bE>OãÙÏÿüò¢ºãøï½·Ù½àšÛ„ ÍxG8ÒDÑ.A$ıc²ÁÈ$k¤şé¿% ´–q‚0Rà	£¡Æj"ÓD4€#0Ø?¶3t/ç0a&#Ú‘VGZav¬Fm§‰·ı½İKr	vjı3Ç÷nÿ¾?¿ßïóö·÷İ'çTªÇC{Úšö-ç¦Úø±ô¥8wtXh³·ËÖVû*#."Í˜ZTŸãré¦Ûr«vÔv•äİWv&î->^õÍ‹N-¼Î°–×Í¸ìÆ³‹ênÛŸ[»W*:o†6gáäİ]¯~¿¤ªæš¡e<\°Öèñ•fşË›§©=Ï7µ QƒÉ7^›s °¸¯¼,P¶şLÿ«{ë/ã™9ï.xøê#‹ªºJŠ‡Ğîw,<ùkãq¨<QrKğD'¯ëÍYÕQV}HØıöo›¿æ›È$ArÛş{~õ·g^®)9ØUhE7×î;ª©·´¬ïËAÁĞÂv®VKƒ)Ñm3Y]S‡ÌM9Ú»öÖçğ)S‡’ß;¼ÿÙE•]%ÕÂn¨“w$jú_?Zß²¡¤ıÈG‡fLÇx«‹"«Ë­İ-e«¶”vCûïß[s ·º~_WÁÒã›ë
+ûÚh{µH÷ä­Ãœ‡C»† æÚ‘â…­zĞ|>ÌœàÇ¾zWÎ®—{dèÎzéæëÜx‡{Üx}µ5ıÆ&ho«,i7OtB¤hwUsAu(Úyİ‡²s5OG»×¶ßódÍş½Õø	rÚ­íQ4Øù×7Î‹x9Ğ?W’/jì½î›RéÈ5ÃEæ¦\óîµİ4ñn»êˆ‰Â6o½·¾-·¿4÷8­ØîlîßŞaXxı/ÎĞœ{àõƒÇß~gåÛ¥§PŞ”€“Å]½7ßß°jû“çfí¼~Ik”–ƒo&Ö7gO|Ø´
+È"ßP÷LéŠ³“w¹ë›l™Âî<\ßiR¨ŠOÛQ’W\ÙSèåof*?J!aöThR4{2KŒÈ¦=0š§&±S}5‘fUÓD3‰q¥td¦É[¡íÒ¢—öjî9e7=ßG
+ÎIšÿö„]Û³»"«Q´©<âcvGn–s2<a&ÑúHÙTZu:vÎúKŸ xJ*ò €ZªŠa&ÌB55JQO•£š5p+,„ÛQOı –ÀR¸–Ã
+ÔSÂFØ?…vè„_À°Áx5Õ1WQ‚3ğ&jª÷!aä’M.GU5uU¹•Õ\r© óIùª«;È÷ˆEî&÷¢¾ZMÖ‘¤™´Vò0*¬ÇÈnÒC&GÈoPaı%±Ï ''ÈÉŸÉkä2@Ş"ï
+¥F3¨ŸæÒ+Q_Ò«©AçĞ¯S“VÒ*z­§·ÓïÒ%t)½®¢ëh˜Fh}”şuÖÓôıÒ>z‚ş‰¾Fãt€şşƒ^`ìR6µÖå,€jëZ6ÕÖM¬†Õ±ÛØwX»—5²•lj®Ù:¶•W3ÛÊZØÏP}u şêBÖÍv³'ØS¬‡@-v˜=‹õ9r‘’¹C>–’"(ñ¿=5‚Ï=J¨QñŠRwc$¯&T!Æ ® Ş8oìÈ™hu’{×k‘İ–WGEÂ¨Bqsçó¬g¸{Q%ï(ôRZ‹gÉçõG»TØşôJJh#ôX—zåVô}¶àF¥Q”4ešÉD»Ÿfº¾yU©îLT\"nšâ†™ æ”².Ú‘•Æ*C[øÔdPÁ“IŠ$f”˜„¾xûÑƒ€`Ğ&òØËq÷&èÈ®€©î‹hËgóŠøâ«ª‰3üßñCµü%)A±ñ±ëÆòAÖª¡T¸vø»à$¾4,ja<‹CACÏ…|	ïÛ÷…bÁ?ÅØÇ‚AÃ'XHoC›ÿ¿,¬ÿyÿäÆˆP‡XhªFì‹¦Ï“ÅÆ(6øG­ç_ÔÃN} ş‡b^|Ë›Œ$üYÇ‡§©c&¾ ÓXPãR·Œg¡~ŒÉGË¨’ş/Eµ Û‰©,56>Ú|*/±µ‰#Ef¥ëøÂİ½â”ïJİH^4r¬èrú—BF¤±ğ;ox,HgQó¾âä¯Q8Èn·év“İHX"ãCÌNyÚkë™A-ôGÇïĞ%ï&$…â%ê$ıMÉrT±8lğ;§üÄsB7@eQà˜1êŞ€fY›è4ú5‚E¬{…æ±H#Ÿb¡œÀ³af¤û"Ìğ@Ó…¦N9ıë%Sâ‚â°À+×ÃR…,!‹æƒ0/HV¶©6~w‰R¸ø¡Ó	¦6:]­FÊ{Æbnk²ÌÀêg*5lK"<ßtÃÂ_¬Ó¯ÎæœÄr^´É6¨£,ôÑgxYucükfY¢ÓÒ´€¦à6Ï§…Ü‹1z‚«¬"†b ‹6L,\²,«¡ºIÇ"õ¾àÓqÕgCÈcñÏ³’9Æâ<l
+’C·As±Ïœİ²2_‘ Jõi)ï7›—Ê4·¸,ì,bÏ,•İÒ-#Ú*«Ùœ³pÜ±¸[Mg‘?‘…äùçw¸ˆcM^'¦¿–§âi,Æè	YSŸlÆĞ-²eV+ÄGšhjzğÙ>Û°Š›…6‘EØœO¶M¹uÜc1ùÂ{±èµt;aDÅ sÚJT¿J83^	ãò½‚Åb(•a‰n©L%z”{,,êÑcTÕ¢(Û®°Hè³›²”ÓƒáÃ½Ò9ÔÒºaÄ7¾¥–*CöœVİ6bAdÁTÃM$ëJ0WØ–ëy¥é²@8“¾f‹ØyÉ:\…~£7ø 3g«ãO–ŸIbVfò<®§±ğ|@,$ú{skmŸËbªó²Ø4ÂbÀ¡Aò¼©s9X!Œİ‘Çõ
+|§º,t°”üoR[°X CLõXÄ ‹X3g°ˆá»7Jp•ôÅÜH±`Ík–ÅuåÑçòŞ÷7ÉzãlİyKM.8§U]]ÖyÌD5Ü‡Ç*‡ø…ø`jyÅûC	âctir‹ÓçÕÆ~¦D¶Tµ4;Ü®›*é˜K¶êƒ •]™ÕRñoòë/6£ ø7»Ûİuºöí9ÁÌ‘Knã„¨HÌ‘’¸Rª[»!aD
+©ë$J@Bí¥/QÙs¾ÓùÜæÄ_WHÔ•}-HH¼ öz©¯•LÚ¾YjÎ”òPe£
+rÇßìîıqí¤m‰yğïvgg3û}ß|
+-Y>h6p;´p§R:]™­z]‹A‹?“L‹¬ù)P¼o;±=šA‹G–Q¨Ê@C‹Ï¢…YÔ¤[^…İÄ›>¬ùº—âV­†³tÎø»<{ÀBûŞÕSêò±/×ŞKı<‰ll8»4¼8qõÜÌ’ÎôŒyUZXø:¾ÿ­¹)n¶L²´ànRzwºAZ(Áš5±®gŞ¼ÆÓvãZ´Á'Ë&Ã»s\J®7š*§JìQZ8NÉ®–²Úøh•EQÓÜ‚Òµø“¢¹ä6™WİOºx³e´`çÕÕ@ÏPJdvAyŸ€²*êÒböìZ°éƒ¡EuºÆ}´°.ÂŒbÏg¡…®Ìæ¯kŸ?Oe÷:†Né˜•]J¨yŒmË*Ó™µÆÑÂÄĞ+¸+È©·Å{mW>ºëâCz&>Î¡Ã¸®Å³‹Vúm‹m´0Çà[xšU<Ñ%€tœ§Ê¬4™D\m»Ls^4çÅMm^N)i—²0´ih±'#ü-8ZL)ÚÄeH§UsAháÍÖáº¥'Lª¢À=0½œŸ†²q-ÂZX‡ƒhq $-_«sÏ‚‡Mf:#—ÀïY¬³#ëÖ©ƒÒÂ•GôìAšç­?æ½È"×Æ)­V\¿ñOq«ãÈ.'Ñ5„O57ø¾è€Y‰-UŸµ®Yn~ö¸xÉŞ¡…íGS´Ğ,¸ìQ®Ó©Å–--.DDZxh1©áºPÓé€Åp.júŞ¥	Â=LÆ<‹¨İuAÓm8P K]‹¸œ°¥…ÚFèZĞ#ì;±Ö©…K	ÒdllÔ#‹à40ÂWÎ8µµ-\™Ûñz[®])˜Å„ª-İl¤yháPÌ2[, Si›X_8E€¤–Ù£´ĞœÊ.»…¶­ÛñºhŒ-x×BªnçüÏ=ŞZø8#Çt+[_—Q6:6.Ç1´ˆã¥×Bçjôø2ªSi¡€Gx×B]¦Ş%ëÔ¸´ğ·[øh‘üx˜+SWtrÈVÊ‰–´ å=!D0)döÄ_¸ò:ĞØyù¸=GZÑÑĞb/ZÈºÓ+
+‘Ô°`Ó#Õùñ¨\a‰ãE+¶ã…[ÉD;_XQıG0všâ<²ğš,\2-6qX!å8PÚ ·f-9¢ØéJ˜TØbëbTZ4i™êÓÛ,f?´¢uQ¡ÅûÖÅ‚¢Ë<ÂÁˆã…Úà*oìc—eìä[-ğ"¬…T™–¤®â,è¯‹•_îA¦`ÚÅ‡øYèY˜œXuî«~B‹>Ó©ç±0^p`”M”Q}Ai»µaËy8Ê©¾ZHğô¾¥yoÖ:µGZäw¶HVÂØ9cWÜú»·Úó¯‹n¼8t’jSH‹~¼°ÕºOxcş5Ì©_Äh±%ĞÂ,0{Z…¯%Ì¾…ÓŞË‡LÌ©8evdñqZÀ´ ¯ğflaez‰v)ZL–`UÖÒ‚Õ|^3,'[hÒ‚¨`FëY¨Æ Å+SuÕÊ–$ãÍ¼4Ù,6£Ø)sj*ağÚÚf+wåÉn™:æ‘f™Îê
+A/˜ºÑ„¥Æˆ»†µÖ5Ì"c +øªåî€Ad­%-v¡…;éä‘ÂI«´–Ç)sîlaÿ±ök,¨ğf
+×°TvNC_Vò5±+HÜ …Éü&Ÿ‘Qî›Z¤ÍB|Œ±=‹ß±7œ³ÚI´øúÑ4û
+-–­™ŸîU™w!»üX¶‘·°¬‰j-GÍ-dŒ'ºõEá„õE0GA×zµÖ|'¸ÎŸ_¼6YÆ¼ŒÕÅn´Çú‚‡õÅ² kğ‹~}‘$SXºãƒYì–±³[XjÓAÖûu¼¢#úÌ•,©u|üú¢¬;ñ^®Å.óWá¢YX™c-áXÑŞÌÏ´Ñ"q½~CøÎ>Y’c'Ï´óo°µ±i“îèˆ7ƒéÆæÑ2õgséssóåõ¹¨—›´€æx½ºSKYwb­6ÜTÉuÁ“Ÿ1~&÷Xêƒ¤É—u'ëÎa9›€Ú“šìÕáıºs,ÈË¤*;$-’‘EIZˆ–´X^şi«…¨0¢6ÄÍ@Í@À2Ï2XAC9ÑØÄ ŞIÔZ¹„P‹7Å¦x9×ÒŒZk.QríÌ©·Ğ«äŠháuù·jÕ„±yÖ¤Gºá[%¼é×6g`#‰ı#'2õ îÍÚ2k“»~õEMàëGšƒ6†›®îNCÚvÇ{.1°¢­@†ËTÏ¢¿Ñ  /“ÅĞb—ı/ñwBœzßS[‡Ğâù“ñ"ú@Io`p”ıêñ#õ/ÀJä¹åî?dğ^ÚÎwˆO9pğ}¿ÄW¾¢ú=ôÎËK‹!`‰¡…²eh¸‘¸/;>ö-Tù•›¾“…{°İb‡¶£EÜ…!‚q'˜æMÎI…ˆbzËĞl¾Å`Í][øà²X˜ün¾Oú©Á¾>¢–ÒøWt¶|9—á°½Eß%¤…cãV@hÁÕ­CÚy ¶©Aü¡o¡'ø],ÜOU»ÿöõ‡ïu”n|´DŠ´¨n³ØqM}øÖqĞ‚§qriaÈ»ß)^`ò1ºuıîÚxïSú^GéÆÇ°ø¶‹ûiüş»pâ£í¬„š´XùoZüï4'>Ú×·ğÿ?-ºÍv¢w¤ÿwZ¨úöáFé8œ†3ğ5ø&œ‡' ckÙgàGğx~¿‡¼	oÁ_à:üşF&#ÂÈ£dš|ƒ\"ßÅ‚ø‡d™üŠü–¼BÖÉ;ä–b(cÊ¸òiå„ò%å«Êå)Ü½V•Ÿ(/(ÿ¢½Z ¢:Îğ?û İ…EQ½ËÃ Y…jŠ¶eÁÅ¾V³kÄº%ñ4=Ñ"ñ‘¥ÖjyhSkŒ=`L7H×¦­hëã¨¨UcL|&ÇÚøˆÇŠ·ÿ\5œj<ÇtÿıçÎüÿÌ÷Í?sïÿ®§›évºŸ¤ŸÓ«´ƒqf`}Y"KaCXË\ÌÍ~Ææ±…¬­fëÙ&¶µ±Ùv•ı‡µ³ ı¤ç‰üIÆGğqü9şŸÅ=üuŞÌ7ñ]ü ?ÊÏñ/øU~[
+—zKšd•’FHã¤biªT!-’¥ßI›¤¥#ÒyéºÌe³œ §ÉY²C"¿(—Ë‹ä×åõr«¼G>!ÿS¾ ßT˜¡P~¤ä*S”—”ÙÊ\e±²JyGù@Ùií^å°rD9©œU>Wş¥\R:U¦ªªQ5©}U¿ğ’ÕAê`5CÍTG¨¹(… züº-x:?Ä?`Ub‚0ÎÌ$Šö"*Q©h©€J‚+èEe—à®*.„ô"á`"F0I$‰@UÁ€ˆFÚë‘$J·„{G£®*Æ~FŠ¦c…òGèØXê!…D0a?ÃJgù0>øGÔ@edğ9£‘,R×~Rò£ä¥¡ú<wX÷¼hŒ„~0r3ÚÍ<£Š"f=bS·P½-|½©Â¥p‰|èGb0R¡a¸â¸F…ıC„€.Æ(¡ wï #®ZˆBĞ§ˆèÓêˆ@ N<Ç	ÜÜ ±ooâj‰·Cú£¿Ôø·A|b®öc¡,^9×	ïÿvÃ}Ám÷aÑ“mMgÙän£?]·/ó[YpTåİ	Òİıï²Ø^µİ;­³¢tĞJåĞºµëöŞU´¢²¬+Ÿ<áeO·oì¼¹ªş×Ã·ÎİÚñõoÏìFÅä<ú÷
+©\Nñ†•¥À¸ÓYÊ—¬Å#Kj85÷YÂı­¯¸üZšûPR¼{ßà¿ŸÏ_Yéë'Ç—f…LÏ.°oI®Ï3X–_]Úòso³mğÊXOL–¨­fş¤heq²iç	——ìùeŸ&lºğé÷*.Ï=eZ=+ QsÄ7,Œ>Ÿæ>vT°lÿŠ\iUü+Ë®ÛŞªY_hX>&¹¹ ³£ª®µ‚™%o—îmÍyâbÙâcÑ)ê¸öµø^%zÈ•9ƒÎ”Wîšf\è¨JŒß¸yÖd¨_ğÚ3×ZZJ+™²<Ş½÷½æì}æ`~Í<÷Û;éŸÏZW¨6\L®ıA~u]U½e'Æ²¬åùÂ®õbinÙ;“«©¶:UrØâó¿ß­Ò‚_½xYêİÎŞø>ÏëÌ«ô8".µ¶…¤¹Oï±D{éoYßW’˜}Dš·¨¹öZs~ub•·¦f²4”ä¦¼ßlnÑY¢é¨¸#_–{nŸ±åÅX÷Œ-N°T%WZª¸]NÄX¾jXh4!‹¾bõEÃ²Œû;kWômV·nıc quûêË§?˜û—Ï¶<´ fšVÕ&‰k¸¥jÙÄŒå¤i±Êb¬SyÖ•›•ôéoĞŒ¡Cš¾X{÷åt{Ün×÷ÅYq&÷WL¿“©Íø¿o|³oğd¢jµ+ãª+Ä»‡à¾Üyp ÌÁçD EœÑïdÑÌLq·%%Nß'F¦w7öd)Æÿö+0æ.3-…»	Ş]q~®Üû˜á?e/é‡Ó;lğÈ¿¼ÇÈ {¤½üá£“èhøEÑßEÑqj<$áSk…A0ßÇOÁ0ø	dÃHÈƒqùÖdxÇ¥rÃP†™×lx^ƒ*¨…¥˜{­„Õğ4Ã 3°°Àa8†yØ8àßpÚ¡ƒ ¡â¬Æ3"šô%q$$‘ò}’N†’á$“ØI.K&Id2)"ÓH))#/“Ù¤‚,À¬­š,$µdÉw ä7di"«ÉZÌ7æ‚";È^r'ŸÓä3Ì/‘«äi'_SB%<óÂ©™FÓÇ0SL¦©4£™ÔNóèxÌ]´ˆN£ÓéLÌËé|ÌkèRºŒ®¢kô,rõQ?İFwa.y˜¥ÑSô3z‘^¦×èWôm§·h'0Âæ˜¡,óÌHÅú°~,–Å1‹gIìq6=2ˆ²B·…>T>E‘†)•$²$Ê)C‹h1*1¦—í!,Ø•ëãä.a¢¦àY·©“GUŒ=x°‡ŒãU½Ÿ@ƒ¸<Øbw,÷
+bHÁQT·<TŒŒ_`RŒ„
+\¦t‰ÙÈºò 7ò²îšˆ=„‹»¢QXˆ>ªk¬üéŠXÁ¾*•¸´
+|IWÒµJ²^
+Ó•s}O¨$KbŞbD)|Œãó+6E–¸8€­šÑG“rİ>Û§¶ÛeIµöhjFEóÃ^¡ù‡“ÇJ.ŸÔßÇ’TOJ8{?çÙTëh‡Só%Ç„Í)¶£q¢«¢…f´çØSı XGûAv8ß#d©ËOÕ~°?¶_3lJºU«¦åÌ°ûH16B¬hH±`-ÔªDª‘ùÎ—æÕ¼¹n¯6R›>ÕÓ¯è(ñºÄ)NtÎÀ²ÀiñÙ\±wª%.×0Äé%p¸ãu!BY¡LG@€Nìf­ùØ ‡s‚Óç±ÇúlvW¬Å¢åø¶9œ¾möX‹Ë…½ÂïÌ¯ógÄçsOÁŠ¡×Àë—×ÛÕJ°ø<^o¬ã¶ı°­‡@Oƒ-hğƒÈ’rüÄãĞ]K¬0$X,8O—Xd£Xûœ©Å•*©©³	OI·[:>Q+»2Å{~»ù~(Õk·ğ˜ÅmO9nÉ-P)g@1¶‹P‹¹&£ß‰ZK3×ğºõÇÁz:ê¨¨¨ù¨ch¬A­ÀñÃ)®l	ÌGÌ¡Èõ%;o’•°F\Y:T°wáİÿ²]}¡ce<½÷¶3¨ø0ìƒ²Ã Ã¸i’6½·Ã’´ùÓ´MoN’s’Ã"¦IÓ´Iúç¶½ıƒ—a||G…y’ÅQ„q„EôA‡Ÿ—AdÀe®_ïÜ…e±ğëwrÎ÷ÿûNÎ	ğ½“Ìd;»—rîÁCæÁşæ.Ìë…`7d¾¶Çk…[Ls=Ï?}ÿ‚ùÏ˜"œ•ßÉL!( fv©+» Os×¯<cæ;ìÆW1óĞsú~¼CşlåÏ˜ïçŸœ¿Ìc†;xÊ1oíÂóÏ!?gj0~ø®_¹ô	s;ÿ3ŠAGé`xŸ¹27óßaŞ,¼É(°öåÂ;Ì|ù(àÇ÷öuf|Ô ·ÁÆµƒ"äü§ÌCXûâ.Fxfö?fnÂXœ¶±÷ïÿåàáù+X/Ãüù³óWà‡²«Qî?Ì=ĞûƒB™n>¼ñ}pÀ<ù7À¿[;ìr±‹û³ ; 7vcÈÏY¾Áè—k?¼ò÷ÿÈµ¡Ç»|änï_c~w‰ww ~lèĞp‘f„ ökùÇç/AÇğ%xï_âÖWåŞŞ‘ûä…¾¦ãèzğjıtïW™ó»—r`3÷_À‡PëŞWnä ÚtæŸoBîw½sb9Ë¿8§ÅÇ½ÿ¶ÌærÇ|îâ¿r± /,øbİİ^¯íÃÜW˜?2Şîä¸¼=ı¿ßŞ…ÚÜ'çç¿ÿ4Í}Jîë;n:M_ßîÓè{¯={Í÷¥KæK«{ißînçë®“¬1âQ@,1SŒ4:÷'È¶ùlœMŠõ¸·zåtè—W“æv0l'zƒ*XSkE7:‹Hë—{å©s}+œ*–íÖb›à5QBÏöpì;Ê6!Á<b	ké«AEãáÉ´yÚ=nxÆP:A¬¡V:	n™ñÂÒÖÂc2¦mâr| (KL–’9F¥p2?Ñ¶ÅŠ¥ú:`çÈ‚rQ‰~T?DuyÙÚ"öTÔ·ä5çbî4“%ø«3rÔÈäõ,âÒšÇ6×ê ¹èm;cI¤:ÇÒ‰†8IvÃ–Gxäªë*¿<5õ&Ñğl.Ö­Ê]˜œªHB|3œ%M1mÇØuI>îó‚KdãlËqÖáÔu±¤áÄèé)¢ÍeCe˜ÁÓLjX¦<’ó†ãcŸF.EÉôÄ×B×Up+åÖkÊãÓ9¯{,öÚG§¦¬ÑŞXG¼§ÕLÑ`KÜÂ¨Ó­‘–4‰ÕÍ;5©_åÑX9rgÓ;SÕ×bÔÓ$“E:L¸nØ¯WƒZ{«¹rO™=£âL2Ëc×˜&q6w0r´ZMQ,‚ØŸ¯ûI¤Â¢Uo˜u=w}.æ©
+uå8)Ğg–Ï+¢Ïq'D(¾VÒrÜ¶ù5×“‰ÕVİKcšéXrÊ}D‡¢¯Jd²²ÄµâzíF½r*§©á)‹JúV*SjÑÌm-ªy¼é
+;UHB:°‚ÕÕ|-aÁÆ8Î¼7é‚&WNgùD¯‡¤¶dâ¥‰Ñ¤ª²	S¡–*áÆÆLôÚĞ#¾;ïğm»‚›[­A·Íâ:ÊbĞ™b™N([<GâLK?#¦›6	«·ü†™ÔÃÉ‰¼(meÊ[•lAPÇr©k©ëAFú¨¯ªœ#WGUT‘æq;nùÔ[6GÍLj-B3á†Ñ6‘W&Ë¶q|±‹¥Ã/†)âtVÌãŠ’tí{¼¡ø8ôV©ÓÑ`)o:#ºÇ±8¯ãâ *«LÀk™s=ÌÍ¼rk¨tÔs%ƒ`½	!ˆZÅ\\råXwCÓ]­^1ÀØNZ‘QÀM‡•j™,Q;äISŠSÌÉHíòĞŒ–ãÄ]{·{Dµ±áj&kxüÂë§AÕhTXq£L"ÍP`ÿ–¡æí0S0&U×%‚:ÕãšC¦ªÍ’•¹R$óH<*Ù2qÔ~%¥úpµè·”no<ìX]`O@ıQPFCBšÖ—¡–ö#µÆ‡ìtƒÕë…#_“?./û¤&ÙÉ,+®-ó›±­[æL]»œ¶û¸+õ’.Ezè.^©";
+×B$YXTˆ;÷ZËK©ÔÂå ‹c›G¨u­;gXí—"ÕÍ¬RŞØĞ$ğ›óf¥Ş¤Ô¡e\Ş"=f‡,’Æn¹š…Ù´—¦’nj‡œ´jUã0¡Õ$<oEİĞi/Q±c©•	Û'.Ë©©ÓQ”Á‘ß´çúfÔ)»tÑ’Òj¤)49;ÃSµivlU8msª#ˆÖÀ‡Î
+±ºDèMY"¹èRú «J¦lTb‘*5Š³µï¦Q4í×§ˆ=ºæä8±¥2«
+£ÉLS­Ü+”XÖ!QhqÆMK}‡
+”×æ‡qä¹Ô‹0n›‰Q’M·£c©FA1^İ¹óø«^}ğ£_ëêßştçùı>üûÏöùÛ_YŸw¿pwôÏïÎ‚şÇ{™‡Eu^aüÜ¹sg€a@E‡E„A6ƒP•¨Á¨QÊE1V%EJÕ(AA¢ˆ h]£ŠšFŒU@Aê‰AcmÜã2`\’J†ûBò<ñï>™ï¹¿{¾÷ÛÏ·İ)=1àå’õ>–ã¯N²òöf¥ijù·EíUGŒq·k¢F{¬Ûñ²­.ùj²ãèf­PòÌãL{cÛÒŠQfµ¡;­ßÚ9{ÕŸƒº¦¹Æ
+'©›¢S·Î)Í¯ÜhtagCçâY©Ñ³ª—M:”èr~Ûı·Öx„$]¹£m©=‘=ªèpËc¿ÆÁÕö%™Ë*Ÿ–4®Ú×©ïüâ¤ùó£kn¦W>ÊjK
+´v=³ñ“ö¼yŞYgz>]ÕüÕzá3‹²äİç3/…n¬1Æ:æßøtÑüç¥-tÔgıô¨˜‡é×œnÅ–´l±½¥¦y^ÆÒjÉ§åà¨ı/%ÎiÚq¿ÜüEVäk>Ş?9Tìvº~²p©>·cSnÆü¸‹ËKÏdøµjS'œ›qjëØ>õåÇk6WDd\wX4¬İç‰»òÁËB¶<jİS°º)9br”®6dæ‹Å7Å>Á¡Å•Çæ¾Ùt@áp³º%~RàŞá¾ß·¹pgäñ„»]oLR/Q}™ûàv½êHŒLû½ ¶}Î§ÒJ¯¿;]°|—wN|Û¨Ó<>ú±ê‡ˆ]i9Z¿ÈêĞê¥êËÃçî½ót{mdtÜ×Ÿ'Î‡…„í+ˆK,5ÎsK*ŞÛ|ì‰sXÎ…+¹ï¬5Æhª*ò´kVFO)Vç5ğß8ƒPEjÁ†ÌB­`KÑ4BÈ‹zó'ˆ¡V°£ûÔD{iEö(ö4ë•<½(Œ†;õ!mâ@¿Q¨VĞpA¹¢Œ_+²¤£´™qÕŞ=Šm¢Š¡¿*Ö´âÅ†f¾Ò¼–¦üF¡*Á‘?ß¬•‚E÷?ºˆ.E¦ ‘‰DA	ŠÜQPÀ@’I] 	üì_‚ÿ;ÀÁÀïÁàsğøü|¶ƒm |ŒOÎG°ÒúIü–c²-Ò·°ïƒ÷À»àğ6xüüxü¼ş¼~^¥©·v•Ü8vÚe¶•Ô»©‡²ò%ìK`#x‘Î3?‡}<Ï¢ïÿ„İ Öƒu`-x
+¬O‚Õ` IÜ¯ªîXW·/+"UÒq²æ”JrD,“SSºKH™á¬Uà£¾œü™Çh‰]¼Ôöğš”ø=Õ£ÈW†JÑ×:Â-Jü–µ#t˜–pLÖä˜ÜÒáä‘)×ğE±}eŠÁà§¨óï4œù	ìıĞ÷¡õ½PŠzê+¢‘ˆÉõÉŠH»Q®"˜óœˆô7”Ş…ÖvÂşÜ!¯cÚN¯1·AÙ
+nA›‘úWpÚÜˆÔ^É"m@õHÍó0§ë'\ËW˜]ßqßr ¬W÷¬Õ¼1EØ"e³§åñd#G6æmÆ“Åş»Á)YHÉ¢Óœ’I+¹U	)"SöğJŞìa¬É)"Söˆ¬È»U.ù˜NË‘+½;†v–#×2(ïƒKÁ%õâˆî}Æ‡M$—Lë¡¤¬ˆ´R1û‘’ÊG<û©˜ıTô-…Ş£¬¥`öSĞ7Y)e’Àyàp68œ&€ÓÁiô6öú4ÄŞF?ãaÇ±`øG0œŠ™š{28	œ¾	N £Àq]7¹§cQÿëPÆ`G†=
+Œ Ã1š‘°G€ ÃÀPp8Â¥E^s²=@p(k"ùÁö‡€>à`Ç4Àö½ÀAäÉmHü–cX¡a{€îdÃt#Ó•W¼HzèØG"õG~(ı`÷uİë Øm;#—è:ôPËŞéE¶Ü¢ÄoY³';ö¦Äo¹E»4;ìFÙ¹Œ	”ËÚ`wYC±-Ahšƒf š‚˜*>]EÂE¸£HØ[
+Ô, ÿ‰<úDV3¹öüìá§„ŸÓü¨I&¬^/¤~—ı>Íü?ıäë–Ø•ÄNUñr<ÍNŸˆ8ÁÑìh%O–|©HìP5ëfdf«áI3ï¯átÖ5ÔìpKÎë„«Ç™ƒšWoNéC}ì4<M:¶ûR_OW?¶]È…ëéOı¹4¼|õœÓ•ƒ†—µçtç ñÒ÷`e‰7Û¾ˆ·˜Ûˆ·dÛa8ÇñfÕĞş">–Şcû/|H-æ áÃP>ÎöğÑ¨á‹¦ˆõZ¾„4<vyôuˆ/ë3¬œã«›ºøÿÌ5mSÎ•öc‘:…›+I%˜I
+%ù6ŞhJÚÖÆÖF?{[½­‡ŞV?WIi¢®ói›ÚºãÙ"•¡•]÷Ä©×íEşáÎ–**ó´+sĞyªÊô:oKsÑÙİ[ÛÚÀµ5Ø†p½­ÆíÙvm»mˆŸàªrèåà8Ği„ÀtsU¹¹
+ğ·sĞÒ/¶£ÂrÁÚø©ÉùñXY†GZàæµ,nÏIÓO§ó]Ûÿ¾âbÇKV¼<•‘½Òwó‚¸¹„Æ˜®›L¥¦1—ê˜Ñİ_‘²^JÄêH·¤ i!Š*I!¤Í”jm«¶ÁÎ‰;êk¼Ë=Œš>ôÅrÅ:…èH½…BÏYõJ¥¤Ğ	:Q%*$+•ÔO5FŠR-–VKU'TB‚ZÒj­ÑÌ($PBü0½¹ N*:MÙŠµ/“A>ÓÅC/;¸+X¯qB¡ÒRá%GáfŠ|Êãó@É^cuı}^iÙ9A<&æa¯wµ+¯ˆÇØïŠ	vÖ9Z‘“£‹·Ê^4ße¯wYz–èuiƒ£•ÑfÓ)†w½ækTN+Òr&•¥“ª·û`mëİÖ[§–ÒŞõÑ`ä‰±åÑÛÚñÜÜ~™A´Ô.[ÃzÉ3äiÍ©H<7Nöb´Ï†Eé9Y‹×±‚¸N¬÷Qy†GDNöx«&³Şô³`QQPî1^xØrâV]ó¿ëe¦K“wDÆÇ¥Ìß‘›.8´Ö
+.İ>YĞõPüŸd~4cHq°ÕÓUÔeP‘–àÑZn ë Ï Ë¢k(4›‡Mb“‚ŠJÊ•*¬*l‹Í™€ºEåô8ÕLD˜MÌ®\y"ğìÚ‘#B–±À}òäJ,È§Çb¾z_ÈRàÈ¿¤õ ’÷á‚psqÿAi“Ñ8*aËÄúõšŠ
+:âÒ6&nî6’±âr*J
+‘R¹QåºÆ›'oKcü ]à“Ñí¤¨®¨m¬’(­$­ ¤š‘X›$]S5£:²ä{%Á*,ğ¼GÈ0à9jBpıÁÁ¯Ix¡µ°8²y¡l6 K
+T±pE¤€å<„Í¬C¡lPCÅÊf²3¡l6 »ÙÅßÃ+ÀQ;¸27)?7ØÊóV
+^À6¢#° ¶s’€UB°í˜
+l§–Y‰ÀÖ/nuäÈ€}yØEac€”¦Àf¥ ûÏ@9F°<«Ì«ç·ùÊ(ÈV¸ğlGˆ¾š°ÿï¿Uçp`›-H¨1  ÿIœk
+endstream
+endobj
+72 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 701
+/CapHeight 0
+/Descent -298
+/Flags 32
+/FontBBox [-167 -299 1094 827]
+/FontName /DOHKLB+Symbol
+/ItalicAngle 0
+/StemV 0
+/FontFile2 73 0 R
+>>
+endobj
+73 0 obj
+<<
+/Filter /FlateDecode
+/Length 20192
+/Length1 39872
+>>
+stream
+H‰äW}tÕ¿3»3;³;»I©§BÎ±õ*1¡b¡œÀ‰©hœ–C9Ìî¾ÍÌî3³É†%5PÂW‰€1¢µtk5¥4EJ-Rhù[PJËG@TJA(¦1Ş7;»Y ÇSëŸyïÌüîï½ûŞÜ{ß7o€€/ãÍ	#¦<şÀƒgæW0c±u¶ßP£@ûiÂ[I "kĞÉ6 <'P@¥™ÿI˜ˆòi vl(hÆºN–ú#B±hğÂ÷—.A> zaH«ˆ´İhÀ‡P*ÔêĞœ9¯Ç Öã#ÂDß¶ªàù:?*ŒÒv-ÀÔ‡»Â3±Æ]Vƒ¼À‘?'n˜Œ«æQ€ÚØ¯ª±€\ĞR€¶¯5q¾g"rBˆoã|aìÏS~7ş´½v!€°!*GÈ”q«ƒ x1-f˜à ş6S}M'Ú¥üí ËïAıËšÓª÷Íğì¨8œÌJàÀÉnc—âˆå)dÁƒĞYMş¨ˆ™ıámãS\«Ö@¹«—kº†±å×³Aæ¬!ù7ñ/P.À~xÃvL‡V˜ç™XÍ,ƒáÌì}6B´ã5†ÃlH:Z¡ÂV¼f²{qD
+`Û
+“¡µš€e³ql_Ã´‚Ç63ë¡‰]À¼3 îv¶ÂølvD ^agÁç"\¼Œ£r-˜ÀNfYq\u†IÜLØ› 	ÇYv–«º˜8„áœ„‘0šõÃ
+ğ³K`;d¶0‡™÷˜2ö ìbz˜ıL	Gkˆ¸=iå¶Àì<Àƒ;`8©şìÏƒ{Ñ~z…Ğ÷½Üzô*sG@#¬ÂöF(á6![ç–ÂPŠõ^äëÕr¥°†28ÈÍ€&´ğ	~¶Õ·ÅÑÂ¢TËµ3”¯Ã ï3ƒù10Ôy7;‹_Œsmâa³UPWÙZn3sVpIŒÇ ¦‰«eıL*&“¡Œ[†=·ad†"ÎÄÉƒ+\¼Ágsqm^ÍÄæMî,+±“ø œç.0]Ìü×ø¦‹¶Z™‘ü#ĞÃòÛ™1¼ãsıÁE?ì]ğŒ ¸‡NÏ€*X†ÉQ q\„c¸Á×ÇàÛuX®†Ø9ÈUU„M*WÍ0EÜLÚÓŒù De5de,‹t9nÇTÂÒ‹ÉïÂ=C0ùÇ«#ş˜
+½ı´xg"âÈÅ}È»úm4R%ï…LL`êµaâLèï1™º/|³FÒ<y¬¿Ç$¤fbâ˜P –ö÷˜C21ÁóÏwÖãiM	~”Ò1ñœõæÉÔş“ÔIÒıİ/öùÍ¥ßt¥§°§Œ™–ÛŒ§Ö¯ÛL=}Òd€™vı5fıæcqX'|2]\|sñ=Æ=w8üâ÷÷|ü`öb.gÊµòO‹¾ÄzÇ‚É$kŞÏY€IŸ5°ÔÔğÑ˜$¡Ùø”µ6.´q‘?¶q±u6.±q©Ël\nã
+ëm|ÚÆ•6®²ñWÛØ`ã³6®±q­ël|ÎÆFŸ·±ÉÆl\oã‹6¾äœ×c?¦i†¢Æ¢/ó%7ÉOE•™—ÕBH—¦‹şLP¢!%ª˜ÕI>¤Æt%úsg@û_q9‚t¿àğ·L7_åM’×DY×cUş˜nN‰*	™¿tYb\Ûè¶]Áãã¯RıÁXUt$:!¿55nPkŒŞ œş7vÈ&Ñ-»6‘¸j*šZıºD¿b:µQV·x4´A‘Õ 
+ı–÷ÇU•˜[ù R©ÉïôÛş†A©”Uß{dçHX=Û¢ª
+ÄøƒÇ2«’è&Il—,F¿ç“Ä_ ©"W 5f\îäp&-Ü*<ŠÑš‹-Êli—§Š(D7L]6Œİ¾€¢T’¶ıOî§Î¶	$¢™Õ1Û%%Š~¢ÛÔ§.ExÓGİÄÖ8½sO'!•$Ò|¯ˆ¾q?Šû¤´*eû¥´"eo¹>DÍn‹”ü6'G+Tòg¡B—ƒ
+6üÅ«“
+Å°ŒĞ•ĞA_ p­µ²ø!z$YŸkñw\øÀ`<`¾ë¢dõ°+3#²ş«[UĞ|Ú‘´,Gƒm9¦ÿ=Ú _¥Ér4Ãh¾s§Y\;îMË–%'2Š4q:]jl>‰V“¢å|JÊx!G÷¼}N =ííóéû¢ Áé34…H”Î`jgûIœë#~ó¯ßŒ¹ÄL)~˜MIâ£lê7Ï{(%)ÕHQ‚úºüæ?]!‰‹æ¤J.¹-o,«?hZà©—İiÉÔ®dd’øWFö›W%ËVk¤©}’ÅH¢+‹ùÍûlSmİî8I|z÷›=)ómíkŞ>†Ş\Ïêô›½®o¤všô.6fW §İÂ\¹±çæšé®Ü@èğ–Kº‹çÊ¹rÊœÖåÔQ¾¥:ulï ÕõU¡ÃSïnöÔ‹{Ä6i”˜ôÔsåîØÖíû¦§ŞS/•z
+gÄ„Øæq»x©Ô]&mÛ¸rï[¨W‡³»Z3sñÂt¾ALrÅb’¶ˆEÂtë)x“.^,ò„İİ®Óxsmt<äÚˆíŸéáÿR=çÄó+BÛL£ Ù%·9g˜¤:øj‡'ŒÏ™ò[èÈ1™î:ï0w·´5gT*•z‡Ñ»'œ])—6H|ßò£õ„Å$ÌÌï:ÇÓ~©Áæïê«ø,«J¸b§ßİMë­ı©u\iÂ × r¸wğ»ïÀ¶2øü%¯ó¿4æßÒ‚?Jãûó™Sæ§£ÃP»½sßøA'ëzôœ‹ÿ‡‰Xr èæ¦ñÙYåNÛFGMÆÆ'ÏPéã,¥;é­Ó¶QÎ™‹˜wj·,}{÷}'K–—JC.ïœøäå€šÜ©¢‹Sò>‹*LÎÑyyíy]=…[‡¶v}ñò;.í”òè…“¨0¨æ1–Î9Ş:­é‹ ®şC}ÙÀ6qqüy?l_Ì%>;˜”5gçV´´ËÈÅq‚ÃhÉ(¨´ëD>µ®m‚–âK0ÔĞ ’J¨”MêP]«j¨tr>J€mi%˜ˆ&]©@£†nk2Œ½çÎ6I !U{_İ‡ßç½çùıŸ÷ãÎÌáú‡™QÆ”Áƒ¸jÕ4#‘º„wæL½U^ş¢¬¦OƒÉ*ÅŠ_ªRzjÅÒÇím¬]d×:6!@°eÚ³m‡‹¾ÿ¹î‹…–ºŸP+Ém3^Û³K›$ÍüÍ(p£/ISF§f¿á^†U
+ßj!£Q/• şğ³Hdd;×å
+ÂHå°Ïñ{YM™ƒŒØàÈøóZÅ`t 2*âÁ¯SG¹ğ‘êíÒiHñ…óK±rUGk  (ó”f¤ãMNƒÑ®É#×ãà°«[•û˜ R:¾ 36Eé±MÃímÇ–:2f¸Ü®|±#ÃU`²{>Û»P@ÆàUÅíBFÉÚ¿Ö[·,/ŒŒ|äÓêİª¦ğ„jÂ\*UnW«:^­ò›3“ÛsÔp¨Iq!cÎ'5.Lüeg¸Ç>ñàõíïoå‡^ğ”*REd¬sïWK)BÈeáEX“Î¨Üé9}Äë)VK><O§­ìÊve«<S…¡C1Ù•-JK‡ÁØ•btˆÍÖ5§ÇXGÈ(.¯èŸ¾¤ªÇöLï¤›;¼ùG7EÂï¶TyÇzˆ[ÕÍk£~1¯ù“YãŞx»üÉvéBeüêìv·R¯Pí}+ë–÷GqÌ‘VBvî{û¤ÜxTgüBüTY4ÑåëVeÙaMm’‘o•çhĞe'æqÜ³EnÙŒÎ`§ÎX.æ•5[éƒËÌÈèpyeƒbĞ¥rm(Ğá•ÔpëÌã!Îe5¬i~}¬íRK…£Òóè8«]èªtÕHÈXª4x–ô«¢£V®»6pú;H pOEÄSóqªyv ö¡Óõª,‰õ²l3Òtf—¿}À“›lO<üÀî?/·¸‘QI1úá%tìÑiyÉ’‡„K)ÜXæYz h)2ÊáÖæ*¯×) #ÒazÆ×Ê[fx*'8ëÀİÛAe¢‚?$¯]Ã8œŒ#cÄï/I\k"ÉsQÇ/MÉ ‚ŒØÁŠc²¯)Ë=b˜Ç_ÿÔ¿EÑ¨‘Ç+©<ºD«“V†Ì=²íl(Æ<‚¸çãšÙ`ç;›õ5#!ã$€zbl¬p ãx»İäË0¾I=,¦Âî¾‚ÄÀ××3y$ğúÁçúX74v9&·m‚]ªÁX/kÖûFFÍj/0òx|£§u;p}>ÎÏ¬™ê“n8±QÔEÚfÏ~ç£*(K½^Ÿ ş:’‡›áŞSèç®–jy­Ø­ÏÇ;Ÿ·Ş3·r÷ãå‹rğ+ç1["õúšÁõ]¶¯îü¼ô|Ô—½ù1©¬_(’è=wrJÛ±ÅÙ°?";Jq>v"O¹¬R§1_Ö÷tÆYçRŒùñ3¸şÅeÈXóe"öô*K®ëYñ`_0Ù;jj|yûæ#ı½;—Ÿ(9‘“óUòlw¼»$â)çÃ½fÏ‚pôo]ÅÇ.½æúUßå•uWpï‰–D „šZ×@$¦I #ÔwM©9ca®ÀæüÔº&C–ú¨Î(
+c]S.ÇŠArí©+ºö¸GŠ¶Xz»—ßd7nn.$µ#ê»T”SlÒä,å› U7=íÂ))ZúÀRFw™ßŒ*ïñ £q gºÃàÍÍ%k£G£¢ÎXxƒQ‘+SŒd†ÄNSdmı@’·#Ï¶ÖZUÎÉ+¤Œ!òm`CJ~²@Ô©&Í7§Êuı)mQ|:İ¹ğ¶awBãš¬ˆÀ‹GÙUßÚV°ÃÌñX˜ a2<Œ|>|eÏ€Ç`<	óa<ƒß5+`5ÔÃË†ĞmĞ{`/¼ïAüNÂ8—à2üÄBä>R@~H&“GˆT’Ùd©%Ïä%¢‘0y…´’äu²—¼E?“nr”|DN‘>r\$WÉ(¡j£NšGİt4}€>DUZAgÑ¹ô)ú3ZMßƒú]A_ õt=İL_¥íôwôMú.í¦ÓÓôsúz…öÓ$3³lö=v“Ù6MaÅl:°'Ø|¶„=ÏV±ö
+keíìö6;È>`'Ø)eØe6À)ùpîæãù$>™ÿ˜—óGùS|	¿Èø¾‰oã»ù^şÿ?Àßç¼‹âGùqş1?Éûx”ÿ_ä—xŒÿ“ÿ‹ğë<a¢&³)Ë”ÕIxò¦’iÁ÷ÃÂ™‰dpæ#fŠÎ©…”G‹…•Ş83E‚•šñF³Œ#+}‡ş¨•Xi6Ş[CĞ­Øj!Ã0–ŞË„­&b%z¤,İµû ?bÂ«ªi‹~Õ-ÃĞ›E÷ƒ•éíw¢ğ6ú‘Uâ_R†cX1Šä ºB#¶`Ø-2f3e±2•ˆzî0{"öÑ•9P±aGvµèQôLş©Ã‚z;ö3V±8V´™7[ÍèšM†M?´á³@0Mú:NB..ƒ\Ömx6cÛâ{´G|'ÅŒ›b^}\’C‚ñoô;/Âí»í+hé{³-æB-“ºx~ô3[üÿN‹s¨¡PF-s»¸Tİ*òïHÿÆ¯»Ñâ¢%G(TQK µ4Ş-ùı0õÖ!ó²¿¹Ü¥’Œfú,¢e¸®Å_è®´Œúßf?ØÒQ#ú9ı†iäÖ*ÓZÒFƒ“u÷~»ÿH$£¥¿|5j‰ÖµäÈŸ?¥%*lèdšñ=Æce½‘‚Ø’¯{5üµ„’GIÁîîäù¸gM¿Tg‰­..IÜŸÿeò¿Ì×l× ğï{ïbpqÎIêÁs.?HÑÆªsŒBP3|	!d[¶‚´ş˜´Uç…±Q0k7òG”\Bâ$“CÂè$g A&ş¨Ön…¢ikÿçØÄ©–6­“¦b+L©®`Ã¨nnïíÊj[¥íY²ìóİ½ûø½ï÷}ŸùQ–4S÷ZÌS·ºÂ{wç¿ĞÚ2¬Fãèğ„î±äëÛÎ»–“·öZWõê+O,3Ë c1±p€Í±!ìEé[.lY„•–©5›Jë_€’hò†ÖÍíc²à¥«¼¨Ä‡bÑZI%‡$Æ)n´û5½éĞRä¹M€I—­¾,‹¨/?dšÕÄtSg–Ÿåê`
+–‡‡İ"”íóé°Õ]!AàBJ\øqäc.–ÚıĞÎ,×§:Zëò–Kâ”£Yh÷%«æ{µ«„÷ôj–Å#u‹MÊ´‹ú%½Éãğ8#’1ç·ù| lÂ‘»—-¬°(ì¿°›,^PTH-º&xBÖ¯f©f§ÛîZz3ÔB;*ÎzÕ²Ôb­ÇæüºaÈ+,#œ± ´ûtf¹pûÒ²åÊÍ¬c£íğlå”k†¼†¼E`¥IqOë±éãnhò¸*‘tzÅgOI°`ä-h.Ñmk‘-ú¢ŒÄ½3IûÍ«_øÈYri„Zä³F)µd¼[³QäásÀs’lã8fá–¾Pm#ß¬-/±ƒ9™­ZÌœ<©oÃÏ×}¯ha×ĞMë¢#±}§Á,IslÙ2_-;:ìÍå§¨E0”ø¤Q¹ßFi¢^
+ÚèóMè±ã×B§Ëåª€÷Lb(k«Rn~ÁHØ˜…Ô_>VÖójéÅ‘ÛÍéHìÜÀ™·OŞ~MKıZÔ/k> ©L p'+ó"İ/P†Œ†xØŠôÏäò–çÇº·Šk‚İMÇĞ¦E.×Ààğ¸tÔYg*Zìâúï—ûj¶ïÔÂ¼Ò²Ãä;Z+EíˆeyüÃh™är–¥úª¶_«ö»MemS}•at¨ÅŒÆ=ÔR_Á,ç÷¤4Å«hîìƒÃ–ÅV9çr§_Ÿß¢¥#Áô—.¿Sá"j§ğf´X(¥gÎ˜S9ÆtÌ6Ag²'=™E	Ëò”MÛì³WñÌ&ĞeÜBcLmEhxÜŠ–\À¬0ù©]å¸mJ¡–ö&gYÆ#I´È¼ÿ¸èe–
+ÁPû´Ê…”‚Û$Íøš5.ÑøOa¸¢ŞyŒYz@UYñehØšc6OÜ¥¤_;:1íÖ©%ø#%“ÙK\µ‰^ËbFG÷ÓÚvIÇ*‹",ô³É¨¸É²<«‡üvşÀùT%è"1¨mæ¸Ñ“GŒËa¨lcÓx›Úåay„KÒ²ÈÖ¸0KıÁ™¥µ¯ß1©Ed6*×b:$ŸVò–u®¨Ystj«ypy”7_ÛE-±™ˆß²[íAU€Ù°8išWn[Å:?`&T´V1ifFs,ñ.©/MşM{è¸¨†À,CÔ2`Ã<ct}™5_ŞHg–o¿2CçÍ#V¼Y/x4Ãï;hx=Sl\b Ğq‰hFĞjs‡%¿¶b?wbçœø+öPß†[Á"QKÚ²g"Á7VXPİS€†qj˜¼V—:]F:—²Â3¦$S²&¸zP] oQ;x}ótıù]%7Æ%zA<ÚAk—ÁË’èh
+–!•_%\’®C5?ëQöQKP—h9ƒÑÉçä¸#ÔrĞÊÉ˜S¥sZ„¼¥2.QKõÄ´Ó_1á	Ûyfª¥–Zú„ã,^:ÁJMš{|‹ğc Û3™H5Ç™½!ÕJÃúÑ
+¢®! ã6/"„hN.ZŠñ2"ÒœLÓ=³\Xa‰a•L÷5J†t4¹¤ío
+İ^šÇ„¢»İ„®•ÔÒ#u1,*ÖZiÏ)BUŸ¹$­‹å±õW+İ]¯TOüÂ·®jÒãñ/oFc‹µÏ|çâÜÙÍÉ EÇè~/Ñ5–ŠèNĞA#„şhØ#-eO¿oñÄ]_Âêª0h¶İÍcŠ2í’ş<y¬ót­L¸1ºV²œ,¨Z„Öü1¼ãÎ¨ãÉY‘ZR7ÍkÆÃ1û‚—öå7›¿˜f<[Ì5÷›“¹“9±9Ğï­šÌåöœ¹¨Êiİ¦hö¯›Í¡êH2VUúOŞœÜl‡X,â]L}@×JF:[+hl‰ /ûö—¯Ç,‹Ú¼-{"´ÕèUùŞâúbfeZÃä--ba}Á˜÷¢Ø?²,‡ø—˜åî^‹€W+??¤é`!ù3 ™=,O¶ğN’õUuÅóé#±Çz@+Öí?&¾ tê¬Ú§ì³œgG/³ˆËZıW–.õ-¿Õı–2“—©Ë<½XÇ!®CQO€sLt-¢­´p÷ü¨f¿×ÔdA)}KÁRúˆ{-mŸØk¡å;¥–€12O-X¶X5ÿ¿ÓìùwİTájõ~‹¡‡²ùGÜ«hyÈîşV´lUËR
+š°Âò¿lŸ¸¯|pC´B¥àUÇÿå?lˆãáS´`Ági5ß_„ØNwŒOÃ³t3Ó=°^‚>†¼'à4¼
+çàWğk8óp	şïÁßá,¡U¨yÑã¨5¢ôUô´ı ¡ItF¿D¿A³èmô.º‚®£ ;˜`;.Çëğz¬à&ÜŠ¿„ŸÂÏàoáü]ü}ÜGñÆ3øçøüNàßá?á¾oâ%RBV“5D$Ò§ğª!Ÿ'OFÒDÚH'yt‘È!2F¢d†œ%o‘ß’$y‡¼KŞ##ï“[$Ç•pÎÅÕqë¹Í\+÷îi.ÈøíUÕu…Ï½ï¾·wpß.¤¬–™}»,
+6*¢m!RÙğ£µ£;#C¬d:™ˆÚ´ÚY`£»Q@¥‘PÓJgí´NLÚŠÉ¤vÆ¤5&íØˆ±eüy=÷²(jŒÚ1÷ìyoßı9ç»çş~ì—ìUÖÄZÙöGÖÍŞc²Ù¿Ø%vCåj‚j¨SÔj:[-Qª‹Õ*5¤FÕ_«;ÕNõMõõ¨úÚ¯~¢W/¨_¨—Õ!õ†F4UÓ4·–¨%i>Í¯MĞ&i“µéÚSÚíi­@+Òæ¡<*^VîH ÆŞ`>D•j$¬ÄFœdp‚‰lT“ªb‰F‰ø"*UÁ6lÃ‰âˆ-Øñ9†ØQ5°ãœŠşBm˜cÇ:sèÇA4EGÖè@‹6paË*mq¬)Ú‹{LQ0‡K«¢…ƒX©•0Šm¦‡è¿ğ$z£€ˆÂ:Fj<uc*áøæ¡À/ÿ	LÔÍD¹Cq’8lá}DÁ¾)E|Ë8èÄ	6†V¨ÚI<®; b<µXœâˆEHQ0Î
+
+–à(hxµ¥°¨²L>­¢n
+vÓlëØÇšy#äR·ãql<–âÿO²)êÓ#áoÌÅƒo·‘äN}ÜHôQçÒxp¶È÷õilHónX?ø(rîu}GBÖRş@$D>1$™yFwsŠ+ºN¿_ƒÛ7Á[)P%OÄnº4kŒT(Ş¨Brã:xëOİa¤ºF¾–‚Û'Şò|‘$±gÁ…YPÎ qBfÎ÷Ï ½ğ9ôVg™kç¼5Û›ôéP_—yÖ	?¬ğ ’†ÄµEŞ×¤²Û²?hˆAáÁP3ãM¶Ø9É€ôm|	ŒÆÂ[@ÉÍU«/µÓ‘˜ø²³/İÜ†HxG²ˆIOqF4©‰ç³Şªüç1Ds{XqØ§×ŠŒ¼±V·;PÒÑ»vµ¹DBn#qèpÌàE5m®¸°îiUÂA{¤†ŞhD$GÇ-–T¤ÇâFimøÕE¾[HJsså"’Éç$’ø¿^Í¨§[{ÁÓŞÚ©{<œ†‹l5µ)iÁÜ=õ¶„„B½d |Wm"Yòÿ´öŸ}¯"åõ}ÙUØšb5t®Mj:ÔzÒpã`!‘šP¼7‡b”É’–%©Hßô®·ïĞåËWúYÁÊŒù>B= îÒ-ó}†¼œÿJ$‰Ïş‡²wíØÖ>væ`ë¸Êó:]¿Î–İ\w®5Ô±çÛäë¥F0H6¿V0¯¢¾s]`ûŠµ¥-åÖñÕOÆê£ııÕ¦é2#ÎÇ®d³÷:XÌšÌ¤UMùËö%¤êF Ÿñ /˜“[â[b™»Íæ†İí%.OÃ¼œƒÉÒÄÍÅşã;œ½Ú¡ù¢şK!ò›sù³\æÚ@4ØQ4ÑöÄßÂºßXìåbt"ÑÂİeõ¿Óe¥³¦êIZ#×æmÅ MÄ¤ˆ@z~ÙUNÄè,t¼Øv¼"ÃãÑuO!wšzÚÊÜkí©¤´MÃÑ)-;ĞV‰d]Âæ«)S+ƒÔ]–£~½ò¼aé-rùÖ Ÿ»h×ızˆéI$r¸¬¾3z‰KÏá¤;ñJ_W£˜'	tïlØ—sGÇ7×ñâÜÓÓ%’ç©FÚœğ YY¶»\ÉÃ3–§dÔqDòÛŞ©õ~Ãã(nk×kM.·UÌX—î·aãÌ!Ø‰¼_XßY”‰ÅÄà…L¼¼ş»‘`HgIˆÎBºX;Õ•*‹pí¤&F Ì,ıA=ŸN¢^9:şÜ\ódÊğŒYğÙ‰W8•Õ™“W$˜p½úÓÌ:ºöù®.oäÓ¬“9™Ë˜rÎ,„Š}³§E¢+ÒßNŞ4ã$_úşöåÇËvo·^CÅş{¬sà&«˜7€q~õ‘7¼Î­ïÆ÷‰;¨›úªUˆ¢\ÌX‡?;òÉø^$¶Ç6ìN÷ÙƒBÅ¦Q$nÈ5)ò©‘&ê÷6a1Ã±­äVşÊŒÊ3påy¾hìÜi”¾î›$Ë“Hj‹Iùğ‡sPüî¶*4aãÁkrohŒnğµ©Üãì†Z8"	Æ0ãh·x÷Cò DÜ‘\üÊÓ5¡‡ªÿÍ%âFRó¸¼ÄA<|’a2ªIY0YU.EÈ¬Jà9X„±ÿ	ü–!·z~¯@Dá5Ø„«:a¼…üê0œ€>É°>ÏáK¸AT¼7»‰‡xÉx2™VÉÅky–Ì'?&äRE^&kHy•Ô#óÚB¶‘V²“ì!o’?‘·I9BŞ#§É‡ä,ù'ù7¹H¾$×ˆI2j{â¦dt>šL'ÒIt:!yİ|ZN+érºŠ®¡u4B7Ğ-´™İnäv{é~úgz˜¡§éÚOÏÓA:¤Pdw	J’PT¦+Ù’™•"7+W*•eÈÎj”¨Ò¨4!GkU:”ß+”.å¸r
+YÚe yÚ rE¹†LC¶feædnÏ’˜—ùÙx6}‡Maél:ËdYì,ÈòØ,”¹ ÜÃ”GâR
+eâ>d	VäNA~1©
+Şô5¸Kˆ‚ùòVex«G¾aÅYÄÑ•üF®0Ì¼D.å‚™Á07aÈD=aKş x›P°>„a~¡JÛ¢—˜¨ğı¸GÛ¢7Ù²Èa‘¬ÍBÃ~¥Š~
+ÃFŠëó?òÉ±à.Şë¿;Ö´(ØÙi_ª†ña©êmA«QM0Z1"Œ3äq *²L>E™†ë×r‹K!«2o
+Şª¼öÄÆ—ıp[ÀÌ¯)ŠË³LúW–²••².µğø†OyC_YõŞ¤È³#=ö…Ç¶åÖQ3 !uxÃG¿Îıøæ£Z®J¿ÒoÎ2ÆzRê7÷„zü]Ç <Ù¾x¡HwòG'†ú®üãçÉ?ºxñWæç–/™u°Ú 6L@Øû­*~¤ÖÿI1DêCòŒÔÁqêdV€:´£CøÈ^_?³ıºS¥ßâe©Hl§½ñ?òË8Šêã¿÷Şf÷‚+·	A6šñp¤E»”ôdƒI"Ô$@Aûo	ÿZÊ8AE­ğÈÙP†šÀ´àöíİË9L˜fD;ÚêHë!`ÇjÔvz‘xÛßÛ½$—`§Vítß»·ÿŞŸßï÷yûö¾oÎ6Ü)‘»V‡[*›ŸšØòûiwî¿¹B=ÚKĞnDĞÄ@°m7Õ®ÀÕ /Í¹­ÍB›3°\u•¯"*°à$Ò¬1¡u¹.—Núp^åš’ü»ÃQa÷xreñÉ:¨kZpzŞ4ÃZU;ùªÛÎÎ×Î?˜W³O
+_4C›r‚ğò²W¿[RY}CÿŠ¶ŞotùJ³àUMÁÔK˜Z¿ Á¸ÛnÌ=TTÜS6#0ã¡w²ı¯î«»Šgçj¼³pÛõÇTv”÷£İÉ:o›÷ò/Ç¡.úDÉÜà©v^Û»¶mFÕa÷›¿núŠov ›ÉüƒËñ×§_ª.9ÜQdÅ6Õ8®©s›/<Ô“‹‚¡™×ïºWq,ÆÇüè½Õá`$dnÌÕvÜµ¯.—ŸĞŸ:üŞÑƒÏ,¨è(©vCí¼-YİÛ÷úñºæõ%ÛÏ‚|¼ò$Œ·*]»3¯f”£ÚRÚ¼g_õ¡¼ªº…KOnª-êi¥Û«ÄrOİ1Ày$´» ğa->TÔ¢Íç"Ì	îØùå»rw¿Ô%CçØoŸæÆ;ĞåÆë«©î56ÂöÖŠ’íæ©vˆ†÷T6V…¢¡]Óî|<”“w¤iÚ½qûòıÕ÷Uáä:´[Ó¥h°5úÏ¯]ñr »~ª¤^ĞØ{ß?0¾"Ú–gFÂæÆ<sÙı4êŸñ>|İ1…mşCŞü6/|qúIZ¾ÕÙÔ»µÍ°~÷úŸşçï;ßë‡O¾ıÎš·KO£•„—‹;ºo¿§~íÖıçoÚuË’–.(-ßLMÌoîŞÄ€i’D¾µöéÒÕçÆívç7U2…İ™8¿¥P%Ÿ¸£$¿8İ[ä­ßìôZü(…„« B“ÂĞäÉ,Ñ#‡vÁĞ:5‰n«‰eVé	1MT“8WJG·ÊĞ.¿¸·HsŸÈi»™ë}0á˜¤Q±ñoOØµ=»«Ç6ˆ:#½ø°İÁ‡eœŒIÔ>:c­<?o}„¥O<%•ù@-UÅ0nB55JQO•¡šÕpÌƒ…¨§¾K`),‡U°õÔ°6Ãa;´ÃÏà	8 Gà<‹šê„«¨NÃYx5Õû‡0rÉ!W£ªšˆº*Ln@e5ÜJÊÉlRM¾êjù±È2²õÕ½äA²4‘fÒB¶¡ÂÚIö.ò9F~…
+ë·ä8‰ù$9Eş@şD^#oä-ò®Pj4‹úi½õU½ôfúUjÒ
+ZIçÒ:º~›.¡Kéİt-}Fh”¶ÒÇèÏQg=EÑßĞí¡§èék4A/Ğ¿Ñ¿ÓK,‹]ÉÆ¡ÖºšPmİÈ¦£ÚšÅªY-›Ï¾ÅêÙJÖÀÖ°µ¨¹`²õ¨¼šØÖÌ~‚ê«õW*°N¶‡=Ád]ìj±£ìÌÏ’Ë”Ôàò±”AˆÿíY¨|îYBŠw”º…‘,¼•±‡èƒº‚zı¼¾ƒW¢Nä1îS¯Fvk²\!	£
+ÅâçYÏr"KŞYè¥ŒÏ’Ïkv©°ıé•”ĞFè±.ôÊÍèû¬ÁB¥!”ešÍD½Ÿf»¾yYÌîHT\"nšæ†+AŒ=&m]Ô#*g†¶ğ­É¢‚'“IŒ(1	}ñY¢Á U¬c®ÆÃ› C §&¸¢ÍŸÍ'âó—Ìª&®ğÄÕò$EáÃ÷e}¬EC%¨p;âğwÁI~aXÔÀHG‚†$Şù
+Ş!<
+¶ïsÅ‚Š¾Í0‚1‚†O°4ŞŠ,6ıYXÿuşÉ¡G±ĞTØiÿK’ Øà²^pY;½Aı7É¼ü‘7IúÇ~¡™ØAf° Æ¥ oÉBıƒ¥!%ı’jA=ÓŒtßÄPõét¼ÄÖF÷A˜	”®#wŠS¶;ı uYÏá¤Ë™;…¬,È`áwŞğX(É¢f~É)X§pİf“ìF»°dÁ†G˜öµ×–³}Z å9ß¡KŞMJ
+$JÌIùSe¨<â	XïwÎ$78Iø‘ç„n€6Ä¢Ğ;1cÈ½u Ï+ÍŠVÑhh7‚IÌ{¹æ±È Ÿf¡œ½€W0ÀHçe˜3àÆKíræî%[â‚b·À+·ÀR…,!‹¦A}03HÖ´ª6î»D*ZüÈ™$Súœ#í=c1·5Yf`õ2•¶%^`Hºaá/ŞîW§rNâ8/XGdÔ!úĞ»N¼“¬¹‡1ş%»/Â–h´4# ñXfú´{3LO° ••ÇQ`’Á†Ñ)‹K–eÕW5ê#X¤¿|v£úTy,şqN2‡Y\„ARoè6h.ö)S›×(ÄÈ‘-í=ã†aóR™Ö—…=–ØSJ%C·tËˆµÈjç,Ò‹wª™,
+F³<ÿüq¬ËoÇåo$D£U…x‹azÂAÖØ#›qt‹l¾©ƒU4=<ølŸmØFù,d¡f1g“Ídc^-÷XŒ»ôŞe,º-İN1ÑiÎÍ­%ª_%œ¯„qùšnÁb1”Ê°D·T¦=Æ=–ŠõØ	ªj1”m‚×Y$õ©c•3}‘£İÒyÔÒºa$6¼¥–*ıvœİ6âAdÁTÃ]HÖµ`®¶-×ó
+Óe q$}İñ‹’u¸
+½F	®÷A `ÎÇŸ*;›ÂU™Íó¹ÁÂGğ,8²˜“ìmèÎ«±}.‹	ÎÈbã ‹’çLËÁralQ>7Ôkğ›ê²ĞÁR
+¾NmÁbqÕc‡±Äš2eE¿½1rgI_Ì4Ö´nE\Q×Ü»t>ÿ}£¬7LÕ·ÔTà’s¦HÕÕí'Ld!QÃ}y¬2H\Jô¥§W|/0” ¾FW¦F°8sQmèeJts¥QCs"Íğ/òë/6£ ø7»Ûİuºöí9ÁŒÉ5·ùCT¤HŒII\)Õ­Ó‚dDPH]'Qj/¼`DeÏùN—Cr¸B¢y@ôµEBâ±×Ks­dÒöÍRûpÆ ”‡*U‹8nø¾İ=ß¹qÒ6„Ä<xÏw»³³¿™ı¾o\œ7Çàø.…^-Ô¦>‡•†Ò-|oÁ«UNÔ.=‹µA‹?³|›­„ã ßñR~0/£p]€_@»l…X¾
+ÛY0½ßÍ`\:õ:ÎÒiëïtö€…ñƒ+ÇõåC_­¿;7ş‹,Zˆ±á‰Åá‹“WNÏ,šÂÌÛWÈÂÁ‡0ñıoØMu³mãÉBú-|Hòîö2YhÑŠ3¹jæß¾&„0¶ãZt!dË¶À»K\J~0:^¯XxÔ#Yx^Å]ªL{F—Db‘WuÃ/i=‹?i†ÏnË‘yİÿ¬7[FqF¿™yÎe´Dğ¨šãe“,fO­ …˜Ş[,M×eˆÎ9˜Ñœ3„"¶0µÙâşáUãKgø¡‰er>æL,fô"Æ¶e]˜ÂY‘haãø%ÜôÛêƒOîûøsC™0¤®©ÅìE'÷®#¢ZØcğm<Í‡%<Ñg€tRì¯ŠÊT-pµm³íyÕšW7yy•¬[™€=Y—Ç;ò*¬ÈØbA¢ÅQÍø²º ¹œb.ˆ-‚Ù\wÌŒÍMK•d vPsPµn£EF9Ë“«°-vWÈâÅ•†xÌ6a¦;rÂ‹Uq`rÕ9¾—,|²8`N\R¬åÁê“A9H,
+œÒ¥šî²ş©nu=Šá4‰¾¥BnøÑ•‚LìZjñ„ş¼sÍñ‹³‡ÕËîx-<\$Zx˜òÈÂ°Ô#­Û«¥KgFZL¸.ôÜ9>`1\†s†¹sq’Bxàƒ-Dà0½·.x®»K|±gÑß#.Yè´€? ¾›ZÈa“;h±˜a-ÑÚZ#±ˆN€`òòI¯¾rC¡…O¹¯wi]˜ZÉ.g¨n1µx
+L»™“±…Ç1Ël²Ğ€Í›ÂXÇúÂ+d,Pdaxµmn-\×tÓuÑ:–ZÈ…ù½†[¿øTGEhâŒ2‰Æ*EuŞìº¸ÇĞ"œ_‹-¼+É;RTçd¡AÀdÏB_æ“Áyçø²ï´Ñ"û#õ:.{^ã}ÕUÈA­RPm²`%í!3£T4¥({â/R{,h>EzGü,”êh±-¨îÊJe,ØÌÄB÷~:Jë"#i¼h§q¼ğk…ˆgJ—õğqŒŒK™X-¯	ù¶˜Ü¯±jšG8o‚_w½³Iì…g6Yàº%‹¯rsú‹™‹ÖÚÉºh¨ØâCëbA3)H°Òx¡7¥.›ˆ;åf¼Èga¼Ê+d+‚y»ûëâò¯v S°İGS‹}r-lXØ’9êáÄ%|8dò q¼ ¸˜ÜKI}ÁyCúõaÇ{,É©¡[fß‚ób0ëßAÅ­-²µ8vÎ¸5¿ñş­Îü›ª/öÃ‡äÆÑ‡È¢/\½2ÙÜU|sêW0Zì@	´ğÌNéÈ»oáõãEğê>s*N™›X|ZEƒp-øk²•Z8Kv)ZLUà*Õd!ê¡¬[—K-²àj˜Ñ6,tkĞbRT¹~Õ™¨<Ì</˜yyªUn%±“rêxÆ’õ•õváÒ3½<rôDœGvÛU>kjLEI¼úZ›#ş
+ÖZ×0‹ŒUğK~’G¤£Z‹,¶¡…?åä‘Ò1§²RÄ)óînáş±ş
+Tx3‡k9º8m EH½&%²ÀıZØ"lÉ²HjğĞ6Ğ"g—rbŒİ°øxË;eC‹oÌ‰¯ñrÕ™ùÙN]g'–Ÿœh,k’ZËÂQK‡Eyëé^}Q:	q}Íq0Zk¾]—/^¼6UÅ¼ŠÕÅv´ÇúBÆõÅ²X@5ø€E¿¾È²£XºãƒŸXl§ØYI-½å¡…h«]&^Q†sæÒ?õÉ>~ã"Õx/ßäëpÎL,œ ¼ ±–ğœdoæ;h‘¹Ş¸¡Â gŸ-ÒØÙsâ[belÚæ‡_88Ìß`e¾¶~°ÊÃÙBî¥ÂÜ|uu.©Ái³‚Ğ`£î¤`Iu'ÖzqÃM­ˆYû¼õsÚcé³dK’êN×Ã4›€: ƒzõd¿îÜt©Š}d‘M,*d¡ÚdqQÅg6v ÃˆŞT7#=‘È?oQ°‚¦Š
+ª¹A¼›©·¥—oªuõj¡mXõö\¦:˜Óo¡ş®®²Kª×ß©/e¬õS6?h5¬àĞU&[a}}Ö1’Ù5r$ßˆ
+ñŞ¬CY“Éí>ú58Öu…¯kZ¸nº¦¾=è¸]Ü¹ÌÀ~D©yI©‹ş~Ä€]FÅØb›û¬È÷bœ6¾§67	Ÿ ¥óGñ"ùÀÙŞ6ÂàHıšé#õ/ÀJä…åŞ?lğ^ÆÖwHO9°÷C¿¤×¾âæ=lœW$‹!`QF±…¶ih¸‘x 7=ö-túÊÏİÍÂ¿O¸Ób‹¶¥EÚ…¥¢=^!²#Ì›R²SåÜ¦¡¹r“+À4÷lñƒS°°å½,Âõ-Æûú„XJã_Õİôå\^Â-ù.C‹[9±…Ô7mhë|Ü¦Gé‡¾…™‘÷°ÈÈ03´Ôûot°¯´Ø¿£ôÓ£»;±ĞÈbé‹-×ÔÇo½mx¡$‹î~·xÉoÄê]Ôó»g“Ÿr÷;J?=~„Å°X<H“Ş…—]ïrlaÅåÿ¦ÅÿNóÒ£ë}‹ğÿÓ¢×\/yG€,ä¿ÓBÇĞ÷n”Ã	8	_‡oÁxŠ8æ°–}~¿„—à7ğ{hÂÛğü®Ã_áoŒ±aö)–g‚=Á¦Ù7Ùyö},ˆÌ–Ù¯ÙoÙkl•½Çni–6¦íÑşE{µ@Ey\á™;ó?@`waQCÿåa,‰b5EÓ²àb_+‚Ù5	b]ˆ’xš6Z$¾–PX«å¡iTl1ö€ñtã‰tmÚúˆ¶>ŠZMŒ‰Ï¤ñX[Ôx¬Hp{çgQÃ©ÆsLÿ»wvæŞ;÷›;óÏ?w„g`äƒ~†·×ZX	oÁFØ
+;á œ‚/à*t0Î¬/Kd)l(Ëdã˜‹¹ÙOØ|¶˜Õ±µl#ÛÂv²Vö	»È®²ÿ°và¡ßõáñ<‘?ÅÓøH>¿À_â³¹‡¿Á›ø¾‡âÇùyş%¿ÊoKáRoI“¬ÒÓÒHi¼T$M“Ê¥%Rƒô–´EúP:&]®Ë\6Ë	ršœ);ä©òËr™¼D~CŞ(·Èûä“ò?ä‹òM…)Ê å%G™ª¼¢ÌQæ)K•5Ê»ÊÊ.Lk÷+G•cÊ)åœò…òOå²Ò©2UUªIí«jxÃKV©ƒÕt5C©æ 9Ğãé–àéü^`Uj"a4œ™iô¢*UA´T‚LŠ—Ô"‹²‹pU.ˆö¢áÄDÄD`¤‘4Y%ôh„ŞX¤QºÔ dhE:«<íŒÂ+j„§0İW(5 ~„îK]#È@BIz0¡	Âp„ÃQ>L„~¨ #‚„û "Y¤Îı¤ÄG¦ˆ¡ú8vX÷¸ FB=1r3ÊÍ<£Š¢f=bS7’ŞºŞ`&áR8D<éGc0RÁa8ã8G$
+íC$ŒQBB®¾Fœµ%„¢N¨Óêˆ@ Vìã 		ÜÜ bİ~ƒ³%¾Cıó >@7¨¨•Ä'æhÿ7ğ`ñÚùV’ğøÁoG1Ü×¹í>(z²­é([Ü­ğã2¾{UÜ ê¾Pô¿‹b{İvï°Î‰Ò:Ê‘ë7¼§pUE-±®Zzê¤‡¬x¶eBCçÍ5u¿±}Şöˆ¯{v/a çÑï+´b%üüM=+K!ã³mLG)[¶(q\‚áô¼¿g
+õÇPWŞ¶(Í}$)Ş}`ğß.ä­.'C6N‰/É™‘•oß–\—k<¹"¯ª¤ù§Ş&ÛhÂ+b=1™6¶şy“£•¥É¦İ'…óÜÜdÏ/úT«dRÁÀÆ‹Ÿ}¯¼mŞió´ªÙY„$jøúÅÑÒÜ'”m^“ËIZå&ÿêÒë¶·«7VMnÊÏÛê¨¬ƒõöÑdVñ;%û[rÆdœ¼TºôDtŠ:¾ıPG~×&\‰zeî „3å–¹¦;*ã7o=…Ô-\ôÜµæ–ãGÒŠ§®Œwï¯)kó_;œW=ßıÎnøÓùÑ
+ÔúKÉ5ßÏ«ª­¬³ìÆXV4¿XâÏ±^*É)}wrâGjê¤@ µV•¶øÜÀïöªòË—o!Jí’ÛY›ßç¹¹GÄå–Ö4÷™ƒ"–¨ó¯ü5“äÕç'f]§‘æmj}½ÆœW•Xé­®Ş(õÅ9)ï7™›u”hwìßeÀ¾ÛgmÙÃ0Cà“}ãÊ^(•É–Jn—1–¯êMˆ¢ÏX]aÃğLãÁÎšU}›ÔíÛÿhXÛ¾¶íLÃóş|èùöÃG’Y¦55IÇân«\1)}%mœk¬´kUyåf<»ûMH6´ñËõm¸.gÚãær»¾.–Èò³	¸.8cú›6ãÿ~ñ5Ì¾m„'SUó¨]Wmh‚ërgãbîá(â¬ş&‹fFŠ»5)qÆÑ“z4İÜØ¥;¯±wQ˜i9¹›àİEÑçãuåŞm†¿”ù¾¤Ìè°‘G~ğ£ìµ’öê‡¢{ÃE/üE“X‡¡Æ“$ÜµV2ˆÆïñÓd8ùÉ"£H.Oò0ßšB'/âT¹ÉK¤3¯9äu²ˆT’²s¯Õd-y›4‘ß“ÌÀv‘½ä9JN`v–\ É¿ÈuÒN:(¡ Îj<#¢i_GãiM¡OÒ!tA3¨æĞqt"L§ĞB:–ĞRú*CËéBÌÚªèbZC—}TOMWÑFº–®Ç<põa.øGº‹î§‡éGôSz†~yáez•Ş íôk  á™fˆ†Ç0SL†TÃ!ì0gtA!L‡0sÇ2X€ùc5,‡°ÖéYä&ğvÀÌ%ÂqøNÃçp	Úà|7 nA'esÌPyf$‹b}X?Ëâ˜…Å³$ö8È@¬g†Ğ-‡Ê§ a˜‚QI"K%¢Å@bL/%èA,hƒÌõ~r1QS°¬ËTÀäQ÷*z	´±¿ªÛ	rĞ/¶ØÉ½Äƒ>¤`/Ğ%ãã>#á—)]¤g6²Î<ˆ¸¬»&bá"Â®h¢÷êê+ƒº"VĞV‰KA©ğ/éÌ‘ºfIÖëAb:s®¯	H²$zá!ÖG”BÇ8î_)°)²ÄÅlÕŒ>HÊqûlÚ^—%ÕÚ£©ÍG¾ğrÍ8œ<Vrù¤ş>–¤úxRÂ¹û)Ï¥ZÇ8œšŸ*Ùö Ûì";
+'9±*Z(Fy¶=ÕOë?‘Î÷(]îòÓ@•ŸØÛ†Ÿ6µÕªUÓ²gÚ}´!V¤X°jÕF!Ô¨<g‚KójŞ·W¥Í˜æÆéÿ¨(öºÂ!NrÎÄ2ßiñÙ\±wªÅ.×pôÓKøáº¯=”=”êĞA'…YÇh>6Àáœèôyì±>›İk±hÙ¾§o‡=Öâr¡Uø‘âÿ‚™1Á1Gà˜ÃS°bèò‚s`‹õ—×ÛÕJ°ø<^o¬ã¶ıdG%=¶ ÀOt,)ÛO=]åI°Ä
+A‚%Á‚ãt‰I6Š¹ÏÆ‘Z\©âè‘;ñÔ˜|»¹ãSµ¢+S¼çÙË’½vYüƒfò'[r3©ÓI¶‘‹¸›LA½¹Ò×ğ¼ù‡Áúä'ó‘Ó‘óÇB:Y‡\ı…§øgËÈô™/±şËvõ„¸qy<vB=„=´lÓJHS,É–g|‹dëe[=IïI¥T–,Ë–ä?c{ü‡Ëzè!ôPš–J)K¥ìaz*¥{hÃ–BYz^B/%‡%„P
+ÓÏ“YX–~şŞûşßÓ{zÿ”ùUî—Ì¯÷4_a¶ù˜€ïÂc&ÛÛ½’s1ó/˜wa^/>»!óîB+Şa"˜ûÇaxñèû7Ìß:|Æ”à¬üç^dŠ9È@1ó+]Ù%}š»yí³Øc?¾™ßƒ#Ğ÷‹=
+ç¨pÎü¤ğäâe3ÜáSF8üŒykÂ¦TxùøS‡ñÛÀwóÚM O˜»…·˜9P:Ê‡ÀŸ˜ s»ğ#æÍâ›Œkß,¾ÃÀ—~ü8¯3à£¸6n– ç¿aÁÚ×÷1Â3“ÿœ¹c	p<Zş>cçï_üığÑÅ+X¯Àü…ó‹Wà‡²¯Qî?Ì}ĞûÓb‘Y n>¼ñ}|È>ù7À¿;{ìs±û« ;Bnš{ìÇŸóB“Ñ¯Ö~xäÿ•ë@=Nöù*>ÌİÍß`ş|…÷ö ~lèĞp‘f„= ö…Ç/AÇ=ğ%x\áÎ×åŞÎ¿ÈıòB_ÓËqô=|	µ~zğ½ëÌÅ»Wr`3÷_À'Pëş×nå Ú%tæ#ÈÏ÷!÷ûŞ¹±œ^\|§Åç—½ÿwÌöjÇ|íò¿z¹ /,øbİß^¯åaî[Ì_or\İşßïàRmî‹‹¿|™æ¾$÷İ=·?›¥¯ÇÅöGiôı×½æûÆó•Õƒt`÷v‹MÏI6˜ñ8 –L(F]øSdÛ|6É¦¥F\‹ÛıJ:ò+ëik7u½I¬©õ¡¢İe¤*ıÊÌŠ¹ÎËvë±Mğ†(¡g{8öe—‰`±„5õõ°*‡ñètÖ:ë4=c$"ÖĞ+†·Êxaeká	™Ğq9>P”&+Éœ r8]œêÛfÅrc°‹@dA¹(†ÃD?n¡†¼Šlm{*Xò†s1w–É‚‹|„Õ­9jdòzqiİc[uØZöwİ‰$SãÆiŠDCœ&M»iËc<vU‰n_™z‹hx¾VuÄ.MNU¤&!¾Î“–‹¶cí†$ŸxÁ%²q¶å8ëhæºXÒpbôFGôÑÖª)Š2ÌàY&5-SËÍEÓÀñ‰ÏÆc—£dvêk¡ë*¸r›åñÙ‚×=Gûã3SÖh¢#ŞÓê¦h°ené	ÔéÕI[šÆêv‰º4¨q'h¢»óY‚™êk1êOh’ÉË%\/ìN6ëa½³Ó\¹/ŒÍ¾Qu¦™å±L“8[89Z½f(	–A_,6ƒ$RaÙn4Í­ºY¸>óT…ºrœèsËçÑç¸S"”_«Íh%îØü†ëËˆÄj»á¥1Ít,9•¢#ÑW%2][âFq½N³Q=“ÓÔğ”e5H}+•)µ'hî¶—5G=NÆŞl$¡XÅêz±‘°`cgŞÖ›öÆA‹«¤'³|¢7BRß2ñÒÄhQUÙ†©PO•pkã-&z}ä‘.ß[tù]Å­‹KÖ°×aqe1èLÏ°L§”­#q&‹%ÏŸÓM[„ÕÛ~ÓLáôTŞ•î®:ã­j¶$¨k¹ÔµÔÍ0#4PUÎÇÆ±«£ªJ‹¸·}ê­ZãV&µ—¡™p£h—Èk“e;8>ŠØåÊá—£€”p:«f‚‚IÕIºñ=ŞP|ú	«4èx¸’·İ¥½“X\4piUÔ%&àµÌ¹ææ^¥½
+T:î»’A°ŞŒ„GD­a..»r¬»¡é®×¯˜N`ì¦íÈÇ(à–ÃJõL–J¨ò¤%Å)æd¤öxhFËqâ=;}¢Z‰Øt5“5<~éÒ f4«¬¸U¦‘f(°+PóN˜)“šëAéqİ!3Õ‚fÉ*\9’…E$WNFl…8ê †’rc´^ÚJ¯?u-‡®Æ°' ş(¨ ¡Ë*M«PK‘ZçCv¶ÅjõÂ±¯ICÏŸÌV‰WŠ}Z—ì®dV×–ùí†ØÖ-s®nÜ@N;Ü“úI"=t¯&T‘…k#’,,«Ä]xm‰å¥TjãJWĞÅ‰Í#Ô‡º6Œ3¬Ê‘fV)oliø­E«ÚèRêĞ
+®ì³#I·RËÂlÖOSI75CNZ³ªËI˜ĞZ’	·¦nHè¬Ÿ¨Ø±Ôê”—åÔÔé*ÊğØoÙ};î–O\ºìIy=Öš‰İÑ™Ú2»¶‚ªœ¶=SÀDkh‹#gX
+]"t‰¦¬\r©}Õ$S6ª1„H•:ÅÙF‡wÓ8šSÂİprœØR…U…ñt‡†¦©6†n„5J,ëÆˆ(´4çfåCÊëÇ‹£8ò\êEwÌÄ(Ë¦ÛUG±…Tã ¯ïİ{üí‡¯>şù~pıÓ¿İ{şàgÏ‡ÿc¿Ìƒ¢º²0~¯7h„îfÓVPM[Y4­DÃ¸`BFÀuT4¢Œuˆ q!îã†ÔŒÁÌh@&J$#šŒ±&îqŒ»3AÈ¹_wY«2¤¬TMÕôåıŞwÏ]ß¹+÷ê÷É?X¯M¶ŸÿöÍEG%ìöcæò û¡çãç_Y£h‹/û¾°¥²¸)ùJõØØA>LT4M;Ÿæ:èŒN*¹ïs¬¥¾9«<ZSÓ“Ãï×ÆLZğvxûh¯$ÓÖ8uCBúºÉ¥Ë*6…Âë6Õ¶Î0¡jÎg©Kñ8¹şÆÅË‹|Ì¡©ç®êÎÖÌ‹.Ü{öNpı{}üªœJræTÜ+©_°³Õ³õ‹C¶ö/º4¯âvnsj˜ƒ×±Uµ,Ú3×w¼ß #GcÏ|½\úÄn_Ú¶“9§û¯ªnJr]vq÷¬iJß/œé}Û¸|Llâ­yß¸]N*iÙb·álõ™©ÙYUÊ€³{¢w:2¹¡àF™íÃÜ˜WüzşÛ¥|›Û…C[³<óŸ®ÎÏ–|jné±ìàF]úğã¯¼"àxÙê5åQÙ¼oöm	¸à­¸ùdyííÆí+6¤E½Û¹Æ¼+çáb›ïŠúô/ª¸38ÿõ†m\.U¶£_Ğ£ĞuW{­}Xœ:SõeşÍ+ÇUÅ‰!‰-×Ã›wv<œQzá­1ŠĞ¹›{.Ù½b´ÏÆ'•£6g,ÖÇP÷¯Êª;^9eÇÕ{jb’¿ı<e’Ü×±serJiÓÔî©E;Î|z·cÄâºsù—4%j+Ë—ÕêÍOQ¤^ZËÿÆ™¤JRKdk’j$=%ĞP2SêÄWGSd Ô@;hÅX-N4á…<ÎAäMFÒY-.ú3ÕHZ.(*Ê~^‘=í§54‹«îiµt Õ4ƒiÀs‹½÷‚Å‘Æ¿Ğ¼FüÌB•’+_ßL’å?º¨v›IIm$K
+PænÈ’´’ µƒmà3°üüø|>Áà}ğøxl›Á&ğ®œ·¡oÑMú#)ù-bBËô=ôğ:x¼
+^/ƒßÿ/‚ß‚À‚ß€_ƒçé}rçÖÎSw}ÛW¬tºÁJaùú4X¢“ÌÏ¡ëÀ“à	ğ3ôıĞµàqğ(X«ÁC`XI)ûUi‰µ7pûÂ"S N© WÄr8å •óÕ]‰™É¶r\êË(„ù)- 9ª§Úv“J~aë~äÛ‡JÑ×*æ•ü¶bÚK™6-íµÖ Rd¦¨áŠe½eŠÀÁİ¨ó¯Ôùô.Øw¢õ°Zë+¤ˆ‰ú„E¦m(·•¢˜[xLdú¥7£µMĞÁ1i½Â\Ë:p-jXƒÔ¿€«Ñæ*¤®ä™,Ó
+äYÔeàRŒéÈ“.áW˜í?pßÃ²\h;yaÊĞ2å±§Å÷ä!GÆm¾'—ıw‘Sr‘’KG8%‡æs«J¤ÈLááù¼Ø#Ø&Rd¦ğˆ°ˆÕ*JşœGs‘k%†væ"×XŞ³ÀL|õì(ËºÎàÍ&†KfXb(),2Í¤tŒşL¤¤ó–#F?£Ÿ¾Í wÈ—m30ú3Ğ7a‘)eRÁ©àdp8Ç€£iÖúhÄF¡Ÿ#¡“Á$0ü˜ Æc¤F@¿	Æo€¯ƒÃÁXpHû%îé`Ôÿ;X^ÃŠF‘øšĞÀWÁ°?Ø4si™çœĞ}Á00{³M¦`è 0 {Ñ¦	º'Øô'?nCÉoóÃõ…ö½É‘Ù:3½xÆËä	{7ö‘L]‘ßwè.`ç(Ë<0‚ĞvGär]A+uìgÒs‹J~›Ø›J~‹Ö4V£Ğ2—iEYG¬.X:€ö ´mA¨¦p¦ŠwW™pFÎ(’A¬-Ô,¡ÿ)üõ)lÍáÚWñ³Ÿ~ğ£&I¾p¹”aúM~ôÛ4ó2îâ¸%v%±SU<°Óß@œàh;v´‚K*Jv¨šíÒèµ<h¶]µœnÇv-5;ÜóºáèéÈAÍ“«§ÉhĞò0ufİ…ºxhy¸ÜY{×Ó•ºr=İ8hyúzrN/ZÖİ9§7%O}¶øsPòÂéÁ:ˆñfÆxI†³Àf8„«–¦ó=ˆx[z‡õŸx“"šÍAË›¡ØÎ¶óÖ¨åƒ¦í5|iùÛÅ×å@|XcË	>º©ğÏ”¶õŠ)Ê]˜¤n‘¶
+RI¥‚‚ê/Ö÷&]c}c}°“ŞSïã©÷œ¢ Ö¹sëõ¶õj‡§÷g©zü¼¾-A‘%pÏ“"©·Ê¨P;Úv“uöòn»[FˆºÀ?,Ğ«·O7/£ŞÙÑ¨Q9:«zi¨—Oï0]cmScSc­Ş`~şgævk¯…<Œ¨m
+Ñ»™næ`ÉÙ54Ä®ÕÑçU)ÔCrqVu÷òõsU.Î‹!<¬Ox˜g•ÌÃ27Uûú›L’4!yjª´åİQ™n6yşA=4ªC’yÕ$ih›¤}–2†ÿ÷ë¢q2ÌÊ..-ß“–êä—ÛvÔİ?pĞpCİˆa’}„ôÓãøòCÁÿÃ¯„YlYÛÎ<‹YIF~Tô¿ù3½Äº¼ÿö:áŸ2¬xf{¦Õ_–}ò¿ÿ44åùÎÙÈª¬;XµŠ•Qx^aË#ïkmÃ{f”U‹ƒ9Îª¬ß²jë¼×â†Ä6ÅÏ™>qÆ´_ğ­&7ÁX¾ûD³›âù.8&ò8ïJ“ù^6›Õ¾íır¾_“‚¯<ÉWrËŒÇt$_	H}Só€Ó$¤ócô-1wŒx$é5ÈXøÅ’ñ>—Ró¬mÏ³5GT[á-«ï` GÙÿÒ
+endstream
+endobj
+4 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 32
+/LastChar 121
+/Widths [250 0 555 0 0 0 0 0 0 0 0 0 0 333 250 278 
+500 500 500 500 500 500 500 500 500 500 0 0 0 0 0 500 
+0 722 667 722 722 667 611 778 778 389 0 0 667 944 722 778 
+611 778 722 556 667 722 0 1000 0 0 0 0 0 0 0 0 
+0 500 556 444 556 444 333 500 556 278 0 556 278 833 556 500 
+556 0 444 389 333 556 500 722 500 500 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Times-Bold
+/FontDescriptor 67 0 R
+>>
+endobj
+5 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 32
+/LastChar 146
+/Widths [250 0 408 0 0 833 0 0 333 333 500 564 250 333 250 278 
+500 500 500 500 500 500 500 500 500 500 278 278 0 564 0 444 
+0 722 667 667 722 611 556 722 722 333 389 722 611 889 722 722 
+556 722 667 556 611 722 722 944 722 722 0 333 0 333 0 0 
+0 444 500 444 500 444 333 500 500 278 278 500 278 778 500 500 
+500 500 333 389 278 500 500 722 500 500 444 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 333 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Times-Roman
+/FontDescriptor 68 0 R
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 32
+/LastChar 121
+/Widths [250 0 420 0 0 0 0 0 0 0 0 0 250 333 250 0 
+500 500 500 500 0 500 0 0 500 500 333 0 0 0 0 0 
+0 611 611 667 722 611 0 0 0 333 0 0 556 833 667 0 
+611 0 611 500 556 0 0 833 0 0 0 389 0 389 0 0 
+0 500 500 444 500 444 278 500 500 278 278 444 278 722 500 500 
+500 0 389 389 278 500 444 667 444 444 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Times-Italic
+/FontDescriptor 69 0 R
+>>
+endobj
+30 0 obj
+<<
+/Type /Font
+/Subtype /Type0
+/BaseFont /DOHJPA+Symbol
+/Encoding /Identity-H
+/DescendantFonts [ 74 0 R ]
+/ToUnicode 75 0 R
+>>
+endobj
+74 0 obj
+<<
+/Type /Font
+/Subtype /CIDFontType2
+/BaseFont /DOHJPA+Symbol
+/FontDescriptor 70 0 R
+/CIDSystemInfo<<
+/Registry (Adobe)
+/Ordering (Identity)
+/Supplement 0
+>>
+/DW 1000
+/W [
+44 [494]
+54 [611]
+60 [548]
+95 [630]
+161 [438]
+]
+>>
+endobj
+45 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 181
+/LastChar 181
+/Widths [576 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /DOHKLB+Symbol
+/FontDescriptor 72 0 R
+>>
+endobj
+75 0 obj
+<<
+/Filter /FlateDecode
+/Length 245
+>>
+stream
+H‰T»RÄ †{â”îX°fm2®MŠUÇD{N"3BŠ¼½\â:À|çç?7zî;£Ğ7oeFm”ÇÅ®^"\qÒjJË°S¾å,Ğhî·%àÜ™ÑBÛúÅ%øî†áñ¾: }õ
+½6SŒ<°ÏéWç¾qF ÎAáHèù"Ü‹˜h6ş‡Í!°Ìõ^Û*\œè…™Úªb’§GÔĞ¨ÿ:iŠë:Ê/áÉïoÆ*ÆO…N…ŠV­SŞãS)¥OÔp«ìùR½´‹[ÿrõ>––H­kƒ·:ëR—é K vl
+endstream
+endobj
+1 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 3 0 R
+/Contents 2 0 R
+>>
+endobj
+8 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 10 0 R
+/Contents 9 0 R
+>>
+endobj
+12 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 14 0 R
+/Contents 13 0 R
+>>
+endobj
+15 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 17 0 R
+/Contents 16 0 R
+>>
+endobj
+18 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 20 0 R
+/Contents 19 0 R
+>>
+endobj
+21 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 23 0 R
+/Contents 22 0 R
+>>
+endobj
+24 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 26 0 R
+/Contents 25 0 R
+>>
+endobj
+27 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 29 0 R
+/Contents 28 0 R
+>>
+endobj
+31 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 33 0 R
+/Contents 32 0 R
+>>
+endobj
+34 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Resources 36 0 R
+/Contents 35 0 R
+>>
+endobj
+37 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 39 0 R
+/Contents 38 0 R
+>>
+endobj
+42 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 44 0 R
+/Contents 43 0 R
+>>
+endobj
+46 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 48 0 R
+/Contents 47 0 R
+>>
+endobj
+49 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 51 0 R
+/Contents 50 0 R
+>>
+endobj
+52 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 54 0 R
+/Contents 53 0 R
+>>
+endobj
+55 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 57 0 R
+/Contents 56 0 R
+>>
+endobj
+58 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 60 0 R
+/Contents 59 0 R
+>>
+endobj
+61 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 63 0 R
+/Contents 62 0 R
+>>
+endobj
+64 0 obj
+<<
+/Type /Page
+/Parent 41 0 R
+/Resources 66 0 R
+/Contents 65 0 R
+>>
+endobj
+76 0 obj
+<<
+/S /D
+>>
+endobj
+77 0 obj
+<<
+/Nums [0 76 0 R ]
+>>
+endobj
+7 0 obj
+<<
+/Type /Pages
+/Kids [1 0 R 8 0 R 12 0 R 15 0 R 18 0 R 21 0 R 24 0 R 27 0 R 31 0 R 34 0 R]
+/Count 10
+/Parent 40 0 R
+>>
+endobj
+41 0 obj
+<<
+/Type /Pages
+/Kids [37 0 R 42 0 R 46 0 R 49 0 R 52 0 R 55 0 R 58 0 R 61 0 R 64 0 R]
+/Count 9
+/Parent 40 0 R
+>>
+endobj
+40 0 obj
+<<
+/Type /Pages
+/Kids [7 0 R 41 0 R ]
+/Count 19
+/MediaBox [0 0 612 792]
+>>
+endobj
+78 0 obj
+<<
+/CreationDate (D:20210131150047+08'00')
+/ModDate (D:20210131150047+08'00')
+/Producer (PSNormalizer.framework)
+>>
+endobj
+79 0 obj
+<<
+/Type /Catalog
+/Pages 40 0 R
+/PageLabels 77 0 R
+>>
+endobj
+xref
+0 80
+0000000000 65535 f 
+0000146132 00000 n 
+0000000016 00000 n 
+0000002330 00000 n 
+0000143776 00000 n 
+0000144243 00000 n 
+0000101585 00000 n 
+0000147781 00000 n 
+0000146212 00000 n 
+0000002436 00000 n 
+0000007141 00000 n 
+0000144802 00000 n 
+0000146293 00000 n 
+0000007260 00000 n 
+0000012478 00000 n 
+0000146376 00000 n 
+0000012585 00000 n 
+0000018299 00000 n 
+0000146459 00000 n 
+0000018418 00000 n 
+0000024280 00000 n 
+0000146542 00000 n 
+0000024399 00000 n 
+0000029962 00000 n 
+0000146625 00000 n 
+0000030081 00000 n 
+0000033143 00000 n 
+0000146708 00000 n 
+0000033250 00000 n 
+0000041937 00000 n 
+0000145259 00000 n 
+0000146791 00000 n 
+0000042068 00000 n 
+0000049576 00000 n 
+0000146874 00000 n 
+0000049707 00000 n 
+0000056592 00000 n 
+0000146957 00000 n 
+0000056723 00000 n 
+0000063937 00000 n 
+0000148046 00000 n 
+0000147916 00000 n 
+0000147041 00000 n 
+0000064068 00000 n 
+0000070809 00000 n 
+0000145642 00000 n 
+0000147125 00000 n 
+0000070941 00000 n 
+0000077746 00000 n 
+0000147209 00000 n 
+0000077889 00000 n 
+0000084138 00000 n 
+0000147293 00000 n 
+0000084281 00000 n 
+0000090822 00000 n 
+0000147377 00000 n 
+0000090965 00000 n 
+0000093882 00000 n 
+0000147461 00000 n 
+0000093989 00000 n 
+0000098032 00000 n 
+0000147545 00000 n 
+0000098151 00000 n 
+0000100118 00000 n 
+0000147629 00000 n 
+0000100226 00000 n 
+0000101478 00000 n 
+0000101725 00000 n 
+0000101927 00000 n 
+0000102124 00000 n 
+0000102324 00000 n 
+0000102514 00000 n 
+0000123303 00000 n 
+0000123494 00000 n 
+0000145402 00000 n 
+0000145814 00000 n 
+0000147713 00000 n 
+0000147741 00000 n 
+0000148137 00000 n 
+0000148269 00000 n 
+trailer
+<<
+/Size 80
+/Root 79 0 R
+/Info 78 0 R
+/ID [<7096a3c229b4c9cba12d307324541e3c><7096a3c229b4c9cba12d307324541e3c>]
+>>
+startxref
+148339
+%%EOF

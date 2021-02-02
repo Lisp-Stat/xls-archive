@@ -1,0 +1,331 @@
+\documentstyle[handout,12pt]{report}
+\input{psfig}
+
+% This command enables hyphenation if \tt mode by changed \hyphencharacter
+% in the 10 point typewriter font. To work in other point sizes it would
+% have to be redefined. It may be Bator to just make the change globally 
+% and have it apply to anything that is set in \tt mode
+\newcommand{\dcode}[1]{{\tt \hyphenchar\tentt="2D #1\hyphenchar\tentt=-1}}
+
+\instructor{Tierney}
+\course{ENAR, Spring 1992}
+
+\begin{document}
+\heading{Suggested Exercises 1}
+\begin{enumerate}
+\item
+For each of the following expressions try to predict what the interpreter
+will return. Then type them in, see what happens, and try to explain any
+differences.
+\begin{enumerate}
+\item \dcode{(+ (- 1 2) 3)}
+\item \dcode{'(+ 3 5 6)}
+\item \dcode{(mean (list 1 2 3))}
+\item \dcode{(mean '(1 2 3))}
+\end{enumerate}
+
+\item
+Draw a plot of the following functions:
+\begin{enumerate}
+\item
+$f(x) = 2x + x^{2}$ over the range between -2 and 3.
+\item
+$f(x) = \cos(x^{2})/(1+x^{2})$ over the range between $-\pi$ and $\pi$.
+\end{enumerate}
+
+\item
+Generate 50 normal, beta, and gamma variates and plot them using
+histograms and quantile plots. The quantile functions are
+\dcode{normal-quant}, \dcode{beta-quant}, and \dcode{gamma-quant}.
+The \dcode{sort-data} function sorts a sequence.
+
+\item
+Modify the histogram animation example to change only one observation
+at a time. This produces more continuous changes that may be easier to
+watch. For a positive integer argument the function \dcode{random}
+returns a random nonnegative integer less than its argument.
+
+\item
+Look at the examples above the line in the {\bf Demos} menu.
+See if you can
+\begin{enumerate}
+\item see the sine curve in the {\bf Sine} example
+\item find parallel planes in the {\bf Randu} example
+\item tell which of the two spheres in the {\bf Spheres} example is hollow.
+\end{enumerate}
+\end{enumerate}
+
+\newpage
+\heading{Hints and Solutions}
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item \dcode{2}
+\item \dcode{(+ 3 5 6)}
+\item \dcode{2}
+\item \dcode{2}
+\end{enumerate}
+
+\item
+\begin{enumerate}
+\item
+\begin{verbatim}
+(def x (rseq -2 3 30))
+(plot-lines x (+ (* 2 x) (^ x 2)))
+\end{verbatim}
+\item
+\begin{verbatim}
+(def x (rseq (- pi) pi 30))
+(plot-lines x (/ (cos (^ x 2)) (+ 1 (^ x 2))))
+\end{verbatim}
+\end{enumerate}
+
+\item
+For normal variates,
+\begin{verbatim}
+(def x (normal-rand 50))
+(histogram x)
+(plot-points (normal-quant (/ (iseq 1 50) 51)) (sort-data x))
+\end{verbatim}
+For gamma variables, the gamma exponent and for beta variables the two
+beta exponents are required as additional arguments to the generator
+and quantile functions.
+
+\item
+\begin{verbatim}
+(def x (normal-rand 20))
+(setf h (histogram x))
+
+(dotimes (i 50)
+  (send h :clear :draw nil)
+  (setf (select x (random 20)) (select (normal-rand 20) 0))
+  (send h :add-points x))
+\end{verbatim}
+
+\item
+\begin{enumerate}
+\item
+Resize the plot to have a long $x$ axis and a short $y$ axis.
+\item
+Click a few times on the left {\bf Yaw} button.
+\item
+Try selecting a slice and see what happens as the slice is rotated.
+\end{enumerate}
+\end{enumerate}
+
+\newpage
+\heading{Suggested Exercises 2}
+\begin{enumerate}
+\item
+Define a function that computes the statistic
+\begin{displaymath}
+\frac{\overline{X}-\mu_{0}}{S/\sqrt{n}}
+\end{displaymath}
+for a given sample and value of $\mu_{0}$.
+
+\item
+Define a function that takes survival and censoring times as arguments
+and returns a list of observed times and censoring indicators. The
+functions \dcode{pmin} and \dcode{if-else} may be useful.
+
+\item
+The survival data objects should be loaded on your computer. Modify
+the \dcode{:plot} method to take an optional argument to choose the
+Kaplan-Meier or Fleming-Harrington estimator.
+
+\item
+Modify the survival object prototype's \dcode{:plot} method to add
+$\pm2$ standard error bars. The \dcode{:add-points} method can be
+given the keyword argument \dcode{:type} with value \dcode{dashed} to
+produce dashed lines; the keyword argument \dcode{:color} can be given
+with symbols like \dcode{red}, \dcode{green}, or \dcode{blue}.  Don't
+forget to quote the symbols.
+
+\item
+\begin{enumerate}
+\item
+Construct a scatterplot of \dcode{tensile-strength} against
+\dcode{abrasion-loss}.
+\item
+Use the \dcode{lowess} or \dcode{kernel-smooth} function to add a
+smoothed line to the plot.
+\item
+Both of these functions take a smoothing parameter as a keyword
+argument.  Write a method for the plot that replaces the smoother with
+one using a specified parameter.
+\item
+Make a slider dialog for controlling the parameter.
+\end{enumerate}
+\end{enumerate}
+
+\newpage
+\heading{Hints and Solutions}
+\begin{enumerate}
+\item
+\begin{verbatim}
+(defun t-stat (x mu-0)
+  (let ((n (length x))
+        (x-bar (mean x))
+        (s (standard-deviation x)))
+    (/ (- x-bar mu-0) (/ s (sqrt n)))))
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(defun make-surv-data (surv cens)
+  (list (pmin surv cens)
+        (if-else (<= surv cens) 1 0)))
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(defmeth survival-proto :plot (&optional (use-km t))
+  (let ((udt (send self :death-times)))
+    (if use-km
+        (plot-lines (make-steps udt
+                                (send self :km-estimator)))
+        (plot-lines (make-steps udt
+                                (send self :fh-estimator))))))
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(defmeth survival-proto :plot ()
+  (let* ((udt (send self :death-times))
+         (km (send self :km-estimator))
+         (se (send self :greenwood-se))
+         (p (plot-lines (make-steps udt km))))
+    (send p :add-lines udt (+ km (* 2 se)) :type 'dashed)
+    (send p :add-lines udt (- km (* 2 se)) :type 'dashed)))
+\end{verbatim}
+
+\item
+\begin{enumerate}
+\item \dcode{(setf p (plot-points tensile-strength abrasion-loss))}
+\item
+\begin{verbatim}
+(send p :add-lines (lowess tensile-strength abrasion-loss))
+\end{verbatim}
+\item
+\begin{verbatim}
+(defmeth p :lowess (&optional (f 0.25))
+  (send self :clear-lines :draw nil)
+  (send self :add-lines
+        (lowess tensile-strength abrasion-loss :f f)))
+\end{verbatim}
+\item
+\begin{verbatim}
+(interval-slider-dialog '(0 1) :action
+                        #'(lambda (f) (send p :lowess f)))
+\end{verbatim}
+\end{enumerate}
+\end{enumerate}
+
+\newpage
+\heading{Suggested Exercises 3}
+\begin{enumerate}
+\item
+Construct and install a menu. You need to go through the following
+steps:
+\begin{itemize}
+\item
+Create the menu and send it the \dcode{:install} message.
+\item
+Create a menu item or two that do something simple, such as put
+up a message dialog.
+\item
+Append the item or items to the menu.
+\end{itemize}
+Remove the menu when you are finished.
+
+\item
+Reconstruct the plot with a smoother you set up earlier. Add a menu
+item that turns the smoother on and off. Have the menu item show a
+check mark if the smoother is in the plot.
+
+\item
+Add a menu item to a survival function plot that adds or removes
+$\pm2$ standard error lines.
+
+\item
+Use the \dcode{:x-axis}, \dcode{:y-axis}, and \dcode{:range} messages
+to modify the axes and ranges of a plot.
+\end{enumerate}
+
+\newpage
+\heading{Hints and Solutions}
+\begin{enumerate}
+\item
+\begin{verbatim}
+(setf m (send menu-proto :new "My Menu"))
+(send m :install)
+(let ((i (send menu-item-proto :new "Hello" :action
+               #'(lambda () (message-dialog "Hello")))))
+  (send m :append-items i))
+(send m :remove)
+\end{verbatim}
+
+\item
+If the plot is \dcode{p}, use a slot to hold a flag to indicate if the
+smoother is present:
+\begin{verbatim}
+(send p :add-slot 'has-smooth)
+
+(defmeth p :has-smooth (&optional (new nil set))
+  (if set (setf (slot-value 'has-smooth) new))
+  (slot-value 'has-smooth))
+
+(send p :clear-lines)
+
+(let ((i (send menu-item-proto :new "Smoother")))
+  (defmeth i :do-action ()
+    (let ((has (send p :has-smooth)))
+      (if has
+          (send p :clear-lines)
+          (send p :add-lines
+                (lowess tensile-strength abrasion-loss)))
+      (send p :has-smooth (not has))))
+  (defmeth i :update ()
+    (send self :mark (if (send p :has-smooth) t nil)))
+  (send (send p :menu) :append-items i))
+\end{verbatim}
+
+%\item
+
+%\item
+\end{enumerate}
+
+\newpage
+\heading{Suggested Exercises 4}
+\begin{enumerate}
+\item
+The {\bf Regression} item in the {\bf Demos} menu sets up the
+regression example in which points can be moved to show changes in the
+regression line. The plot is called \dcode{p}. Modify one or more
+methods of this plot to have it show a smoother instead of a
+regression line. Add a slider dialog to control the smoother.
+\item
+Try the plot interpolation examples in the {\bf Demos} menu.
+\item
+Try the tour examples in the {\bf Demos} menu.
+\end{enumerate}
+
+\newpage
+\heading{Hints and Solutions}
+\begin{enumerate}
+\item
+Change the \dcode{:set-regression-line} method to
+\begin{verbatim}
+(defmeth p :set-regression-line ()
+  (let* ((i (iseq (send self :num-points)))
+         (x (send self :point-coordinate 0 i))
+         (y (send self :point-coordinate 1 i)))
+    (send self :clear-lines :draw nil)
+    (send self :add-lines (kernel-smooth x y))))
+\end{verbatim}
+
+%\item
+
+%\item
+\end{enumerate}
+\end{document}

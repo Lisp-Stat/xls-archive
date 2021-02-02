@@ -1,0 +1,1813 @@
+\begin{slide}{}
+\chapter{A Tutorial Introduction}
+\end{slide}
+
+\begin{slide}{}
+We'll start with an introduction to using Lisp-Stat as a statistical
+calculator and plotter.
+
+We will see how to
+\begin{itemize}
+\item interact with the interpreter
+\item perform numerical operations
+\item modify data
+\item construct systematic and random data
+\item use built-in dynamic plots
+\item construct linear regression models
+\item define simple functions
+\item use these functions for
+\begin{itemize}
+\item a simple animation
+\item fitting nonlinear regression models
+\item maximum likelihood estimation
+\item approximate posterior computations
+\end{itemize}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\section{The Interpreter}
+Your interaction with Lisp-Stat is a conversation between you and the
+interpreter.
+
+When the interpreter is ready to start the conversation, it gives you
+a prompt like
+\begin{verbatim}
+>
+\end{verbatim}
+When you type in an expression and hit {\em return}, the interpreter
+evaluates the expression, prints the result, and gives a new prompt:
+\begin{verbatim}
+> 1
+1
+>
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+Operations on numbers are performed with {\em compound expressions}:
+\begin{verbatim}
+> (+ 1 2)
+3
+> (+ 1 2 3)
+6
+> (* (+ 2 3.7) 8.2)
+46.74
+\end{verbatim}
+
+The basic rule: everything is evaluated.
+
+Numbers evaluate to themselves:
+\begin{verbatim}
+> 416
+416
+> 3.14
+3.14
+> -1
+-1
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+Logical values and strings also evaluate to themselves:
+\begin{verbatim}
+> t               ; true
+T
+> nil             ; false
+NIL
+> "This is a string 1 2 3 4"
+"This is a string 1 2 3 4"
+\end{verbatim}
+The semicolon ``\dcode{;}'' is the Lisp comment character.
+
+Symbols are evaluated by looking up their values, if they have one:
+\begin{verbatim}
+> pi
+3.141593
+> PI
+3.141593
+> x
+error: unbound variable - X
+\end{verbatim}
+Symbol names are {\em not} case-sensitive.
+\end{slide}
+
+\begin{slide}{}
+Compound expressions like \dcode{(+ 1 2)} are evaluated by
+\begin{itemize}
+\item looking up the function definition of the symbol \dcode{+}
+\item evaluating the argument expressions
+\item applying the function to the arguments
+\end{itemize}
+{[Exception: If the function definition is a {\em special form}]}
+
+Compound expressions are evaluated recursively:
+{\Large
+\begin{verbatim}
+> (+ (* 2 3) 4)
+10
+\end{verbatim}}
+Operators like \dcode{+}, \dcode{*}, etc., are functions, like
+\dcode{exp} and \dcode{sqrt}
+{\Large
+\begin{verbatim}
+> (exp 1)
+2.718282
+> (sqrt 2)
+1.414214
+> (sqrt -1)
+#C(0 1)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Numbers, strings, and symbols are {\em simple data}.
+
+Several forms of {\em compound data} are available.
+
+The most basic form of compound data is the list:
+\begin{verbatim}
+> (list 1 2 3)
+(1 2 3)
+> (list 1 "a string" (list 2 3))
+(1 "a string" (2 3))
+\end{verbatim}
+Other forms of compound data:
+\begin{itemize}
+\item vectors
+\item multi-dimensional arrays
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+Data sets can be named (symbols given values) using \dcode{def}:
+\begin{verbatim}
+> (def x (list 1 2 3))
+X
+> x
+(1 2 3)
+\end{verbatim}
+\dcode{def} is a {\em special form}. 
+\end{slide}
+
+\begin{slide}{}
+Quoting an expression tells the interpreter {\em not} to evaluate it.
+\begin{verbatim}
+> (quote (+ 1 2))
+(+ 1 2)
+\end{verbatim}
+Lisp quotation is similar to English quotation:
+
+Think about
+\begin{quote}
+Say your name!
+\end{quote}
+and
+\begin{quote}
+Say ``your name''!
+\end{quote}
+\dcode{quote} is a special form.
+\end{slide}
+
+\begin{slide}{}
+Since \dcode{quote} is needed very frequently, there is a shorthand form:
+\begin{verbatim}
+> '(+ 1 2)
+(+ 1 2)
+> (list '+ 1 2)
+(+ 1 2)
+> '(1 2 3)
+(1 2 3)
+\end{verbatim}
+Compound expressions are just lists.
+\end{slide}
+
+\begin{slide}{}
+Complicated expressions are easier to read when they are properly
+indented:
+\begin{verbatim}
+> (+ (- (* 3 5) (* (- 7 2) 6)) 3)
+-12
+> (+ (- (* 3 5) 
+        (* (- 7 2) 
+           6)) 
+     3)
+-12
+\end{verbatim}
+The interpreter should help you with indentation, and with matching
+parentheses.
+
+Exiting from Lisp-Stat:
+\begin{itemize}
+\item Choose \macbold{Quit} from the \macbold{File} menu
+\item Type \dcode{(exit)}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\section{Elementary Computations and Graphs}
+
+\subsection{One-Dimensional Summaries and Plots}
+A small data set:
+
+Precipitation levels in inches recorded during the
+month of March in the Minneapolis-St.~Paul area over a 30-year period:
+\begin{center}
+\begin{tabular}{rrrrrr}
+0.77 & 1.74 & 0.81 & 1.20 & 1.95 & 1.20 \\
+0.47 & 1.43 & 3.37 & 2.20 & 3.00 & 3.09 \\
+1.51 & 2.10 & 0.52 & 1.62 & 1.31 & 0.32 \\
+0.59 & 0.81 & 2.81 & 1.87 & 1.18 & 1.35 \\
+4.75 & 2.48 & 0.96 & 1.89 & 0.90 & 2.05 
+\end{tabular}
+\end{center}
+Use \dcode{def} and \dcode{list} to enter the data:
+\begin{verbatim}
+(def precipitation
+     (list .77 1.74 .81 ...))
+\end{verbatim}
+or
+\begin{verbatim}
+(def precipitation '(.77 1.74 .81 ...))
+\end{verbatim}
+We will see later how to read the data from a file.
+\end{slide}
+
+\begin{slide}{}
+Some summaries:
+\begin{verbatim}
+> (mean precipitation)
+1.675
+\end{verbatim}
+\begin{verbatim}
+> (median precipitation)
+1.47
+\end{verbatim}
+\begin{verbatim}
+> (standard-deviation precipitation)
+1.0157
+\end{verbatim}
+\begin{verbatim}
+> (interquartile-range precipitation)
+1.145
+\end{verbatim}
+
+And some plots:
+\begin{verbatim}
+> (histogram precipitation)
+#<Object: ...>
+> (boxplot precipitation)
+#<Object: ...>
+\end{verbatim}
+The results returned by these functions will be used later.
+\end{slide}
+
+\begin{slide}{}
+In Lisp-Stat, arithmetic operations are applied elementwise to
+compound data:
+\begin{verbatim}
+> (+ 1 precipitation)
+(1.77 2.74 1.81 2.2 2.95 ...) 
+> (log precipitation)
+(-0.2613648 0.5538851 -0.210721 ...)
+> (sqrt precipitation)
+(0.877496 1.31909 0.9 1.09545 ...)
+\end{verbatim}
+
+The results can be passed to summary or plotting functions using
+compound expressions like
+\begin{verbatim}
+(mean (sqrt precipitation))
+\end{verbatim}
+and
+\begin{verbatim}
+(histogram (sqrt precipitation))
+\end{verbatim}
+
+The \dcode{boxplot} function produces a parallel boxplot when given a
+list of datasets:
+\begin{verbatim}
+(boxplot (list urban rural))
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Two-Dimensional Plots}
+The \dcode{precipitation} data were collected over time.
+
+It may be useful to look at a plot against time to see if there is any trend.
+
+To construct a list of integers from 1 to 30 we use
+\begin{verbatim}
+> (iseq 1 30)
+(1 2 ... 30)
+\end{verbatim}
+A scatterplot of \dcode{precipitation} against time is produced
+by
+\begin{verbatim}
+(plot-points (iseq 1 30) precipitation)
+\end{verbatim}
+Sometimes it is easier to see temporal patterns in a plot if the
+points are connected by lines:
+\begin{verbatim}
+(plot-lines (iseq 1 30) precipitation)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+A connected lines plot is also useful for plotting functions.
+
+As an example, let's plot the sine curve over the range $[-\pi,\pi]$.
+
+A sequence of 50 equally spaced points between $-\pi$ and $\pi$ is
+constructed by
+\begin{verbatim}
+(rseq (- pi) pi 50)
+\end{verbatim}
+An expression for plotting $\sin(x)$ is
+\begin{verbatim}
+(plot-lines (rseq (- pi) pi 50)
+            (sin (rseq (- pi) pi 50)))
+\end{verbatim}
+You can simplify this expression by first defining a variable
+\dcode{x} as
+\begin{verbatim}
+(def x (rseq (- pi) pi 50))
+\end{verbatim}
+and then constructing the plot with
+\begin{verbatim}
+(plot-lines x (sin x))
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+Scatterplots are of course particularly useful for
+bivariate data.
+
+As an example, \dcode{abrasion-loss} contains the amount of rubber
+lost in an abrasion test for each of 30 specimens;
+\dcode{tensile-strength} contains the tensile strengths of the
+specimens.
+
+A scatterplot of \dcode{abrasion-loss} against
+\dcode{tensile-strength} is produced by
+\begin{verbatim}
+(plot-points tensile-strength
+             abrasion-loss)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Plotting Functions}
+A simpler way to plot a function like $\sin(x)$ is to use
+\dcode{plot-function}.
+
+It expects a function, a lower limit, and an upper limit as arguments.
+
+Unfortunately, just using
+\begin{verbatim}
+(plot-function sin (- pi) pi)
+\end{verbatim}
+will not work:
+\begin{verbatim}
+> (plot-function sin (- pi) pi)
+error: unbound variable - SIN
+\end{verbatim}
+The reason is that symbols have separate values and function
+definitions.
+
+This can be a bit of a nuisance.
+
+But it means that you can't accidentally destroy the \dcode{list}
+function by defining a variable called \dcode{list}.
+\end{slide}
+
+\begin{slide}{}
+To get the {\em function definition}\/ of \dcode{sin} we can use
+\begin{verbatim}
+(function sin)
+\end{verbatim}
+or the shorthand form
+\begin{verbatim}
+#'sin
+\end{verbatim}
+A plot of $\sin(x)$ between $-\pi$ and $\pi$ is then produced by
+{\Large
+\begin{verbatim}
+(plot-function (function sin) (- pi) pi)
+\end{verbatim}}
+or
+{\Large
+\begin{verbatim}
+(plot-function #'sin (- pi) pi)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\section{More on the Interpreter}
+\subsection{Saving Your Work}
+It is possible to
+\begin{itemize}
+\item
+save a transcript of your session with the \dcode{dribble} function\\
+(available in one of the menus on a Macintosh or the MS Windows
+version)
+\item
+save one or more defined variables to a file using the \dcode{savevar}
+function.
+\item
+save a copy of a plot
+\begin{itemize}
+\item to the clipboard on a Macintosh or in Windows
+\item to a postscript file in {\em X11}
+\end{itemize}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\subsection{A Command History Mechanism}
+There is a simple command history mechanism:
+\begin{center}
+\begin{tabular}{rl}
+{\tt -}   & the current input expression\\
+{\tt +}   & the last expression read\\
+{\tt ++}  & the previous value of \dcode{+}\\
+{\tt +++} & the previous value of \dcode{++}\\
+{\tt *}   & the result of the last evaluation\\
+{\tt **}  & the previous value of \dcode{*}\\
+{\tt ***} & the previous value of \dcode{**}
+\end{tabular}
+\end{center}
+The variables {\tt *}, {\tt **}, and {\tt ***} are the most
+useful ones.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Getting Help}
+The \dcode{help} function provides a brief description of
+a function:
+{\Large
+\begin{verbatim}
+> (help 'median)
+MEDIAN                           [function-doc]
+Args: (x)
+Returns the median of the elements of X.
+\end{verbatim}}
+\dcode{help} is an ordinary function -- the quote in front of
+\dcode{median} is essential.
+\end{slide}
+
+\begin{slide}{}
+\dcode{help*} gives help information about all functions with names
+containing its argument:
+{\Large
+\begin{verbatim}
+> (help* 'norm)
+-----------------------------------------------
+BIVNORM-CDF                      [function-doc]
+Args: (x y r)
+Returns the value of the standard bivariate
+normal distribution function with correlation R
+at (X, Y). Vectorized.
+-----------------------------------------------
+...
+-----------------------------------------------
+NORMAL-CDF                       [function-doc]
+Args: (x)
+Returns the value of the standard normal
+distribution function at X. Vectorized.
+-----------------------------------------------
+...
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+The function \dcode{apropos} gives a listing of the symbols that
+contain its argument:
+{\Large
+\begin{verbatim}
+> (apropos 'norm)
+NORMAL-QUANT
+NORMAL-RAND
+NORMAL-CDF
+NORMAL-DENS
+NORMAL
+BIVNORM-CDF
+NORM
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Listing and Undefining Variables}
+\dcode{variables} gives a listing of variables created with \dcode{def}:
+\begin{verbatim}
+> (variables)
+(PRECIPITATION RURAL URBAN ...)
+\end{verbatim}
+To free up space, you may want to get rid of some variables:
+\begin{verbatim}
+> (undef 'rural)
+RURAL
+> (variables)
+(PRECIPITATION URBAN ...)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Interrupting a Calculation}
+Occasionally you may need to interrupt a calculation.
+
+Each system has its own method for doing this:
+\begin{itemize}
+\item
+On the Macintosh, {\em hold down} the \macbold{Command} key and the
+\macbold{Period} key.
+\item
+In MS Windows, hold down CONTROL-C
+\item
+On UNIX systems, use the standard interrupt, usually CONTROL-C.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\section{Some Data-Handling Functions}
+\subsection{Generating Systematic Data}
+We have already seen two functions,
+\begin{itemize}
+\item \dcode{iseq} for generating a sequence of consecutive integers
+\item \dcode{rseq} for generating equally spaced real values.
+\end{itemize}
+\dcode{iseq} can also be used with a single integer argument $n$;
+this produces a list of integers $0, 1, \ldots, n - 1$:
+\begin{verbatim}
+> (iseq 10)
+(0 1 2 3 4 5 6 7 8 9)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\dcode{repeat} is useful for generating sequences with a particular pattern:
+\begin{verbatim}
+> (repeat 2 3)
+(2 2 2)
+
+> (repeat (list 1 2 3) 2)
+(1 2 3 1 2 3)
+
+> (repeat (list 1 2 3) (list 3 2 1))
+(1 1 1 2 2 3)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+For example, if the data in the table
+{\Large
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+& \multicolumn{3}{c|}{Variety}\\
+\cline{2-4}
+Density & 1 & 2 & 3 \\
+\hline
+1 & ~9.2 12.4 ~5.0 & ~8.9 ~9.2 ~6.0 & 16.3 15.2 ~9.4 \\
+\hline
+2 & 12.4 14.5 ~8.6 & 12.7 14.0 12.3 & 18.2 18.0 16.9 \\
+\hline
+3 & 12.9 16.4 12.1 & 14.6 16.0 14.7 & 20.8 20.6 18.7 \\
+\hline
+4 & 10.9 14.3 ~9.2 & 12.6 13.0 13.0 & 18.3 16.0 13.0 \\
+\hline
+\end{tabular}
+\end{center}}
+are entered by rows
+\begin{verbatim}
+(def yield (list  9.2 12.4  5.0 ...))
+\end{verbatim}
+then the density and variety levels are generated by
+\begin{verbatim}
+(def variety 
+     (repeat (repeat (list 1 2 3) 
+                     (list 3 3 3))
+             4))
+\end{verbatim}
+and
+\begin{verbatim}
+(def density (repeat (list 1 2 3 4)
+                     (list 9 9 9 9)))
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Generating Random Data}
+50 uniform variates are generated by
+\begin{verbatim}
+(uniform-rand 50)
+\end{verbatim}
+\dcode{normal-rand} and \dcode{cauchy-rand} are similar.
+
+50 gamma variates with unit scale and exponent 4 are generated by
+\begin{verbatim}
+(gamma-rand 50 4)
+\end{verbatim}
+\dcode{t-rand} and \dcode{chisq-rand} are similar.
+
+50 beta variates with $\alpha=3.5$ and $\beta=7.2$ are generated by
+\begin{verbatim}
+(beta-rand 50 3.5 7.2)
+\end{verbatim}
+\dcode{f-rand} is similar.
+
+Binomial and Poisson variates are generated by
+\begin{verbatim}
+(binomial-rand 50 5 .3)
+(poisson-rand 50 4.3)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+The sample size arguments may also be lists of integers.
+
+The result will then be a list of samples.
+
+The function \dcode{sample} selects a random sample without
+replacement from a list:
+\begin{verbatim}
+> (sample (iseq 1 20) 5)
+(20 11 3 14 10)
+\end{verbatim}
+If \dcode{t} is given as an optional third argument, the sample is
+drawn with replacement:
+\begin{verbatim}
+> (sample (iseq 1 20) 5 t)
+(2 14 14 11 18)
+\end{verbatim}
+Any value other than \dcode{nil} can be given as the third argument.
+
+{[Logical operations usually interpret any value other than
+\dcode{nil} as true.]}
+
+Giving \dcode{nil} as the third argument is equivalent to omitting
+the argument.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Forming Subsets and Deleting Cases}
+The \dcode{select} function lets you to select one or more elements
+from a list:
+\begin{verbatim}
+(def x (list 3 7 5 9 12 3 14 2))
+> (select x 0)
+3
+> (select x 2)
+5
+\end{verbatim}
+Lisp, like C but in contrast to FORTRAN, numbers
+elements of lists starting at zero.
+
+To get a group of elements at once, use a list of indices:
+\begin{verbatim}
+> (select x (list 0 2))
+(3 5)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+To select all elements of \dcode{x} except the element
+with index 2, you can use
+\begin{verbatim}
+> (select x (remove 2 (iseq 8)))
+(3 7 9 12 3 14 2)
+\end{verbatim}
+or
+\begin{verbatim}
+> (select x (which (/= 2 (iseq 8))))
+(3 7 9 12 3 14 2)
+\end{verbatim}
+The \dcode{/=} function produces
+\begin{verbatim}
+> (/= 2 (iseq 8))
+(T T NIL T T T T T)
+\end{verbatim}
+and \dcode{which} turns this into indices of the \dcode{t} elements:
+\begin{verbatim}
+> (which (/= 2 (iseq 8)))
+(0 1 3 4 5 6 7)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Combining Several Lists}
+\dcode{append} and \dcode{combine} allow you to merge several lists:
+{\Large
+\begin{verbatim}
+> (append (list 1 2 3) (list 4) (list 5 6 7 8))
+(1 2 3 4 5 6 7 8)
+> (combine (list 1 2 3)
+           (list 4)
+           (list 5 6 7 8))
+(1 2 3 4 5 6 7 8)
+\end{verbatim}}
+\dcode{append} requires its arguments to be lists and only appends at
+one level.
+
+\dcode{combine} allows simple data arguments, and works recursively
+through nested lists:
+{\Large
+\begin{verbatim}
+> (combine 1 2 (list 3 4))
+(1 2 3 4)
+> (append (list (list 1 2) 3) (list 4 5))
+((1 2) 3 4 5)
+> (combine (list (list 1 2) 3) (list 4 5))
+(1 2 3 4 5)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Modifying Data}
+\dcode{setf} can be used to modify individual elements or sets of elements:
+{\Large
+\begin{verbatim}
+(def x (list 3 7 5 9 12 3 14 2))
+X
+> x
+(3 7 5 9 12 3 14 2)
+> (setf (select x 4) 11)
+11
+> x
+(3 7 5 9 11 3 14 2)
+> (setf (select x (list 0 2)) (list 15 16))
+(15 16)
+> x
+(15 7 16 9 11 3 14 2)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\dcode{setf} {\em destructively modifies}\/ a list, it does not copy it:
+\begin{verbatim}
+> (def x (list 1 2 3 4))
+X
+> (def y x)
+Y
+> (setf (select y 0) 'a)
+A
+> y
+(A 2 3 4)
+> x
+(A 2 3 4)
+\end{verbatim}
+The symbols \dcode{x} and \dcode{y} are two different names for the
+same list, and \dcode{setf} has changed that list.
+\end{slide}
+
+\begin{slide}{}
+To protect a list, you can copy it before making modifications:
+\begin{verbatim}
+> (def y (copy-list x))
+Y
+> (setf (select y 1) 'b)
+B
+> y
+(A B 3 4)
+> x
+(A 2 3 4)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+The general form of a \dcode{setf} call is
+\begin{flushleft}\tt
+(setf \param{form} \param{value})
+\end{flushleft}
+\dcode{setf} can be used to modify other compound data, such as
+vectors and arrays.
+
+Like \dcode{def}, \dcode{setf} can also be used to assign a value to a
+symbol:
+\begin{verbatim}
+> (setf z 3)
+3
+> z
+3
+\end{verbatim}
+There are three differences between \dcode{def} and \dcode{setf}:
+\begin{itemize}
+\item
+\dcode{def} returns the symbol, \dcode{setf} returns the value.
+\item
+\dcode{def} keeps track of the variables it creates;
+\dcode{variables} returns a list of them.
+\item
+\dcode{def} can only change global variable values, not local ones.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Reading Data Files}
+Two functions let you read data from a standard text file:
+{\Large
+\begin{flushleft}\tt
+(read-data-columns [\param{file} [\param{columns}]])\\
+(read-data-file [\param{file}])
+\end{flushleft}}
+The items in the file must be separated by white space (any number or
+combination of spaces, tabs or returns), not commas or other
+delimiters.
+
+The arguments are optional:
+\begin{itemize}
+\item
+If \param{file} is omitted, a dialog is presented to let you
+select the file to read from.
+\item
+If \dcode{columns} is omitted, the number is determined from the first
+line of the file.
+\end{itemize}
+\dcode{read-data-columns} returns a list of lists representing the
+columns in the file.
+
+\dcode{read-data-file} returns a list of the items in the file read
+in a row at a time.
+\end{slide}
+
+\begin{slide}{}
+Suppose you have a file \dcode{abrasion.dat} of the form
+\begin{flushleft}\tt
+372~~~~~162~~~~~45\\
+206~~~~~233~~~~~55\\
+175~~~~~232~~~~~61\\
+...     ...     ...
+\end{flushleft}
+Then
+\begin{verbatim}
+> (read-data-columns "abrasion.dat" 3)
+((372 206 175 ...)
+ (162 233 232 ...)
+ (45 55 61 ...))
+> (read-data-file "abrasion.dat")
+(372 162 45 206 233 55 ...)
+\end{verbatim}
+The items in the file can be any items you would type into the
+interpreter (numbers, strings, symbols, etc.).
+\end{slide}
+
+\begin{slide}{}
+You can use these functions together with \dcode{select}:
+{\Large
+\begin{verbatim}
+> (def mydata
+       (read-data-columns "abrasion.dat"))
+> (def abr (select mydata 0))
+ABR
+> (def tens (select mydata 1))
+TENS
+> (def hard (select mydata 2))
+HARD
+> abr
+(372 206 175 154 ...)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+These functions should be adequate for most purposes.
+
+If you need to read a file that is not of this form, you can use
+low-level file handling functions available in Lisp.
+
+You can also use the \dcode{load} function or the \macbold{Load} menu
+command to load a file of Lisp expressions.
+
+\dcode{load} requires the file name to have a \dcode{.lsp} extension.
+
+\end{slide}
+
+\begin{slide}{}
+\section{Dynamic Graphs}
+The abrasion loss data set used earlier includes a second covariate,
+the hardness values of the rubber samples.
+
+Two-dimensional static graphs alone are not adequate for examining the
+relationship among three variables.
+
+Instead, we can use some dynamic graphs.
+
+Dynamic graphs use motion and interaction to allow us to explore
+higher-dimensional aspects of a data set.
+
+We will look at
+\begin{itemize}
+\item spinning plots
+\item scatterplot matrices
+\item brushing and selecting
+\item linking plots
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Spinning Plots}
+Three variables can be displayed in a three-dimensional rotating
+scatterplot.
+
+Rotation, together with depth cuing, allow your mind to form a
+three-dimensional image of the data.
+
+A rotating plot of the abrasion loss data is constructed by
+\begin{verbatim}
+(spin-plot (list hardness
+                 tensile-strength
+                 abrasion-loss))
+\end{verbatim}
+You can rotate the plot by placing the mouse cursor in one of the
+\dcode{Pitch}, \dcode{Roll}, or \dcode{Yaw} squares and pressing the
+mouse button.
+
+If you press the mouse button using the {\em extend modifier}, then
+the plot continues to rotate after you release the mouse; it stops the
+next time you click in the button bar.
+\end{slide}
+
+\begin{slide}{}
+Every plot window provides a menu for
+communicating with the plot.
+
+The menu on a rotating plot allows you to change the speed of
+rotation, or to choose whether to use depth cuing\index{depth cuing}
+or whether to show the coordinate axes.
+
+By default, the plot uses depth cuing: points closer to the viewer are
+drawn larger than points farther away.
+
+The \macbold{Options} item in the menu lets you switch the background
+color from black to white; it also lets you change the type of scaling
+used.
+\end{slide}
+
+\begin{slide}{}
+\dcode{spin-plot} accepts several {\em keyword arguments}, including
+\begin{description}
+\item[]
+\dcode{:title} -- a title string for the plot
+\item[]
+\dcode{:variable-labels} -- a list of strings to use as axis labels
+\item[]
+\dcode{:point-labels} -- a list of strings to use as point labels
+\item[]
+\dcode{:scale} -- one of the symbols \dcode{variable}, \dcode{fixed},
+or \dcode{nil}. (\dcode{nil} evaluates to itself, but the others need
+to be quoted).
+\end{description}
+A {\em keyword symbol}\/ is a symbol starting with a colon.
+
+Keyword symbols evaluate to themselves, so they do not need to be
+quoted.
+
+Keyword arguments to a function must be given after all required (and
+optional) arguments.
+
+Keyword arguments can be given in any order.
+\end{slide}
+
+\begin{slide}{}
+For example,
+{\Large
+\begin{verbatim}
+(spin-plot (list hardness
+                 tensile-strength
+                 abrasion-loss)
+           :title "Abrasion Loss Data"
+           :variable-labels
+           (list "Hardness"
+                 "Tensile Strength"
+                 "Abrasion Loss"))
+\end{verbatim}}
+and
+{\Large
+\begin{verbatim}
+(spin-plot (list hardness
+                 tensile-strength
+                 abrasion-loss)
+           :variable-labels
+           (list "Hardness"
+                 "Tensile Strength"
+                 "Abrasion Loss")
+           :title "Abrasion Loss Data")
+\end{verbatim}}
+are equivalent.
+\end{slide}
+
+\begin{slide}{}
+The center of rotation is the midrange of the data.
+
+There are three scaling options:
+\begin{description}
+\item[]
+\dcode{variable} (the default) -- each variable is scaled by a
+different amount to make their ranges equal to $[-1,1]$.
+\item[]
+\dcode{fixed} -- a common scale factor is applied to make the largest
+range equal to $[-1,1]$
+\item[]
+\dcode{nil} -- no scaling is used; the variables are assumed to have
+been scaled to $[-1,1]$.
+\end{description}
+You can center the variables at their means and scale them by a common
+factor with
+{\Large
+\begin{verbatim}
+(spin-plot
+  (list (/ (- hardness (mean hardness))
+           140)
+        (/ (- tensile-strength 
+              (mean tensile-strength))
+           140)
+        (/ (- abrasion-loss
+              (mean abrasion-loss))
+           140))
+  :scale nil)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Scatterplot Matrices}
+Another way to look at three (or more) variables is
+to use a scatterplot matrix of all pairwise scatterplots:
+{\Large
+\begin{verbatim}
+(scatterplot-matrix (list hardness
+                          tensile-strength
+                          abrasion-loss)
+                    :variable-labels
+                    (list "Hardness"
+                          "Tensile Strength"
+                          "Abrasion Loss"))
+\end{verbatim}}
+One way to use this plot is to approximately condition on one or more
+variables using {\em selecting}\/ and {\em brushing}.
+\end{slide}
+
+\begin{slide}{}
+Two mouse modes are available:
+\begin{description}
+\item[]
+{\em Selecting}. A plot is in selecting mode when the cursor is an
+arrow; this is the default.
+
+In this mode you can 
+\begin{itemize}
+\item select a point by clicking on it
+\item select a group of points by dragging a selection rectangle
+\item add to a selection by clicking or dragging with the extend modifier
+\end{itemize}
+\item[]
+{\em Brushing}. In this mode the cursor looks like a paint brush, and
+a dashed rectangle, the {\em brush}, is attached to it.
+
+In this mode
+\begin{itemize}
+\item
+as you move the brush, points in it are highlighted
+\item
+this highlighting is transient; it is turned off when points move out
+of the brush
+\item you can select points by clicking and dragging
+\end{itemize}
+\end{description}
+\end{slide}
+
+\begin{slide}{}
+To change the mouse mode, choose \macbold{Mouse Mode} from the plot
+menu, and then select the mode you want from the dialog that is
+presented.
+
+You can change the shape of the brush by selecting \macbold{Resize
+Brush} from the plot menu.
+
+Brushing and selecting are available in all plots.
+
+These operations can be useful in spinning plots to highlight
+features, for example by looking at the shape of a slice of the data.
+
+It is possible to change the way these two standard modes behave and to
+define new mouse modes; we will see examples of this later on.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Interacting with Individual Plots}
+Plot menus contain several items that can be used together with
+selecting and brushing:
+\begin{itemize}
+\item
+If the \macbold{Labels} item is selected, point labels are shown
+next to selected or highlighted points.
+\item
+The selected points can be removed by choosing \macbold{Remove Selection}
+\item
+Unselected points can be removed by choosing \macbold{Focus on Selection}
+\item
+The plot can be rescaled after adding or removing points.
+\item
+You can change the color or the symbol used to draw a point.
+\item
+You can specify a set of indices to select or save the currently
+selected indices to a variable with the \macbold{Selection} item.
+\end{itemize}
+Depth cuing in spinning plots works by changing symbols, so it has to
+be turned off if you want to use different symbols.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Linked Plots}
+A scatterplot matrix links points in separate scatterplots.
+
+You can link any plots by choosing \macbold{Link View}
+from the menus of the plots you want to link.
+
+For example, you can link a histogram of \dcode{hardness} to a
+scatterplot of \dcode{abrasion-loss} against \dcode{tensile-strength}.
+
+If you want to be able to select points with a particular label, you
+can use \dcode{name-list}.
+\begin{verbatim}
+(name-list 30)
+\end{verbatim}
+You can also give \dcode{name-list} a list of strings.
+
+Linking is based on the point index, so you have to use the same
+observation order in each plot.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Modifying a Scatterplot}
+After producing a plot, you can add more points or lines to it.
+
+To do this, you need to save the {\em plot object}\/ returned by
+plotting functions in a variable:
+{\Large
+\begin{verbatim}
+> (setf p (plot-points tensile-strength
+                       abrasion-loss))
+#<Object: 302592132, prototype = SCATTER...>
+\end{verbatim}}
+To use this object, you can send it {\em messages}.
+
+This is done with expressions like
+\begin{flushleft}\Large\tt
+(send~\param{object}\\
+~~~~~~\param{message selector}\\
+~~~~~~\param{argument 1} ...)
+\end{flushleft}
+For example,
+\begin{verbatim}
+(send p :abline -2.18 0.66)
+\end{verbatim}
+adds a regression line to the plot.
+\end{slide}
+
+\begin{slide}{}
+Plot objects understand a number of other messages.
+
+The help message provides a (partial) listing:
+{\Large
+\begin{verbatim}
+> (send p :help)
+SCATTERPLOT-PROTO
+Scatterplot.
+Help is available on the following:
+
+:ABLINE :ACTIVATE :ADD-FUNCTION :ADD-LINES
+...
+\end{verbatim}}
+The list of topics is the same for all scatterplots, but is somewhat
+different for rotating plots, scatterplot matrices, and histograms.
+\end{slide}
+
+\begin{slide}{}
+The \dcode{:clear} message clears the plot.
+{\Large
+\begin{verbatim}
+> (send p :help :clear)
+:CLEAR
+Message args: (&key (draw t))
+Clears the plot data. If DRAW is true the plot
+is redrawn; otherwise its current screen image
+remains unchanged.
+\end{verbatim}}
+\dcode{:add-lines} and \dcode{:add-points} add new data:
+{\Large
+\begin{verbatim}
+> (send p :help :add-points)
+:ADD-POINTS
+Method args:
+        (points &key point-labels (draw t))
+or:     (x y  &key point-labels (draw t))
+Adds points to plot. POINTS is a list of
+sequences, POINT-LABELS a list of strings. If
+DRAW is true the new points are added to the
+screen. For a 2D plot POINTS can be replaced
+by two sequences X and Y.
+\end{verbatim}}
+The term {\em sequence}\/\index{sequences} means a list or a vector.
+\end{slide}
+
+\begin{slide}{}
+A quadratic regression of \dcode{abrasion-loss} on
+\dcode{tensile-strength} produces the fit equation
+\begin{displaymath}
+Y = -280.1 + 5.986 X + -0.01845 X^{2} + \epsilon
+\end{displaymath}
+To put this curve on our plot we can use
+{\Large
+\begin{verbatim}
+> (send p :clear)
+NIL
+> (def x (rseq 100 250 50))
+X
+> (send p :add-lines x
+                    (+ -280.1 
+                       (* x 5.986)
+                       (* (^ x 2) -0.01845)))
+NIL
+> (send p :add-points tensile-strength
+                      abrasion-loss)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Dynamic Simulations}
+We can also use plot modification to make a simple animation.
+
+As an example, let's look at the variability in a histogram of 20
+normal random variables.
+
+Start by setting up a histogram:
+{\Large
+\begin{verbatim}
+> (setf h (histogram (normal-rand 20)))
+#<Object: 303107988, prototype = HISTOGRAM...>
+\end{verbatim}}
+Then use a simple loop to replace the data:
+{\Large
+\begin{verbatim}
+(dotimes (i 50)
+  (send h :clear :draw nil)
+  (send h :add-points (normal-rand 20)))
+\end{verbatim}}
+The \dcode{:draw} \dcode{nil} insures that each histogram remains on
+the screen until it is replaced by the next one.
+\end{slide}
+
+\begin{slide}{}
+\dcode{dotimes} is one of several simple looping constructs available
+in Lisp; another is \dcode{dolist}.
+
+If you have a very fast workstation or micro, this animation may move
+by too quickly.
+
+One solution is to insert a pause of $10/60$ of a second using
+\begin{verbatim}
+(pause 10)
+\end{verbatim}
+
+So an alternate version of the loop is
+{\Large
+\begin{verbatim}
+(dolist (i (iseq 50))
+  (send h :clear :draw nil)
+  (pause 10)
+  (send h :add-points (normal-rand 20)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\section{Regression}
+Regression models are implemented using objects and
+message-sending.
+
+We can fit \dcode{abrasion-loss} to \dcode{tensile-strength} and
+\dcode{hardness}:
+{\Large
+\begin{verbatim}
+> (setf m (regression-model
+           (list tensile-strength hardness)
+           abrasion-loss))
+
+Least Squares Estimates:
+
+Constant                  885.537   (61.801)
+Variable 0               -1.37537   (0.194465)
+Variable 1                 -6.573   (0.583655)
+
+R Squared:               0.840129
+Sigma hat:                36.5186
+Number of cases:               30
+Degrees of freedom:            27
+
+#<Object: 303170820, prototype = REGRESS...>
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+The \dcode{regression-model} function accepts a number of keyword
+arguments, including
+\begin{description}
+\item[] \dcode{:print} -- print summary or not
+\item[] \dcode{:intercept} -- include intercept term or not
+\item[] \dcode{:weights} -- optional weight vector
+\end{description}
+A range of messages are available for examining and modifying the
+model:
+{\Large
+\begin{verbatim}
+> (send m :help)
+REGRESSION-MODEL-PROTO
+Normal Linear Regression Model
+Help is available on the following:
+
+:ADD-METHOD :ADD-SLOT :BASIS :CASE-LABELS
+:COEF-ESTIMATES :COEF-STANDARD-ERRORS ...
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Some examples:
+{\Large
+\begin{verbatim}
+> (send m :coef-estimates)
+(885.537 -1.37537 -6.573)
+> (send m :coef-standard-errors)
+(61.801 0.194465 0.583655)
+> (send m :residuals)
+(5.05705 2.43809 9.50074 19.9904 ...)
+> (send m :fit-values)
+(366.943 203.562 165.499 ...)
+> (send m :plot-residuals)
+#<Object: 1568394, prototype = SCATTER...>
+> (send m :cooks-distances)
+(0.00247693 0.000255889 0.00300101 ...)
+> (plot-lines (iseq 1 30) *)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\section{Defining Functions and Methods}
+No system can provide all tools any user might want.
+
+Being able to define your own functions lets you
+\begin{itemize}
+\item
+provide short names for functions you use often
+\item
+provide simple commands to execute a long series of operations on
+different data sets
+\item
+develop new methods not provided in the system
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Defining Functions}
+Functions are defined with the special form \dcode{defun}.
+
+The simplest form of the \dcode{defun} syntax is
+\begin{flushleft}\Large\tt
+(defun \param{name} \param{parameters} \param{body})
+\end{flushleft}
+For example, a function to delete an observation can be defined as
+{\Large
+\begin{verbatim}
+> (defun delete-case (i x)
+    (select x (remove i (iseq (length x)))))
+DELETE-CASE
+> (delete-case 2 (list 3 7 5 9 12 3 14 2))
+(3 7 9 12 3 14 2)
+\end{verbatim}}
+None of the arguments to \dcode{defun} are quoted: \dcode{defun} is a
+special form that does not evaluate its arguments.
+\end{slide}
+
+\begin{slide}{}
+Functions can send messages to objects:
+
+Suppose \dcode{m1} is a submodel of \dcode{m2}.
+
+A function to compute the $F$ statistic is
+{\Large
+\begin{verbatim}
+(defun f-statistic (m1 m2)
+"Args: (m1 m2)
+Computes the F statistic for testing model m1
+within model m2."
+  (let ((ss1 (send m1 :sum-of-squares))
+        (df1 (send m1 :df))
+        (ss2 (send m2 :sum-of-squares))
+        (df2 (send m2 :df)))
+    (/ (/ (- ss1 ss2) (- df1 df2))
+       (/ ss2 df2))))
+\end{verbatim}}
+The \dcode{let} construct is used to create local variables that
+simplify the expression.
+
+The documentation string is used by \dcode{help}:
+{\Large
+\begin{verbatim}
+> (help 'f-statistic)
+F-STATISTIC                      [function-doc]
+Args: (m1 m2)
+Computes the F statistic for testing model m1
+within model m2.
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Functions as Arguments}
+Earlier we used the function definition of \dcode{sin} as an argument
+to \dcode{plot-function}.
+
+We can use functions defined with \dcode{defun} as well:
+{\Large
+\begin{verbatim}
+> (defun f (x) (+ (* 2 x) (^ x 2)))
+F
+> (plot-function #'f -2 3)
+\end{verbatim}}
+Recall that \dcode{\#'f} is short for \dcode{(function~f)}, and is
+used for obtaining the function associated with the symbol \dcode{f}.
+
+\dcode{spin-function} lets you construct a rotating plot of a
+function of two variables:
+{\Large
+\begin{verbatim}
+> (defun f (x y) (+ (^ x 2) (^ y 2)))
+F
+> (spin-function #'f -1 1 -1 1)
+\end{verbatim}}
+\dcode{contour-function} takes the same required arguments and
+produces a contour plot.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Graphical Animation Control}
+We have already seen how to construct some simple animations.
+
+Using functions, we can provide graphical controls for animations.
+
+As an example, let's look at the effect of the Box-Cox power
+transformation
+\begin{displaymath}
+h(x) = \left\{
+\begin{array}{cl}
+\frac{\textstyle x^{\lambda} - 1}{\textstyle \lambda}
+& \mbox{if $\lambda \not= 0$}\\
+\\
+\log(x)
+& \mbox{otherwise}
+\end{array}
+\right.
+\end{displaymath}
+on a normal probability plot of our \dcode{precipitation} variable.
+\end{slide}
+
+\begin{slide}{}
+A function to compute the transformation and normalize the result:
+{\Large
+\begin{verbatim}
+(defun bc (x p)
+  (let* ((bcx (if (< (abs p) .0001)
+                  (log x)
+                  (/ (^ x p) p)))
+         (min (min bcx))
+         (max (max bcx)))
+    (/ (- bcx min) (- max min))))
+\end{verbatim}}
+\dcode{let*} is like \dcode{let}, but it establishes its bindings
+sequentially.
+
+Next, sort the observations and compute the approximate expected
+normal order statistics:
+{\Large
+\begin{verbatim}
+(def x (sort-data precipitation))
+(def nq (normal-quant (/ (iseq 1 30) 31)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+A probability plot of the untransformed data is constructed by
+\begin{verbatim}
+(setf p (plot-points nq (bc x 1)))
+\end{verbatim}
+Since the power is 1, \dcode{bc} just rescales the data.
+
+To change the power used in the graph, define
+\begin{verbatim}
+(defun change-power (r)
+  (send p :clear :draw nil)
+  (send p :add-points nq (bc x r)))
+\end{verbatim}
+Evaluating 
+\begin{verbatim}
+(change-power .5)
+\end{verbatim}
+redraws the plot for a square root transformation.
+
+We could use a loop to run through some powers, but it is nicer to use
+a slider dialog:
+{\Large
+\begin{verbatim}
+(sequence-slider-dialog (rseq -1 2 31)
+                        :action #'change-power)
+\end{verbatim}}
+The action function \dcode{change-power} is called every time the
+slider is adjusted.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Defining Methods}
+Objects are arranged in a hierarchy.
+
+When an object receives a message, it will use its own method
+to respond, if it has one.
+
+If it does not have its own method, it asks its parents, and so on.
+
+New methods are defined using \dcode{defmeth}.
+\end{slide}
+
+\begin{slide}{}
+For example, suppose \dcode{h} is a histogram created by
+{\Large
+\begin{verbatim}
+(setf h (histogram (normal-rand 20)))
+\end{verbatim}}
+We can define a method for changing the sample by
+{\Large
+\begin{verbatim}
+(defmeth h :new-sample ()
+  (send self :clear :draw nil)
+  (pause 10)
+  (send self :add-points (normal-rand 20)))
+\end{verbatim}}
+The variable \dcode{self} refers to the object receiving the message.
+
+This special variable is needed because methods can be inherited.
+
+The loop we used earlier can now be written as
+{\Large
+\begin{verbatim}
+(dotimes (i 50) (send h :new-sample))
+\end{verbatim}}
+
+Later on we will see how to override and augment standard methods.
+\end{slide}
+
+\begin{slide}{}
+\section{More Models and Techniques}
+\subsection{Nonlinear Regression}
+Suppose we record reaction rates \dcode{y} of a chemical reaction at
+various concentrations \dcode{x}:
+{\Large
+\begin{verbatim}
+(def x (list 0.02 0.02 0.06 0.06 0.11 0.11
+             0.22 0.22 0.56 0.56 1.10 1.10))
+(def y (list 76 47 97 107 123 139 159 
+               152 191 201 207 200))
+\end{verbatim}}
+A model often used for the mean reaction rate is the
+Michaelis-Menten model:
+\begin{displaymath}
+\eta(\theta) = \frac{\theta_{0} x}{\theta_{1} + x}
+\end{displaymath}
+A lisp function to compute the mean response:
+{\Large
+\begin{verbatim}
+(defun f (theta)
+  (/ (* (select theta 0) x)
+     (+ (select theta 1) x)))
+\end{verbatim}}
+Initial estimates can be obtained from a plot
+{\Large
+\begin{verbatim}
+> (plot-points x y)
+#<Object: ...>
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+The function \dcode{nreg-model} fits a nonlinear regression model:
+{\Large
+\begin{verbatim}
+> (setf m (nreg-model #'f y (list 200 .1)))
+Residual sum of squares:   7964.185
+Residual sum of squares:   1593.158
+...
+Residual sum of squares:   1195.449
+
+Least Squares Estimates:
+
+Parameter 0           212.6837 (6.947153)
+Parameter 1         0.06412127 (0.0082809)
+
+R Squared:           0.9612608
+Sigma hat:            10.93366
+Number of cases:            12
+Degrees of freedom:         10
+\end{verbatim}}
+Several methods are available for examining the model:
+{\Large
+\begin{verbatim}
+> (send m :residuals)
+(25.434 -3.56598 -5.81094 4.1891 ...)
+> (send m :leverages)
+(0.124852 0.124852 0.193059 0.193059 ...)
+> (send m :cooks-distances)
+(0.44106 0.0086702 0.041873 0.021761 ...)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Maximization and ML Estimation}
+The function \dcode{newtonmax} maximizes a function using
+Newton's method with backtracking.
+
+As an example, times between failures on aircraft air-conditioning
+units are
+{\Large
+\begin{verbatim}
+(def x (list 90 10 60 186 61 49 14 24 56 20 79
+             84 44 59 29 118 25 156 310 76 26
+             44 23 62 130 208 70 101 208))
+\end{verbatim}}
+A simple model for these data assumes that the times are independent
+gamma variables with density
+\begin{displaymath}
+\frac{(\beta / \mu)(\beta x / \mu)^{\beta - 1} e^{- \beta x / \mu}}
+     {\Gamma(\beta)}
+\end{displaymath}
+where $\mu$ is the mean time between failures and $\beta$ is the gamma
+exponent.
+\end{slide}
+
+\begin{slide}{}
+A function to evaluate the log likelihood is
+{\Large
+\begin{verbatim}
+(defun gllik (theta)
+  (let* ((mu (select theta 0))
+         (beta (select theta 1))
+         (n (length x))
+         (xbm (* x (/ beta mu))))
+    (+ (* n (- (log beta)
+               (log mu)
+               (log-gamma beta)))
+       (sum (* (- beta 1) (log xbm)))
+       (sum (- xbm)))))
+\end{verbatim}}
+This definition uses the function \dcode{log-gamma} to evaluate
+$\log(\Gamma(\beta))$.
+
+Initial estimates for $\mu$ and $\beta$ are
+{\Large
+\begin{verbatim}
+> (mean x)
+83.5172
+> (^ (/ (mean x) (standard-deviation x)) 2)
+1.39128
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Using these starting values, we can maximize the log likelihood
+function:
+{\Large
+\begin{verbatim}
+> (newtonmax #'gllik (list 83.5 1.4))
+maximizing...
+Iteration 0.
+Criterion value = -155.603
+Iteration 1.
+Criterion value = -155.354
+Iteration 2.
+Criterion value = -155.347
+Iteration 3.
+Criterion value = -155.347
+Reason for termination: gradient size is less
+than gradient tolerance.
+(83.5173 1.67099)
+\end{verbatim}}
+
+You can use \dcode{numgrad} to check that the gradient is close to
+zero, and \dcode{numhess} to compute an approximate covariance matrix.
+
+\dcode{newtonmax} will return the derivative information if it is
+given the keyword argument \dcode{:return-derivs} with value
+\dcode{t}.
+
+If \dcode{newtonmax} does not converge, \dcode{nelmeadmax} may be able
+to locate the maximum.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Approximate Bayesian Computations}
+Suppose \dcode{times-pos} are survival times and \dcode{wbc-pos} white
+blood cell counts for AG-positive leukemia patients (Feigl \& Zelen,
+1965).
+
+The log posterior density for an exponential regression model with
+a flat prior density is
+\begin{displaymath}
+\sum_{i=1}^{n} \theta_{1} x_{i}
+-n \log(\theta_{0}) 
+-\frac{1}{\theta_{0}} \sum_{i=1}^{n} y_{i} e^{\theta_{1} x_{i}}
+\end{displaymath}
+It is computed by
+{\Large
+\begin{verbatim}
+(def transformed-wbc-pos
+     (- (log wbc-pos) (log 10000)))
+
+(defun llik-pos (theta)
+  (let* ((x transformed-wbc-pos)
+         (y times-pos)
+         (theta0 (select theta 0))
+         (theta1 (select theta 1))
+         (t1x (* theta1 x)))
+    (- (sum t1x)
+       (* (length x) (log theta0))
+       (/ (sum (* y (exp t1x)))
+          theta0))))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\dcode{bayes-model} finds the posterior mode and prints a summary
+of first approximations to posterior means and standard deviations:
+{\Large
+\begin{verbatim}
+> (setf lk (bayes-model #'llik-pos '( 33 .8)))
+maximizing...
+......
+Reason for termination: gradient size ...
+
+First Order Approx. to Posterior Moments:
+
+Parameter 0             56.8489 (13.9713)
+Parameter 1            0.481829 (0.179694)
+\end{verbatim}}
+More accurate approximations are available:
+{\Large
+\begin{verbatim}
+> (send lk :moments)
+((65.3085 0.485295) (17.158 0.186587))
+\end{verbatim}}
+Moments of functions of the parameters can also be approximated with
+\dcode{:moments}.
+
+Marginal densities can be approximated using the \dcode{:margin1}
+message.
+\end{slide}
+
+\begin{slide}{}
+\heading{Generalized Linear Models}
+The generalized linear model system includes functions for fitting
+models with gamma, binomial, and poisson errors and various links.
+
+New error structures and link functions can be added.
+
+An Example:
+{\Large
+\begin{verbatim}
+> (def months-before (iseq 1 18))
+MONTHS-BEFORE
+> (def event-counts '(15 11 14 17 5 11 10 4
+                      8 10 7 9 11 3 6 1 1 4))
+EVENTS-RECALLED
+> (def m (poissonreg-model months-before
+                           event-counts))
+Iteration 1: deviance = 26.3164
+Iteration 2: deviance = 24.5804
+Iteration 3: deviance = 24.5704
+Iteration 4: deviance = 24.5704
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+{\Large
+\begin{verbatim}
+Weighted Least Squares Estimates:
+
+Constant               2.80316  (0.148162)
+Variable 0          -0.0837691  (0.0167996)
+
+Scale taken as:              1
+Deviance:              24.5704
+Number of cases:            18
+Degrees of freedom:         16
+\end{verbatim}
+{\tt :residuals} and other methods are inherited:
+\begin{verbatim}
+> (send m :residuals)
+(-0.0439191 -0.790305 ...)
+> (send m :plot-residuals)
+\end{verbatim}}
+\end{slide}

@@ -1,0 +1,945 @@
+\begin{slide}{}
+\chapter{Outline of the Graphics System}
+\end{slide}
+
+\begin{slide}{}
+\section{Overview}
+The graphics window object tree:
+\begin{center}
+\begin{picture}(400,360)
+\put(120,330){\framebox(160,30){\tt window-proto}}
+\put(100,260){\framebox(200,30){\tt graph-window-proto}}
+\put(120,190){\framebox(160,30){\tt graph-proto}}
+\put(240,140){\framebox(160,30){\tt scatmat-proto}}
+\put(0,140){\framebox(160,30){\tt spin-proto}}
+\put(220,70){\framebox(180,30){\tt histogram-proto}}
+\put(0,70){\framebox(180,30){\tt namelist-proto}}
+\put(100,0){\framebox(200,30){\tt scatterplot-proto}}
+\put(200,330){\line(0,-1){40}}
+\put(200,260){\line(0,-1){40}}
+\put(200,190){\line(0,-1){160}}
+\put(200,190){\line(-6,-1){120}}
+\put(200,190){\line(6,-1){120}}
+\put(200,190){\line(-2,-3){60}}
+\put(200,190){\line(2,-3){60}}
+\end{picture}
+\end{center}
+\end{slide}
+
+\begin{slide}{}
+All top-level windows share certain common features:
+\begin{itemize}
+\item a title
+\item a way to be moved
+\item a way to be resized
+\end{itemize}
+These common features are incorporated in the window prototype
+\dcode{window-proto}.
+
+Both dialog and graphics windows inherit from the window prototype.
+\end{slide}
+
+\begin{slide}{}
+\section{Graph Windows}
+\subsection{Outline of the Drawing System}
+A graphics window is a view onto a {\em drawing canvas}.
+
+The dimensions of the canvas can be {\em fixed}\/ or {\em elastic}.
+\begin{itemize}
+\item
+If a dimension is fixed, it has a scroll bar.
+\item
+If it is elastic, it fills the window.
+\end{itemize}
+The name list window uses one fixed dimension; all other standard plots
+use elastic dimensions by default.
+\end{slide}
+
+\begin{slide}{}
+%***** Picture *****
+%\vspace{2.5in}
+\begin{center}
+\mbox{\psfig{figure=coords.ps}}
+\end{center}
+
+The canvas has a coordinate system.
+\begin{itemize}
+\item coordinate units are pixels
+\item the origin is the top-left corner
+\item the $x$ coordinate increases from left to right
+\item the $y$ coordinate increases from top to bottom
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+A number of drawing operations are available.
+
+Drawable objects include
+\begin{itemize}
+\item rectangles
+\item ovals
+\item arcs
+\item polygons
+\end{itemize}
+These can be
+\begin{itemize}
+\item framed
+\item painted
+\item erased
+\end{itemize}
+Other drawables are
+\begin{itemize}
+\item symbols
+\item strings
+\item bitmaps
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+The precise effect of drawing operations depends on the {\em state} of the
+drawing system.
+
+Drawing system state components include
+\begin{itemize}
+\item colors -- foreground and background
+\item drawing mode -- normal or XOR
+\item line type -- dashed or solid
+\item pen width -- an integer
+\item use color -- on or off
+\item buffering -- on or off
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Animation Techniques}
+There are two basic animation methods
+\begin{itemize}
+\item
+{\em XOR drawing} -- drawing ``inverts'' the colors on the screen
+\item
+{\em double buffering} -- a picture is built up in a background
+buffer and then copied to the screen
+\end{itemize}
+Some tradeoffs:
+\begin{itemize}
+\item
+XOR drawing is usually faster
+\item
+XOR drawing automatically preserves the background
+\item
+XOR drawing distorts background and object during drawing
+\item
+XOR drawing inherently involves a certain amount of flicker
+\item
+Moving several objects by XOR causes distortion -- only one can
+move at a time
+\item
+{\em Inverting}\/ is not well-defined on color displays
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+Lisp-Stat uses
+\begin{itemize}
+\item XOR drawing for moving the brush rectangle
+\item double buffering for rotation
+\end{itemize}
+
+As an example, let's move a highlighted symbol down the diagonal
+of a window using both methods.
+
+A new graphics window is constructed by
+{\Large
+\begin{verbatim}
+(setf w (send graph-window-proto :new))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Using XOR drawing:
+{\Large
+\begin{verbatim}
+(let ((width (send w :canvas-width))
+      (height (send w :canvas-height))
+      (mode (send w :draw-mode)))
+  (send w :draw-mode 'xor)
+  (dotimes (i (min width height))
+    (send w :draw-symbol 'disk t i i)
+    (pause 2)
+    (send w :draw-symbol 'disk t i i))
+  (send w :draw-mode mode))
+\end{verbatim}}
+Using double Buffering:
+{\Large
+\begin{verbatim}
+(let ((width (send w :canvas-width))
+      (height (send w :canvas-height)))
+  (dotimes (i (min width height))
+    (send w :start-buffering)
+    (send w :erase-window)
+    (send w :draw-symbol 'disk t i i)
+    (send w :buffer-to-screen)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Handling Events}
+User actions produce various {\em events}\/ that the system handles
+by sending messages to the appropriate objects.
+
+There are several types of events:
+\begin{itemize}
+\item resize events
+\item exposure or redraw events
+\item mouse events -- motion and click
+\item key events
+\item idle ``events''
+\end{itemize}
+Resize and redraw events cause \dcode{:resize} and \dcode{:redraw}
+messages to be sent to the window object.
+
+Mouse and key events produce \dcode{:do-click}, \dcode{:do-motion},
+and \dcode{:do-key} messages.
+
+In idle periods, the \dcode{:do-idle} message is sent.
+
+The \dcode{:while-button-down} message can be used to follow the mouse
+inside a click\\
+(for dragging, etc.)
+\end{slide}
+
+\begin{slide}{}
+\subsection{Graphics Window Menus}
+Every graphics window can have a menu.
+
+The user interface guidelines of the window system determine how
+the menu is presented:
+\begin{itemize}
+\item
+On the Macintosh, the menu is installed in the menu bar when the window
+is the front window.
+\item
+In MS Windows, the menu is installed in the application's menu bar when
+the window is the front window.
+\item
+In {\em SunView}, the menu is popped up when the right mouse button is
+pressed in the window.
+\item
+Under {\em X11}, the menu is popped up when the mouse is clicked in a
+\macbold{Menu} button at the top of the window.
+\end{itemize}
+The \dcode{:menu} message retrieves a graph window's menu
+or installs a new menu.
+\end{slide}
+
+\begin{slide}{}
+\subsection{An Example}
+As a simple example to illustrate the handling of events, let's
+construct a window that shows a single highlighted symbol at its
+center.
+
+The window is constructed by
+{\Large
+\begin{verbatim}
+(setf w (send graph-window-proto :new))
+\end{verbatim}}
+We can add slots for holding the coordinates of our point:
+{\Large
+\begin{verbatim}
+(send w :add-slot 'x
+      (/ (send w :canvas-width) 2))
+(send w :add-slot 'y
+      (/ (send w :canvas-height) 2))
+
+(defmeth w :x (&optional (val nil set))
+  (if set (setf (slot-value 'x) (round val)))
+  (slot-value 'x))
+
+(defmeth w :y (&optional (val nil set))
+  (if set (setf (slot-value 'y) (round val)))
+  (slot-value 'y))
+\end{verbatim}}
+New coordinate values are rounded since drawing operations require
+integer arguments.
+\end{slide}
+
+\begin{slide}{}
+The \dcode{:resize} method positions the point at the center of
+the canvas:
+{\Large
+\begin{verbatim}
+(defmeth w :resize ()
+  (let ((width (send self :canvas-width))
+        (height (send self :canvas-height)))
+    (send self :x (/ width 2))
+    (send self :y (/ height 2))))
+\end{verbatim}}
+The \dcode{:redraw} method erases the window and redraws
+the symbol at the location specified by the coordinate values:
+{\Large
+\begin{verbatim}
+(defmeth w :redraw ()
+  (let ((x (send self :x))
+        (y (send self :y)))
+    (send self :erase-window)
+    (send self :draw-symbol 'disk t x y)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+The \dcode{:do-click} message positions the symbol at the click and then
+allows it to be dragged:
+{\Large
+\begin{verbatim}
+(defmeth w :do-click (x y m1 m2)
+  (flet ((set-sym (x y)
+           (send self :x x)
+           (send self :y y)
+           (send self :redraw)))
+    (set-symbol x y)
+    (send self :while-button-down #'set-sym)))
+\end{verbatim}}
+The \dcode{:do-idle} method can be used to move the symbol
+in a random walk:
+{\Large
+\begin{verbatim}
+(defmeth w :do-idle ()
+  (let ((x (send self :x))
+        (y (send self :y)))
+    (case (random 4)
+      (0 (send self :x (- x 5)))
+      (1 (send self :x (+ x 5)))
+      (2 (send self :y (- y 5)))
+      (3 (send self :y (+ y 5))))
+    (send self :redraw)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+We can turn the random walk on by typing
+{\Large
+\begin{verbatim}
+(send w :idle-on t)
+\end{verbatim}}
+and we can turn it off with
+{\Large
+\begin{verbatim}
+(send w :idle-on nil)
+\end{verbatim}}
+A better solution is to use a menu item:
+{\Large
+\begin{verbatim}
+(setf run-item
+      (send menu-item-proto :new "Run"
+            :action 
+            #'(lambda ()
+              (send w :idle-on
+                    (not (send w :idle-on))))))
+\end{verbatim}}
+To put a check mark on this item when the walk is running, define
+an \dcode{:update} method:
+{\Large
+\begin{verbatim}
+(defmeth run-item :update ()
+   (send self :mark (send w :idle-on)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+It would also be nice to have a menu item for restarting the walk:
+{\Large
+\begin{verbatim}
+(setf restart-item
+      (send menu-item-proto :new "Restart"
+            :action
+            #'(lambda () (send w :restart))))
+\end{verbatim}}
+The \dcode{:restart} method is defined as
+{\Large
+\begin{verbatim}
+(defmeth w :restart ()
+  (let ((width (send self :canvas-width))
+        (height (send self :canvas-height)))
+    (send self :x (/ width 2))
+    (send self :y (/ height 2))
+    (send self :redraw)))
+\end{verbatim}}
+and a menu with the two items is installed by
+{\Large
+\begin{verbatim}
+(setf menu
+      (send menu-proto :new "Random Walk"))
+(send menu :append-items restart-item run-item)
+(send w :menu menu)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+There may be some flickering when the random walk is running.
+
+This flickering can be eliminated by modifying the \dcode{:redraw}
+method to use double buffering:
+{\Large
+\begin{verbatim}
+(defmeth w :redraw ()
+  (let ((x (round (send self :x)))
+        (y (round (send self :y))))
+    (send self :start-buffering)
+    (send self :erase-window)
+    (send self :draw-symbol 'disk t x y)
+    (send self :buffer-to-screen)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\section{Statistical Graphics Windows}
+\dcode{graph-proto} is the statistical graphics prototype.
+
+It inherits from \dcode{graph-window-proto}.
+
+The graph prototype is responsible for managing the data used
+by all statistical graphs.
+
+Variations in how these data are displayed are implemented in
+separate prototypes for the standard graphs.
+\end{slide}
+
+\begin{slide}{}
+The graph prototype is a view into $m$ dimensional space.
+
+It allows the display of both points and connected line segments
+
+The default methods in this prototype implement a simple scatterplot
+of two of the $m$ dimensions.
+
+Many features of graphics windows are enhanced to simplify
+adding new features to graphs.
+\end{slide}
+
+\begin{slide}{}
+The graph prototype adds the following features:
+\begin{itemize}
+\item $m$-dimensional point and {\em line start}\/ data
+\item affine transformations consisting of
+\begin{itemize}
+\item centering and scaling
+\item a linear transformation
+\end{itemize}
+\item ranges for raw, scaled and canvas coordinates
+\item mouse modes for controlling interaction
+\item linking strategy
+\item window layout management
+\begin{itemize}
+\item margin, content and aspect
+\item background (axes)
+\item overlays
+\item content
+\end{itemize}
+\item standard menus and menu items
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Data and Axes}
+The \dcode{:isnew} method for the graph prototype
+requires one argument, the number of variables:
+{\Large
+\begin{verbatim}
+> (setf w (send graph-proto :new 4))
+#<Object: 302823396, prototype = GRAPH-PROTO>
+\end{verbatim}}
+Using the stack loss data as an illustration, we can add data
+{\Large
+\begin{verbatim}
+> (send w :add-points
+        (list air temp conc loss))
+NIL
+\end{verbatim}}
+and adjust scaling to make the data visible:
+{\Large
+\begin{verbatim}
+> (send w :adjust-to-data)
+NIL
+\end{verbatim}}
+We can also add line segments:
+{\Large
+\begin{verbatim}
+> (send w :add-lines (list air temp conc loss))
+NIL
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+You can control whether axes are drawn with the \dcode{:x-axis} and
+\dcode{:y-axis} messages:
+{\Large
+\begin{verbatim}
+> (send w :x-axis t)
+(T NIL 4)
+\end{verbatim}}
+
+The range shown can be accessed and changed:
+{\Large
+\begin{verbatim}
+> (send w :range 0)
+(50 80)
+> (send w :range 1)
+(17 27)
+> (send w :range 1 15 30)
+(15 30)
+\end{verbatim}}
+The function \dcode{get-nice-range} helps choosing a range and
+the number of ticks:
+{\Large
+\begin{verbatim}
+> (get-nice-range 17 27 4)
+(16 28 7)
+\end{verbatim}}
+To remove the axis:
+{\Large
+\begin{verbatim}
+> (send w :x-axis nil)
+(NIL NIL 4)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Initially, the plot shows the first two variables:
+\begin{verbatim}
+> (send w :current-variables)
+(0 1)
+\end{verbatim}
+This can be changed:
+\begin{verbatim}
+> (send w :current-variables 2 3)
+(2 3)
+> (send w :current-variables 0 1)
+(0 1)
+\end{verbatim}
+Plot data can be cleared by several messages:
+\begin{verbatim}
+(send w :clear-points)
+(send w :clear-lines)
+(send w :clear)
+\end{verbatim}
+If the \dcode{:draw} keyword argument is \dcode{nil} the plot
+is not redrawn.
+
+The default value is \dcode{t}.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Scaling and Transformations}
+The scale type controls the action of the default
+\dcode{:adjust-to-data} method.
+
+The initial scale type is \dcode{nil}:
+{\Large
+\begin{verbatim}
+> (send w :scale-type)
+NIL
+> (send w :range 0)
+(50 80)
+> (send w :scaled-range 0)
+(50 80)
+\end{verbatim}}
+Two other scale types are \dcode{variable} and \dcode{fixed}.
+
+For variable scaling:
+{\Large
+\begin{verbatim}
+> (send w :scale-type 'variable)
+VARIABLE
+> (send w :range 0)
+(35 95)
+> (send w :scaled-range 0)
+(-2 2)
+\end{verbatim}}
+The \dcode{:scale}, \dcode{:center}, and \dcode{:adjust-to-data}
+messages let you build your own scale types.
+
+\end{slide}
+
+\begin{slide}{}
+Initially there is no transformation:
+{\Large
+\begin{verbatim}
+> (send w :transformation)
+NIL
+\end{verbatim}}
+If the current variables are 0 and 1, a rotation can be applied to
+replace \dcode{air} by \dcode{conc} and \dcode{temp} by \dcode{loss}:
+{\Large
+\begin{verbatim}
+(send w :transformation '#2A((0  0 -1  0)
+                             (0  0  0 -1)
+                             (1  0  0  0)
+                             (0  1  0  0)))
+\end{verbatim}}
+The transformation can be removed by
+{\Large
+\begin{verbatim}
+(send w :transformation nil)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+A transformation can also be applied incrementally:
+{\Large
+\begin{verbatim}
+(let* ((c (cos (/ pi 20)))
+       (s (sin (/ pi 20)))
+       (m (+ (* c (identity-matrix 4))
+             (* s '#2A((0  0 -1  0)
+                       (0  0  0 -1)
+                       (1  0  0  0)
+                       (0  1  0  0))))))
+  (dotimes (i 10)
+    (send w :apply-transformation m)))
+\end{verbatim}}
+A simpler message allows rotation within coordinate planes:
+{\Large
+\begin{verbatim}
+(dotimes (i 10)
+  (send w :rotate-2 0 2 (/ pi 20) :draw nil)
+  (send w :rotate-2 1 3 (/ pi 20)))
+\end{verbatim}}
+Several messages are available for accessing data values in
+raw, scaled, and screen coordinates.
+
+Other messages are available for converting among coordinate systems.
+
+\end{slide}
+
+\begin{slide}{}
+\subsection{Mouse Events and Mouse Modes}
+The graph prototype organizes mouse interactions into {\em mouse modes}.
+
+Each mouse mode includes
+\begin{itemize}
+\item a symbol for choosing the mode from a program
+\item a title string used in the mode selection dialog
+\item a cursor to visually identify the mode
+\item mode-specific click and motion messages
+\end{itemize}
+It should not be necessary to override a graph's \dcode{:do-click} or
+\dcode{:do-motion} methods.
+\end{slide}
+
+\begin{slide}{}
+Initially there are two mouse modes, \dcode{selecting} and
+\dcode{brushing}.
+
+We can add a new mouse mode by
+{\Large
+\begin{verbatim}
+(send w :add-mouse-mode 'identify
+      :title "Identify"
+      :click :do-identify
+      :cursor 'finger)
+\end{verbatim}}
+The \dcode{:do-identify} method can be defined as
+{\Large
+\begin{verbatim}
+(defmeth w :do-identify (x y m1 m2)
+  (let* ((cr (send self :click-range))
+         (p (first
+             (send self :points-in-rect 
+                   (- x 2) (- y 2) 4 4))))
+    (if p
+        (let ((mode (send self :draw-mode))
+              (lbl (send self :point-label p)))
+          (send self :draw-mode 'xor)
+          (send self :draw-string lbl x y)
+          (send self :while-button-down
+                #'(lambda (x y) nil))
+          (send self :draw-string lbl x y)
+          (send self :draw-mode mode)))))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+The button down action does nothing; it just waits.
+
+An alternative is to allow the label to be dragged, perhaps to make
+it easier to read:
+{\large
+\begin{verbatim}
+(defmeth w :do-identify (x y m1 m2)
+  (let* ((cr (send self :click-range))
+         (p (first
+             (send self :points-in-rect 
+                   (- x 2) (- y 2) 4 4))))
+    (if p
+        (let ((mode (send self :draw-mode))
+              (lbl (send self :point-label p)))
+          (send self :draw-mode 'xor)
+          (send self :draw-string lbl x y)
+          (send self :while-button-down
+                #'(lambda (new-x new-y)
+                    (send self :draw-string lbl x y)
+                    (setf x new-x)
+                    (setf y new-y)
+                    (send self :draw-string lbl x y)))
+          (send self :draw-string lbl x y)
+          (send self :draw-mode mode)))))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subheading{Standard Mouse Modes and Linking}
+The click and motion methods of the two standard modes
+use a number of messages.
+
+In \dcode{selecting} mode, a click
+\begin{itemize}
+\item
+Sends \dcode{:unselect-all-points}, unless the extend modifier is used.
+\item
+Sends \dcode{:adjust-points-in-rect} with click $x$ and $y$
+coordinates, width and height returned by \dcode{:click-range},
+and the symbol \dcode{selected} as arguments.
+\item
+While the button is down, a dashed rectangle is stretched from the
+click to the mouse.
+
+When the button is released, \dcode{:adjust-points-in-rect} is sent
+with the rectangle coordinates and \dcode{selected} as arguments.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+In \dcode{brushing} mode, a click
+\begin{itemize}
+\item
+Sends \dcode{:unselect-all-points} unless the extend modifier is used.
+\item
+While the mouse is dragged, sends \dcode{:adjust-points-in-rect} with
+the brush rectangle and \dcode{selected} as arguments.
+\end{itemize}
+In \dcode{brushing} mode, moving the mouse
+\begin{itemize}
+\item
+Sends \dcode{:adjust-points-in-rect} with the brush rectangle and
+\dcode{hilited} as arguments.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+Points can be in four states:
+\begin{itemize}
+\item[] \dcode{invisible}
+\item[] \dcode{normal}
+\item[] \dcode{hilited}
+\item[] \dcode{selected}.
+\end{itemize}
+Linking is based on a {\em loose linking}\/ model:
+\begin{itemize}
+\item points are related by index number
+\item only point states are adjusted
+\end{itemize}
+The system uses two messages to determine which plots are linked:
+\begin{itemize}
+\item
+\dcode{:links} returns a list of plots linked to the plot (possibly
+including the plot itself)
+\item \dcode{:linked} determines if the plot is linked, and
+turns linking on and off.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+When a point's state is changed in a plot,
+\begin{itemize}
+\item
+Each linked plot (and the plot itself) is sent the
+\dcode{:adjust-screen-point} message with the index as argument.
+\item
+The action taken by the method for \dcode{:adjust-screen-point} may
+depend on both current and previous states.
+\end{itemize}
+Since it is not always feasible to redraw single points,
+\begin{itemize}
+\item
+the \dcode{:needs-adjusting} method can be used to check or set a flag
+\item
+the \dcode{:adjusting-screen} method can redraw the entire plot if the
+flag is set
+\end{itemize}
+The easiest, though not necessarily the most efficient, way to augment
+standard mouse modes is to define a new \dcode{:adjust-screen} method
+\end{slide}
+
+\begin{slide}{}
+Some useful messages:
+\begin{itemize}
+\item[] For points specified by index:
+\begin{itemize}
+\item[] \dcode{:point-showing}
+\item[] \dcode{:point-hilited}
+\item[] \dcode{:point-selected}
+\end{itemize}
+For sets of indices:
+\begin{itemize}
+\item[] \dcode{:selection} or \dcode{:points-selected}
+\item[] \dcode{:points-hilited}
+\item[] \dcode{:points-showing}
+\end{itemize}
+Other operations:
+\begin{itemize}
+\item[] \dcode{:erase-selection}
+\item[] \dcode{:show-all-points}
+\item[] \dcode{:focus-on-selection}
+\item[] \dcode{:adjust-screen}
+\end{itemize}
+Some useful predicates:
+\begin{itemize}
+\item[] \dcode{:any-points-selected-p}
+\item[] \dcode{:all-points-showing-p} 
+\end{itemize}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\heading{Window Layout and Redrawing}
+The \dcode{:resize} method maintains a margin and a content rectangle
+\begin{center}
+\mbox{\psfig{figure=layout.ps,height=3.4in}}
+\end{center}
+
+\begin{itemize}
+\item
+The plot is surrounded by a margin, used by plot controls.
+\item
+The content rectangle can use a fixed or a variable aspect ratio.
+\item
+The size of the content depends on the aspect ratio and the axes.
+\item
+The plot can be covered by overlays, resized with \dcode{:resize-overlays}.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+The aspect type used can be changed by
+\begin{verbatim}
+(send w :fixed-aspect t)
+\end{verbatim}
+The \dcode{:redraw} method sends three messages:
+\begin{itemize}
+\item
+\dcode{:redraw-background} -- erases the canvas and draws the axes
+\item 
+\dcode{:redraw-overlays} -- sends each overlay the \dcode{:redraw} message
+\item
+\dcode{:redraw-content} -- redraws points, lines, etc.
+\end{itemize}
+Many methods, like \dcode{:rotate-2}, also send \dcode{:redraw-content}.
+
+\end{slide}
+
+\begin{slide}{}
+Plot overlays are useful for holding controls.
+\begin{itemize}
+\item Overlays inherit from \dcode{graph-overlay-proto}.
+\item Overlays are like transparent sheets of plastic.
+\item Overlays are drawn from the bottom up.
+\item Overlays can intercept mouse clicks.
+\item Clicks are processed from the top down:
+\begin{itemize}
+\item
+Each overlay is sent the \dcode{:do-click} message until one returns a
+non-\dcode{nil} result.
+\item
+Only if no overlay accepts a click is the click passed to the current
+mouse mode.
+\end{itemize}
+\end{itemize}
+The controls of a rotating plot are implemented as an overlay.
+
+Other examples of overlays are in \dcode{plotcontrols.lsp} in the
+\macbold{Examples} folder.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Menus and Menu Items}
+To help construct standard menus
+\begin{itemize}
+\item \dcode{:menu-title} returns the title to use
+\item \dcode{:menu-template} returns a list of items or symbols
+\item \dcode{:new-menu} constructs and installs the new menu
+\end{itemize}
+The \dcode{:isnew} method sends the plot the \dcode{:new-menu}
+message when it is created.
+\end{slide}
+
+\begin{slide}{}
+Standard items can be specified as symbols in the template:
+\begin{itemize}
+\item \dcode{color}
+\item \dcode{dash}
+\item \dcode{focus-on-selection}
+\item \dcode{link}
+\item \dcode{mouse}
+\item \dcode{options}
+\item \dcode{redraw}
+\item \dcode{erase-selection}
+\item \dcode{rescale}
+\item \dcode{save-image}
+\item \dcode{selection}
+\item \dcode{show-all}
+\item \dcode{showing-labels}
+\item \dcode{symbol}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\section{Standard Statistical Graphs}
+Each of the standard plot prototypes needs only a few new
+methods.
+
+The main additional or changes methods are:
+\begin{description}\normalsize
+\item[]
+\dcode{scatterplot-proto}:
+
+Overrides: \dcode{:add-points}, \dcode{:add-lines},
+\dcode{:adjust-to-data}.
+
+New messages: \dcode{:add-boxplot}, \dcode{:add-function-contours},
+\dcode{:add-surface-contour}, \dcode{:add-surface-contours}.
+\item[]
+\dcode{scatmat-proto}:
+
+Overrides: \dcode{:add-lines},
+\dcode{:add-points}, \dcode{:adjust-points-in-rect},
+\dcode{:adjust-screen-point}, \dcode{:do-click}, \dcode{:do-motion},
+\dcode{:redraw-background}, \dcode{:redraw-content}, \dcode{:resize}.
+\item[]
+\dcode{spin-proto}:
+
+Overrides: \dcode{:adjust-to-data},
+\dcode{:current-variables}, \dcode{:do-idle}, \dcode{:isnew},
+\dcode{:resize}, \dcode{:redraw-content}.
+
+New methods: \dcode{:abcplane}, \dcode{:add-function},
+\dcode{:add-surface}, \dcode{:angle}, \dcode{:content-variables},
+\dcode{:depth-cuing}, \dcode{:draw-axes}, \dcode{:rotate},
+\dcode{:rotation-type}, \dcode{:showing-axes} 
+\item[]
+\dcode{histogram-proto}:
+
+Overrides: \dcode{:add-points},
+\dcode{:adjust-points-in-rect}, \dcode{:adjust-screen},
+\dcode{:adjust-screen-point}, \dcode{:adjust-to-data},
+\dcode{:clear-points}, \dcode{:drag-point}, \dcode{:isnew},
+\dcode{:redraw-content}, \dcode{:resize}.
+
+New methods: \dcode{:num-bins}, \dcode{:bin-counts}.
+\item[]
+\dcode{name-list-proto}:
+
+Overrides: \dcode{:add-points},
+\dcode{:adjust-points-in-rect}, \dcode{:adjust-screen-point},
+\dcode{:redraw-background}, \dcode{:redraw-content}.
+\end{description}
+\end{slide}

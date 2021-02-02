@@ -1,0 +1,27 @@
+The file reg-doc.tex is a Latex version of the documentation that accompanies 
+this software.  It is a LaTeX file that can be printed by the following unix
+commands:
+	latex reg-doc
+	dvips reg-doc  (maybe different on some systems)
+
+
+The following files all contain lisp code.  Copy them into the folder from 
+which you start XLISP-STAT:
+
+   reg1.lsp reg2.lsp rgraph1.lsp fun1.lsp overlay1.lsp overlay2.lsp 
+   overlay3.lsp
+
+The file cwinit.lsp, when loaded, will load all these files.  To load 
+automatically at startup, add the following line to your statinit.lsp file:
+
+	(load "cwinit")
+
+The remaining .lsp files, when loaded, create regression model objects, as 
+described in the documentation.
+
+We hope you find this code useful.  As this is a test version, comments will
+be most appreciated.  We plan to submit the code to statlib some time in
+October 1991.
+
+Dennis Cook (dennis@umnstat.stat.umn.edu)
+Sandy Weisberg (sandy@umnstat.stat.umn.edu)

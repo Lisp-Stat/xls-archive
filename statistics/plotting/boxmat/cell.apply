@@ -1,0 +1,32 @@
+.BG
+.FN cell.apply
+.TL
+apply scalar function to n-way list
+.CS
+cell.apply(formula, FUN.scalar=mean, ..., data=sys.parent(1))
+.AG formula
+the formula describing the dependent variable and the cell structure.
+The only model operators that make sense here are "`+'" and "`:'".  Use of other
+operators will produce lists with excessive numbers of empty cells.
+.AG FUN.scalar
+scalar function, such as the default `mean'.
+.AG ...
+optional arguments to `FUN.scalar'.
+.AG data
+if supplied, a data frame in which the variables named in the formula
+are to be found.
+If `data' is omitted, the current search list is used; for example,
+a data frame may have been attached or variables may be objects
+in the working database.
+.RT
+numeric array with `dim' and `dimnames' based on
+the `terms' in the `formula'.  The scalar in each cell of the array is the
+result of applying the scalar function `FUN.scalar' to the elements of
+`nwaylist(formula, data)'.
+.SA
+`nwaylist'.
+.EX
+cell.apply(y~a+b) #cell means
+cell.apply(y~a+b, FUN=median) #cell medians
+.KW apply
+.WR

@@ -1,0 +1,234 @@
+;; Root Object
+(send *object* :own-slots)
+(send *object* :slot-value 'proto-name)
+(send *object* :slot-value 'instance-slots)
+
+;; A Data Set
+(setf x (send *object* :new))
+(send x :own-slots)
+(send x :add-slot 'data (normal-rand 50))
+(send x :add-slot 'title)
+(send x :own-slots)
+(send x :slot-value 'title)
+(send x :slot-value 'title "a data set")
+(send x :slot-value 'title)
+
+(defmeth x :describe (&optional (stream t))
+  (let ((title (slot-value 'title))
+        (data (slot-value 'data)))
+    (format stream "This is ~a~%" title)
+    (format stream "The sample mean is ~a~%" (mean data))
+    (format stream "The sample SD is ~a~%" (standard-deviation data))))
+
+(send x :describe)
+
+(defmeth x :title (&optional (title nil set))
+  (if set (setf (slot-value 'title) title))
+  (slot-value 'title))
+
+(defmeth x :data (&optional (data nil set))
+  (if set (setf (slot-value 'data) data))
+  (slot-value 'data))
+
+(defmeth x :describe (&optional (stream t))
+  (let ((title (send self :title))
+        (data (send self :data)))
+    (format stream "This is ~a~%" title)
+    (format stream "The sample mean is ~a~%" (mean data))
+    (format stream "The sample SD is ~a~%" (standard-deviation data))))
+
+(defmeth x :print (&optional (stream t))
+  (format stream "#<~a>" (send self :title)))
+
+x
+
+(defmeth x :describe (&optional (stream t))
+"Method args: (&optional (stream t))
+Prints a simple description of the object
+to STREAM."
+  (let ((title (send self :title))
+        (data (send self :data)))
+    (format stream "This is ~a~%" title)
+    (format stream "The sample mean is ~a~%" (mean data))
+    (format stream "The sample SD is ~a~%" (standard-deviation data))))
+
+(send x :help :describe)
+
+;; Data Set Prototypes
+(defproto data-set-proto '(data title))
+
+(send data-set-proto :slot-value 'title "a data set")
+
+(defmeth data-set-proto :title (&optional (title nil set))
+  (if set (setf (slot-value 'title) title))
+  (slot-value 'title))
+
+(defmeth data-set-proto :data (&optional (data nil set))
+  (if set (setf (slot-value 'data) data))
+  (slot-value 'data))
+
+(defmeth data-set-proto :describe (&optional (stream t))
+  (let ((title (send self :title))
+        (data (send self :data)))
+    (format stream "This is ~a~%" title)
+    (format stream "The sample mean is ~a~%" (mean data))
+    (format stream "The sample SD is ~a~%" (standard-deviation data))))
+
+(defmeth data-set-proto :print (&optional (stream t))
+  (format stream "#<~a>" (send self :title)))
+
+(defmeth data-set-proto :plot ()
+  (histogram (send self :data) :title (send self :title)))
+
+(setf x (send data-set-proto :new :data (chisq-rand 20 5)))
+(send x :title)
+(send x :data)
+(send x :describe)
+(send x :plot)
+
+(defmeth data-set-proto :isnew (data &key title)
+  (send self :data data)
+  (if title (send self :title title)))
+
+;; Time Series Objects
+(defproto time-series-proto '(origin spacing) () data-set-proto)
+
+(defmeth time-series-proto :origin (&optional (origin nil set))
+  (if set (setf (slot-value 'origin) origin))
+  (slot-value 'origin))
+
+(defmeth time-series-proto :spacing (&optional (sp nil set))
+  (if set (setf (slot-value 'spacing) sp))
+  (slot-value 'spacing))
+
+(send time-series-proto :title "a time series")
+(send time-series-proto :origin 0)
+(send time-series-proto :spacing 1)
+
+(let* ((e (normal-rand 21))
+       (i (iseq 1 20))
+       (d (+ (select e i) (* 0.6 (select e (- i 1))))))
+  (setf y (send time-series-proto :new d)))
+
+(send y :describe)
+(send y :plot)
+
+(defmeth time-series-proto :plot ()
+  (let* ((data (send self :data))
+         (start (send self :origin))
+         (step (send self :spacing))
+         (n (length data)))
+    (plot-points (+ start (* step (iseq n))) data)))
+
+(defmeth time-series-proto :describe (&optional (stream t))
+  (let ((ac (autocor (send self :data))))
+    (call-next-method stream)
+    (format stream "The autocorrelation is ~a~%" ac)))
+
+(defun autocor (x)
+  (let ((n (length x))
+        (x (- x (mean x))))
+    (/ (mean (* (select x (iseq 0 (- n 2))) 
+                (select x (iseq 1 (- n 1)))))
+       (mean (* x x)))))
+
+(send y :describe)
+(send y :plot)
+
+;; Survival Function Objects
+(defproto survival-proto
+          '(death-times num-deaths num-at-risk)
+          ()
+          data-set-proto)
+
+(send survival-proto :title "a survival data set")
+
+(defmeth survival-proto :death-times () (slot-value 'death-times))
+(defmeth survival-proto :num-deaths () (slot-value 'num-deaths))
+(defmeth survival-proto :num-at-risk () (slot-value 'num-at-risk))
+
+(defmeth survival-proto :data (&optional times status)
+  (when times
+    (call-next-method (list times status))
+    (let* ((i (which (= 1 status)))
+           (dt (select times i))
+           (dt-list (coerce dt 'list))
+           (udt (sort-data (remove-duplicates dt-list :test #'=)))
+           (d (mapcar #'(lambda (x) (count x dt-list :test #'=)) udt))
+           (r (mapcar #'(lambda (x) (count x times :test #'<=)) udt)))
+      (setf (slot-value 'death-times) udt)
+      (setf (slot-value 'num-deaths) d)
+      (setf (slot-value 'num-at-risk) r)))
+  (slot-value 'data))
+
+(defmeth survival-proto :isnew
+         (times status &optional title)
+  (send self :data times status)
+  (if title (send self :title title)))
+
+(defmeth survival-proto :describe (&optional (stream t))
+  (let ((title (send self :title))
+        (data (send self :data)))
+    (format stream "This is ~a~%" title)
+    (format stream "The mean time is ~a~%" (mean (first data)))
+    (format stream "The number of failures is ~a~%" (sum (second data)))))
+
+(defmeth survival-proto :plot ()
+  (let ((km (send self :km-estimator))
+        (udt (send self :death-times)))
+    (plot-lines (make-steps udt km))))
+
+(defmeth survival-proto :km-estimator ()
+  (let ((r (send self :num-at-risk))
+        (d (send self :num-deaths)))
+    (accumulate #'* (/ (- r d) r))))
+
+(defmeth survival-proto :fh-estimator ()
+  (let ((r (send self :num-at-risk))
+        (d (send self :num-deaths)))
+    (exp (- (cumsum (/ d r))))))
+
+(defmeth survival-proto :greenwood-se ()
+  (let* ((r (send self :num-at-risk))
+         (d (send self :num-deaths))
+         (km (send self :km-estimator))
+         (rd1 (pmax (- r d) 1)))
+    (* km (sqrt (cumsum (/ d r rd1))))))
+
+(defmeth survival-proto :tsiatis-se ()
+  (let ((r (send self :num-at-risk))
+        (d (send self :num-deaths))
+        (km (send self :km-estimator)))
+    (* km (sqrt (cumsum (/ d (^ r 2)))))))
+
+(setf s (send survival-proto :new times status))
+
+;; Data Set Menu
+(setf data-menu (send menu-proto :new "Data"))
+(send data-menu :install)
+
+(setf *current-data-set* s)
+
+(setf desc (send menu-item-proto :new "Describe"
+                 :action #'(lambda () (send *current-data-set* :describe))))
+
+(setf plot (send menu-item-proto :new "Plot"
+                 :action #'(lambda () (send *current-data-set* :plot))))
+
+(send desc :do-action)
+
+(send data-menu :append-items desc plot)
+
+(send desc :key #\D)
+(send desc :enabled)
+(send desc :enabled nil)
+(send desc :enabled t)
+
+(send data-menu :remove)
+
+;; Dialogs
+(message-dialog "Variables Deletes!")
+(ok-or-cancel-dialog "Delete Variables?")
+(choose-item-dialog "Dependent variable:" '("X" "Y" "Z"))
+(choose-subset-dialog "Independent variables:" '("X" "Y" "Z"))
+(get-string-dialog "New variable label:" :initial "X")

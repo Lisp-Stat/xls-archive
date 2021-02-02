@@ -1,0 +1,269 @@
+;; Power Transformation
+(defun bc (x p)
+  (let* ((bcx (if (< (abs p) .0001)
+                  (log x)
+                  (/ (^ x p) p)))
+         (min (min bcx))
+         (max (max bcx)))
+    (/ (- bcx min) (- max min))))
+
+(setf x (sort-data precipitation))
+(setf nq (normal-quant (/ (iseq 1 30) 31)))
+(setf p (plot-points nq (bc x 1)))
+(send p :clear)
+(send p :add-points nq (bc x 0.5))
+(send p :clear :draw nil)
+(send p :add-points nq (bc x 0.0))
+
+(defmeth p :change-power (pow)
+  (send self :clear :draw nil)
+  (send self :add-points nq (bc x pow)))
+
+(dolist (pow (rseq -1 2 20))
+  (send p :change-power pow))
+
+(interval-slider-dialog '(-1 2)
+  :points 20
+  :action
+  #'(lambda (pow) (send p :change-power pow)))
+
+(let ((ranks (rank precipitation)))
+  (setf nq (normal-quant (/ (+ ranks 1) 31))))
+
+(send p :clear)
+(send p :add-points  nq (bc precipitation 1))
+(send p :add-slot 'indices (iseq 30))
+
+(defmeth p :indices () (slot-value 'indices))
+
+(defmeth p :change-power (pow)
+  (send self :point-coordinate 1 (send self :indices) (bc precipitation pow))
+  (send self  :redraw-content))
+
+(defun bcr (x p)
+  (if (< (abs p) 0.0001) (log x) (/ (^ x p) p)))
+
+(defun sc (x)
+  (let ((min (min x))
+        (max (max x)))
+    (/ (- x min) (- max min))))
+
+(setf nqr
+      (let ((n (length loss)))
+        (normal-quant (/ (iseq 1 n) (+ 1 n)))))
+
+(setf idx (iseq (length loss)))
+
+(setf m (regression-model (list air conc temp) loss))
+
+(let ((r (send m :residuals)))
+  (send p :clear)
+  (send p :add-points (select nqr (rank r)) (sc r)))
+
+(defmeth p :change-power (pow)
+  (send m :y (bcr loss pow))
+  (let* ((r (send m :residuals))
+         (r-nqr (select nqr (rank r))))
+    (send self :point-coordinate 0 idx r-nqr)
+    (send self :point-coordinate 1 idx (sc r))
+    (send self :redraw-content)))
+
+;; Density Estimation
+(setf w (plot-lines (kernel-dens precipitation :width 1)))
+(send w :add-slot 'kernel-width 1)
+
+(defmeth w :kernel-width (&optional width)
+  (when width
+        (setf (slot-value 'kernel-width) width)
+        (send self :set-lines))
+  (slot-value 'kernel-width))
+
+(send w :add-slot 'kernel-data precipitation)
+
+(defmeth w :kernel-data () (slot-value 'kernel-data))
+
+(defmeth w :set-lines ()
+  (let ((width (send self :kernel-width))
+        (data (send self :kernel-data)))
+    (send self :clear-lines :draw nil)
+    (send self :add-lines
+          (kernel-dens data :width width))))
+
+(interval-slider-dialog '(.25 1.5)
+  :action #'(lambda (s) (send w :kernel-width s)))
+
+(defmeth w :do-idle ()
+  (setf (slot-value 'kernel-data)
+        (sample precipitation 30 :replace t))
+  (send self :set-lines))
+
+(defproto run-item-proto '(graph) () menu-item-proto)
+
+(send run-item-proto :key #\R)
+
+(defmeth run-item-proto :isnew (graph)
+  (call-next-method "Run")
+  (setf (slot-value 'graph) graph))
+
+(defmeth run-item-proto :update ()
+  (send self :mark (send (slot-value 'graph) :idle-on)))
+
+(defmeth run-item-proto :do-action ()
+  (let ((graph (slot-value 'graph)))
+    (send graph :idle-on (not (send graph :idle-on)))))
+
+(send (send w :menu) :append-items (send run-item-proto :new w))
+(send w :add-slot 'xvals (rseq (min precipitation) (max precipitation) 30))
+
+(defmeth w :xvals () (slot-value 'xvals))
+
+(defmeth w :set-lines ()
+  (let ((width (send self :kernel-width))
+        (xvals (send self :xvals)))
+    (send self :clear-lines :draw nil)
+    (send self :add-lines
+          (kernel-dens (send self :kernel-data) :width width :xvals xvals))))
+
+(send w :slot-value 'kernel-data (copy-list precipitation))
+
+(defmeth w :do-idle ()
+  (let ((d (slot-value 'kernel-data))
+        (i (random 30))
+        (j (random 30)))
+    (setf (select d i) (select precipitation j))
+    (send self :set-lines)))
+
+(setf p (let ((d (send s :num-deaths))
+              (r (send s :num-at-risk))
+              (udt (send s :death-times)))
+          (plot-lines (make-steps udt (exp (- (cumsum (/ d r))))))))
+
+(send p :add-slot 'del-hazard
+        (copy-list (/ (send s :num-deaths) (send s :num-at-risk))))
+
+;; Survival Animation
+(defmeth p :del-hazard () (slot-value 'del-hazard))
+
+(defmeth p :do-idle ()
+  (let* ((udt (send s :death-times))
+         (d (send s :num-deaths))
+         (r (send s :num-at-risk))
+         (dh (send self :del-hazard))
+         (n (length dh))
+         (i (random n))
+         (di (select d i))
+         (ri (select r i)))
+    (setf (select dh i) (/ (first (gamma-rand 1 di)) ri))
+    (send self :clear-lines :draw nil)
+    (send self :add-lines (make-steps udt (exp (- (cumsum dh)))))))
+
+(send (send p :menu) :append-items (send run-item-proto :new p))
+
+;; Mouse Mode with Smoother
+(setf h (histogram hardness))
+
+(setf p (plot-points tensile-strength abrasion-loss))
+
+(defmeth p :adjust-screen ()
+  (call-next-method)
+  (let ((i (union (send self :points-selected) (send self :points-hilited))))
+    (send self :clear-lines :draw nil)
+    (if (< 1 (length i))
+        (let ((x (select tensile-strength i))
+              (y (select abrasion-loss i)))
+          (send self :add-lines (kernel-smooth x y)))
+        (send self :redraw-content))))
+
+(send p :add-slot 'kernel-width 50)
+
+(defmeth p :kernel-width (&optional width)
+  (when width
+        (setf (slot-value 'kernel-width) width)
+        (send self :adjust-screen))
+  (slot-value 'kernel-width))
+
+(defmeth p :adjust-screen ()
+  (call-next-method)
+  (let ((i (union (send self :points-selected) (send self :points-hilited))))
+    (send self :clear-lines :draw nil)
+    (if (< 1 (length i))
+        (let ((x (select tensile-strength i))
+              (y (select abrasion-loss i))
+              (w (send self :kernel-width)))
+          (send self :add-lines (kernel-smooth x y :width w)))
+        (send self :redraw-content))))
+
+(interval-slider-dialog '(20 100)
+  :action #'(lambda (w) (send p :kernel-width w)))
+
+;; Regression Demo
+(setf x (append (iseq 1 18) (list 30 40)))
+(setf y (+ x (* 2 (normal-rand 20))))
+
+(setf p (plot-points x y))
+
+(send p :add-mouse-mode 'point-moving
+      :title "Point Moving"
+      :cursor 'finger
+      :click :do-point-moving)
+
+(defmeth p :do-point-moving (x y a b)
+  (let ((p (send self :drag-point x y :draw nil)))
+    (if p (send self :set-regression-line))))
+
+(defmeth p :set-regression-line ()
+  (let ((coefs (send self :calculate-coefs)))
+    (send self :clear-lines :draw nil)
+    (send self :abline (select coefs 0) (select coefs 1))))
+
+(defmeth p :calculate-coefs ()
+  (let* ((i (iseq (send self :num-points)))
+         (x (send self :point-coordinate 0 i))
+         (y (send self :point-coordinate 1 i))
+         (m (regression-model x y :print nil)))
+    (send m :coef-estimates)))
+
+(send p :set-regression-line)
+
+(send p :mouse-mode 'point-moving)
+
+;; Line Drawing
+(setf p (plot-lines (rseq 0 1 50) (repeat 0 50)))
+(send p :y-axis nil)
+
+(send p :add-mouse-mode 'drawing
+      :title "Drawing"
+      :cursor 'finger
+      :click :mouse-drawing)
+
+(send p :mouse-mode 'drawing)
+
+(defmeth p :mouse-drawing (x y m1 m2)
+  (let* ((n (send self :num-lines))
+         (rxy (send self :canvas-to-real x y))
+         (rx (first rxy))
+         (ry (second rxy))
+         (old-i (max 0 (min (- n 1) (floor (* n rx)))))
+         (old-y ry))
+    (flet ((adjust (x y) 
+             (let* ((rxy (send self :canvas-to-real x y))
+                    (rx (first rxy))
+                    (ry (second rxy))
+                    (new-i (max 0 (min (- n 1) (floor (* n rx)))))
+                    (y ry))
+               (dolist (i (iseq old-i new-i))
+                 (let ((p (if (= old-i new-i) 
+                              1
+                              (abs (/ (- i old-i) (- new-i old-i))))))
+                   (send self :linestart-coordinate 1 i 
+                         (+ (* p y) (* (- 1 p) old-y)))))       
+               (send self :redraw-content)
+               (setf old-i new-i old-y y))))
+          (adjust x y)
+          (send self :while-button-down #'adjust))))
+
+(defmeth p :lines ()
+  (let ((i (iseq 50)))
+    (list (send self :linestart-coordinate 0 i)
+          (send self :linestart-coordinate 1 i))))
+;**** density version?

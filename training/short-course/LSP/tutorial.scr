@@ -1,0 +1,129 @@
+;; Interpreter
+(+ 1 2)
+(* (+ 2 3.7) 8.2)
+(+ (- (* 3 5) (* (- 7 2) 6)) 3)
+
+(histogram precipitation)
+(boxplot precipitation)
+(boxplot (list urban rural))
+
+;; Summaries
+(plot-points (iseq 1 30) precipitation)
+(plot-lines (iseq 1 30) precipitation)
+(plot-lines (rseq (- pi) pi 50) (sin (rseq (- pi) pi 50)))
+(plot-points tensile-strength abrasion-loss)
+(plot-function #'sin (- pi) pi)
+
+;; Files
+(read-data-columns)
+
+;; Dynamic Graphs
+(spin-plot (list hardness tensile-strength abrasion-loss))
+(spin-plot (list hardness tensile-strength abrasion-loss)
+           :title "Abrasion Loss Data"
+           :variable-labels
+           (list "Hardness" "Tensile Strength" "Abrasion Loss"))
+(spin-plot
+  (list (/ (- hardness (mean hardness)) 140)
+        (/ (- tensile-strength (mean tensile-strength)) 140)
+        (/ (- abrasion-loss (mean abrasion-loss)) 140))
+  :scale nil)
+
+(scatterplot-matrix (list hardness tensile-strength abrasion-loss)
+                    :variable-labels
+                    (list "Hardness" "Tensile Strength" "Abrasion Loss"))
+
+(histogram hardness :title "Hardness")
+(plot-points (list tensile-strength abrasion-loss)
+             :variable-labels (list "Tensile Strength" "Abrasion Loss"))
+(name-list 30)
+
+;; Modifying Plots
+(setf p (plot-points tensile-strength abrasion-loss))
+(send p :abline -2.18 0.66)
+
+(send p :clear)
+(def x (rseq 100 250 50))
+(send p :add-lines x (+ -280.1 (* x 5.986) (* (^ x 2) -0.01845)))
+(send p :add-points tensile-strength abrasion-loss)
+
+;; Dynamic Simulation
+(setf h (histogram (normal-rand 20)))
+
+(dotimes (i 50)
+  (send h :clear :draw nil)
+  (send h :add-points (normal-rand 20)))
+
+(dolist (i (iseq 50))
+  (send h :clear :draw nil)
+  (pause 5)
+  (send h :add-points (normal-rand 20)))
+
+;; Regression
+(setf m (regression-model (list tensile-strength hardness) abrasion-loss))
+(send m :help)
+(send m :coef-estimates)
+(send m :coef-standard-errors)
+(send m :residuals)
+(send m :fit-values)
+(send m :plot-residuals)
+(send m :cooks-distances)
+(plot-lines (iseq 1 30) *)
+
+;; Functions
+(defun f (x) (+ (* 2 x) (^ x 2)))
+(plot-function #'f -2 3)
+(defun f (x y) (+ (^ x 2) (^ y 2)))
+(spin-function #'f -1 1 -1 1)
+(contour-function #'f -1 1 -1 1)
+
+;; Animation Control
+(defun bc (x p)
+  (let* ((bcx (if (< (abs p) .0001) (log x) (/ (^ x p) p)))
+         (min (min bcx))
+         (max (max bcx)))
+    (/ (- bcx min) (- max min))))
+(def x (sort-data precipitation))
+(def nq (normal-quant (/ (iseq 1 30) 31)))
+(setf p (plot-points nq (bc x 1)))
+(defun change-power (r)
+  (send p :clear :draw nil)
+  (send p :add-points nq (bc x r)))
+(change-power .5)
+(sequence-slider-dialog (rseq -1 2 31) :action #'change-power)
+
+;; Methods
+(setf h (histogram (normal-rand 20)))
+(defmeth h :new-sample ()
+  (send self :clear :draw nil)
+  (pause 5)
+  (send self :add-points (normal-rand 20)))
+(dotimes (i 50) (send h :new-sample))
+
+;; Nonlinear Regression
+(def x (list 0.02 0.02 0.06 0.06 0.11 0.11 0.22 0.22 0.56 0.56 1.10 1.10))
+(def y (list 76 47 97 107 123 139 159 152 191 201 207 200))
+(defun f (theta) (/ (* (select theta 0) x) (+ (select theta 1) x)))
+(plot-points x y)
+
+(setf m (nreg-model #'f y (list 200 .1)))
+(send m :residuals)
+(send m :leverages)
+(send m :cooks-distances)
+
+;; Maximum Likelihood
+(def x (list 90 10 60 186 61 49 14 24 56 20 79 84 44 59 29 118 25
+             156 310 76 26 44 23 62 130 208 70 101 208))
+
+(defun gllik (theta)
+  (let* ((mu (select theta 0))
+         (beta (select theta 1))
+         (n (length x))
+         (xbm (* x (/ beta mu))))
+    (+ (* n (- (log beta)
+               (log mu)
+               (log-gamma beta)))
+       (sum (* (- beta 1) (log xbm)))
+       (sum (- xbm)))))
+
+(newtonmax #'gllik (list 83.5 1.4))

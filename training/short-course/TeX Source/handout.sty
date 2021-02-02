@@ -1,0 +1,21 @@
+% Handout style option
+
+\def\course#1{\gdef\@course{#1}}
+\def\instructor#1{\gdef\@instructor{#1}}
+
+\def\ps@handout{\let\@mkboth\@gobbletwo
+     \def\@oddhead{\rm\@course\hfil\@instructor}
+     \def\@oddfoot{\rm\hfil\thepage
+     \hfil}\let\@evenhead\@oddhead\let\@evenfoot\@oddfoot}
+
+\pagestyle{handout}
+
+\setlength{\textwidth}{6in}
+\setlength{\textheight}{8.75in}
+\setlength{\topmargin}{-0.25in}
+\setlength{\oddsidemargin}{0.25in}
+\setlength{\evensidemargin}{0.25in}
+
+\newcommand{\heading}[1]{\begin{center}\subsubsection*{#1}\end{center}}
+\newcommand{\subheading}[1]{\subsubsection*{\rm \underline{#1}}}
+

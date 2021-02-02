@@ -11,22 +11,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun ks-function (u &key (eps 1e-6))
-"Args: (u &key (eps 1e-6))
+  "Args: (u &key (eps 1e-6))
 Computes Kolmogorov-Smirnov distribution at U,
 with precision EPS."
   (let ((s 0)
         (i 1))
     (loop
-     (let ((term (exp (* -2 (^ (* i u) 2)))))
-       (if (< term eps) (return (- 1 (* 2 s))))
-       (incf s (if (evenp i) (- term) term))
-       (incf i))
-     )
-    )
-)
+      (let ((term (exp (* -2 (^ (* i u) 2)))))
+	(if (< term eps) (return (- 1 (* 2 s))))
+	(incf s (if (evenp i) (- term) term))
+	(incf i)))))
 
 (defun ks-one-sample (data cdf &key (eps 1e-6) (graphics nil))
-"Args: (data cdf &key (eps 1e-6))
+  "Args: (data cdf &key (eps 1e-6))
 Kolmogorov-Smirnov one-sample test of sequence DATA versus
 cumulative distribution function CDF."
   (let ((n (length data))
@@ -37,56 +34,47 @@ cumulative distribution function CDF."
     (if graphics 
         (progn
           (send pp :add-edf data)
-          (send pp :add-function cdf (min data) (max data)))
-      )
+          (send pp :add-function cdf (min data) (max data))))
     (dolist (s x)
       (let ((a (funcall cdf s))
             (p-low (/ (length (which (< data s))) n))
             (p-up (/ (length (which (<= data s))) n)))
-        (setf dev (max (abs (- p-up a)) (abs (- p-low a)) dev))
-        )
-      )
+        (setf dev (max (abs (- p-up a)) (abs (- p-low a)) dev))))
     (setf prb (- 1 (ks-function (* dev (sqrt n)) :eps eps)))
     (format t "Deviation ~12,10f Probability ~12,10f Significance ~a~%"
             dev prb (cond ((< prb .001) "***")
                           ((< prb .01)  "**")
                           ((< prb .05)  "*")
-                          (t "n.s.")))
-    )
-  )
+                          (t "n.s.")))))
 
 (defun ks-two-sample (data1 data2 &key (eps 1e-6) (graphics nil))
- "Args: (data1 data2 &key (eps 1e-6))
+  "Args: (data1 data2 &key (eps 1e-6))
 Kolmogorov-Smirnov two-sample test of sequence DATA1 versus
 sequence DATA2."
- (let ((n (length data1))
+  (let ((n (length data1))
         (m (length data2))
         (x (union data1 data2))
         (dev 0)
         (prb 0)
         (pp (if graphics (plot-points nil nil))))
-   (if graphics (progn
-                  (send pp :add-edf data1)
-                  (send pp :add-edf data2 :type 'dashed)))
+    (if graphics (progn
+                   (send pp :add-edf data1)
+                   (send pp :add-edf data2 :type 'dashed)))
     (dolist (s x)
       (let ((p-low (/ (length (which (< data1 s))) n))
             (p-up (/ (length (which (<= data1 s))) n))
             (q-low (/ (length (which (< data2 s))) m))
             (q-up (/ (length (which (<= data2 s))) m)))
         (setf dev (max dev (abs (- p-up q-up))
-                           (abs (- p-up q-low))
-                           (abs (- p-low q-up))
-                           (abs (- p-low q-low))))
-        )
-      )
+                       (abs (- p-up q-low))
+                       (abs (- p-low q-up))
+                       (abs (- p-low q-low))))))
     (setf prb (- 1 (ks-function (* dev (sqrt (/ (* m n) (+ m n)))) :eps eps)))
     (format t "Deviation ~12,10f Probability ~12,10f Significance ~a~%"
             dev prb (cond ((< prb .001) "***")
                           ((< prb .01)  "**")
                           ((< prb .05)  "*")
-                          (t "n.s.")))
-    )
-  )
+                          (t "n.s.")))))
 
 
 (defun maximum-spacing (data)
@@ -108,9 +96,5 @@ sequence DATA2."
         (send self :add-lines 
               (list x0 x1) (list yy yy))
         (if (> k 0)
-            (send self :add-points (list x0) (list yy) :type type))
-        )
-      (send self :adjust-to-data)
-      )
-    )
-  )
+            (send self :add-points (list x0) (list yy) :type type)))
+      (send self :adjust-to-data))))

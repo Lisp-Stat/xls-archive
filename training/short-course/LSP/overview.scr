@@ -1,0 +1,5 @@
+(histogram hardness :title "Hardness")
+(plot-points tensile-strength abrasion-loss
+             :Variable-labels (list "T" "A"))
+(spin-plot (list tensile-strength hardness abrasion-loss)
+           :variable-labels (list "T" "H" "A"))

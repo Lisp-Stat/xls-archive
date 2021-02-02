@@ -1,0 +1,52 @@
+
+We begin with a brief overview of Markov chains. For an excellent
+introduction, the reader is referred to Feller\cite{feller} or
+Ross\cite{rosstext}. 
+
+A {\em stochastic process\/} is a collection of random  variables,
+$\{X_t,\ t\in T\}$.  The set $T$, the index set, is commonly
+called {\em time\/}.  In this paper, we only  consider the situation
+where $T$ is a countable set; specifically, we shall use $T={\bf N}$,
+the set of natural numbers. Thus,  
+$\{X_k,\ k=0,1,2,\ldots\}$ will denote the stochastic process. 
+Such a process is called a {\em discrete time\/} process.
+The set of all possible values of the random variables $X_k$ is called
+the {\em state space\/}of the process.  We again restrict ourselves to
+finite or countable state spaces and denote the states by integers. If
+$X_{k}=i$, then we say the process is in state $i$ at time $k$.  
+
+A {\em Markov chain\/} is a special kind of stochastic process.
+It is a stochastic process such that:
+\begin{center}
+$P\{X_{k+1}=j|X_{k}=i, X_{k-1}=i_{k-1}, \ldots,X_{1}=i_{1},
+X_{0}=i_{0}\}=P_{ij}$ 
+\end{center}
+for states $i_{0},i_{1}, \ldots,i_{k-1},i,j$ and $k \geq 0$.  This can
+be interpreted as saying that the probability that the process will go
+to state $j$ given its past history (i.e. the states it has been in
+for all times before $k$) is independent of those states, and depends
+only on the the state it is presently occupying.
+
+Whenever the process is in state $i$, there is a probability $P_{ij}$
+that the process will go from state $i$ to state $j$. These
+probabilities can be specified by means of a {\em transition matrix\/}
+${\bf P}=[P_{ij}]$. The $i$th element in the $j$th row of this matrix
+{\bf P} is the value $P_{ij}$: 
+$$
+{\bf P} = \left[ \begin{array}{cccc}
+			P_{00} & P_{01} & P_{02} & \ldots \\
+			P_{10} & P_{11} & P_{12} & \ldots \\
+			\vdots & \vdots & \vdots &        \\
+			P_{i0} & P_{i1} & P_{i2} & \ldots \\
+			\vdots & \vdots & \vdots &        
+			\end{array} \right]
+$$
+
+Because the process must make some sort of transition (perhaps even to
+the same state), the value $\sum_{j=0}^{\infty} P_{ij}$, which is the
+sum of the probabilities of all possibilities when the process is
+currently in state $i$, must equal 1, for every $i$.  
+
+A {\em discrete time finite state Markov chain} is a markov chain with a
+finite state space and discrete time. We shall denote the states by
+integers $0,1,\ldots,n$, for some integer $n$. 

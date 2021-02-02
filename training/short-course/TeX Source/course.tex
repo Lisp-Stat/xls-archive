@@ -1,0 +1,80 @@
+%\includeonly{objects}
+\documentstyle[handout,12pt]{report}
+\input{psfig}
+
+% This command enables hyphenation if \tt mode by changed \hyphencharacter
+% in the 10 point typewriter font. To work in other point sizes it would
+% have to be redefined. It may be Bator to just make the change globally 
+% and have it apply to anything that is set in \tt mode
+\newcommand{\dcode}[1]{{\tt \hyphenchar\tentt="2D #1\hyphenchar\tentt=-1}}
+
+\newcommand{\param}[1]{$<$\paramref{#1}$>$}
+\newcommand{\paramref}[1]{{\em #1}}
+
+\newcommand{\lispcodesize}{\normalsize}
+
+\newcommand{\refitem}[1]{%
+  \begin{list}%
+        {}%
+        {\setlength{\leftmargin}{.25in}\setlength{\itemindent}{-.25in}}
+  \item #1%
+  \end{list}}
+
+\newcommand{\protoimage}[1]{\begin{picture}(190,20)\put(0,0){\makebox(190,20){\tt #1}}\put(95,10){\oval(190,20)}\end{picture}}
+
+\newcommand{\macbold}[1]{{\bf #1}}
+
+\newenvironment{slide}[1]{\newpage\vspace*{\fill}\begin{flushleft}}{\par\end{flushleft}\vspace*{\fill}}
+
+\renewcommand{\heading}[1]{\begin{center} \underline{\bf #1} \end{center}}
+\renewcommand{\subheading}[1]{\begin{center} \underline{#1} \end{center}}
+\renewcommand{\chapter}[1]{\begin{center}\Huge\bf #1\end{center}}
+\renewcommand{\section}[1]{\heading{#1}}
+\renewcommand{\subsection}[1]{\subheading{#1}}
+\renewcommand{\subsubsection}[1]{\subheading{#1}}
+
+\setlength{\parskip}{4mm}
+
+\course{ENAR Spring Meeting, 1992}
+\instructor{Tierney}
+
+\title{Statistical Computing and Dynamic Graphics Using Lisp-Stat}
+\author{Luke Tierney\\School of Statistics\\University of Minnesota}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Lisp-Stat is an environment for general statistical computing and for
+using and developing dynamic graphical methods. The Lisp-Stat system
+contains a set of functions for performing basic statistical
+calculations and constructing dynamic statistical graphs such as
+linked scatterplots and rotatable three-dimensional plots. In
+addition, new numerical and graphical tools can be added to the system
+using the Lisp programming language and a simple object-oriented
+programming system.
+
+The course will begin with an overview of the capabilities of the
+system and then introduce basic elements of Lisp programming and
+concepts of object-oriented programming. These ideas will then be used
+on several examples to illustrate how to add new graphical and
+numerical methods to the system. The examples may include a simple set
+of tools for fitting generalized linear models and an implementation
+of the Grand Tour for viewing data sets in four or more dimensions.
+
+Several extended breaks will be scheduled and a small number of
+microcomputers or workstations will be made available during these
+breaks to allow participants to experiment with the ideas presented.
+\end{abstract}
+
+\LARGE
+\include{prelim}
+\include{overview}
+\include{tutorial}
+\include{lisp}
+\include{objects}
+\include{graphbasics}
+\include{dyngraphs}
+\include{wrapup}
+\end{document}

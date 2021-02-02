@@ -1,0 +1,19 @@
+This directory contains transparencies and examples used in a
+shortcourse on Lisp-Stat presented at the 1992 ENAR meetings in
+Cincinnati, 22 March 1992.
+
+Run LaTeX on course.tex to get the transparencies used in the course.
+The files assume you have the psfig macros for including PostScript
+files available.
+
+The ENAR directory contains examples made available on some PC's
+during the breaks. The file problems.tex contains suggested exercises
+that accompany these demos.
+
+The LSP directory contains examples used in the demonstration.
+
+Luke Tierney
+School of Statistics
+University of Minnesota
+Minneapolis, MN 55455
+

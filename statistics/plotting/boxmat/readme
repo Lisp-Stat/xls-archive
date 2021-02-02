@@ -1,0 +1,56 @@
+Files
+
+# readme:  this file
+
+# S files programs
+boxmat.s myproj.default.s nwaylist.s
+
+# S files examples and Figures 1-3, 6-10 for paper
+bekk.s cc46.s fc.s
+
+# S .Help files
+boxmat boxmatm boxplotm cell.apply myterms nwaylist nwaylist.c0a
+
+# S-news posting on proj.default
+proj.snews
+
+For reasons I don't fully understand (my guess is the memory bug that
+jmc discussed on the S-news mailing list recently), I have been
+unable to specify source("cc46.s") or source("bekk.s").  The other files
+can be sourced with no trouble.  For these two files I had to use the
+emacs command ^Xi to bring the file into the shell window running S.
+
+The graphics parameters in the examples have been tuned for the
+tek4014() device.  The left margin controls may need adjustment for
+other devices.
+
+
+
+# TeX files
+b5.tex b5.aux amstat.sty
+
+
+
+# xlispstat files
+   paper.lsp	 ; loads all the files in the order below and creates
+		 ; all the graphs on the screen at once.
+
+   menutitle.lsp ; puts title on menu bar
+   boxpm11a.lsp  ; boxmat-proto boxmat
+   boxpm11b.lsp  ; :redraw
+   boxpm11c.lsp  ; :add-boxplot
+   boxpm11d.lsp  ; needed for boxmat transpose
+
+   twoway.lsp	 ; sample data
+   trtw.lsp	 ; all transpositions and reversals of boxplot matrices
+
+   regrsimp.lsp  ; simple regression
+   array2.lsp	 ; Wilkinson SWEEP and related functions
+
+   feav374a.lsp  ; Bekk data and anova arithmetic
+   feav374c.lsp  ; Bekk boxplot matrices
+   cc46.lsp	 ; cc46 eelworms
+
+   boxmatpm.lsp  ; :add-boxplot replacement for matrix data
+		 ; (replaces boxpm11c.lsp)
+   fc.lsp	 ; freshman cohort example

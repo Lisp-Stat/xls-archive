@@ -1,0 +1,182 @@
+\begin{slide}{}
+\section{What is Lisp-Stat}
+Lisp-Stat is an extensible environment for statistical computing and
+dynamic graphics.
+
+Some of its features are
+\begin{itemize}
+\item
+a variety of numerical statistical operations
+\item
+a variety of interactive and dynamic graphical methods
+\item 
+a very high level programming language (Lisp) that can be used to
+\begin{itemize}
+\item simplify combinations of calculations
+\item adapt methods to specific problems
+\item add new capabilities to the system
+\end{itemize}
+%\item
+%interface to C and Fortran code
+\item
+an extensible graphics system through
+\begin{itemize}
+\item access to graphical interface tools\\(Menus and Dialogs)
+\item standard graphs as building blocks
+\item use of object-oriented programming
+\end{itemize}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+Some things Lisp-Stat does not do:
+\begin{itemize}
+\item
+incorporate a large collection of tools for specialized analyses
+\begin{itemize}
+\item[]
+Such tools can be implemented within the system or, if C or Fortran
+implementations are already available, they can be accessed through
+dynamic or static loading.
+\end{itemize}
+\item
+provide extensive support for presentation graphics
+\begin{itemize}
+\item[]
+Other systems on workstations and PC's already provide a wide range of
+tools for preparing presentation graphics.
+\end{itemize}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+Implementation and Portability:
+\begin{itemize}
+\item Lisp-Stat is a general specification
+\item XLISP-STAT is a first implementation
+\item XLISP-STAT runs on
+\begin{itemize}
+\item Apple Macintosh
+\item MS Windows
+\item Commodore Amiga (J. Lindsey)
+\item {\em Sun}\/ workstations using {\em SunView}
+\item BSD UNIX workstations running {\em X11}
+\end{itemize}
+\item A Kyoto Common Lisp-based implementation may be available soon
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\section{Obtaining XLISP-STAT}
+XLISP-STAT source code and executables are available free of charge.
+
+Source code for the UNIX, Macintosh, and MS Windows versions is
+available by anonymous {\em ftp}\/ from \dcode{umnstat.stat.umn.edu}
+and by email from \dcode{statlib}.
+
+\begin{itemize}
+\item[]
+If you have access to the {\em internet}\/ but have never used {\em
+ftp}, there is probably someone at your site who can help you.
+\end{itemize}
+
+Executables for Macintosh and MS Windows are also available for
+anonymous {\em ftp}\/ from \dcode{umnstat.stat.umn.edu} and some other
+sites.
+\end{slide}
+
+\begin{slide}{}
+If you do not have access to {\em ftp}, you can get a copy of the
+Macintosh or MS Windows executables by sending disks and a self-addressed,
+stamped mailer to
+\begin{center}
+\parbox{4in}{\raggedright
+Luke Tierney\\
+School of Statistics\\
+University of Minnesota\\
+Minneapolis, MN 55455}
+\end{center}
+The number of disks required is
+\begin{itemize}
+\item[] Two 800K disks for the Macintosh version
+\item[] One $3\frac{1}{4}$'' high-density disk for the MS Windows version
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\section{Documentation}
+A tutorial introduction is available as a technical report:
+
+\refitem{{\sc Tierney, L.}, (1989), ``XLISP-STAT: A statistical
+environment based on the XLISP language,'' U of M Tech. Rep. 528.}
+
+The \LaTeX\ source for this report is available for {\em ftp}\/ from
+\dcode{umnstat.stat.umn.edu} or by email from \dcode{statlib}.
+
+More complete documentation is available as a book:
+
+\refitem{{\sc Tierney, L.}, (1990), {\em Lisp-Stat: An Object-Oriented
+Environment for Statistical Computing and Dynamic Graphics}, New York,
+NY: Wiley.}
+
+The technical report corresponds to Chapter 2 of the book.
+\end{slide}
+
+\begin{slide}{}
+\heading{Some Historical Notes}
+\begin{itemize}
+\item
+Several extensible statistical environments have been based on high
+level languages:
+\begin{itemize}
+\item The New {\em S}\/ language
+\item APL-based systems (Anscombe)
+\item Tools for the {\em Gauss}\/ system
+\end{itemize}
+\item
+Several researchers have based systems on the Lisp language:
+\begin{itemize}
+\item McDonald and Pedersen
+\item Stuetzle
+\item Oldford and Peters
+\item Buja and Hurley
+\end{itemize}
+\item
+A strong argument in favor of Lisp is that Lisp provides excellent
+support for {\em experimental programming}.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+\section{Course outline}
+\begin{enumerate}
+\item Overview of Lisp-Stat
+\item A Tutorial Introduction
+\item Some Lisp Programming
+\item Objects
+\item Outline of the Graphics System
+\item Some Dynamic Graphics Examples
+\end{enumerate}
+\end{slide}
+
+\begin{slide}{}
+\section{Course Objectives}
+After completing the course, you should be able to
+\begin{itemize}
+\item
+use Lisp-Stat with your own data for basic statistical calculations
+and graphics.
+\item
+develop some simple numerical and graphical tools for your own
+applications
+\item
+understand the basics of Lisp programming and object-oriented
+programming
+\end{itemize}
+You should also be well prepared to learn more about Lisp-Stat by working
+through the book.
+\end{slide}
+
+
+
+

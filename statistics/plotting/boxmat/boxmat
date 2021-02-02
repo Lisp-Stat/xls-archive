@@ -1,0 +1,97 @@
+.BG
+.FN boxmat
+.TL
+Boxplot Matrix
+.CS
+boxmat(formula, data,
+	ylim=range(data.ok), yticks=ylim, ytick.labels=yticks,
+	mar=c(5.1, 8.1, 4.1, 2.1),
+	row.name.line=as.integer(par("mar")[2])-4,
+	row.label.line=as.integer(par("mar")[2])-1,
+	old=T,
+	boxf=boxplot, ...)
+
+boxmat(twlist,
+	ylim=range(data.ok), yticks=ylim, ytick.labels=yticks,
+	mar=c(5.1, 8.1, 4.1, 2.1),
+	row.name.line=as.integer(par("mar")[2])-4,
+	row.label.line=as.integer(par("mar")[2])-1,
+	old=T,
+	boxf=boxplot, ...)
+.AG formula
+the formula describing the dependent variable and the cell structure
+for the boxplot matrix.  Either `formula' or `twlist', but not both,
+must be used.
+.AG data
+if supplied, a data frame in which the variables named in the formula
+are to be found.
+If `data' is omitted, the current search list is used; for example,
+a data frame may have been attached or variables may be objects
+in the working database.
+.AG twlist
+two-way list.  A matrix of lists.  Each list contains the data for one cell of
+the two-way classification.  Either `formula' or `twlist', but not both,
+must be used.
+.AG ylim
+lower and upper values for plotting the dependent variable.
+The default value includes all non-missing data in all cells.  
+Increasing the range may make the plot look prettier.
+.AG yticks
+tick marks for dependent variable in each row of the boxplot matrix.
+The default value is the `ylim' value.  Any number of values within
+the range of `ylim' may be used.
+.AG ytick.labels
+labels for `yticks'.  The default value is the `yticks' value.
+It is necessary that `length(yticks)==length(ytick.labels)'.
+Empty labels are occasionally useful, for example, `yticks=c(0,.5,1),
+ytick.labels=c("0","","1")'.
+.AG mar
+margin `par()' value.  It may need to be increased when there
+is no room for `main' or `xlab' (`names(dimnames(twlist)[[2]])') `title' values,
+or when the row names (`dimnames(twlist)[[1]]') or row factor name 
+(`names(dimnames(twlist)[[1]])') overprint the `y'-axis tick labels.
+.AG row.name.line
+line in left margin at which row names will be printed.
+.AG row.label.line
+line in left margin at which row labels will be printed.
+.AG old
+`old' parameter from `boxplot'.  The default `T' gives the Tukey (1977) style.
+.AG boxf
+boxplot function.  The default is to use the standard `boxplot'.
+The optional value of `boxf=boxplotm' suppresses the median line.
+It is normally used for displaying data matrices by an expression of the
+form `boxmatm(data.matrix)' which is expanded to
+`boxmat(nwaylist.c0a(data.matrix), boxf=boxplotm)'.
+.AG ...
+any `par' parameters, including titles.
+.RT
+invisible vector which contains x-coordinates of box centers.
+This is the vector returned by `bxp'.
+.SA
+`boxmatm', `boxplot', `bxp'.
+.SH REFERENCES
+Heiberger, Richard M.,
+"Graphical Display of Analysis of Variance with the Boxplot Matrix",
+.ul
+Proceedings of the American Statistical Association,
+Statistical Graphics Section,
+to appear, 1992.
+.sp
+Heiberger, Richard M.,
+"Graphical Display of Analysis of Variance with the Boxplot Matrix",
+.ul
+Journal of Statistical Computing and Graphics,
+submitted, 1992.
+.EX
+boxmat(y ~ a*b) # one boxplot for each cell of the a*b crossing
+boxmat(y ~ a * b:c, data=mydata) # rows are defined by factor a,
+                                 # columns by the factor jointly indexed
+                                 # by b and c
+                                 # the data is in the data frame mydata
+boxmat(twlist, main="Main Title") # twlist is a two way matrix of
+                                  # lists of cell values
+boxmatm(data.matrix) # display boxes with height proportional
+                     # to the values in the data.matrix
+.KW boxplot
+.KW interactions
+.WR

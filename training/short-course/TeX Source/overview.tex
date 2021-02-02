@@ -1,0 +1,125 @@
+\begin{slide}{}
+\chapter{Overview of Lisp-Stat}
+Lisp-Stat allows you to enter data, transform data, and compute
+summary statistics:
+{\Large
+\begin{verbatim}
+> (def abrasion-loss 
+       (list 372 206 175 154 136 112  55  
+              45 221 166 164 113  82  32
+             228 196 128  97  64 249 219
+             186 155 114 341 340 284 267
+             215 148))
+ABRASION-LOSS
+> abrasion-loss
+(372 206 175 154 136 112 55 45 ...)
+
+> (log abrasion-loss)
+(5.918894 5.327876 5.164786 ...)
+
+> (mean abrasion-loss)
+175.4667
+> (standard-deviation abrasion-loss)
+88.12755
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+You can construct a variety of interactive and dynamic graphs:
+{\Large
+\begin{verbatim}
+> (histogram hardness :title "Hardness")
+#<OBJECT: ...>
+
+> (plot-points
+   tensile-strength abrasion-loss
+   :Variable-labels (list "T" "A"))
+#<OBJECT...>
+
+> (spin-plot 
+   (list tensile-strength
+         hardness
+         abrasion-loss)
+   :variable-labels (list "T" "H" "A"))
+#<OBJECT: ...>
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+You can fit linear regression models:
+{\Large
+\begin{verbatim}
+> (def m (regression-model 
+          (list hardness tensile-strength)
+          abrasion-loss))
+
+Least Squares Estimates:
+
+Constant              885.5374  (61.80104)
+Variable  0:         -6.573002  (0.5836548)
+Variable  1:         -1.375367  (0.1944645)
+
+R Squared:            0.840129
+Sigma hat:            36.51856
+Number of cases:            30
+Degrees of freedom:         27
+
+#<Object: ...>
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+and nonlinear regression models:
+{\Large
+\begin{verbatim}
+> (defun f (theta)
+    (/ (* (select theta 0) x)
+       (+ (select theta 1) x)))
+F
+
+> (def m (nreg-model #'f y (list 200 .1)))
+Residual sum of squares:   7964.185
+Residual sum of squares:   1593.158
+...
+Residual sum of squares:   1195.449
+
+Least Squares Estimates:
+
+Parameter 0           212.6837 (6.947153)
+Parameter 1         0.06412127 (0.0082809)
+
+R Squared:           0.9612608
+Sigma hat:            10.93366
+Number of cases:            12
+Degrees of freedom:         10
+
+M
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+You can also
+\begin{itemize}
+\item fit generalized linear models
+\item numerically maximize likelihood functions
+\item compute approximate posterior moments and marginal densities.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{}
+You can define functions of your own to implement new numerical
+methods or dynamic graphical ideas of your own.
+
+We will look at several examples:
+\begin{itemize}
+\item estimating a survival curve
+\item Weibull regression
+\item dynamic power transformation
+\item variability in density estimation
+\item a regression sensitivity demonstration
+\item the Grand Tour
+\end{itemize}
+
+In most versions of XLISP-STAT it is also possible to incorporate and
+access routines written in C or FORTRAN.
+\end{slide}

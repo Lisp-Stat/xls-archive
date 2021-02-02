@@ -1,0 +1,31 @@
+.BG
+.FN myterms
+.TL
+terms, with an option to retain the original sequence
+.CS
+myterms(formula, specials=NULL, abb=NULL, data=list(), neg.out=T, resequence=T)
+.AG formula, specials, abb, data, neg.out
+see documentation for `terms'.
+.AG resequence
+if `FALSE', the `terms' are returned in the same sequence as the `formula'
+specifies them.  If `TRUE' (the default), the `terms' are resequenced to
+place all one-factor terms first, then two-factor terms, etc.
+.RT
+the same as the `terms' function, but with an additional `pivot' attribute.
+The `pivot' value can be used to restore the specified sequence of terms.
+.SA
+`boxmat', `nwaylist'.
+.EX
+> tmpT <- myterms(y ~ a:b + c)
+> as.expression(tmpT)
+expression(c, a:b)
+> as.expression(tmpT)[attr(tmpT,"pivot")]
+expression(a:b, c)
+
+> tmpF <- myterms(y ~ a:b + c, res=F)
+> as.expression(tmpF)
+expression(a:b, c)
+> as.expression(tmpF)[attr(tmpF,"pivot")]
+expression(a:b, c)
+.KW terms
+.WR

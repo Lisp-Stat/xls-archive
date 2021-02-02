@@ -1,0 +1,2044 @@
+÷ƒ’À;è TeX output 1996.06.12:1034‹ÿÿÿÿ y ı£ ? ş‘YH6óDÓítG®G®cmr17¹XLISP-Stat–7ttosols“for“building“GeneralisedŸ’‡­lEstimating–7tEquation“mosdelsŸ’ÀÅÍóX«Qcmr12ºThomas‘ê¨Lumley¤’£½àDepartmen¬rt–ê¨of“Biostatistics¡’©)kUniv•¬rersit“y–ê¨of“W‘ÿVashington¡’Ìá®Bo¬rx‘ê¨357232¡’­ËåSeattle–ê¨W‘ş±ÈA“98195{7232ŸOfj’Ç+yJune–ê¨12,“1996Ÿ$’Ö!Kót‰:		cmbx9ÄAbstractŸ¬Ñ‘dßüóo´‹Ç		cmr9ÃThis–œ‚papšAÇer“describ˜es“a“set“of“LispStat“to˜ols“for“building“Generalised¤‘WEstimating–fşEquation“moAÇdels“to“analyse“longitudinal“or“clustered“measure-¡‘Wmenš¾9ts.‘The–‹‰user“in˜terface“is“based“on“the“built-in“regression“and“gener-¡‘Walised–*­linear“mošAÇdel“protot¾9yp˜es,‘pwith“the“addition“of“ob‘ƒject-based“error¡‘Wfunctions,‘¯correlation–Gstructures“and“mošAÇdel“form¾9ula“to˜ols.‘IResidual“and¡‘Wdeletion–¸ëdiagnostic“plots“are“a¾9v›ÿ|railable“on“the“cluster“and“observ˜ation“lev¾9el¡‘Wand–Tuse“the“dynamic“graphics“capabilit¾9y“of“LispStat.Ÿ!Ä‘>óÂÖN ffcmbx12Æ1‘VLËInŒÌtros3ductionŸç‘>óKñ`y
+
+cmr10²Generalised–^=Estimating“Equations“mo•Gdels,‘©prop“osed–^=b¸ãy“Liang“and“Zeger“in“1986,¤‘>are–fÅprobably“the“simplest“methoGd“for“analysing“data“collected“in“groups“where¡‘>observ›ÿqÇations–Ñwithin“a“group“ma¸ãy“bGe“correlated“but“observ˜ations“in“separate¡‘>groups–# are“indepšGenden¸ãt.‘aA‘#complete“description“of“the“metho˜d“is“giv¸ãen“in“their¡‘>t•¸ãw“o–tÉ1986“papšGers.‘&îThe“basic“principle“of“the“metho˜d“is“a“generalisation“of“the“fact¡‘>that›İ$w•¸ãeigh“ted˜least˜squares˜analyses˜giv“e˜un“biased˜parameter˜estimates˜no˜mat-¡‘>ter–šMwhat“w•¸ãeigh“ts–šMare“used.‘3pGeneralised“linear“moGdels,‘¿¶suc¸ãh“as“logistic“regression,¡‘>ha•¸ãv“e–\5similar“robustness“propGerties,‘]ígiving“asymptotically“correct“parameter“es-¡‘>timates–ev¸ãen“when“the“data“are“correlated.‘¿ùThis“means“that“it“is“pGossible“to¡‘>estimate–ò¦regression“parameters“using“anš¸ãy“con˜v˜enien˜t“or“plausible“assumptions¡‘>abšGout–‡¾the“true“correlation“b˜et•¸ãw“een–‡¾observ‘ÿqÇations“and“get“the“righš¸ãt“answ˜er“ev˜en¡‘>when–9Ôthe“assumptions“are“not“correct.‘CIt“is“only“necessary“to“use“a“\moGdel-¡‘>robust"–Ì_or“\agnostic"“estimate“of“the“standard“errors.‘D It“w¸ãould“bGe“unreasonable¡‘>to–m€expšGect“this“freedom“of“c¸ãhoice“to“b˜e“without“cost“and“it“turns“out“that“there¡‘>is–		a“mošGderate“gain“in“eciency“resulting“from“c¸ãho˜osing“a“w¸ãorking“correlation¡‘>structure–UUclose“to“the“true“one.Ÿ’è1Œ‹* y ı£ ? ıä‘M²Useful–ÃÎreferences“include“the“t•¸ãw“o–ÃÎoriginal“papGers“(Zeger“&“Liang“1986,‘àéLiang¤‘>&–g Zeger“1986)“and“t•¸ãw“o›g recen“t˜b•Go“oks:‘ú­Diggle,‘–ÅLiang˜&˜Zeger˜(1994)˜and˜F‘ÿ*ªahrmeir¡‘>&–ÚT‘ÿ*ªutz“(1994).‘ÿÿAs“far“as“I‘Ùğknoš¸ãw“the“most“elemen˜tary“treatmen˜t“an˜ywhere“in¡‘>the–UUliterature“is“still“Zeger“&“Liang“(1986).¡‘MWhen–5the“observ›ÿqÇations“are“all“indepGenden¸ãt“(ie“only“one“observ˜ation“pGer¡‘>group)–(the“GEE›(methoGd“reduces“to“a“GLM˜with“the“Ro•¸ãy“all/HubGer/White‘(\ag-¡‘>nostic"‘ã…(\mo•Gdel-free",›G\mo“del-robust",˜\heteroscedascit¸ãy-free",˜\innitesimal¡‘>jacš¸ãkknife".–ªª.“.“)‘$sandwic˜h–òestimate“of“standard“errors.‘$This“pro˜vides“the“easiest¡‘>w•¸ãa“y–"of“constructing“these“extremely“useful“estimators“in“XLISP-Stat.‘~/In“this¡‘>situation–!¢the“parameter“estimates“are“the“same“as“the“usual“GLM‘!•ones“and“the¡‘>naivš¸ãe–Xstandard“errors“are“the“usual“GLM‘Xstandard“errors.‘z!This“mak˜es“it“pGossi-¡‘>ble–Ûmto“use“the“óßê<x
+
+cmtt10Çgee-proto“²to“construct“generalised“linear“moGdels.‘This“is“only¡‘>w•¸ãorth“while–'ôwhen“yš¸ãou“w˜an˜t“to“use“a“non-standard“link“function:‘[the“Çgee-model¡‘>²wrappGer–‚(function“handles“arbitrary“link“and“v‘ÿqÇariance“functions,‘¬eunlik¸ãe“the“wrap-¡‘>pGer–UUfunctions“for“the“Çglim-protoŸ!Ä‘>Æ2‘VLËCompšs3onenŒÌts–ffof“a“GEE“mo˜delŸç‘>²This–òÔsimilaritš¸ãy“to“the“w˜ell-kno˜wn“generalised“linear“moGdels“mak˜es“GEEs“v˜ery¡‘>easy–™&to“use“and“to“program.‘=:The“XLISP-Stat“cošGde“accompan¸ãying“this“do˜c-¡‘>umen¸ãt–X)adapts“the“ideas“of“Tierney's“(1989)“regression“moGdel“and“generalised¡‘>linear–römošGdel“protot¸ãyp˜es“and“denes“a“general“Çgee-proto“²protot¸ãyp˜e.‘Ê©T‘ÿ*ªo“create¡‘>Çgee-model–µ²one“supplies“the“data“and“a“c¸ãhoice“of“link“function,‘Õv‘ÿqÇariance“function¡‘>and–!Äcorrelation“structure.‘×The“rst“t•¸ãw“o›!ÄcompGonen“ts˜are˜familiar˜from˜gener-¡‘>alised–‚ylinear“mošGdels;‘ÈÃthe“third“is“sp˜ecic“to“GEEs.‘+~The“indep˜endence“correlation¡‘>structure–~Éor“óı':
+
+cmti10Èindep–ÿ}'endenc“e–º
+working“mo‘ÿ}'del‘‡R²is–~Éthe“simplest“one,‘‰&correspGonding“to¡‘>estimating–ßethe“regression“parameters“as“if“the“data“wš¸ãere“indepGenden˜t.‘	øThe¡‘>exc•¸ãhangeable›1w“orking˜moGdel˜estimates˜a˜single˜correlation˜parameter˜and˜so¡‘>bGeha•¸ãv“es–Æ—as“if“all“the“within-group“correlations“are“iden¸ãtical.‘ÅThis“is“similar“to¡‘>a–ÿqNormal-theory“moGdel“with“a“single“random“eect“for“the“in¸ãtercept“and“is“a¡‘>go•Go“d›UUw•¸ãa“y˜to˜analyse˜cluster-sampled˜or˜cluster-randomised˜studies.¡‘MThe–ÌDsaturated“wš¸ãorking“moGdel“is“only“appropriate“when“the“n˜um˜bGer“of“obser-¡‘>v‘ÿqÇations–m´in“eacš¸ãh“group“is“the“same“and“there“is“a“w˜ell-dened“order“within“eac˜h¡‘>group.‘z¡It–XHestimates“the“whole“within-group“correlation“matrix“and“so“allo¸ãws¡‘>the–ëcorrelation“bGet•¸ãw“een,›Asa“y‘ÿ*ª,˜the–ërst“and“second“observ‘ÿqÇations“to“bGe“dieren¸ãt¡‘>from–ËŒthat“bGet•¸ãw“een›ËŒan“y˜other˜pair.‘ÔkIn˜large˜data˜sets˜this˜is˜the˜most˜ecien“t¡‘>methoGd–¹kand“for“Normal“data“it“is“equiv‘ÿqÇalenš¸ãt“to“maxim˜um“lik˜eliho•Go“d–¹k(if“the“righ˜t¡‘>correlation–UUestimator“is“used,“a“pšGoin¸ãt“discussed“in“more“detail“b˜elo¸ãw).¡‘MOther–åèpGossible“w¸ãorking“correlation“structures“come“from“analogies“to“time¡‘>series–_oinclude“1-depšGendence,‘aöwhen“the“correlation“is“assumed“to“b˜e“zero“except¡‘>for–Ÿ|adjacen¸ãt“observ‘ÿqÇations,‘ÃÛthe“more“general“Èm‘Äc²-depGendence“when“correlations“are¡‘>estimated–£out“to“a“separation“of“Èm‘gr²observ‘ÿqÇations,‘¶}and“con•¸ãtin“uous–£and“discrete-¡‘>time–UUautoregressiv¸ãe“structures.Ÿ’è2Œ‹
+Å y ı£ ? ıä‘>Æ3‘VLËHoŒÌw–ffto“use“itŸç‘>²There–UUis“a“wrappGer“function“Çgee-model“²whicš¸ãh“tak˜es“the“follo˜wing“argumen˜ts ŠJ‘M ÿy€‰ffi8ÌŸfd‘Ç:x‘eÿĞ²sequence,’Ôq¢predictor‘UUv‘ÿqÇariables¤‘eÿĞlist–UUof“sequences¡‘eÿĞmatrix,‘UUor¡‘eÿĞmoGdel-form¸ãula¡‘Ç:y‘eÿĞ²sequence’Ôq¢respGonse‘UUv‘ÿqÇariable¡‘Ç:g‘eÿĞ²sequence’Ôq¢grouping‘UUv‘ÿqÇariable¡‘Ç:times‘eÿĞ²sequence’Ôq¢for–UUlongitudinal“data:¡’Ôq¢observ‘ÿqÇation›UUn•¸ãum“bGer˜or˜time¡‘Ç:link‘eÿĞ²link‘UUob‘8ject’Ôq¢link‘UUfunction¡‘Ç:error‘eÿĞ²error–UU(v‘ÿqÇariance)“ob‘8ject’Ôq¢v‘ÿqÇariance‘UUfunction¡‘Ç:correlation‘eÿĞ²correlation‘UUob‘8ject’Ôq¢w¸ãorking‘UUcorrelation¡‘Ç:offset‘eÿĞ²sequence’Ôq¢oset–UU(default“0)¡‘Ç:prior-weights‘eÿĞ²sequence’Ôq¢prior›UUw•¸ãeigh“ts˜(default˜1s)¡‘Ç:intercept‘eÿĞ²logical’Ôq¢include–UUan“in¸ãtercept?‘qÇ(default“Çt²)¡‘Ç:verbose‘eÿĞ²logical’Ôq¢bGe›UUc•¸ãhatt“y?‘qÇ(default˜Çt²)¡‘Ç:print‘eÿĞ²logical’Ôq¢displa¸ãy–UUthe“results?‘qÇ(default“Çt²)¡‘Ç:allow-missing‘eÿĞ²logical’Ôq¢allo¸ãw–UUmissing“observ‘ÿqÇations¡’Ôq¢(only–UUaects“some“correlations)¡‘Ç:init-beta‘eÿĞ²sequence’Ôq¢initial–UUguess“for“ó
+ b>
+
+cmmi10µ¡‘Ç:count-limit‘eÿĞ²in¸ãteger’Ôq¢maxim•¸ãum›UUn“um“bGer˜of˜iterations¡’Ôq¢(default‘UU30)¡‘Ç:predictor-names‘eÿĞ²list–UUof“strings’Ôq¢namesŸ‰ffi8Ì ‰Ø-‘MY‘ÿ*ªou–ö&mš¸ãust“spGecify“the“rst“three“argumen˜ts“and“at“least“one“of‘½CÇ:link“²and¤‘>Ç:error².‘cÏIf–P­only›t:Ç:error“²is“spGecied“the“canonical“link“is“used,‘ƒif“only˜Ç:link¡‘>²is–ãspGecied“then“the“appropriate“error“function“is“c¸ãhosen.‘ÏIf‘ªÇ:correlation“²is¡‘>not–
+	spšGecied“then“the“indep˜endence“w¸ãorking“mo˜del“is“used.‘X®If‘Ñ&Ç:verbose“²is“true¡‘>then–UUmessages“are“prinš¸ãted“out“abGout“these“c˜hoices.¡‘MThe–ú¦indepGendence“and“exc¸ãhangeable“correlation“structures“ignore“the“obser-¡‘>v‘ÿqÇation–€OÇ:times“²argumenš¸ãt,‘‹for“other“structures“it“is“alw˜a˜ys“required“(in“con˜trast¡‘>to–ğŠother“pac¸ãk‘ÿqÇages).›CgThis“is“a“feature,‘Wnot“a“bug.˜The“GEE‘ğbfunctions“written¡‘>for–İother“general-purpGose“pac¸ãk‘ÿqÇages“mostly“assume“the“data“are“sorted“so“that¡‘>eacš¸ãh–}Ägroup“is“con˜tiguous“and“in“the“righ˜t“order.‘ëIn“m˜y“expGerience“data“do“not¡‘>naturally–¥oGccur“that“w•¸ãa“y:‘Noif–¥the“times“column“is“in“the“data“set“it“is“easy“to“use¡‘>it,‘²Üif– 'it“isn't“it“is“hard“to“bGe“condenš¸ãt“that“y˜ou“ha˜v˜e“the“ordering“correct“(and¡‘>virtually–†MimpšGossible“with“missing“observ‘ÿqÇations).‘®The“p˜erformance“implications¡‘>of–UUthis“are“discussed“bGelo¸ãw.¡‘MNote–Õ_that“for“binomial“data“µy‘"ñ²=‘ÇµrG=n“²yš¸ãou“should“use“the“observ˜ed“propGortion¡‘>not–ÎÍthe“observš¸ãed“coun˜t“as“the“respšGonse“and“then“sp˜ecify“the“denominators“using¡‘>Ç:prior-weights².‘í…Correlated–Óêbinomial“data“(other“than“binary)“are“compara-¡‘>tivš¸ãely–UUrare;“the“individual“binary“observ‘ÿqÇations“are“usually“a˜v‘ÿqÇailable.¡‘MThe–UUdefault“pairs“of“v‘ÿqÇariance“and“link“functions“are:Ÿ’è3Œ‹B y ı£ ? şæf‘MŸÓ€‰ff¥¿¯Ÿfd‘Çbinomial-error‘[Ölogit-link¤‘[Öcloglog-link¡‘[Öprobit-link¡‘poisson-error‘[Ölog-link¡‘normal-error‘[Öidentity-link¡‘gaussian-error¡‘gamma-error‘[Öinverse-linkŸ‰ff¥¿¯Ÿ/Ø-‘M²where–«Çgaussian-error“²is“iden¸ãtical“to“Çnormal-error².‘	 ÈIn“addition“there¤‘>are›ƒåpGo•¸ãw“er˜link˜and˜v‘ÿqÇariance˜functions˜giv“en˜b“y‘§rÇ(power-link‘?ık)˜²for˜µ–¿[²=“µ[ÙŸü^ÿó	0e—rcmmi7´k¡‘>²(with–“šÇinverse-link“²and“Çsqrt-link“²as“spGecial“cases)“and“Ç(power-error‘?ık)¡‘>²for›rfµV‘8ä²(µ²)–÷Š=“µŸü^ÿ´k‘ë².‘ÈúThese˜do˜not˜ha•¸ãv“e˜default˜coun“terparts.‘ÈúThe˜use˜of˜pGo“w“er˜link¡‘>and–õˆv‘ÿqÇariance“functions“in“moGdelling“data“with“non-Normal,‘±sk¸ãew“error“distribu-¡‘>tion–UUwš¸ãas“discussed“b˜y“Nelder“(1994).¡‘MAnš¸ãy–link“function“can“bGe“used“with“an˜y“v‘ÿqÇariance“function“but“the“results“ma˜y¡‘>bGe–¿lsilly‘ÿ*ª.‘?ÏThe“link“functions“are“takš¸ãen“from“the“Çglim-proto“²system“but“ha˜v˜e“had¡‘>extra–UUmethoGds“Ç:valideta“²and“Ç:validmu“²added“to“alloš¸ãw“domain“c˜hec˜king.¡‘MThe–8ãaš¸ãv‘ÿqÇailable“w˜orking“correlation“structures“are“curren˜tly‘\pÇindependence-corr²,¡‘>Çexchangeable-corr²,›qÇÇm-dependence–8ã²and“Çstat-m-dependence²,˜Çsaturated-ml-corr¡‘>²and¡‘>Çsaturated-corr²,‘7Çfixed-corr–/²and“ÇAR-1-corr².‘e+The“dierence“bGet•¸ãw“een–/the“t•¸ãw“o¡‘>saturated–Kucorrelation“structures,‘€¢bGoth“of“whic¸ãh“estimate“an“unstructured“correla-¡‘>tion–@matrix,‘is“discussed“in“more“detail“bGelo¸ãw.‘UÀThe“parameter“Ç:allow-missing¡‘>²con¸ãtrols–åéthe“assumptions“made“when“the“observ‘ÿqÇation“times“are“not“the“same“for¡‘>evš¸ãery–éFgroup.‘MÂUnder“the“exc˜hangeable“and“indepšGendence“mo˜dels“it“has“no“eect;¡‘>under–Í„the“other“moGdels“unš¸ãbalanced“data“are“not“allo˜w˜ed“when“Ç:allow-missing¡‘>²is–Ë/Çnil².‘ÓTWhen“Ç:allow-missing“²is“Çt“²unš¸ãbalanced“data“are“allo˜w˜ed“and“the“cor-¡‘>relation–¹bparameters“are“estimated“from“the“a¸ãv›ÿqÇailable“data.‘ïThis“is“v˜alid“if“the¡‘>data–Çare“missing“completely“at“random“but“not“otherwise“(unless“the“w¸ãorking¡‘>correlation–UUmoGdel“is“true).¡‘MThe–ç½basic“m-depšGendence“structure“is“non-stationary“m-dep˜endence.‘M?It“tak¸ães¡‘>an–Aˆargumenš¸ãt“(m)“and“so“t˜w˜o-depGendence,›|•for“example,˜w¸ãould“bšGe“sp˜ecied“as¡‘>Ç(m-dependence‘?ı2)².‘÷T‘ÿ*ªo–8ãspšGecify“stationary“2-dep˜endence“use“Ç(stat-m-dependence¡‘>2)–b*²or“Ç(m-dependence–?ı2“:stationary“t)².‘˜EA‘b&kno¸ãwn–b*correlation“matrix“can“bGe¡‘>spGecied–Ò!using“the“xed“correlation“structure:‘k_Ç(fixed-corr‘?ıR)›Ò²uses“R˜as“the¡‘>correlation–¾¨matrix.‘­ÀThis“is“not“vš¸ãery“useful“except“as“a“quic˜k“and“dirt˜y“w˜a˜y“of¡‘>using–@¿a“complicated“correlation“structures“(eg“nested“clustering).‘jêIt“is“included¡‘>for–¼qcompleteness“and“bšGecause“it“w¸ãas“easy‘ÿ*ª.‘§Note“that“R‘¼Wneed“not“b˜e“a“correla-¡‘>tion–\Umatrix,‘^it“just“has“to“bšGe“p˜ositiv¸ãe“denite.‘†ÆThis“could“b˜e“useful“if“the“scale¡‘>parameter–jÌv‘ÿqÇaried“across“times,‘p*for“example.‘²-F‘ÿ*ªor“the“xed“correlation“structure¡‘>the–°oscale“parameter“estimate“is“xed“at“1“for“simplicit¸ãy‘ÿ*ª.‘ƒThis“has“no“eect“on¡‘>the–parameter“estimates“or“the“robust“standard“errors“but“doGes“aect“the“naiv¸ãe¡‘>standard‘UUerrors.¡‘MThere–Âßis“no“need“for“the“observ‘ÿqÇation“times“to“bGe“consecutivš¸ãe“in˜tegers.‘@õIn“fact¡‘>they–ÒKneed“not“bGe“inš¸ãtegers“at“all,‘ñˆor“ev˜en“n˜um˜bGers.‘è©The“requiremen˜ts“are“that¡‘>Çequalp–à²is“a“v‘ÿqÇalid“test“for“equalit¸ãy“and“that“Çrank“²will“rank“them.‘Z This“means“in¡‘>practice–'Ïthat“they“mš¸ãust“bGe“all“n˜um˜bGers“or“all“strings“and“that“if“they“are“stringŸ’è4Œ‹'Š y ı£ ? ıä‘>²the–¹lcorrect“order“is“alphabGetic.‘Some“correlation“structures“in“future“ma¸ãy“use¤‘>the–µÕnš¸ãumerical“v‘ÿqÇalues“of“the“times“in“whic˜h“case“they“will“ha˜v˜e“to“bGe“n˜um˜bGers.¡‘>Group–Thidenš¸ãtiers“m˜ust“bGe“strings“or“n˜um˜bšGers“to˜o;‘T·they“are“also“compared“with¡‘>Çequalp².¡‘MSome–Ñexamples,‘Şousing“a“data“set“distributed“with“the“original“SAS‘€GEE¡‘>macro–©Äbš¸ãy“Karim“and“Zeger.‘oThe“data“giv˜e“the“n˜um˜bGer“of“hospital“visits“of“73¡‘>c•¸ãhildren›¢o“v“er˜four˜time˜p•Gerio“ds˜together˜with˜the˜age˜and˜sex˜of˜the˜c¸ãhild˜and¡‘>the–UUsmoking“status“of“the“mother.¡©‘>Ç>–?ı(def“gee0a“(gee-model“:x“(list“sex“smoke“age“time2“time3“time4)¡‘>:y–?ınum-visits“:g“id“:times“times“:link“log-link“:error“poisson-error¡‘C?ı:correlation–?ıexchangeable-corr“:predictor-names“(list“"sex"“"smoker"¡‘>"age"–?ı"2nd“vs“1st"“"3rd“vs“1st"“"4th“vs“1st")))¡‘>Iteration–?ı1:“quasideviance“=“517.114¡‘>Iteration–?ı2:“quasideviance“=“478.436¡‘>Iteration–?ı3:“quasideviance“=“475.935¡‘>Iteration–?ı4:“quasideviance“=“475.970¡‘>Iteration–?ı5:“quasideviance“=“475.982¡‘>Iteration–?ı6:“quasideviance“=“475.982¡¡‘>GEE‘?ıEstimates:¡¡’Á?µCoefficient‘?ñStd–?ıError‘9¿ßNaive“Std“Error¡‘>Constant‘^Ê0.245980‘î(0.383535)‘4â(0.363382)¡‘>sex‘s¾-0.194216‘î(0.208003)‘4â(0.222975)¡‘>smoker‘hÿÄ0.168846‘î(0.244118)‘4â(0.242226)¡‘>age‘}ÿ¸2.963862E-3‘
+ú(6.653705E-3)‘$¿ë(6.265295E-3)¡‘>2nd–?ıvs“1st‘N¿Ó-0.435318‘î(0.195649)‘4â(0.188774)¡‘>3rd–?ıvs“1st‘N¿Ó-0.307485‘î(0.202848)‘4â(0.181464)¡‘>4th–?ıvs“1st‘SÿĞ-1.12847‘î(0.221787)‘4â(0.243342)¡¡‘>Scale‘?ıEstimate:‘>ÿÜ1.83171¡‘>Independence–?ımodel“deviance:‘¿÷475.982¡‘>Number–?ıof“cases:‘N¿Ó292¡‘>Link:‘hÿÄ#<Glim–?ıLink“Object:“LOG-LINK>¡‘>Variance–?ıfunction:‘$¿ëPoisson“error¡‘>Exchangeable–?ıWorking“Model:›
+úcorrelation“=˜0.2257¡‘>GEE0A¡‘>>¦‘>²Most–ûkof“this“is“fairly“clear.‘dThe“\IndepšGendence“mo˜del“deviance"“is“the“result¡‘>of–’applying“the“deviance“function“for“the“indepšGendence“w¸ãorking“mo˜del“to“the¡‘>tted–ŞÎmoGdel.‘2These“will“at“least“givš¸ãe“some“idea“of“the“relativ˜e“dierences“bGe-¡‘>t•¸ãw“een–gJmoGdels.‘§¦The“scale“factor“is“the“v‘ÿqÇariance“of“the“P¸ãearson“residuals,‘«Çthe¡‘>reciproGcal–¶jof“the“parameter“µ“²in“Zeger“&“Liang“(1986)“and“the“analogue“of¡‘>the–UŞresidual“mean“square“in“linear“regression.‘scThe“\naiv¸ãe“standard“error"“isŸ’è5Œ‹7  y ı£ ? ıä‘>²the–"standard“error“that“w¸ãould“bGe“estimated“from“a“parametric“analysis“if“the¤‘>wš¸ãorking–UUcorrelation“structure“w˜ere“true.¡‘MAnother‘UUexample:¡©‘>Ç>–?ı(def“gee2a“(gee-model“:x“(list“sex“smoke“age“time2“time3“time4)¡‘C?ı:y–?ınum-visits“:g“id“:times“times“:link“log-link“:error“poisson-error¡‘C?ı:correlation–?ı(stat-m-dependence“2)“:predictor-names“(list“"sex"¡‘>"smoker"–?ı"age"“"2nd“vs“1st"“"3rd“vs“1st"“"4th“vs“1st")))¡‘>Iteration–?ı1:“quasideviance“=“517.114¡‘>Iteration–?ı2:“quasideviance“=“478.517¡‘>Iteration–?ı3:“quasideviance“=“475.988¡‘>Iteration–?ı4:“quasideviance“=“475.944¡‘>Iteration–?ı5:“quasideviance“=“475.941¡‘>Iteration–?ı6:“quasideviance“=“475.941¡¡‘>GEE‘?ıEstimates:¡¡’Á?µCoefficient‘?ñStd–?ıError‘9¿ßNaive“Std“Error¡‘>Constant‘^Ê0.246413‘î(0.425101)‘4â(0.349471)¡‘>sex‘s¾-0.176885‘î(0.218639)‘4â(0.213840)¡‘>smoker‘hÿÄ0.153786‘î(0.261751)‘4â(0.230775)¡‘>age‘}ÿ¸2.934218E-3‘
+ú(7.046725E-3)‘$¿ë(5.989854E-3)¡‘>2nd–?ıvs“1st‘N¿Ó-0.435318‘î(0.195649)‘4â(0.190156)¡‘>3rd–?ıvs“1st‘N¿Ó-0.307485‘î(0.202848)‘4â(0.185687)¡‘>4th–?ıvs“1st‘SÿĞ-1.12847‘î(0.221787)‘4â(0.270775)¡¡‘>Scale‘?ıEstimate:‘>ÿÜ1.82809¡‘>Independence–?ımodel“deviance:‘¿÷475.941¡‘>Number–?ıof“cases:‘N¿Ó292¡‘>Link:‘hÿÄ#<Glim–?ıLink“Object:“LOG-LINK>¡‘>Variance–?ıfunction:‘$¿ëPoisson“error¡‘>Stationary‘
+ú2–?ı-“dependence“Working“Model:¡‘C?ıcorrelation–?ımatrix“=¡‘>#2a(¡‘Rÿô(‘
+ú1.0–î0.21“0.19“0.00‘ÿô)¡‘Rÿô(‘?ı0.21‘$¿ë1.0–î0.21“0.19‘ÿô)¡‘Rÿô(‘?ı0.19–î0.21‘$¿ë1.0“0.21‘ÿô)¡‘Rÿô(‘?ı0.00–î0.19“0.21‘$¿ë1.0‘ÿô)¡‘M¿÷)¡‘>GEE2A¡‘>>¦‘M²F‘ÿ*ªor–çÏthe“stationary“2-depšGendence“w¸ãorking“mo˜del“w¸ãe“see“that“the“estimated¡‘>correlations–Uûare“prinš¸ãted.‘s¹Adding‘yˆÇ:verbose‘?ınil“²to“the“argumen˜ts“will“suppress¡‘>ev¸ãerything–‡bGefore“the“line“ÇGEE–?ıEstimates².‘š]Adding‘1Ç:print“nil–‡²will“suppressŸ’è6Œ‹Av y ı£ ? ıä‘>²evš¸ãerything–¸Tfrom“that“pGoin˜t“on“(only“really“useful“if“y˜ou“are“doing“further“pro-¤‘>gramming–UUusing“the“resulting“ob‘8ject).¡‘MThe–¡function“returns“a“Çgee-proto“²ob‘8ject“whic¸ãh“respGonds“to“a“lot“of“mes-¡‘>sages,‘Aincluding–;ëmanš¸ãy“of“the“messages“implemen˜ted“for“generalised“linear“moGd-¡‘>els.‘éSome–A¸description“of“most“of“the“methošGds“is“a¸ãv‘ÿqÇailable“using“the“Ç:help“²metho˜d¡‘>(eg‘Í'Ç(send–?ımygeeobject“:help“:scale)–©š²describšGes“the“Ç:scale“²metho˜d.‘8‰T‘ÿ*ªo“nd¡‘>all–‹¤the“methoGds“whicš¸ãh“ha˜v˜e“help“omit“the“topic“spGecier:‘ŞeÇ(send‘?ıgee-proto¡‘>:help)².¡‘MThere–±Ãis“also“a“methošGd“for“pro˜ducing“condence“in¸ãterv‘ÿqÇals“for“the“co˜ecien¸ãts,¡‘>transformed–‚—to“anš¸ãy“appropriate“scale.‘ùŒThe“message“Ç:conf-interval“²giv˜es“the¡‘>estimates–¿eand“a“95%“condence“inš¸ãterv‘ÿqÇal.‘¯÷There“are“three“optional“k˜eyw˜ord¡‘>argumenš¸ãts:‘vÛÇ:coverage–Wß²spGecies“the“desired“co˜v˜erage,‘X‚Ç:names“²is“Çnil“²to“prev˜en˜t¡‘>predictor–ñÆnames“bšGeing“returned“and“Ç:transform“²sp˜ecies“a“function“to“apply¡‘>to–6°the“condence“inš¸ãterv‘ÿqÇal.‘ØT‘ÿ*ªo“proGduce“90%“condence“in˜terv‘ÿqÇals“for“the“oGdds¡‘>ratio–in“a“logistic“regression“moGdel“yš¸ãou“w˜ould“use“the“message“Ç:conf-interval¡‘>:coverage–?ı0.9“:transform“#'exp².¡‘MThere–ìare“further“examples“in“the“test“le“Çgeetest.lsp².‘N¯This“includes“most¡‘>of–qÅthe“test“examples“for“an“S-PLUS‘q¾Çgee()“²function“b¸ãy“Carey“and“Macdermott¡‘>that–vÑis“aš¸ãv‘ÿqÇailable“from“Çstatlib“²(Çftp:lib.stat.cmu.edu²).‘'›Go•Go“d–vÑagreemen˜t“with¡‘>the–™æS-PLUS‘™Ôresults“is“obtained.‘?yThe“coGde“has“also“had“limited“testing“against¡‘>the–¥Éstatistical“pacš¸ãk‘ÿqÇage“SPID˜A‘¥r(Statistical“LabGoratory‘ÿ*ª,‘ùæMacquarie“Univ˜ersit˜y‘ÿ*ª,¡‘>Sydney‘ÿ*ª,–UUAustralia)“whic¸ãh“has“a“built-in“GEE“proGcedure.Ÿ!Ä‘>Æ4‘VLËMos3del‘ffformŒÌulaeŸç‘>²It–€is“pšGossible“to“use“a“mo˜del“formš¸ãula“ob‘8ject“to“include“factor“(class)“and“in˜ter-¡‘>action–égterms“more“easily“in“a“mošGdel.‘-üThe“supp˜ort“is“still“a“bit“primitiv¸ãe:‘™ëit's¡‘>less–*‡simple“than“either“SAS›*|or“S-PLUS˜and“less“complete,‘3alloš¸ãwing“in˜teractions¡‘>but–£not“nesting.‘\rThe“function“Ças-formula“²creates“formš¸ãula“ob‘8jects“whic˜h“con-¡‘>tain–8Ia“design“matrix“Ç:design-matrix²,›qa“list“of“column“labGels“Ç:name-list²,˜a¡‘>list–ş\of“bloGcš¸ãk“(eg“factor“or“in˜teraction)“names“Ç:block-names“²and“a“list“of“lists¡‘>of–”column“n•¸ãum“b•Gers›”sp“ecifying˜eac¸ãh˜blo“c•¸ãk˜Ç:block-indices².‘š„This˜should˜ha“v“e¡‘>bšGeen–M“an“extension“of“Tierney's“design“matrix“to˜ols“written“for“Çglim-proto“²but¡‘>I›Mdidn't–Mrealise“they“w¸ãere“there“so“I˜wrote“new“functions“for“creating“indicators¡‘>and–UUin¸ãteractions.‘qÇThe“form“of“a“call“to“Ças-formula“²is©‘>Ç(as-formula–?ı'((factor“a)“(factor“b)“(term“x)“(interaction“(list“a“b))¡‘C?ı(interaction–?ı(list“a“x)“:is-factor“(list“t“nil))))¦‘>²where–yÇA›g²and“ÇB˜²are“factor“v‘ÿqÇariables“and“ÇX˜²is“a“metric“(con•¸ãtin“uous)‘yv‘ÿqÇariable.‘Z~This¡‘>mošGdel–c§w¸ãould“b˜e“written“Ç~A+B+X+A:B+A:X›ca²in“S-PLUS˜if‘*ÄÇA˜²and“ÇB˜²had“already¡‘>bGeen–zdened“as“factors.‘…7The“k•¸ãeyw“ord›zargumen“t˜Ç:is-factor˜²to˜Çinteraction¡‘>²indicates–Âówhether“of“the“terms“in“the“in¸ãteraction“should“bGe“treated“as“factors.¡‘>It–ÿis“optional;‘|Tthe“default“is“to“treat“them“all“as“factors.‘¿ÆThe“reason“for“this¡‘>default–ÓÌis“partly“that“it“is“more“common“and“partly“that“making“a“mistak¸ãe“is¡‘>more–aOlikš¸ãely“to“bGe“ob˜vious.‘•¶The“argumen˜t“to“Ç(as-formula)“²m˜ust“bGe“quoted,‘dNasŸ’è7Œ‹I± y ı£ ? ıä‘>²in–Éfthe“example.‘C"This“appšGears“to“b˜e“una•¸ãv“oidable–Éfas“otherwise“the“argumen¸ãts“will¤‘>get–Ë×ev‘ÿqÇaluated.‘ÕNThe“Righš¸ãt“Thing“w˜ould“bGe“to“write“a“parser“that“could“accept¡‘>strings–UUas“argumen¸ãts.¡‘MThe–°6Çgee-model“²command“and“Çgee-proto“²ob‘8ject“ha•¸ãv“e–°6some“built-in“recog-¡‘>nition–ˆof“formš¸ãula“ob‘8jects,‘•psuc˜h“as“the“abilit˜y“to“use“a“form˜ula“ob‘8ject“as“the“Ç:x¡‘>²argumenš¸ãt–UZto“Çgee-model².‘qÖThe“le“Çmodelformula.lsp“²whic˜h“denes“the“ob‘8jects¡‘>also–Zconš¸ãtains“methoGds“for“Çregression-model-proto“²and“some“more“primitiv˜e¡‘>functions–Ô›whicš¸ãh“ma˜y“bGe“useful“for“creating“and“manipulating“design“matrices.¡‘>In–Ù3particular“the“functions“Çinteraction²,‘òÇfactor“²and“Çterm“²can“bGe“used“on“their¡‘>oš¸ãwn–UUto“create“con˜trast“matrices“and“v‘ÿqÇariable“names.¡‘MThe–Gmain“dierence“caused“bš¸ãy“using“a“moGdel“form˜ula“argumen˜t“to“Çgee-model¡‘>²is–Tºthat“the“default“output“cš¸ãhanges“to“repGort“the“W‘ÿ*ªald“c˜hisquare“and“p-v‘ÿqÇalue¡‘>for–4aeacš¸ãh“bloGc˜k.‘
+êThis“is“proGduced“b˜y“the“message“Ç:display-with-formula¡‘>:block-only‘?ınil².‘÷T‘ÿ*ªo–8ãget“only“the“test“statistics,‘qÇuse“the“message“Ç:display-with-formula¡‘>:block-only‘?ıt².›fT‘ÿ*ªo–2get“the“old“displa¸ãy“use“Ç:display².˜The“default“v‘ÿqÇalue“of“the¡‘>Çblock-only›8ã²k•¸ãeyw“ord˜is˜con“trolled˜b“y˜a˜global˜v‘ÿqÇariable˜Ç*gee-display-block-only*¡‘>²whic¸ãh–UUis“initially‘xâÇnil².¡‘MThe–ƒErst“of“the“t•¸ãw“o–ƒEexamples“givš¸ãen“abGo˜v˜e“can“bGe“replaced“b˜y“the“follo˜wing¡‘>coGdeŸ‘>Ç>–?ı(def“modelx“(as-formula“'((factor“gender)“(factor“smoker)“(term“age)¡‘>(factor‘?ıtimes))))¡‘>>‘
+ú(def–?ıgee1“(gee-model“:x“modelx“:y“num-visits“:g“id“:times“times¡‘>:link–?ılog-link“:error“poisson-error“:correlation“exchangeable-corr))¡‘>Iteration–?ı1:“quasideviance“=“517.114¡‘>Iteration–?ı2:“quasideviance“=“478.436¡‘>Iteration–?ı3:“quasideviance“=“475.935¡‘>Iteration–?ı4:“quasideviance“=“475.970¡‘>Iteration–?ı5:“quasideviance“=“475.982¡‘>Iteration–?ı6:“quasideviance“=“475.982¡¡‘>GEE‘?ıEstimates:¡¡‘>Block‘N¿ÓWald‘?ıChisq‘?ñp-value¡‘>Intercept‘D?Ù0.41133‘î0.5213¡‘]îVariable‘>ÿÜEstimate–$¿ëStd.Err.“p-value¡‘X?ñIntercept‘D?Ù0.24598‘î(0.383535)‘?ñ0.5213¡‘>GENDER‘SÿĞ0.87183‘î0.3504¡‘]îVariable‘>ÿÜEstimate–$¿ëStd.Err.“p-value¡‘X?ñ(GENDER‘?ıM)‘9¿ß-0.19422‘î(0.208003)‘?ñ0.3504¡‘>SMOKER‘SÿĞ0.47839‘î0.4892¡‘]îVariable‘>ÿÜEstimate–$¿ëStd.Err.“p-value¡‘X?ñ(SMOKER‘?ıY)‘>ÿÜ0.16885‘î(0.244118)‘?ñ0.4892¡‘>AGE‘c¿Ç0.19842‘î0.6560¡‘]îVariable‘>ÿÜEstimate–$¿ëStd.Err.“p-value¡‘X?ñAGE‘hÿÄ2.96386E-3–
+ú(6.653705E-3)“0.6560Ÿ’è²8Œ‹	Xè y ı£ ? ıä‘>ÇTIMES‘^Ê26.659‘î0.0000¤‘]îVariable‘>ÿÜEstimate–$¿ëStd.Err.“p-value¡‘X?ñ(TIMES‘?ı2)‘>ÿÜ-0.43532‘î(0.195649)‘?ñ0.0261¡‘X?ñ(TIMES‘?ı3)‘>ÿÜ-0.30748‘î(0.202848)‘?ñ0.1296¡‘X?ñ(TIMES‘?ı4)‘D?Ù-1.1285‘î(0.221787)‘?ñ0.0000¡¡‘>Scale‘?ıEstimate:‘>ÿÜ1.83171¡‘>Independence–?ımodel“deviance:‘¿÷475.982¡‘>Number–?ıof“cases:‘N¿Ó292¡‘>Link:‘hÿÄ#<Glim–?ıLink“Object:“LOG-LINK>¡‘>Variance–?ıfunction:‘$¿ëPoisson“error¡‘>Exchangeable–?ıWorking“Model:›
+úcorrelation“=˜0.2257¡‘>GEE1¡‘>>Ÿ‘>²where–ÑÒÇGENDER›Ñ±²and“ÇSMOKER˜²are“cš¸ãharacter“v˜ersions“of“the“v‘ÿqÇariables“ÇSEX‘Ñ±²and“ÇSMOKE¡‘>²used–k×in“the“earlier“moGdel.‘µLThe“predictor“names“are“automatically“generated¡‘>from–jthe“v›ÿqÇariable“names“and“v˜alues.‘#XThis“is“particularly“useful“when“the“v˜ariable¡‘>names–UUand“v‘ÿqÇalues“are“easily“in¸ãterpretable“as“in“this“example.Ÿ!Ä‘>Æ5‘VLËDiagnosticsŸç‘>²Deletion–q,diagnostics“are“aš¸ãv‘ÿqÇailable“as“w˜ell“as“a“v‘ÿqÇariet˜y“of“a˜v˜ours“of“residual.¡‘>Curren¸ãt–UUgraphical“methoGds“are©5Ø-‘MŸÍ€‰ff>ÿ½Ÿfd‘Ç:plot-raw-residuals’¤ÿ¬µy‘”¹ó!",š
+
+cmsy10¸‘è–²^‘8àµy¡‘Ç:plot-pearson-residuals’¤ÿ¬²same–UUas“the“indepGendence“case¡‘Ç:plot-deviance-residuals’¤ÿ¬²same–UUas“the“indepGendence“case¡‘Ç:plot-standardised-residuals’¤ÿ¬²Pš¸ãearson–UUresiduals“standardised“b˜y¡’¤ÿ¬w¸ãorking‘UUcorrelation¡‘Ç:plot-leverage’¤ÿ¬²Lev¸ãerage‘UUstatistics¡‘Ç:plot-dbeta’¤ÿ¬²µ‘‡²s¡‘Ç:plot-cooks-distance’¤ÿ¬²CoGok's–UUdistance“(inuence)Ÿ‰ff>ÿ½¦‘MThe–8ãstandardised“residuals“are“the“Pš¸ãearson“residuals“m˜ultiplied“b˜y“the“Cholesky¡‘>square-roGot–Şóof“the“in•¸ãv“erse–Şóof“the“correlation“matrix.‘JQThey“are“appro¸ãximately“in-¡‘>depGendenš¸ãt–UUwith“equal“v‘ÿqÇariance“if“the“w˜orking“moGdel“is“roughly“true.¡‘MThe–®ˆlast“three“methoGds“are“generalisations“of“the“lev¸ãerage“(diagonal“of“hat¡‘>matrix),‘²DBET‘ÿ*ªA‘ŸÖ(cš¸ãhange–Ÿêin“coGecien˜t“when“pGoin˜t“is“deleted)“and“CoGok's“dis-¡‘>tance–+i(inuence)“statistics“for“linear“and“generalised“linear“moGdels.‘cÎThe“form¸ãu-¡‘>lae–üare“from“Preisser“&“Qaqish“(1996“preprin¸ãt)“and“are“natural“generalisations¡‘>of–éğthe“indepGendenš¸ãt“data“v˜ersions“(though“the“deriv‘ÿqÇations“and“calculations“are¡‘>rather–Á¢more“complicated).‘¶®The“methoGds“takš¸ãe“a“k˜eyw˜ord“argumen˜t“Ç:unit“²of“0¡‘>for–Éåindividual“observ‘ÿqÇation“deletion“and“1“for“group“deletion.‘CMConstan¸ãts“Ç+group+¡‘>²and–{ÎÇ+cluster+²,‘Åland“Ç+not-group+“²and“Ç+observation+“²ha•¸ãv“e–{ÎbGeen“dened“to¡‘>mak¸ãe–H5these“easier“to“use“(eg‘kÂÇ:unit‘?ı+group+²).‘JhThe“default“is“diagnostics“for¡‘>individual‘UUobserv‘ÿqÇations.Ÿ’è9Œ‹
+d* y ı£ ? şÜÂw ÿ/P‘>²Figure–ğV1:‘§ÊDeviance“residuals“against“linear“predictor“with“group“highligh¸ãting.¤‘>Plot–)Šcreated“bš¸ãy‘MÇ(send–?ıgee1“:plot-deviance-residuals)–)Š²and“selecting“pGoin˜t¡‘>15–UUwith“the“mouse. ÙĞ°‘}™`Ÿ§…„YšUÃ’&ô´ŸÚ¥„—†¨Yš‘}™`ŸÚ¥„YšÑhŸİ(»‘o÷B-2’“`ŸÚ¥„YšÑh‘}™`ŸÀÑ„YšÑhŸÃİ/‘o÷B-1’“`ŸÀÑ„YšÑh‘}™`Ÿ§…„YšÑhŸª‘£‘sL—0’“`Ÿ§…„YšÑh‘}™`Ÿ:„YšÑhŸ‘F‘sL—1’“`Ÿ:„YšÑh‘}™` ÿu,!„YšÑh ÿx87‘sL—2’“` ÿu,!„YšÑh‘}™` ÿ[à•„YšÑh ÿ^ì«‘sL—3’“` ÿ[à•„YšÑh‘}™` ÿB•	„YšÑh ÿE¡‘sL—4’“` ÿB•	„YšÑh‘}™`ŸÚ¥„ÑhYšŸçÿ÷‘u‹&-1.2‘}™` ÿGfy„ÑhYš’™ÈüŸÚ¥„ÑhYšŸçÿ÷’•Q-1’™Èü ÿGfy„ÑhYš’µø˜ŸÚ¥„ÑhYšŸçÿ÷’­ê^-0.8’µø˜ ÿGfy„ÑhYš’ÒeàŸÚ¥„ÑhYšŸçÿ÷’ÊW¦-0.6’Òeà ÿGfy„ÑhYš’î•|ŸÚ¥„ÑhYšŸçÿ÷’æ‡B-0.4’î•| ÿGfy„ÑhYš’
+ÅŸÚ¥„ÑhYšŸçÿ÷’¶Ş-0.2’
+Å ÿGfy„ÑhYš’&ô´ŸÚ¥„ÑhYšŸçÿ÷’$t³0’&ô´ ÿGfy„ÑhYš’C$PŸÚ¥„ÑhYšŸçÿ÷’<ÀÀ0.2’C$P ÿGfy„ÑhYš’_‘˜ŸÚ¥„ÑhYšŸçÿ÷’Y.0.4’_‘˜ ÿGfy„ÑhYš’{Á4ŸÚ¥„ÑhYšŸçÿ÷’u]¤0.6’{Á4 ÿGfy„ÑhYš’—ğĞŸÚ¥„ÑhYšŸçÿ÷’‘@0.8’—ğĞ ÿGfy„ÑhYš‘}™`ŸÚ¥„YšUÃ’—ğĞŸÚ¥„—†¨Yš‘}™` ÿB•	„YšUÃ‘WKŒŸ¾y@ïWps: gsave currentpoint currentpoint translate 90 neg rotate neg exch neg exch translateŸxãDeviance‘UUresidualsï ps: currentpoint grestore movetoŸòP’ça…Linear‘UUpredictorŸœÖW’N´12 ÿ}GS’F<13 ÿaĞ»’#W 14 ÿG’¯wt15‘}™`ŸÚ¥„—†¨Yš’>RàŸÎ!ìóü<˜
+
+	lcircle10®c’äŒŸÆªc’¸DŸÈ—xc’ØŸ½‚c’6`Ÿ”Xc’ù/ŸÅ³hc’@pŸÇŞtc’—`DŸ‘lœc’F` ÿg¿`c’×¸ ÿx!c’«pŸÉ(c’¦ËD ÿeV¨c’N´Ÿ™tc’F< ÿzpc’#W  ÿ^—Øc’¯wt ÿDUœc’PdDŸ¯Kìc’3œŸT0c’%TŸË0c’±'(Ÿ¾ô˜c’:µÌŸ•G\c’ı…$Ÿ \Dc’–ˆŸ£@Tc’›x°Ÿ½Däc’]fŒŸ±´¤c’ø8Ÿ¦$dc’2	œŸÌr8c’¾)pŸÀ(ôc’L,ŸĞLc’ŸØŸÈ c’ ±<ŸÊG,c’¬“dŸ¾¶ìc’NväŸĞŠ¤c’ÊäŸÈYÌc’"ÜH ÿm‡€c’®üŸ¾¶ìc’<àØŸ«q,c’ÿr„ŸÆllc’Á”ŸŒØØc’£¼Ÿ½‚c’:µÌŸÍ¦”c’ı…$ŸÆ.Àc’–ˆŸÈYÌc’›x°Ÿ½Däc’G¸Ÿ˜+lc’
+‡l ÿg¿`c’[$ŸÉËÔc’¨zøŸ¾;”c’dŞ`Ÿ¬c’'pŸË=Üc’9pŸÍ¦”c’Å¡DŸÀ¤Lc’\ë4ŸœüÜc’|àŸÊG,c’1DŸÌr8c’½®Ÿ¿ëHc’@}ì ÿtƒüc’ÑìŸÆçÄc’ãPŸ¤7c’¡$Ÿ½À<c’;1$Ÿ«3€c’ş|ŸÆ.Àc’Ô4ŸÈYÌc’›ôŸ½Däc’<àØŸÎ!ìc’ÿr„ŸÆllc’Á”ŸÈ—xc’£¼Ÿ½‚c’<'ÔŸ«3€c’ş¹€Ÿ ™ğc’Êä ÿyĞÄc’œê¸Ÿ½Däc’=\0Ÿ«q,c’ÿíÜŸÆllc’Á”ŸÈ—xc’Ÿ½‚c’<àØŸÎ!ìc’ÿr„Ÿ ™ğc’Á”ŸÈ—xc’£¼Ÿ½‚c’`ˆH ÿn»Üc’#ôŸÊÂ„c’5+XŸÌíc’ÁK,Ÿ—4¼c’IgÈŸ†•`c’7  ÿh:¸c’
+ØŸ<c’ª*¬ ÿzÇtc’S
+¨ŸÑC¨c’ÚŸÉĞc’'­¸Ÿ§–lc’³ÍŒ ÿ|9|c’TXŸšÑĞc’“ŸÉĞc’(¤hŸ§–lc’´Ä<Ÿ•…c’k0Ÿ´Ö`c’..ÜŸËöàc’@@@ŸÎ_˜c’Ì`ŸÁ]Pc’oµœŸ¡Rôc’2GHŸÌ¯äc’D–XŸ—rhc’Ğx€ŸÁšüc’MÜ ÿO¨0c’XÜŸÈYÌc’!j@Ÿ¦bc’­Š ÿ{BÌc’NväŸ™tc’ ÿioc’#ô ÿ^—Øc’¯9È ÿ{€xc’^ŸÒµ°c’ sŸÊG,c’2„ôŸÌ¯äc’¾¤ÈŸÀ(ôc’^Ø”Ÿ:ˆc’!j@ŸÊ„Øc’3{¤Ÿ“ÕTc’¿›xŸÀ(ôc’j¦€Ÿ´˜´c’-8,ŸËöàc’?IŸÎ_˜c’ËidŸÁ]Pc’nèŸ¼èc’0—”ŸÌr8c’B¨øŸ–÷c’ÎÈÌŸ™"c’Om”ŸĞŠ¤c’Á” ÿzpc’$¤Ÿ³˜c’°0xŸ¾ô˜c’n@Ÿ¡Hc’1ìŸÌr8c’C$PŸÎÚğc’ÏD$ŸÁšüc’\­ˆ ÿmÅ,c’?4ŸÊG,c’1P˜Ÿ“Yüc’½plŸ–¹dc’TXŸ°ğc’“Ÿ¤t°c’(¤hŸË=Üc’´Ä<Ÿ¿2Dc’RÌüŸš”$c’^¨Ÿ¤7c’'2` ÿn~0c’³R4Ÿ¿2Dc’t‡ŸÖRÄc’6ÛŸ”Xc’HìpŸ˜ic’ÕDŸÂTc’GzhŸÏ“ôc’
+ŸÇ Èc’xŸÉËÔc’§ÿ Ÿ“—¨c’|<ŒŸ¸stc’?äŸÎ_˜c’QH ÿxÚc’İ=Ÿ›M(c’NväŸĞŠ¤c’ŸÈ—xc’#ôŸÊÂ„c’¯9ÈŸ¾¶ìc’L‰„ŸĞLøc’0Ÿ£@Tc’ îè ÿC!@c’­¼Ÿ¾¶ìc’NväŸ®Ğ”c’Ÿ£~c’#ôŸ¦Ÿ¼c’¯9ÈŸ¾¶ìc’Nò<Ÿ®Ğ”c’ƒèŸÈ—xc’#•LŸÊÂ„c’¯µ Ÿ¾¶ìc’IgÈŸÏÑ c’7 Ÿ‹â(c’
+ØŸÊ	€c’ª*¬Ÿ”c’jhÔŸ´˜´c’,ú€Ÿ’cLc’?äŸ«ì„c’Ë+¸ŸÁ¤c’MÜŸĞLøc’Ô4Ÿ£~c’!å˜ŸÊ„Øc’®lŸ¾¶ìc’S†Ÿ‰;Äc’¬ŸÉĞc’()Ÿ§–lc’´HäŸ¿2Dc’[ô„Ÿ‹)$c’†0Ÿ<c’0—”Ÿ©tc’¼·h ÿ}«„c’nèŸµQ¸c’0—”Ÿ
+ìc’B¨øŸÎÚğc’ÎÈÌŸÁšüc’X• ÿzÇtc’&ÈŸ¥k`c’-8,ŸËöàc’¹TŸ¿­œc’xİ$Ÿ£~c’;¬|Ÿ«3€c’M€4Ÿ®’èc’Ù ŸÂ‘¬c’KU(ŸĞLc’©(ŸŒÔc’ºŒŸÊG,c’«Ú`Ÿ¾y@c’RÌüŸ¯ÇDc’^¨Ÿ¤7c’'2`Ÿ‘.ğc’³R4 ÿ|9|c’U5´Ÿ°Bœc’‰´ŸÉP|c’)ØÄŸË{ˆc’µø˜Ÿ¿oğc’QHŸĞÈPc’qHŸÈÕ$c’%‚¬ŸË0c’±à,Ÿ¾ô˜c’\oÜŸ±´¤c’ÃÜŸ¥æ¸c’0Õ@ ÿpæèc’½2ÀŸ–{¸c’NväŸĞŠ¤c’ ÿzpc’#ôŸ¦Ÿ¼c’¯9ÈŸ¾¶ìc’tÄ¸ ÿ[³Èc’7VdŸ‚|ôc’IgÈŸ˜ic’Õ‡œŸÂTc’YN Ÿ°û c’ßÌŸäc’-ñ0Ÿ¨ÊÈc’ºŸ–>c’[y,ŸÒxc’
+ØŸ¥æ¸c’0<Ÿ©tc’¼<Ÿ¿ëHc’[ô„Ÿ±vøc’†0ŸÊ	€c’0—”Ÿ©tc’¼·hŸ¿ëHc’Iã ŸÏÑ c’tÌŸÇŞtc’†0ŸÊ	€c’ª¦Ÿ”c’Z$ŸÒ:Xc’Ö| ÿ|w(c’.çàŸÌ4Œc’»´Ÿ¿­œc’S†Ÿ¯ÇDc’¬ŸÉĞc’()ŸË=Üc’´HäŸ¿2Dc’vtlŸ‘çôc’9ŸÍhèc’K|Ÿ˜äpc’×7PŸšVxc’_SìŸÒó\c’!å˜ŸÊ„Øc’3¹PŸÌ¯äc’¿Ù$ŸÀ(ôc’U±ŸÑTc’ŸÉP|c’*TŸË{ˆc’¶6DŸ•…c’KU(Ÿ®c’©(Ÿ£¨c’ºŒŸ¦$dc’«Ú`Ÿ¾y@c’k0Ÿ´Ö`c’..ÜŸËöàc’@@@Ÿ–{¸c’Ì`ŸÁ]Pc’L‰„ŸĞLøc’0 ÿy“c’ îèŸÊG,c’­¼Ÿ¾¶ìc’MÜŸ™_Èc’XÜŸ£@Tc’!j@ŸÊ„Øc’­ŠŸ¾¶ìc’g„ÄŸÔedc’*pŸË{ˆc’;ê(ŸÍä@c’È	üŸÀáøc’|<ŒŸ§t®„³3³3’{0Ÿ§t®„³3¾’yÓÔŸ§²Z„³3¾’xİ$Ÿ§ğ„³3¾’w¨ÈŸ¨-²„³34{’vtlŸ¨k^„³349’tÄ¸Ÿ¨©
+„³3¯’t‡Ÿ¨æ¶„³3³3’sR°Ÿ©$b„³349’rTŸ©b„³349’péøŸ©Ÿº„³349’oµœŸ©İf„³349’n@Ÿª„³349’lÑŒŸªX¾„³3¯’k0Ÿª–j„³349’j¦€ŸªÔ„³3öÉ’jhÔŸ«Â„³3³3’höÌŸ«On„³3qì’g„ÄŸ«„³3qì’f¼Ÿ«ÊÆ„³3S3’dŞ`Ÿ¬r„³3S3’cªŸ¬F„³3’b³TŸ¬ƒÊ„³3’a~øŸ¬Áv„³3’`ˆHŸ¬ÿ"„³3’_SìŸ­<Î„³349’^Ÿ­zz„³349’]fŒŸ­¸&„³3¹’\oÜŸ­õÒ„³3öÉ’Z$Ÿ®3~„³3h´’YN Ÿ®q*„³3¹’X•Ÿ®®Ö„³3¹’W#Ÿ®ì‚„³3qì’U±Ÿ¯*.„³3qì’T|°Ÿ¯gÚ„³3’TXŸ¯¥†„³3³3’RÌüŸ¯ã2„³349’QHŸ° Ş„³3¯’Om”Ÿ°^Š„³3¯’Nò<Ÿ°œ6„³3³3’M€4Ÿ°Ùâ„³3qì’L‰„Ÿ±„³3öÉ’KU(Ÿ±U:„³349’Iã Ÿ±’æ„³3qì’G¸Ÿ±Ğ’„³3+’GzhŸ²>„³3³3’EO\Ÿ²Kê„³3+’D–XŸ²‰–„³3¹’B¨øŸ²ÇB„³3íP’@}ìŸ³î„³3+’?IŸ³Bš„³349’=\0Ÿ³€F„³3íP’<'ÔŸ³½ò„³349’9pŸ³û„³3¦f’7VdŸ´9J„³3+’5+XŸ´vö„³3+’2GHŸ´´¢„³3ä’.çàŸ´òN„³3_}’*TŸ´´¢„³3“¶’*pŸ´vö„³3³3’()Ÿ´9J„³3íP’&;°Ÿ³û„³3Î˜’%‚¬Ÿ³½ò„³3×Ï’$¤Ÿ³€F„³3qì’#ôŸ³Bš„³3öÉ’!å˜Ÿ³î„³349’ ±<Ÿ²ÇB„³349’|àŸ²‰–„³349’Ö|Ÿ²Kê„³3¦f’&ÈŸ²>„³3¯’Ÿ±Ğ’„³3!Ë’¬Ÿ±’æ„³3íP’qHŸ±U:„³3¦f’Ÿ±„³3h´’©(Ÿ°Ùâ„³3_}’¬¬Ÿ°œ6„³3Ó3’¿LŸ°Ùâ„³3Ë’ÑìŸ±„³3Ë’äŒŸ±U:„³3íP’ÿr„Ÿ±’æ„³3qì’ş|Ÿ±Ğ’„³3qì’üŸ²>„³3íP’ú¡Ÿ²Kê„³3qì’ù/Ÿ²‰–„³3qì’ë6Ÿ²ÇB„³3øÕ’İ=Ÿ²‰–„³3øÕ’Ù Ÿ²Kê„³3œî’ÁK,Ÿ²>„³3T¼’½plŸ²Kê„³3Ú ’ª*¬Ÿ²>„³3E¢’¡$Ÿ±Ğ’„³3	'm’—`DŸ±’æ„³3	¢ÑŸ¿.‘M²The–<residual“plots“and“Çplot-dbeta“²takš¸ãe“a“k˜eyw˜ord“argumen˜t“Ç:variable².¤‘>The–\qargumenš¸ãt“for“Ç:variable“²is“a“list“of“indices“spGecifying“whic˜h“delta-bGetas¡‘>to–Ñplot“or“whic¸ãh“v‘ÿqÇariables“to“plot“the“residuals“against.‘æKF‘ÿ*ªor“Ç:plot-dbetas¡‘>²v‘ÿqÇariable–«N0“is“the“in¸ãtercept,‘ÀÌfor“Ç:plot-²foGoÇ-residuals“²it“is“the“linear“predictor.¡‘>If‘/ÉÇvariable–h¬²is“not“spšGecied“the“delta-b˜etas“plot“uses“all“v‘ÿqÇariables;‘rWthe“residual¡‘>plots–nájust“use“the“linear“predictor.‘¾lIn“addition,‘µDÇ:plot-²foGoÇ-residuals“²has“a¡‘>Ç:smooth›¦e²k•¸ãeyw“ord˜whic“h˜indicates˜whether˜a˜lo“w“ess˜smo•Gother˜should˜b“e˜added¡‘>to–Eqthe“plot.›BThe“default“is“Çt“²for“bGoth“Çshow-labels“²and“Çsmooth².˜An¸ãy“other¡‘>argumen•¸ãts›şÙgiv“en˜to˜these˜functions˜will˜bGe˜passed˜to˜a˜call˜to˜Çplot-points².‘TóAn¡‘>example–š¯is“givš¸ãen“in“Figure“1,‘¬based“on“the“example“giv˜en“abGo˜v˜e“for“the“moGdel¡‘>form¸ãula‘UUsystem.¡‘MThe–Mıplots“prošGduced“b¸ãy“these“metho˜ds“are“link¸ãed,‘‚¨so“that“selections“in“one“plot¡‘>shoš¸ãw–yZup“in“the“others.‘İÖThe“residual“plots“also“ha˜v˜e“an“additional“mouse“moGde¡‘>\group–_ehighlighš¸ãting"“where“selecting“a“pGoin˜t“also“selects“all“the“other“pGoin˜ts“in¡‘>the–[jsame“group.‘„The“linking“is“dierenš¸ãt“from“the“usual“LispStat“mec˜hanism“in¡‘>that–»>all“group-levš¸ãel“plots“are“link˜ed“and“all“observ‘ÿqÇation-lev˜el“plots“are“link˜ed“but¡‘>plots–öüat“dierenš¸ãt“lev˜els“are“not“link˜ed“to“eac˜h“other.‘V»The“gee“ob‘8ject“con˜tains¡‘>lists–½fof“observ‘ÿqÇation-levš¸ãel“and“group-lev˜el“plots“that“are“separate“from“the“linking¡‘>list–Á=mainš¸ãtained“b˜y“LispStat.‘@jT‘ÿ*ªo“link“another“plot“(eg“a“scatterplot“of“co˜v‘ÿqÇariates)¡‘>use–UUthe“Ç:bind-plot-to-gee“²message¤¿.‘>Ç(send–?ımygee“:bind-plot-to-gee“a-plot“+group+)¡‘>²links–UUÇa-plot“²to“the“group-lev¸ãel“plots“and“similarlyŸ’åÿ10Œ‹o¸ y ı£ ? ıä‘>Ç(send–?ımygee“:bind-plot-to-gee“a-plot“+observation+)Ÿé‘>²links–UUit“to“the“observ‘ÿqÇation-lev¸ãel“diagnostic“plots.¤‘MThe–ˆJsame“methoGd“names“without“the“Çplot-“²prex“return“the“v‘ÿqÇalues“of“the¡‘>diagnostics.‘7The–—individual“observ‘ÿqÇation“diagnostics“are“returned“in“a“list“or¡‘>matrix–M„in“the“same“order“as“the“data“set;‘Pthe“group“diagnostics“ha•¸ãv“e–M„the“group¡‘>iden•¸ãtier›‰¤attac“hed˜and˜are˜in˜no˜reliable˜order.‘³The˜plotting˜methoGds˜call˜t“w“o¡‘>plotting–~functions“whicš¸ãh“ma˜y“bšGe“useful“for“other“purp˜oses:‘Ã:Çindex-plot“²and¡‘>Çscatter-smooth².‘ĞThe–­former“takš¸ães“a“single“argumen˜t“and“plots“it“against“the¡‘>inš¸ãtegers;‘7§the–ì7second“bGeha˜v˜es“lik˜e“Çplot-points“²but“also“adds“a“lo˜w˜ess“smoGoth¡‘>to–UUthe“plot.Ÿ Šü‘>Æ6‘VLËNotes–ffon“InŒÌternal“W‘ş¦forkingsŸç‘>²The–Xmain“computations“are“carried“out“in“the“methoGd“Ç:compute-step-beta².¡‘>This–jªdoGes“not“use“the“iterativš¸ãely“rew˜eigh˜ted“least“squares“methoGd“of‘1ÇÇglim-proto¡‘>²whic•¸ãh›8ãw“ould˜require˜rewriting‘\pÇregression-proto˜²to˜handle˜non-diagonal˜w“eigh“t¡‘>matrices–Ø¯(feasible)“and“wš¸ãould“in˜v˜olv˜e“in˜v˜erting“µn–?•¸“µn–Ø¯²matrices“(undesirable).‘H;As¡‘>observ‘ÿqÇations–z+in“dierenš¸ãt“groups“are“indepGenden˜t“the“w˜eigh˜t“matrix“is“bloGc˜k“di-¡‘>agonal–Xand“so“is“mostly“easily“dealt“with“in“blošGc¸ãks“correp˜onding“to“the“groups.¡‘>This–B[only“requires“in•¸ãv“erting–B[the“correlation“matrix“for“eac¸ãh“group“and“the“nal¡‘>quasi-information–JÊmatrix,‘Læall“of“whic¸ãh“are“small.‘nCThe“algorithm“is“as“describGed¡‘>b¸ãy–J­Liang“&“Zeger“(1986).‘n:V‘ÿ*ªariable“names“in“Çcompute-step-beta“²are“generally¡‘>based–Ÿ{on“the“notation“in“that“papGer.‘P8Some“of“the“correlation“estimates“are¡‘>sligh¸ãtly–UUmošGdied“from“the“original“pap˜er“to“agree“with“other“soft•¸ãw“are.¡‘MThe–cŠinformation“required“for“the“deletion“diagnostics“is“computed“b¸ãy“the¡‘>same–»?function“as“upGdates“the“regression“parameter“estimates.‘£…Aš¸ãt“the“momen˜t¡‘>this–)winformation“is“not“computed“in“the“usual“tting“proGcess“and“another“itera-¡‘>tion–|ñis“required“the“rst“time“anš¸ãy“deletion“diagnostics“are“calculated.‘èšIt“w˜ould¡‘>b•Ge››íp“ossible˜to˜calculate˜this˜information˜while˜the˜mo“del˜is˜tted.‘EThis˜w¸ãould¡‘>cause–‘~extra“garbage“collection“but“wš¸ãould“sa˜v˜e“time“in“plotting“diagnostics.‘&AT‘ÿ*ªo¡‘>do–èôthis,‘ş¡set“the“global“v‘ÿqÇariable“Ç*gee-diagnostics-while-fitting*“²to“Çt².‘M§V‘ÿ*ªari-¡‘>able–›Önames“in“the“deletion“diagnostic“methoGds“are“based“on“the“notation“of¡‘>Preisser–UU&“Qaqish,“and“so“dier“from“those“in“the“rest“of“the“coGde.¡‘MAs–²3menš¸ãtioned“abGo˜v˜e,‘	jthe“gee“functions“do“not“assume“that“the“data“are¡‘>presorted–ÃŠb¸ãy“group“and“observ›ÿqÇation“time“and“instead“require“that“observ˜ation¡‘>times–ZÊare“supplied.‘‚'This“is“bšGecause“missing“data“handling“is“practically“imp˜os-¡‘>sible–H½without“haš¸ãving“a“record“of“observ‘ÿqÇation“times“(a“recen˜t“v˜ersion“of“the“SAS¡‘>macro––in¸ãtroGduces“observ‘ÿqÇation“times“to“handle“missing“cases).‘©ŠIt“is“also“safer:¡‘>other–tNpacš¸ãk‘ÿqÇages“will“giv˜e“y˜ou“the“wrong“answ˜er“with“no“w˜arning“if“the“data“are¡‘>not–YSsorted“bš¸ãy“time“within“group.‘}ÀThe“w˜a˜y“this“is“no˜w“implemen˜ted“is“not“v˜ery¡‘>ecienš¸ãt:‘K*asymptotically–the“calculation“time“is“dominated“b˜y“the“time“tak˜en“to¡‘>nd–oeacš¸ãh“group.‘ÇMore“ecien˜t“coGde“using“hash“tables“w˜ould“bšGe“p˜ossible.‘ÇIn¡‘>practical›K;examples,–ˆ´though,“this˜is˜not˜a˜real˜issue.‘SyF‘ÿ*ªor˜v¸ãery˜large˜data˜sets¡‘>it–wİis“clearly“wš¸ãorth“assuming“the“data“are“sorted“but“it“is“also“w˜orth“writing¡‘>sp•Gecial-purp“ose–UUcompiled“coGde.Ÿ’åÿ11Œ‹”£ y ı£ ? ıä‘M²As–ñthe“observ›ÿqÇations“within“a“group“ma¸ãy“v˜ary“in“n•¸ãum“bšGer–ñand“b˜e“in“random¤‘>order–Zthe“correlation“structures“use“an“assoGciation“list“to“matc¸ãh“up“the“Ç:times¡‘>²v‘ÿqÇariable–¾±with“the“appropriate“indices“for“selecting“a“submatrix“of“the“correlation¡‘>matrix.‘NØThis–ì‰prošGduces“v¸ãery“simple“co˜de“for“the“metho˜d“that“returns“the“in•¸ãv“erse¡‘>correlation–UUmatrix“and“also“simplies“the“coGde“for“estimating“correlations.¡‘MDespite–•àv‘ÿqÇarious“ineciencies“describšGed“ab˜o•¸ãv“e–•àthe“co˜de“is“fairly“fast.‘3gA‘•Ïtest¡‘>data–^set“with“72“groups“of“5“observ›ÿqÇations“and“5“v˜ariables“using“the“autoregressiv¸ãe¡‘>correlation–˜structure“(one“of“the“slo•¸ãw“est)–˜tošGok“ab˜out“5“seconds“p˜er“iteration“on“a¡‘>(shared)–-Sparcstation“10“or“abšGout“6“seconds“p˜er“iteration“on“a“75mHz“P•¸ãen“tium¡‘>PC‘Hrunning–HLinš¸ãux.‘mZThis“data“set“had“the“same“n˜um˜bGer“of“observ‘ÿqÇations“in“eac˜h¡‘>group;‘Ÿunš¸ãbalanced–şÄdata“require“an“extra“matrix“in˜v˜ersion“for“eac˜h“group“that“is¡‘>smaller–A—than“the“largest“one“and“so“wš¸ãould“bGe“sligh˜tly“slo˜w˜er.‘k2The“spGeed“is“only¡‘>impro•¸ãv“ed–:RabšGout“20%“after“compiling“the“co˜de,‘?¹presumably“b˜ecause“it“is“mostly¡‘>vš¸ãectorised–UUand“so“none“of“the“ineciency“is“easy“to“optimise“a˜w˜a˜y‘ÿ*ª.¡‘MOne–£İfeature“of“GEEs“and“the“generalised“linear“moGdels“from“whic¸ãh“they¡‘>arose–IÉis“the“abilitš¸ãy“to“com˜bine“arbitrary“link“and“v‘ÿqÇariance“functions.‘™Some“care“is¡‘>needed–ŠTto“ensure“that“the“n¸ãumerical“estimation“doGesn't“crash“when“strange“com-¡‘>binations–¥of“link“and“v‘ÿqÇariance“are“c¸ãhosen.‘”¶The“Ç:compute-step-beta“²methoGd¡‘>conš¸ãtains–fa“c˜hec˜k“that“the“new“v‘ÿqÇalues“of“the“regression“coGecien˜t“proGduce“v‘ÿqÇalid¡‘>v‘ÿqÇalues–‚€for“the“linear“predictor“and“the“tted“mean.‘ùHIf“this“is“not“the“case“then¡‘>the–step“size“is“halvš¸ãed“and“the“c˜hec˜k“repGeated“un˜til“the“v›ÿqÇalues“are“v˜alid.‘ïA¡‘>wš¸ãarning–ï¬message“is“also“prin˜ted.‘OäThe“c˜hoice“of“starting“v‘ÿqÇalues“for“the“regression¡‘>parameters–qÄis“also“complicated“when“the“link“and“v‘ÿqÇariance“can“bGe“c¸ãhosen“arbi-¡‘>trarily–q(this“is“a“disadv‘ÿqÇanš¸ãtage“of“not“using“iterated“rew˜eigh˜ted“least“squares).¡‘>The–'!program“deals“with“three“cases.‘b`F‘ÿ*ªor“all“the“commonest“moGdels“µ‘N4²=‘Ç0“giv¸ães¡‘>v‘ÿqÇalid–*estimates.‘ğF‘ÿ*ªor“mošGdels“where“this“is“not“the“case“(eg“gamma/recipro˜cal¡‘>link,‘Ó½pšGo•¸ãw“er‘³Wv‘ÿqÇariance/p˜o“w“er–³Wlink)“the“initial“v‘ÿqÇalues“dep˜end“on“whether“the“mo˜del¡‘>conš¸ãtains–
+ñan“in˜tercept.‘XûIf“it“doGes“then“all“the“other“regression“parameters“are“set¡‘>to–}0“and“the“inš¸ãtercept“is“c˜hosen“to“giv˜e“v›ÿqÇalid“starting“v˜alues.‘èøIf“there“is“no¡‘>in¸ãtercept–±Äthen“a“v›ÿqÇalid“set“of“starting“v˜alues“need“not“exist.‘‡The“program“tries¡‘>µŸÿ´i‘G¼²=‘ópµg[Ù²(‘¯¶µy‘Bø²)‘iµ=p‘¢«²µxŸÿ´i‘ƒX²(where–oğµg[Ù²(¸²)“is“the“link“function)“and“if“this“doGesn't“wš¸ãork“it“giv˜es¡‘>up–UUand“asks“for“starting“v‘ÿqÇalues“to“bšGe“sp˜ecied.¡‘MThe–—saturated“correlation“moGdel“estimates“all“the“pairwise“correlation“pa-¡‘>rameters–eÖseparately‘ÿ*ª.‘!òThere“is“a“unique“sensible“estimate“of“the“co¸ãv‘ÿqÇariance“matrix¡‘>(assuming–È1a“balanced“design)“but“not“of“the“correlation“matrix.‘ÊZThe“problem¡‘>is–Íthat“the“diagonal“elemenš¸ãts“of“the“co˜v‘ÿqÇariance“matrix“are“assumed“equal“under¡‘>the–'tmošGdel“but“will“not“b˜e“estimated“as“equal.‘b|The“metho˜d“used“in“the“S-PLUS¡‘>library–6:and“attributed“to“Karim's“SAS‘6macro“is“to“estimate“the“dispGersion“µ¡‘>²bš¸ãy–‰.the“v‘ÿqÇariance“of“the“P˜earson“residuals,‘Ö#to“estimate“the“correlations“µŸÿ´ij‘”&²b˜y¡‘>µŸÿ´ij‘
+À²=‘Èco¸ãv‘‚‘(µrŸÿ´i‘TLµ;‘ª¨rŸÿ´j‘6¬²)µ=–‹²for“µi–È¸6²=“µj‘²where–‹µrŸÿ´i‘Õ×²are“the“set“of“P¸ãearson“residuals“at“time“µi¡‘>²and–Ø¶to“set“µŸÿ´ii‘	Ê¦²=‘¢1.‘ûëI›Ø”think“this“w¸ãould“bGe“the“ML˜estimate“of“the“correlations¡‘>for–ÑBNormal“data“with“constan¸ãt“v‘ÿqÇariance.‘åLiang“&“Zeger“(1986)“used“a“similar¡‘>estimate–ƒ	but“didn't“set“the“diagonals“to“1.‘úâThis“givš¸ães“the“maxim˜um“lik˜eliho•Go“d¡‘>estimate–÷°of“the“coš¸ãv‘ÿqÇariance“matrix“if“the“dispGersion“is“not“assumed“constan˜t“o˜v˜er¡‘>time.‘G A‘Fßthird–GpGossibilitš¸ãy“w˜ould“bGe“to“use“the“Normal“maxmim˜um“lik˜eliho•Go“d¡‘>estimate–*of“the“correlation“matrix.‘ïÈIt“is“not“clear“whic¸ãh“is“bGest,‘_+but“most“ofŸ’åÿ12Œ‹¤B y ı£ ? ıä‘>²the–n›programs“ha•¸ãv“e–n›settled“on“the“same“c•¸ãhoice,‘´ìwhic“h›n›mak“es˜soft“w“are˜testing¤‘>easier.‘YÁThere–÷şis“one“signicanš¸ãt“disadv‘ÿqÇan˜tage“of“this“c˜hoice:‘·it“is“the“only“one¡‘>where–|´the“\correlation“matrix"“need“not“bšGe“p˜ositiv¸ãe“denite.‘çåThis“can“happ˜en¡‘>when–›ãthe“sample“size“is“not“large“relativš¸ãe“to“the“n˜um˜bšGer“of“correlations“b˜e-¡‘>ing–G±estimated“espšGecially“if“the“true“time-sp˜ecic“v‘ÿqÇariances“are“not“all“the“same.¡‘>It–K^can“only“happšGen“for“three“or“more“time“p˜oinš¸ãts“as“for“t˜w˜o“time“pGoin˜ts“the¡‘>arithmetic-geometric–æ”mean“inequalitš¸ãy“guaran˜tees“that“the“estimated“correlation¡‘>will–âbGe“less“than“the“usual“estimate.‘&The“usual“c¸ãhoice“(diagonals“forced“to“1)¡‘>is–w*correlation“structure“Çsaturated-corr²,‘Ÿthe“coš¸ãv‘ÿqÇariance“matrix“divided“b˜y“the¡‘>scale–.|parameter“(the“estimate“givš¸ãen“b˜y“Liang“&“Zeger“and“F›ÿ*ªahrmeir“&“T˜utz)“is¡‘>Çsaturated-ml-corr¡‘M²Mucš¸ãh–«èof“the“default“bGeha˜viour“is“under“the“con˜trol“of“global“v‘ÿqÇariables.‘9NThese¡‘>are––Vdened“and“doGcumenš¸ãted“at“the“end“of“the“source“le“and“con˜trol“the“prin˜ting¡‘>of–üüiteration“information,›&æthe“default“w¸ãorking“correlation,˜the“default“con•¸ãv“erge¡‘>tolerance–and“maximš¸ãum“iteration“coun˜t“and“the“default“displa˜y“methoGds.The¡‘>v‘ÿqÇariable–!.names“are“all“of“the“form“Ç*gee-µ:–ª¨:“:‘ª§Ç*“²They“are“dened“at“the“end“of“the¡‘>le–ûvbšGecause“the“default“correlation“cannot“b˜e“selected“un¸ãtil“after“the“correlation¡‘>ob‘8jects›UUha•¸ãv“e˜bGeen˜dened.©!Ä‘>Æ7‘VLËAc•ŒÌkno“wledgemen“tsŸç‘>²The–s/author“is“suppGorted“bš¸ãy“a“Ho˜w˜ard“Hughes“Medical“Institute“PredoGctoral¡‘>F‘ÿ*ªelloš¸ãwship–1€in“the“Biological“Sciences.‘eÕThanks“to“An˜thon˜y“Rossini,‘8«Charlie“Hall¡‘>and–UUJohn“Preisser“for“help“with“diagnostics.¦‘>Æ8‘VLËReferencesŸç‘>²Diggle,–”P‘ÿ*ª.,“Liang,“K-Y.,“Zeger,“S.L.–cº(1994)“ÈA¾“nalysis–µ¡of“L‘ÿ}'ongitudinal“Data‘(²Oxford¡‘>Univ•¸ãersit“y–UUPress,“Oxford.¡‘MF›ÿ*ªahrmeir,–êÊL.,“T˜utz,“G.–™³(1994)“ÈMultivariate–¾RStatistic›ÿ}'al“Mo˜del‘‚Øling“b˜ase˜d“on¡‘>Gener–ÿ}'alize“d›“çLine“ar˜Mo“dels‘'v²Springer,–UUNew“Y‘ÿ*ªork.¡‘MLiang,–İhK-Y.,“Zeger,“S.L.,“(1986)–ş\Longitudinal“analysis“using“generalized¡‘>linear‘UUmoGdels."–qÇÈBiometrika‘¸²73:“13{22.¡‘MNelder,‘KOJ.A.–æê(1994)“\An“alternativ¸ãe“view“of“the“splicing“data."‘	&†ÈApplie‘ÿ}'d¡‘>Statistics².–qÇ43:“469{476.¡‘MPreisser,–~4J.S.,“Qaqish,“B.F.,“(in–vpress)“\Deletion“diagnostics“for“generalized¡‘>estimating‘UUequations".¡‘MTierney‘ÿ*ª,‘¹zL.–?(1989)“ÈXLISP-Stat:‘«A‘UşStatistic–ÿ}'al›VrEnvir“onment˜b“ase“d˜on˜the¡‘>XLISP‘a$language.›_g²T‘ÿ*ªec¸ãhnical–5RepGort“No.˜528.˜Univ•¸ãersit“y–5of“Minnesota“Sc¸ãhoGol“of¡‘>Statistics.¡‘MZeger,–nS.L.,“Liang›4K-Y.,“(1986)˜\Longitudinal˜data˜analysis˜for˜discrete˜and¡‘>con•¸ãtin“uous–UUoutcomes"“ÈBiometrics‘'v²42:‘qÇ121{130.Ÿ’åÿ13Œø¶ğƒ’À;èy—óı':
+
+cmti10óßê<x
+
+cmtt10óÂÖN ffcmbx12ót‰:		cmbx9óo´‹Ç		cmr9óX«Qcmr12óDÓítG®G®cmr17ó!",š
+
+cmsy10ó
+ b>
+
+cmmi10ó	0e—rcmmi7óKñ`y
+
+cmr10óü<˜
+
+	lcircle10ùÃVßßßßßßß\Rogue\Monster\
+else
+  echo "will not over write ./gee.1.0.dvi"
+fi
+if `test ! -s ./gee.1.0.lsp`
+then
+echo "writing ./gee.1.0.lsp"
+cat > ./gee.1.0.lsp << '\Rogue\Monster\'
+;;
+;;    GEEs for XLISP-Stat. Modelled on glim.lsp
+;;
+;;                Version 1.0
+;;
+;; Reference: Zeger & Liang, Biometrics 1986
+;;            Liang & Zeger, Biometrika 1986
+;;            Preisser & Qaqish (1996 preprint) for the diagnostics
+;;
+;;      Copyright (c) thomas lumley 1995-1996
+;;
+;; Use and copying permitted under the terms of the 
+;; GNU public license: see file COPYING
+;;
+;;
+;; For documentation see the file gee.{tex,ps,dvi}
+;;
+;;
+
+(require "glim") ;; the link functions from glim.lsp are needed
+
+(require "modelformula") ;; model formula functions are needed
+
+(provide "gee")
+
+;;
+;; additional methods :valideta :validmu for link function.
+;;
+;;  :valideta eta  tests whether the vector eta lies entirely in the domain
+;;                 of the link function
+;;  :validmu  mu   tests whether the vector mu lies entirely in the range 
+;;                 of the link function
+
+(defmeth logit-link :valideta (eta) t)
+
+(defmeth probit-link :valideta (eta) t)
+
+(defmeth log-link :valideta (eta) t)
+
+(defmeth cloglog-link :valideta (eta) t)
+
+(defun power-link (k) (send power-link-proto :new k))
+
+(defmeth power-link-proto :valideta (eta) (> (min eta) 0))
+
+(defmeth identity-link :valideta (eta) t)
+
+(defmeth inverse-link :valideta (eta) (> (min eta) 0))
+
+(defmeth sqrt-link :valideta (eta) (> (min eta) 0))
+;
+(defmeth logit-link :validmu (mu) (and (< (max mu) 1) (> (min mu) 0)))
+
+(defmeth probit-link :validmu (mu) (and (< (max mu) 1) (> (min mu) 0)))
+
+(defmeth cloglog-link :validmu (mu) (and (< (max mu) 1) (> (min mu) 0)))
+
+(defmeth log-link :validmu (mu) (> (min mu) 0))
+
+(defmeth power-link-proto :validmu (mu) (> (min mu) 0))
+
+(defmeth identity-link :validmu (mu) t)
+
+(defmeth inverse-link :validmu (mu) (> (min mu) 0))
+
+(defmeth sqrt-link :validmu (mu) t)
+
+;;
+;; Miscellaneous useful functions
+;;
+
+(defun unique (x)
+"Arguments: x
+Returns the unique elements of a sequence x in no very obvious order"
+ (remove-duplicates x :test #'equalp))
+
+(defun argselect (xs x) 
+"Arguments: xs x
+returns indices where list xs = element x"
+(which (= x xs))) 
+
+(defun argrank (x) 
+"Arguments: x
+returns a sequence such that (select x (argrank x)) is in ascending order"
+(elt  (column-list (apply #'bind-rows (sort (row-list (bind-columns (copy-seq x) (iseq (length x)))) #'(lambda (r s) (< (elt r 0) (elt  s 0)))))) 1))
+
+
+(defun zero-matrix (k)
+"Arguments: k
+Returns a kxk zero-matrix"
+ (* 0 (identity-matrix k)))
+
+(defun one-matrix (k)
+"Arguments: k
+Returns a kxk matrix of 1s"
+ (outer-product (repeat 1 k) (repeat 1 k)))
+
+(defun logg (x) (if (compound-data-p x) (map-elements #'logg x)
+		  (if (> x 0) (log x) 0)))
+
+(defun band-matrix (width mat) 
+"Arguments: width mat
+Zeroes elements of mat to make it band-diagonal. 
+width is the half-width (width=0 is diagonal)"
+  (let* ((mdim (length (row-list mat))))
+	 (map-elements #'(lambda (x y) (cond (x y) (t 0)))
+		       (<= (abs (outer-product (iseq 1 mdim) (iseq 1 mdim) #'-)) width)
+		       mat)
+	 ))
+
+(defun cat (ll) (apply #'append (mapcar #'(lambda (x) (coerce x 'list)) ll)))
+
+(defun band-average (mat) 
+"Arguments: mat
+Averages elements of mat parallel to the main diagonal for symmetric matrix"
+(let* ((cols (column-list mat))
+       (collist (cat cols))
+       (p (length cols))
+       (steps (* (iseq 0 (- p 1)) (+ p 1)))
+       (newlist (* 0 collist))
+       (junk (dotimes (i p newlist)
+		(let* (
+		       (thesesteps (+ i  (select steps (iseq 0 (- (- p 1) i))))) 
+		       )
+		  (setf (select newlist thesesteps) (repeat (mean (select collist thesesteps)) (- p i))))
+		))
+       (newmat (make-array (list p p) :displaced-to (coerce newlist 'vector)))
+       )
+   (+ newmat (transpose newmat) (- (diagonal (diagonal newmat))))
+))
+
+
+(defun matrix-trace (matrix)
+"Arguments: matrix
+Returns its trace (of course)"
+ (sum (diagonal matrix)))
+
+
+(defun sign (x) (cond ((= x 0) 0)
+		      ((< x 0) -1)
+		      ((> x 0) +1)
+		      (t (error "Can't happen in (sign)"))
+		      ))
+
+
+;;
+;; some diagnostic plot functions
+;; and extra methods for scatterplot-proto
+;;
+
+(defmeth scatterplot-proto :group-list (&optional (new nil set))
+"Adds or returns group list"
+(when set
+      (setf (slot-value 'group-list) new))
+(slot-value 'group-list)
+)
+
+(defmeth scatterplot-proto :do-group-hilite (x y m1 m2)
+"Highlights all points in the same group as the selected one
+Only sensible when called by the appropriate mouse mode"
+(send self :points-selected nil)
+(let* ((cr (send self :click-range))
+       (groups (send self :group-list))
+       (p (first (send self :points-in-rect
+		       (- x (round (/ (first cr) 2)))
+		       (- y (round (/ (second cr) 2)))
+		       (first cr)
+		       (second cr)))))
+  (if (and p groups)
+      (let* ((pgroup (elt groups p))
+	     (thisgroup (argselect groups pgroup))
+	     )
+	(send self :points-selected thisgroup)
+	))
+))
+
+
+(defmeth scatterplot-proto :add-group-hilite (grouplist)
+"add a Group Highlight mode"
+(send self :add-mouse-mode 'group-hilite
+      :title "Highlight Groups"
+      :cursor 'finger
+      :click :do-group-hilite
+)
+(send self :add-slot 'group-list)
+(send self :group-list grouplist)
+)
+
+
+(defun scatter-smooth (x y &rest graphargs &key (symmetric nil) (span .6)) 
+"Arguments: x y &rest graphargs &key (symmetric nil) (span .6)
+Draws a scatterplot with a lowess smoother. If symmetric is t uses the
+two-iteration robust version (not good for skewed residuals).
+Any extra arguments are passed to plot-points"
+  (let* (
+	(steps (if symmetric 2 1))
+	(smooth (lowess x y :f span :steps steps))
+	(plot (apply #'plot-points (append (list x y) graphargs)))
+	)
+    (send plot :add-lines (first smooth)  (second smooth) )
+    plot
+  )
+  
+)
+
+(defun index-plot (y &rest graphargs)
+"Arguments: y &rest graphargs
+Plots y against 1:(length y). Other arguments are passed to plot-points"
+  (apply #'plot-points (append (list (iseq 1 (length y)) y) graphargs)))
+
+
+;;;;
+;;;;                Variance Function Prototypes
+;;;;
+;;;;
+;;;; Variance functions are objects responding to five messages:
+;;;;
+;;;;    :varweight (mu)  Return the variance function evaluated at
+;;;;          the sequence of means mu
+;;;;
+;;;;    :pearson-resid (y mu) Return (y-mu)/sqrt(V(mu))
+;;;;
+;;;;    :quasideviance (y mu) the quasideviance (ignoring correlation)
+;;;;
+;;;;    :validmu (mu) tests if the vector mu lies entirely in the permitted
+;;;;        range
+;;;;
+;;;;    :prettyprint displays the variance function nicely
+;;;;
+;;;;  the prototype is a Normal variance function
+;;;; 
+
+(defproto gee-varfun-proto)
+
+(defmeth gee-varfun-proto :varweight (mu) (repeat 1 (length mu)))
+
+(defmeth gee-varfun-proto :pearson-resid (y mu) (- y mu))
+
+(defmeth gee-varfun-proto :quasi-deviance (y mu) (sum (^ (- y mu) 2)))
+
+(defmeth gee-varfun-proto :validmu (mu) t)
+
+(defmeth gee-varfun-proto :prettyprint (&optional (stream t))
+  (format stream "~%Variance function:~25tPrototype"))
+
+(defmeth gee-varfun-proto :print (&optional (stream t))
+  (format stream "#<GEE Variance Object: ~s>" (slot-value 'proto-name)))
+
+
+;;;;
+;;;; Normal error structure
+;;;;
+
+(defproto normal-error () () gee-varfun-proto)
+
+(defproto gaussian-error () () gee-varfun-proto)  ;;;synonyms are nice
+
+(defmeth normal-error  :prettyprint (&optional (stream t))
+  (format stream "~%Variance function:~25tNormal error"))
+(defmeth gaussian-error :prettyprint (&optional (stream t))
+  (format stream "~%Variance function:~25tGaussian error"))
+
+;;;;
+;;;; Binomial error structure
+;;;;
+
+(defproto binomial-error () () gee-varfun-proto)
+
+(defmeth binomial-error :varweight (mu)  (* mu (- 1 mu)))
+(defmeth binomial-error :pearson-resid (y mu) (/ (- y mu) (sqrt (send self :varweight mu))))
+(defmeth binomial-error :quasi-deviance (y mu) (* 2 (sum (+ (* (logg (/ y mu)) y) (* (logg (/ (- 1 y) (- 1 mu))) (- 1 y)) ))))
+
+(defmeth binomial-error :validmu (mu) (and (< (max mu) 1) (> (min mu) 0)))
+
+(defmeth binomial-error :prettyprint (&optional (stream t))
+  (format stream "~%Variance function:~25tBinomial error"))
+
+
+;;;;
+;;;; Poisson error structure
+;;;;
+;;;;
+(defproto poisson-error () () gee-varfun-proto)
+
+(defmeth poisson-error :varweight (mu) (copy-list mu))
+(defmeth poisson-error :pearson-resid (y mu) (/ (- y mu) (sqrt mu)))
+(defmeth poisson-error :quasi-deviance (y mu) (* 2 (sum (- (* y (logg (/ y mu))) (- y mu)))))
+(defmeth poisson-error :validmu (mu) (> (min mu) 0))
+
+(defmeth poisson-error :prettyprint (&optional (stream t))
+  (format stream "~%Variance function:~25tPoisson error"))
+
+
+;;;;
+;;;; Gamma error structure
+;;;;
+;;;;
+(defproto gamma-error () () gee-varfun-proto)
+
+(defmeth gamma-error :varweight (mu) (^ mu 2))
+(defmeth gamma-error :pearson-resid (y mu) (/ (- y mu)  mu))
+(defmeth gamma-error :quasi-deviance (y mu) (* 2 (sum (- (/ (- y mu) mu) (log (/ y mu))))))
+(defmeth gamma-error :validmu (mu) (> (min mu) 0))
+
+(defmeth gamma-error :prettyprint (&optional (stream t))
+  (format stream "~%Variance function:~25tGamma error"))
+
+
+
+
+
+
+;;;
+;;; Power variance functions
+;;;
+;;;
+
+(defun power-error (k) (send power-error-proto :new :k k))
+
+(defproto power-error-proto '(k) '() gee-varfun-proto)
+
+(defmeth power-error-proto :varweight (mu) (^ mu (send self :k)))
+
+(defmeth power-error-proto :pearson-resid (y mu)  (/ (- y mu) (sqrt (send self :varweight mu))))
+
+(defmeth power-error-proto :validmu (mu) (> (min mu) 0))
+
+(defmeth power-error-proto :isnew (&key k) (send self :k k))
+
+(defmeth power-error-proto :k (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns variance power parameter."
+  (when set
+	(setf (slot-value 'k) new)
+	)
+  (slot-value 'k))
+
+(defmeth power-error-proto :prettyprint (&optional (stream t))
+  (format stream "~%Variance function:~25tmu^~6g" (send self :k)))
+
+(defmeth power-error-proto :quasi-deviance (y mu)  
+ (let* ((k (send self :k))
+	 (denom (* (- 1 k) (- 2 k)))
+	 )
+   (cond ((= k 1) (send poisson-error :quasi-deviance y mu))
+	 ((= k 2) (send gamma-error :quasi-deviance y mu))
+	 (t  (* -2 (/ (sum  (^ y (- 2 k)) (* (^ mu (- 1 k)) (- (* (- 1 k) y) (* (- 2 k) mu)))))))
+	 )
+   )
+)
+;;;;
+;;;; default link-variance pairs (an association list)
+;;;;
+
+(def default-link `((,binomial-error . logit-link)
+		    (,normal-error . identity-link)
+		    (,gaussian-error . identity-link)
+		    (,poisson-error . log-link)
+		    (,gamma-error . inverse-link)
+		    ))
+
+(def default-error  `((,logit-link . binomial-error)
+		      (,probit-link . binomial-error)
+		      (,cloglog-link . binomial-error)
+		      (,identity-link . normal-error)
+		      (,log-link . poisson-error)
+		      (,inverse-link . gamma-error)
+		      ))
+
+
+
+
+
+;;;;
+;;;;               Correlation Structure Prototypes
+;;;;
+;;;;
+;;;; Correlation structures are objects responding to three messages:
+;;;;
+;;;;    :rinv (k alpha times )  returns the inverse of the
+;;;;           correlation matrix for a group with k observations, 
+;;;;           correlation parameters alphas and times/types times.
+;;;;           Some correlation structures would require 
+;;;;          more info, such as a GEE1 type structure needing betas and predictors.
+;;;;    :estimate (r group  times allow-missing) uses Pearson residuals r,
+;;;;          group identifiers  group and time/type numbers t to
+;;;;          estimate alpha and the scale parameter phi and returns
+;;;;          (alpha phi morealpha) where morealpha is anything else you
+;;;;          might want to  know about the correlation structure.
+;;;;          eg for the exchangeable structure it gives the estimated
+;;;;          correlation in each group. 
+;;;;          In fact you can put anything in this list provided phi is the
+;;;;          second element as all the messages which need alpha pass back the
+;;;;          whole thing. As a general rule the first component should be the
+;;;;          thing that is printed out by :prettyprint and should contain
+;;;;          enough information to fit the model.
+;;;;          If allow-missing is nil the structure may stop with an error 
+;;;;          message if it detects missing observations and it cares. 
+;;;;          With allow-missing t
+;;;;          the correlations will be estimated assuming missing completely at
+;;;;          random.
+;;;;          Exchangeable and independence structures don't care about missing
+;;;;          observations. The distinction is that the natural complete-data
+;;;;          algorithm for estimating the correlation still functions when
+;;;;          are missing.
+;;;;
+;;;;    :prettyprint (alpha stream) Print out a nice description of the
+;;;;          working model and its parameter estimates into stream.  
+;;;; 
+;;;;    The prototype is the independence structure
+;;;;
+
+
+(defproto gee-corr-proto)
+
+(defmeth gee-corr-proto :rinv (k alpha times ) (identity-matrix k))
+
+(defmeth gee-corr-proto :estimate (r g times allow-missing) (list nil (/ (length r)(sum (^ r 2)) )))
+
+(defmeth gee-corr-proto :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~% Working Model Prototype~%"))
+
+;;
+;;independence
+;;
+
+(defproto independence-corr () () gee-corr-proto)
+(defmeth independence-corr :prettyprint (&optional  (alpha nil) (stream t)) 
+  (format stream "~%Independence Working Model~%"))
+
+;;;
+;;; user-specified fixed correlation matrix
+;;;
+;;; note: this estimates the scale parameter as 1 to save effort. This has no
+;;; effect on the parameters or their standard errors but may be disconcerting.
+;;; to the user.
+
+(defun fixed-corr (rmat)  (send fixed-corr-proto :new :rmat rmat))
+
+(defproto fixed-corr-proto '(rmat) '() gee-corr-proto)
+
+(defmeth fixed-corr-proto :rmat (&optional (new nil set))
+  (when set 
+	(setf (slot-value 'rmat) new))
+  (slot-value 'rmat)
+)
+
+(defmeth fixed-corr-proto :rinv (k alpha times)
+    (let* (
+	   (decoder (first (third alpha)))
+	   (indices (mapcar #'(lambda (x) (cdr (assoc x decoder))) times))
+	   )
+       (if (= (length indices) (length decoder)) (select (second (third alpha)) indices indices)  (inverse (select (first alpha) indices indices)))))
+
+(defmeth fixed-corr-proto :estimate  (r g times allow-missing)
+ (let* ( 
+	(alltimes (if (null times) 
+		      (error "You must specify times for fixed correlation structure") 
+		    (unique times)))
+	(nn (mapcar #'(lambda (i) (count i times)) alltimes))
+	(ntimes (cond (allow-missing (length alltimes))
+		      ( (apply #'= nn) (length alltimes))
+		      (t (error "Missing (unbalanced) data found with :allow-missing nil"))
+		      ))
+	(ranks (rank alltimes))
+	(decoder (mapcar #'(lambda (x) (cons (elt x 0) (elt x 1))) (row-list (bind-columns alltimes ranks))))
+	)
+ (list (send self :rmat) 1 (list decoder (inverse (send self :rmat))))
+))
+
+
+(defmeth fixed-corr-proto  :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Known Correlation  Working Model: ~% correlation matrix =~%" )
+  (print-matrix (first alpha) stream :float-digits *gee-corr-digits*)
+)
+
+
+
+;;;
+;;;     exchangeable correlation structure
+;;;
+
+
+(defproto exchangeable-corr () () gee-corr-proto)
+
+(defmeth exchangeable-corr :rinv (k alpha times) 
+  (let* ( (alphaa (first alpha))
+	 (aa (+ 1 (* (- k 1) alphaa)))
+	 (R1 (- (identity-matrix k) (* (/ alphaa aa) (one-matrix k))))
+	 )
+    (/ R1 (- 1 alphaa)))
+)
+
+(defun exchcorr-one-group (ri) 
+"Correlation and variance for exchangeable structure
+from one group of Pearson residuals"
+ (let* ( (rri (outer-product ri ri))
+	 (rii (sum (diagonal rri)))
+	 (rij (- (sum rri) rii))
+	 (ni (length ri))
+	 (onlyone (if (= ni 1) 1 0))
+	 )
+    (list  (if (= ni 1) 0 (/ rij (* ni (- ni 1)))) (/ rii ni) onlyone) 
+ ))
+
+
+
+(defmeth exchangeable-corr :estimate (r g times allow-missing)
+  (let* (  (grouplist (unique g))
+	   (n (length grouplist))
+	  (corrs nil)
+	  (corrlist (dolist (gi (coerce grouplist 'list) corrs)
+		  (setf corrs (append  corrs (list (exchcorr-one-group (select r (argselect g gi)))) ))
+		  ))
+	  (corrtotal (apply #'+ corrlist))
+	  (phi (/ n (second corrtotal)))
+	  (alpha (/ (* phi (first corrtotal)) (- n (third corrtotal)))) 
+	  (groupcorrs (mapcar #'(lambda (x) (if (equalp (first x) 0) alpha (/ (first x) (second x) ))) corrlist)) 
+	  )
+    (list alpha phi groupcorrs ))
+)
+
+(defmeth exchangeable-corr :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Exchangeable Working Model:  correlation = ~7,4f~%" (first alpha)))
+
+;;
+;; clustered-corr as an alias for exchangeable-corr
+;;
+
+(defproto clustered-corr () () exchangeable-corr)
+(defmeth clustered-corr  :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Clustered (exchangeable) Working Model:  correlation = ~7,4f~%" (first alpha)))
+
+
+;;;
+;;;  saturated correlation structure
+;;;
+
+; note. To avoid redundant computation we store the inverse of the correlation 
+; matrix in (third alpha) and the matrix itself in (first alpha). The 
+; uninverted matrix is only used for printing out. We also store an 
+; association list with all the times and their ranks
+; in (third alpha) so that we can find the right submatrix
+; when there are missing observations
+
+(defproto saturated-corr () () gee-corr-proto)
+
+(defmeth saturated-corr  :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Saturated Working Model: ~% correlation matrix =~%" )
+  (print-matrix (first alpha) stream :float-digits *gee-corr-digits*)
+)
+
+; This allows missing data, but only if the flag :allow-missing is set
+; Small amounts of missing data are ok. The data must be missing completely at
+; random for the method to be valid.
+
+(defmeth saturated-corr :estimate  (r g times allow-missing)
+ (let* ( 
+	(alltimes (if (null times) 
+		      (error "You must specify times for saturated correlation structure") 
+		    (unique times)))
+	(nn (mapcar #'(lambda (i) (count i times)) alltimes))
+	(ntimes (cond (allow-missing (length alltimes))
+		      ( (apply #'= nn) (length alltimes))
+		      (t (error "Missing (unbalanced) data found with :allow-missing nil"))
+		      ))
+	(ranks (rank alltimes))
+	(decoder (mapcar #'(lambda (x) (cons (elt x 0) (elt x 1))) (row-list (bind-columns alltimes ranks))))
+	(grouplist (coerce (unique g) 'list))
+	(ngroups (length grouplist))
+	(ssp-matrix (zero-matrix ntimes))
+	(count-matrix (zero-matrix ntimes))
+	(junk (dolist (gg grouplist)
+	   (let* ( (thisgroup (argselect g gg))
+		   (indices  (mapcar #'(lambda (x) (cdr (assoc x decoder))) (select times thisgroup)))
+		   (ri (select r thisgroup))
+		   (ssp-inc (outer-product ri ri))
+		   (ssp-subs (+ ssp-inc (select ssp-matrix indices indices)))
+		   (count-inc (one-matrix (length thisgroup)))
+		   (count-subs (+ count-inc (select count-matrix indices indices)))
+		   )
+	     (setf (select ssp-matrix indices indices) ssp-subs)
+	     (setf (select count-matrix indices indices) count-subs)
+	     )
+	   ))
+	(cov-matrix (/ ssp-matrix  count-matrix))
+	(vars (diagonal cov-matrix))
+	(phi (/ (mean vars)))
+	(corrs (* cov-matrix phi))
+	(corr-matrix (+ corrs (diagonal (- (repeat 1 ntimes) (diagonal corrs)))))
+	)
+   (list corr-matrix phi (list decoder (inverse corr-matrix)))
+  ))
+
+
+(defmeth saturated-corr :rinv (k alpha times)
+    (let* (
+	   (decoder (first (third alpha)))
+	   (indices (mapcar #'(lambda (x) (cdr (assoc x decoder))) times))
+	   )
+       (if (= (length indices) (length decoder)) (select (second (third alpha)) indices indices) (inverse (select (first alpha) indices indices)))))
+
+
+
+;;
+;;  saturated correlation structure - ML version
+;;
+;;  this differs from the above in the handling of the diagonal matrix
+;;
+;;  for Normal data it is ML
+
+; note. To avoid redundant computation we store the inverse of the correlation 
+; matrix in (third alpha) and the matrix itself in (first alpha). The 
+; uninverted matrix is only used for printing out. We also store an 
+; association list with all the times and their ranks
+; in (third alpha) so that we can find the right submatrix
+; when there are missing observations
+
+(defproto saturated-ml-corr () () gee-corr-proto)
+
+(defmeth saturated-ml-corr  :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Saturated Working Model (Normal-ML): ~% correlation matrix =~%" )
+  (print-matrix (first alpha) stream :float-digits *gee-corr-digits*)
+)
+
+; This allows missing data, but only if the flag :allow-missing is set
+; Small amounts of missing data are ok. The data must be missing completely at
+; random for the method to be valid.
+
+(defmeth saturated-ml-corr :estimate  (r g times allow-missing)
+ (let* ( 
+	(alltimes (if (null times) 
+		      (error "You must specify times for saturated correlation structure") 
+		    (unique times)))
+	(nn (mapcar #'(lambda (i) (count i times)) alltimes))
+	(ntimes (cond (allow-missing (length alltimes))
+		      ( (apply #'= nn) (length alltimes))
+		      (t (error "Missing (unbalanced) data found with :allow-missing nil"))
+		      ))
+	(ranks (rank alltimes))
+	(decoder (mapcar #'(lambda (x) (cons (elt x 0) (elt x 1))) (row-list (bind-columns alltimes ranks))))
+	(grouplist (coerce (unique g) 'list))
+	(ngroups (length grouplist))
+	(ssp-matrix (zero-matrix ntimes))
+	(count-matrix (zero-matrix ntimes))
+	(junk (dolist (gg grouplist)
+	   (let* ( (thisgroup (argselect g gg))
+		   (indices  (mapcar #'(lambda (x) (cdr (assoc x decoder))) (select times thisgroup)))
+		   (ri (select r thisgroup))
+		   (ssp-inc (outer-product ri ri))
+		   (ssp-subs (+ ssp-inc (select ssp-matrix indices indices)))
+		   (count-inc (one-matrix (length thisgroup)))
+		   (count-subs (+ count-inc (select count-matrix indices indices)))
+		   )
+	     (setf (select ssp-matrix indices indices) ssp-subs)
+	     (setf (select count-matrix indices indices) count-subs)
+	     )
+	   ))
+	(cov-matrix (/ ssp-matrix  count-matrix))
+	(vars (diagonal cov-matrix))
+	(phi (/ (mean vars)))
+	(corr-matrix (* cov-matrix phi))
+	)
+
+   (list corr-matrix phi (list decoder (inverse corr-matrix)))
+  ))
+
+(defmeth saturated-ml-corr :rinv (k alpha times)
+    (let* (
+	   (decoder (first (third alpha)))
+	   (indices (mapcar #'(lambda (x) (cdr (assoc x decoder))) times))
+	   )
+       (if (= (length indices) (length decoder)) (select (second (third alpha)) indices indices) (inverse (select (first alpha) indices indices)))))
+
+
+;;;
+;;;  nonstationary m-dependence correlation structure
+;;;
+;;;  (first alpha) contains the matrix of estimated correlations
+;;;  (third alpha) contains a decoder for the times and the inverse correlation matrix
+;;;
+
+(defun m-dependence (m &key (stationary nil)) (if stationary (send stat-m-dependence-proto :new :m m) (send m-dependence-proto :new :m m)))
+
+(defproto m-dependence-proto '(m) '() gee-corr-proto)
+
+(defmeth m-dependence-proto :m (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns m-dependence parameter."
+  (when set
+	(setf (slot-value 'm) new)
+	)
+  (slot-value 'm))
+
+(defmeth m-dependence-proto :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Nonstationary ~2d - dependence Working Model: ~% correlation matrix =~%" (send self :m) )
+  (print-matrix (first alpha) stream :float-digits *gee-corr-digits*))
+
+(defmeth m-dependence-proto :estimate (r g times allow-missing)
+ (let* ( 
+	(alltimes (if (null times) 
+		      (error "You must specify times for nonstationary m-dependence  structure") 
+		    (unique times)))
+	(nn (mapcar #'(lambda (i) (count i times)) alltimes))
+	(ntimes (cond (allow-missing (length alltimes))
+		      ( (apply #'= nn) (length alltimes))
+		      (t (error "Missing (unbalanced) data found with :allow-missing nil"))
+		      ))
+	(ranks (rank alltimes))
+	(decoder (mapcar #'(lambda (x) (cons (elt x 0) (elt x 1))) (row-list (bind-columns alltimes ranks))))
+	(grouplist (coerce (unique g) 'list))
+	(ngroups (length grouplist))
+	(ssp-matrix (zero-matrix ntimes))
+	(count-matrix (zero-matrix ntimes))
+	(junk (dolist (gg grouplist)
+	   (let* ( (thisgroup (argselect g gg))
+		   (indices  (mapcar #'(lambda (x) (cdr (assoc x decoder))) (select times thisgroup)))
+		   (ri (select r thisgroup))
+		   (ssp-inc (outer-product ri ri))
+		   (ssp-subs (+ ssp-inc (select ssp-matrix indices indices)))
+		   (count-inc (one-matrix (length thisgroup)))
+		   (count-subs (+ count-inc (select count-matrix indices indices)))
+		   )
+	     (setf (select ssp-matrix indices indices) ssp-subs)
+	     (setf (select count-matrix indices indices) count-subs)
+	     )
+	   ))
+	(cov-matrix (/ ssp-matrix  count-matrix))
+	(vars (diagonal cov-matrix))
+	(phi (/ (mean vars)))
+	(corrs (* cov-matrix phi))
+	(corr-matrix (band-matrix (send self :m) (+ corrs (diagonal (- (repeat 1 ntimes) (diagonal corrs))))))
+	)
+   (list corr-matrix phi (list decoder (inverse corr-matrix)))
+  )) 
+	 
+
+(defmeth m-dependence-proto :rinv (k alpha times)
+    (let* (
+	   (decoder (first (third alpha)))
+	   (indices (mapcar #'(lambda (x) (cdr (assoc x decoder))) times))
+	   )
+       (if (= (length indices) (length decoder)) (select (second (third alpha)) indices indices) (inverse (select (first alpha) indices indices)))))
+
+;;;
+;;;  Stationary m-dependence correlation structure
+;;;
+;;;  (first alpha) contains the matrix of estimated correlations
+;;;  (third alpha) contains a decoder for the times and the inverse correlation matrix
+;;;
+
+(defun stat-m-dependence (m) (send stat-m-dependence-proto :new :m m))
+
+(defproto stat-m-dependence-proto '(m) '() gee-corr-proto)
+
+(defmeth stat-m-dependence-proto :m (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns m-dependence parameter."
+  (when set
+	(setf (slot-value 'm) new)
+	)
+  (slot-value 'm))
+
+(defmeth stat-m-dependence-proto :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Stationary ~2d - dependence Working Model: ~% correlation matrix =~%" (send self :m) )
+  (print-matrix (first alpha) stream :float-digits *gee-corr-digits*))
+
+
+(defmeth stat-m-dependence-proto :estimate (r g times allow-missing)
+ (let* ( 
+	(alltimes (if (null times) 
+		      (error "You must specify times for stationary m-dependence  structure") 
+		    (unique times)))
+	(nn (mapcar #'(lambda (i) (count i times)) alltimes))
+	(ntimes (cond (allow-missing (length alltimes))
+		      ( (apply #'= nn) (length alltimes))
+		      (t (error "Missing (unbalanced) data found with :allow-missing nil"))
+		      ))
+	(ranks (rank alltimes))
+	(decoder (mapcar #'(lambda (x) (cons (elt x 0) (elt x 1))) (row-list (bind-columns alltimes ranks))))
+	(grouplist (coerce (unique g) 'list))
+	(ngroups (length grouplist))
+	(ssp-matrix (zero-matrix ntimes))
+	(count-matrix (zero-matrix ntimes))
+	(junk (dolist (gg grouplist)
+	   (let* ( (thisgroup (argselect g gg))
+		   (indices  (mapcar #'(lambda (x) (cdr (assoc x decoder))) (select times thisgroup)))
+		   (ri (select r thisgroup))
+		   (ssp-inc (outer-product ri ri))
+		   (ssp-subs (+ ssp-inc (select ssp-matrix indices indices)))
+		   (count-inc (one-matrix (length thisgroup)))
+		   (count-subs (+ count-inc (select count-matrix indices indices)))
+		   )
+	     (setf (select ssp-matrix indices indices) ssp-subs)
+	     (setf (select count-matrix indices indices) count-subs)
+	     )
+	   ))
+	(cov-matrix (band-matrix (send self :m) (/ ssp-matrix  count-matrix)))
+	(vars (diagonal cov-matrix))
+	(phi (/ (mean vars)))
+	(corr-matrix (* (band-average  cov-matrix) phi))
+       	)
+   (list corr-matrix phi (list decoder (inverse corr-matrix)))
+  )) 
+	 
+
+(defmeth stat-m-dependence-proto :rinv (k alpha times)
+    (let* (
+	   (decoder (first (third alpha)))
+	   (indices (mapcar #'(lambda (x) (cdr (assoc x decoder))) times))
+	   )
+       (if (= (length indices) (length decoder)) (select (second (third alpha)) indices indices) (inverse (select (first alpha) indices indices)))))
+
+;;;
+;;; AR-1 correlation structure
+;;;
+;;; (first-order autoregressive)
+
+
+(defproto AR-1-corr () () gee-corr-proto)
+
+
+(defmeth AR-1-corr :prettyprint (&optional  (alpha nil) (stream t) ) 
+  (format stream "~%Autoregressive (AR-1) Working Model: correlation ~7,4f~%" (first alpha))
+)
+
+(defmeth AR-1-corr :estimate (r g times allow-missing)
+  (let* (
+	 (stat1 (send (stat-m-dependence 1) :estimate r g times allow-missing))
+	 (rho (select (first stat1) 1 0))
+	 (phi (second stat1))
+	 (ntimes (length (unique times)))
+	 (decoder (first (third stat1)))
+	 (corr-matrix (^ rho (abs (outer-product (iseq 1 ntimes) (iseq 1 ntimes) #'-))))
+	 )
+    (list rho phi (list decoder (inverse corr-matrix) corr-matrix))
+    )
+)
+
+
+(defmeth AR-1-corr :rinv (k alpha times)
+    (let* (
+	   (decoder (first (third alpha)))
+	   (indices (mapcar #'(lambda (x) (cdr (assoc x decoder))) times))
+	   )
+       (if (= (length indices) (length decoder)) (select (second (third alpha)) indices indices) (inverse (select (third (third alpha)) indices indices)))))
+
+
+
+
+;;;;
+;;;;
+;;;;                The General GEE Prototype
+;;;;
+;;;;
+
+(defproto gee-proto 
+  '(y x  times  group link varfun corr-structure offset pweights
+      alpha beta scale allow-missing
+	 epsilon epsilon-dev count-limit verbose recycle
+	 eta quasideviance covariance-matrix naive-covariance-matrix needs-computing
+	 intercept response-name predictor-names group-names case-labels formula scores
+	 working-residuals cluster-influences weight-blocks
+	 group-plots observation-plots)
+  '() 
+  *object*
+  "GEE -- Correlated data marginal GLM")
+
+;; defined as an *object* because the fitting method is different from the 
+;; linear model -- iteratively reweighted least squares with non-diagonal 
+;; weight matrix is too slow and complicated. 
+
+;;;;
+;;;; Slot Accessors
+;;;;
+
+(defmeth gee-proto :y (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns dependent variable."
+  (when set
+	(setf (slot-value 'y) new)
+	(send self :needs-computing t))
+  (slot-value 'y))
+
+(defmeth gee-proto :alpha (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns correlation parameters."
+  (when set
+	(setf (slot-value 'alpha) new)
+	(send self :needs-computing t))
+ (slot-value 'alpha))
+
+(defmeth gee-proto :needs-computing (&optional (new nil set))
+  (when set (setf (slot-value 'needs-computing) new))
+  (slot-value 'needs-computing))
+
+(defmeth gee-proto :intercept (&optional (val nil set))
+"Message args: (&optional new-intercept)
+With no argument returns T if the model includes an intercept term, nil if
+not. With an argument NEW-INTERCEPT the model is changed to include or
+exclude an intercept, according to the value of NEW-INTERCEPT."
+  (when set 
+	(setf (slot-value 'intercept) val)
+	(send self :needs-computing t))
+  (slot-value 'intercept))
+
+(defmeth gee-proto :times (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns time column"
+  (when set
+	(setf (slot-value 'times) new)
+	(send self :needs-computing t))
+  (slot-value 'times))
+
+(defmeth gee-proto :scale (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns scale parameter."
+  (when set
+	(setf (slot-value 'scale) new)
+	)
+  (slot-value 'scale))
+
+(defmeth gee-proto :allow-missing (&optional (new nil set))
+"Message args: (&optional new)
+Flag to control missing data in correlation estimates.
+When nil the program will not estimate correlations if
+it detects missing data: ie for saturated structure all 
+groups must be the same size, for autoregressive or 
+m-dependence structures the observations must have no gaps."
+  (when set
+	(setf (slot-value 'allow-missing) new)
+	)
+  (slot-value 'allow-missing))
+
+(defmeth gee-proto :xnames (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns predictor names ."
+  (when set
+	(setf (slot-value 'xnames) new))
+  (slot-value 'xnames))
+
+(defmeth gee-proto :ynames (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns dependent variable name."
+  (when set
+	(setf (slot-value 'ynames) new))
+  (slot-value 'ynames))
+
+(defmeth gee-proto :link (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns link object."
+  (when set
+	(setf (slot-value 'link) new)
+	(send self :needs-computing t))
+  (slot-value 'link))
+
+(defmeth gee-proto :varfun (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns variance function object."
+  (when set
+	(setf (slot-value 'varfun) new)
+	(send self :needs-computing t))
+  (slot-value 'varfun))
+
+(defmeth gee-proto :corr-structure (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns correlation structure object."
+  (when set
+	(setf (slot-value 'corr-structure) new)
+	(send self :needs-computing t))
+  (slot-value 'corr-structure))
+
+(defmeth gee-proto :offset (&optional (new nil set))
+"Message args: (&optional (new nil set))
+Sets or returns offset values."
+  (when set
+	(setf (slot-value 'offset) new)
+	(send self :needs-computing t))
+  (slot-value 'offset))
+
+(defmeth gee-proto :pweights (&optional (new nil set))
+"Message args: (&optional (new nil set))
+Sets or returns prior weights."
+  (when set
+	(setf (slot-value 'pweights) new)
+	(send self :needs-computing t))
+  (slot-value 'pweights))
+
+(defmeth gee-proto :group (&optional (new nil set))
+"Message args: (&optional (new nil set))
+Sets or returns group indicator."
+  (when set
+	(setf (slot-value 'group) new)
+	(send self :needs-computing t))
+  (slot-value 'group))
+
+(defmeth gee-proto :scale (&optional (new nil set))
+"Message args: (&optional (new nil set))
+Sets or returns value of scale parameter."
+  (if set 
+      (setf (slot-value 'scale)  new))
+  (slot-value 'scale))
+
+(defmeth gee-proto :epsilon (&optional new)
+"Message args: (&optional new)
+Sets or returns tolerance for relative change in coefficients."
+  (if new (setf (slot-value 'epsilon) new))
+  (slot-value 'epsilon))
+
+(defmeth gee-proto :epsilon-dev (&optional new)
+"Message args: (&optional new)
+Sets or returns tolerance for change in quasideviance."
+  (if new (setf (slot-value 'epsilon-dev) new))
+  (slot-value 'epsilon-dev))
+
+(defmeth gee-proto :count-limit (&optional new)
+"Message args: (&optional new)
+Sets or returns maximum number of itrations."
+  (if new (setf (slot-value 'count-limit) new))
+  (slot-value 'count-limit))
+
+(defmeth gee-proto :recycle (&optional (new nil set))
+"Message args: (&optional new)
+Sets or returns recycle option. If option is not NIL, current values
+are used as initial values by :COMPUTE method."
+  (when set
+	(setf (slot-value 'recycle) new))
+  (slot-value 'recycle))
+
+(defmeth gee-proto :verbose (&optional (val nil set))
+"Message args: (&optional (val nil set))
+Sets or returns VERBOSE option. Iteration info is printed if option
+is not NIL."
+  (if set (setf (slot-value 'verbose) val))
+  (slot-value 'verbose))
+
+(defmeth gee-proto :formula (&optional (new nil set))
+ "Message args: (&optional new)
+Sets or returns model formula. "
+  (when set
+	(setf (slot-value 'formula) new))
+  (slot-value 'formula))
+
+(defmeth gee-proto :eta ()
+"Message args: ()
+Returns linear predictor values for current fit."
+    (slot-value 'eta))
+
+(defmeth gee-proto :set-eta (&optional val)
+  (if val
+      (setf (slot-value 'eta) val)
+      (setf (slot-value 'eta)
+	    (+ (send self :offset) (matmult (send self :x-matrix) (send self :beta)))))
+  (slot-value 'eta))
+
+(defmeth gee-proto :beta ()
+"Message args: ()
+Returns coefficient values for current fit."
+  (slot-value 'beta))
+
+(defmeth gee-proto :coef-estimates () "Message args: ()
+Returns coefficient values for current fit."
+(slot-value 'beta))
+
+(defmeth gee-proto :set-beta (val)
+  "set coefficient estimates: only done from within compute-step-beta
+   and :initialize-search"
+  (setf (slot-value 'beta) val)
+  (slot-value 'beta)
+)
+
+(defmeth gee-proto :covariance-matrix ()
+ (if  (send self :needs-computing) (send self :compute))
+  (slot-value 'covariance-matrix))
+
+(defmeth gee-proto :set-covariance-matrix (val)
+    (setf  (slot-value 'covariance-matrix) val))
+
+(defmeth gee-proto :naive-covariance-matrix ()
+ (if  (send self :needs-computing) (send self :compute))
+  (slot-value 'naive-covariance-matrix))
+
+(defmeth gee-proto :set-naive-covariance-matrix (val)
+    (setf  (slot-value 'naive-covariance-matrix) val))
+
+(defmeth gee-proto :quasideviance ()
+"Message args: ()
+Returns deviances for durrent fit."
+  (slot-value 'quasideviance))
+
+(defmeth gee-proto :set-deviances (val)
+  (setf (slot-value 'quasideviance) val ))
+
+(defmeth gee-proto :num-cases ()
+  (length (first (column-list (send self :x)))))
+
+(defmeth gee-proto :x (&optional x)
+"Arguments: &optional x
+Sets or returns predictor variables (without intercept). These may be a matrix, a single sequence or a list of sequences. See also :x-matrix"
+  (if x
+      (let ((x (cond
+		((matrixp x) x)
+		((vectorp x) (list x))
+		((and (consp x) (numberp (car x))) (list x))
+		(t x))))
+	(setf (slot-value 'x) (if (matrixp x) x (apply #'bind-columns x))))
+  (slot-value 'x) )
+)
+
+(defmeth gee-proto :conf-interval (&key transform (coverage 0.95) (names t))
+"Arguments: &key transform (coverage 0.95) (names t)
+Produces a matrix of Wald confidence intervals for beta with predictor
+names if requested  and optionally transforms them to a different scale"
+(let* ((beta (send self :beta))
+       (se (sqrt (diagonal (send self :covariance-matrix))))
+       (zalpha (normal-quant (+ coverage (/ (- 1 coverage) 2))))
+       (baseci (apply #'bind-columns (list beta (- beta (* zalpha se)) (+ beta (* zalpha se)))))
+       (xform (if (null transform) baseci (funcall transform baseci)))
+       (name-list (if (send self :intercept) (cons "Intercept" (send self :predictor-names)) (send self :predictor-names)))
+       )
+  (if names (bind-columns name-list xform) xform)
+))
+
+
+(defmeth gee-proto :x-matrix ()
+"Returns the design matrix (including intercept if present). See also :x"
+  (cond ( (send self :intercept) (bind-columns (repeat 1 (length (send self :y))) (send self :x)))
+	(t (send self :x))
+  ))
+
+(defmeth gee-proto :coef-standard-errors ()
+(sqrt (diagonal (send self :covariance-matrix))))
+
+(defmeth gee-proto :naive-coef-standard-errors ()
+ (sqrt (diagonal (send self :naive-covariance-matrix))))
+
+(defmeth gee-proto :predictor-names (&optional (names nil set))
+"Message args: (&optional (names nil set))
+With no argument returns the predictor names. NAMES sets the names."
+  (if set (setf (slot-value 'predictor-names) (mapcar #'string names)))
+  (let ((p (array-dimension (send self :x) 1))
+	(p-names (slot-value 'predictor-names)))
+    (if (not (and p-names (= (length p-names) p)))
+	(setf (slot-value 'predictor-names)
+	      (mapcar #'(lambda (a) (format nil "Variable ~a" a)) 
+		      (iseq 0 (- p 1))))))
+  (slot-value 'predictor-names))
+
+(defmeth gee-proto :response-name (&optional (name "Y" set))
+"Message args: (&optional name)
+With no argument returns the response name. NAME sets the name."
+  (if set (setf (slot-value 'response-name) (if name (string name) "Y")))
+  (slot-value 'response-name))
+
+(defmeth gee-proto :case-labels (&optional (labels nil set))
+"Message args: (&optional labels)
+With no argument returns the case-labels. LABELS sets the labels."
+  (if set (setf (slot-value 'case-labels) 
+		(if labels 
+		    (mapcar #'string labels)
+		    (mapcar #'(lambda (x) (format nil "~d" x)) 
+			    (iseq 0 (- (send self :num-cases) 1))))))
+  (slot-value 'case-labels))
+
+;;;
+;;;                   diagnostic methods
+;;;
+
+;;
+;; quantities used in diagnostic calculations
+;;
+(defmeth gee-proto :scores (&optional (new nil set))
+  (when set
+	(setf (slot-value 'scores) new))
+  (slot-value 'scores))
+
+(defmeth gee-proto :working-residuals (&optional (new nil set))
+  (when set
+	(setf (slot-value 'working-residuals) new))
+  (slot-value 'working-residuals))
+
+(defmeth gee-proto :cluster-influences (&optional (new nil set))
+  (when set
+	(setf (slot-value 'cluster-influences) new))
+  (slot-value 'cluster-influences))
+
+(defmeth gee-proto :weight-blocks (&optional (new nil set))
+  (when set
+	(setf (slot-value 'weight-blocks) new))
+  (slot-value 'weight-blocks))
+
+;;
+;; plot-linking methods
+;; 
+
+(defmeth gee-proto :bind-plot-to-gee (plot unit)
+  (send plot :add-slot 'linked-gee self)
+  (send plot :add-slot 'link-unit unit)
+  (defmeth plot :links ()
+    (let* ((link-list (send (slot-value 'linked-gee) :linked-plots (slot-value 'link-unit))))
+      (if (member self link-list) link-list)
+      ))
+  (defmeth plot :linked (&optional (link nil set))
+    (when set
+	  (if link 
+	      (send (slot-value 'linked-gee) :add-link (slot-value 'link-unit) self)
+	    (send (slot-value 'linked-gee) :drop-link (slot-value 'link-unit) self)
+	    )
+	  ;(call-next-method link)
+	  )
+    (call-next-method)
+    )
+  (send plot :linked t)
+)
+
+
+(defmeth gee-proto :linked-plots (unit &optional (new nil set))
+"Arguments: unit  &optional (new nil set)
+Sets or returns the list of linked plots
+unit is +group+ or +observation+"
+(when set
+      (if (= unit +group+) 
+	  (setf (slot-value 'group-plots) new)
+	(setf (slot-value 'observation-plots) new)
+      ))
+(if (= unit +group+) (slot-value 'group-plots) (slot-value 'observation-plots))
+)
+
+
+(defmeth gee-proto :drop-link (unit plot)
+(if (= unit +group+)
+    (setf (slot-value 'group-plots) (remove plot (slot-value 'group-plots)))
+  (setf (slot-value 'observation-plots) (remove plot (slot-value 'observation-plots)))
+  ))
+
+
+(defmeth gee-proto :add-link (unit plot)
+(if (= unit +group+)
+    (setf (slot-value 'group-plots) (cons plot (slot-value 'group-plots)))
+  (setf (slot-value 'observation-plots) (cons plot (slot-value 'observation-plots)))
+  ))
+
+
+;;;
+;;; residuals
+;;;
+
+(defmeth gee-proto :raw-residuals () 
+"Message args: ()
+Returns the raw residuals for a model."
+  (- (send self :y) (send self :fit-means)))
+
+(defmeth gee-proto :pearson-residuals  ()
+ "Returns Pearson residuals"
+(send (send self :varfun) :pearson-resid (send self :y) (send self :fit-means))
+)
+
+(defmeth gee-proto :standardised-residuals ()
+"Pearson residuals standardised by working correlation" 
+(let* ((pres (send self :pearson-residuals))
+       (times (send self :times))
+       (groups (send self :group))
+       (grouplist (unique groups))
+       (timelist (unique times))
+       (corr (send self :corr-structure))
+       (Rinv-old (identity-matrix (length timelist)))
+       (sqrtRinv (identity-matrix (length timelist)))
+       (alpha (send self :alpha))
+       (junk (dolist (g (coerce grouplist 'list) pres)
+		     (let* (
+			    (thisgroup (argselect groups g))
+			    (ni (length thisgroup))
+			    (thesetimes (if (null timelist) nil (select times thisgroup)))
+			    (Rinv (send corr :rinv ni alpha thesetimes))
+			    )
+		       (if (null (equal Rinv Rinv-old) ) (setf sqrtRinv (first (chol-decomp Rinv))))
+		       (setf (select pres thisgroup) (matmult sqrtRinv (select pres thisgroup)))
+		       )))
+       )
+  pres)
+)
+
+(defmeth gee-proto :plot-standardised-residuals (&rest graphargs &key variable (smooth t) (show-labels t))
+"Arguments: &rest graphargs &key variable (smooth t) (show-labels t)
+Plot decorrelated Pearson residuals against eta or variable
+with group hiliting mode available"
+(cond ((compound-data-p variable) (mapcar #'(lambda (x) (send self :plot-standardised-residuals :variable x :smooth smooth :show-labels show-labels)) variable))
+      (t
+       (let* ((stdres (send self :standardised-residuals))
+	      (xaxis (if (and variable (> variable 0)) (select (column-list (send self :x-matrix)) variable) (send self :eta)))
+	      (xname (if (and variable (> variable 0)) (select (send self :predictor-names) ( - variable 1)) "Linear Predictor"))
+	      (plot (if smooth (apply #'scatter-smooth (append (list xaxis stdres :variable-labels (list xname "Standardised Resid")) graphargs)) (apply #'plot-points (append (list xaxis stdres :variable-labels (list xname "Standardised Resid")) graphargs))))
+	      )
+	 (send plot :add-group-hilite (send self :group))
+	 (send plot :mouse-mode 'group-hilite)
+	 (if show-labels (send plot :showing-labels t))
+	 (send self :bind-plot-to-gee plot +observation+)
+	 plot
+	 )
+       )
+      )
+)
+
+(defmeth gee-proto :plot-pearson-residuals (&rest graphargs &key variable (smooth t) (show-labels t))
+"&rest graphargs &key variable (smooth t) (show-labels t)
+Plot Pearson residuals against eta or variable
+with group hiliting mode available"
+(cond ((compound-data-p variable) (mapcar #'(lambda (x) (send self :plot-pearson-residuals :variable x :smooth smooth :show-labels show-labels)) variable))
+      (t 
+       (let* ((pres (send self :pearson-residuals))
+	      (xaxis (if (and variable (> variable 0)) (select (column-list (send self :x-matrix)) variable) (send self :eta)))
+	      (xname (if (and variable (> variable 0)) (select (send self :predictor-names) ( - variable 1)) "Linear Predictor"))
+	      (plot (if smooth (apply #'scatter-smooth (append (list xaxis pres :variable-labels (list xname "Pearson Resid")) graphargs)) (apply #'plot-points (append (list xaxis pres :variable-labels (list xname "Pearson Resid")) graphargs))))
+	      )
+	 (send plot :add-group-hilite (send self :group))
+	 (send plot :mouse-mode 'group-hilite)
+	 (if show-labels (send plot :showing-labels t))
+	 (send self :bind-plot-to-gee plot +observation+)
+	 plot
+	 )
+       )
+      )
+)
+
+(defmeth gee-proto :deviance-residuals ()
+"Independence model deviance residuals"
+(let* ((y (send self :y))
+       (mu (send self :fit-means))
+       (varfun (send self :varfun))
+       )
+  (mapcar #'(lambda (a b) (* (sign (- a b)) (sqrt (send varfun :quasi-deviance a b)))) y mu)
+))
+
+
+(defmeth gee-proto :plot-deviance-residuals (&rest graphargs &key variable (smooth t) (show-labels t))
+"&rest graphargs &key variable (smooth t) (show-labels t)
+Plot deviance residuals against eta or variable
+with group hiliting mode available"
+(cond ((compound-data-p variable) (mapcar #'(lambda (x) (send self :plot-deviance-residuals :variable x :smooth smooth :show-labels show-labels)) variable))
+      (t 
+       (let* ((res (send self :deviance-residuals))
+	      (xaxis (if (and variable (> variable 0)) (select (column-list (send self :x-matrix)) variable) (send self :eta)))
+	      (xname (if (and variable (> variable 0)) (select (send self :predictor-names) ( - variable 1)) "Linear Predictor"))
+	      (plot (if smooth (apply #'scatter-smooth (append (list xaxis res :variable-labels (list xname "Deviance Resid")) graphargs)) (apply #'plot-points (append (list xaxis res :variable-labels (list xname "Deviance Resid")) graphargs))))
+	      )
+	 (send plot :add-group-hilite (send self :group))
+	 (send plot :mouse-mode 'group-hilite)
+	 (if show-labels (send plot :showing-labels t))
+	  (send self :bind-plot-to-gee plot +observation+)
+	plot
+	 )
+       )
+      )
+)
+
+
+(defmeth gee-proto :group-names ()
+(mapcar #'(lambda (xx) (write-to-string xx :escape nil)) (unique (send self :group)))
+)
+
+
+;;
+;;  deletion diagnostics: 
+;;  Preisser & Qaqish (1996 preprint)
+;;
+
+(defconstant +not-group+ 0)
+(defconstant +group+ 1)
+(defconstant +observation+ 0)
+(defconstant +cluster+ 1)
+
+(defmeth gee-proto :leverage (&key (unit +observation+))
+"Leverage values for group or observation, from Preisser & Qaqish."
+(let* ((Hi (send self :cluster-influences)) 
+      )
+  (cond ((null Hi)                      ;;was it  computed earlier ?
+	 (when (send self :verbose) (format t "~&computing diagnostic information~%"))
+	 (send self :compute-step-beta t) 
+	 (send self :leverage :unit unit)
+	 )
+	((= unit +group+) (mapcar #'(lambda (x) (list (first x) (matrix-trace (third x)))) Hi)
+	 )
+	((= unit +observation+)
+	 (let* (
+		(rankij (argrank (apply #'append (mapcar #'second Hi))))
+		(hij (apply #'append  (mapcar #'(lambda (x) (diagonal (third x))) Hi)))
+		)
+	   (select hij rankij)
+	   )
+	 )
+	(t (error "Can't happen in :leverage"))
+	)
+  )
+)
+       
+(defmeth gee-proto :plot-leverage (&rest graphargs &key (unit +observation+) (show-labels t))
+"Plot group or individual leverages with link to other plots, and group 
+hiliting for individual leverages plot"
+(cond ((= unit +group+)
+       (let* ((infl (send self :leverage :unit +group+))
+	      (infseq (mapcar #'second infl))
+	      (rankseq (argrank (mapcar #'first infl)))
+	      (rankg (argrank (unique (send self :group))))
+	      (lbls (select (send self :group-names) rankg))
+	      (plot (apply #'plot-points (append (list (iseq 1 (length infseq)) (select infseq rankseq) :variable-labels (list "Index" "Leverage") :point-labels lbls) graphargs)))
+	      )
+	 (if show-labels (send plot :showing-labels t))
+	 (send self :bind-plot-to-gee plot +group+)
+	 plot
+	 )
+       )
+      ((= unit +observation+)
+       (let* ((res (send self :leverage :unit +observation+))
+	      (plot (apply #'index-plot (append (list  res :variable-labels (list "Index" "Leverage") :show-labels show-labels) graphargs)))
+	     )
+	 (send plot :add-group-hilite (send self :group))
+	 (send plot :mouse-mode 'group-hilite)
+	 (if show-labels (send plot :showing-labels t))
+	 (send self :bind-plot-to-gee plot +observation+)
+	 plot
+	 )
+       )
+      (t 
+       (error "invalid value of unit in :plot-leverage")
+       )
+      )
+)
+
+
+(defmeth gee-proto :dbeta (&key (unit +observation+))
+"Deletion diagnostics DBETAC, DBETAO of Preisser & Qaqish"
+(let* ((H (send self :cluster-influences)) ;;was it  computed earlier ?
+      )
+  (cond ((null H)	
+	 (when (send self :verbose) (format t "~&computing diagnostic information~%"))
+	 (send self :compute-step-beta t) 
+	 (send self :dbeta :unit unit)
+	 )
+	((= unit +group+)
+	 (let* (
+		(W (send self :weight-blocks))
+		(groups (send self :group))
+		(grouplist (unique groups))
+		(E (send self :working-residuals))
+		(XWXinv  (send self :naive-covariance-matrix))
+		(p (first (array-dimensions XWXinv)))
+		(p-1 (- p 1))
+		(dbeta nil)
+		)
+	   (dolist (g grouplist dbeta)
+		   (let* ((thisgroup (argselect groups g))
+			  (Xi (select (send self :x-matrix) thisgroup (iseq p)))
+			  (Ei (second (assoc g E :test #'equal)))
+			  (Wi (third (assoc g W :test #'equal)))
+			  (Hi (third (assoc g H :test #'equal)))
+			  (dbetai (matmult XWXinv (transpose Xi) Wi (- (identity-matrix (length thisgroup)) Hi) Ei))
+			  )
+		     (setf dbeta (cons (list g dbetai) dbeta))
+		     )
+		   )
+	   dbeta
+	   )
+	 )
+	((= unit +observation+)
+	  (let* (
+		(W (send self :weight-blocks))
+		(groups (send self :group))
+		(grouplist (unique groups))
+		(E (send self :working-residuals))
+		(XWXinv (send self :naive-covariance-matrix))
+		(p (first (array-dimensions XWXinv)))
+		(ndbeta nil)
+		(junk (dolist (g grouplist ndbeta)
+			      (let* ((thisgroup (argselect groups g))
+				     (Xi (select (send self :x-matrix) thisgroup (iseq p)))
+				     (Ei (second (assoc g E :test #'equal)))
+				     (Wi (third (assoc g W :test #'equal)))
+				     (Hi (third  (assoc g H :test #'equal)))
+				     (Vi (inverse Wi))
+				     (ni (length thisgroup))
+				     )
+				(dolist (j (iseq ni))
+					(let* (
+					       (notj (remove j (iseq ni)))
+					       (Xij (select Xi j (iseq p)))
+					       (Xi-j (select Xi notj (iseq p)))
+					       (Eij (select Ei j))
+					       (Ei-j (select Ei notj))
+					       (Wij (select Wi j j))
+					       (Vi-j (select Vi notj notj))
+					       (Vji-j (select Vi j notj))
+					       (VVinv (matmult Vji-j (inverse Vi-j)))
+					       (tXij (- Xij (matmult VVinv Xi-j)))
+					       (tEij (- Eij (matmult VVinv Ei-j)))
+					       (tQij (select (matmult tXij XWXinv (transpose tXij)) 0  0))
+					       (db (coerce (first (row-list (apply #'* Xij (/ tEij (- (/ Wij) tQij))))) 'list))
+					       )
+					  (setf ndbeta (cons (append (select thisgroup (list j)) db) ndbeta))
+					  )
+					)
+				)
+			      ))
+		(coldbeta (column-list (apply #'bind-rows ndbeta)))
+		(dbeta (row-list  (matmult  (apply #'bind-columns (cdr coldbeta)) XWXinv  )))
+		(rankij (argrank (mapcar #'first ndbeta)))
+		)
+	    (select dbeta rankij)
+	    )
+	  )
+	(t (error "Can't happen in :dbeta"))
+	)
+  )
+)
+	   
+(defmeth gee-proto :plot-dbeta (&rest graphargs  &key (unit +observation+) variable (show-labels t))
+ (cond  ((= unit +group+)
+	 (let* ((dbeta (send self :dbeta :unit +group+))
+		(rankdb (argrank (mapcar #'first dbeta)))
+		(db (column-list (apply #'bind-rows (select (mapcar #'second dbeta) rankdb))))
+		(rankg (argrank (unique (send self :group))))
+		(gnames (select (send self :group-names) rankg))
+		(varnames (if (send self :intercept) (cons "intercept" (send self :predictor-names)) (send self :predictor-names)))
+		(indices (if (null variable) (iseq  (length db))  variable))
+		(plots (mapcar #'(lambda (i) (apply #'index-plot (append (list (elt db i) :point-labels gnames :title (elt varnames i) :variable-labels (list "Index" "Cluster DBETA")) graphargs)))   indices))
+		)
+	   (if show-labels (mapcar #'(lambda (x) (send x :showing-labels t)) plots))
+	   (mapcar #'(lambda (x) (send self :bind-plot-to-gee x +group+)) plots)
+	   plots
+	   ))
+	
+	((= unit +observation+)
+	 (let* ((db (column-list (apply #'bind-rows (send self :dbeta :unit +observation+))))
+		(indices (if (null variable) (iseq  (length db))  variable))
+		(varnames (if (send self :intercept) (cons "intercept" (send self :predictor-names)) (send self :predictor-names)))
+		(plots (mapcar #'(lambda (i) (apply #'index-plot (append (list (elt db i)  :title (elt varnames i) :variable-labels (list "Index" "Observation DBETA")) graphargs)))   indices))
+		)
+	   (mapcar #'(lambda (x)
+		       (send x :add-group-hilite (send self :group)) 
+		       (send x :mouse-mode 'group-hilite)
+		       )
+		   plots)
+	   (if show-labels (mapcar #'(lambda (x) (send x :showing-labels t)) plots))
+	   (mapcar #'(lambda (x) (send self :bind-plot-to-gee x +observation+)) plots)
+	plots
+	   ))
+	(t 
+	 (error "Invalid value of unit in :plot-dbeta.")
+	 )
+	)
+)
+
+
+(defmeth gee-proto :cooks-distance (&key (unit +observation+))
+"Generalisation of Cook's distance to GEEs"
+(let* ((dbeta (send self :dbeta :unit unit))
+       (scale (send self :scale))
+       (p (length (send self :beta)))
+       (XWX (inverse (send self :naive-covariance-matrix)))
+       )
+  (cond ((= unit +observation+)
+	 (/ (mapcar #'(lambda (dbi) (inner-product dbi (matmult  XWX dbi))) dbeta) (* p scale))
+	 )
+	((= unit +group+)
+	  (mapcar #'(lambda (dbi) (list (first dbi) (/ (inner-product (second dbi)(matmult  XWX (second dbi))) (* p scale)))) dbeta)
+	 )
+	(t (error "~&Invalid value of unit in :cook-distance~%"))
+	)
+  )
+)
+
+
+(defmeth gee-proto :plot-cooks-distance (&rest graphargs &key (unit +observation+) (show-labels t))
+"Plot group or individual Cook's distance with link to other plots, and group 
+hiliting for individual leverages plot"
+(cond ((= unit +group+)
+       (let* ((infl (send self :cooks-distance :unit +group+))
+	      (infseq (mapcar #'second infl))
+	      (rankseq (argrank (mapcar #'first infl)))
+	      (rankg (argrank (unique (send self :group))))
+	      (lbls (select (send self :group-names) rankg))
+	      (plot (apply #'plot-points (append (list (iseq 1 (length infseq)) (select infseq rankseq) :variable-labels (list "Index" "Cook's distance") :point-labels lbls) graphargs)))
+	      )
+	 (if show-labels (send plot :showing-labels t))
+	 (send self :bind-plot-to-gee plot +group+)
+	 plot
+	 )
+       )
+      ((= unit +observation+)
+       (let* ((res (send self :cooks-distance :unit +observation+))
+	      (plot (apply #'index-plot (append (list  res :variable-labels (list "Index" "Cook's distance") :show-labels show-labels) graphargs)))
+	     )
+	 (send plot :add-group-hilite (send self :group))
+	 (send plot :mouse-mode 'group-hilite)
+	 (if show-labels (send plot :showing-labels t))
+	 (send self :bind-plot-to-gee plot +observation+) 
+	 plot
+	 )
+       )
+      (t 
+       (error "invalid value of unit in :plot-cooks-distance")
+       )
+      )
+)
+
+;;
+;; initialisation methods
+;;
+
+(defmeth gee-proto :domain-error (eta)
+"Checks whether we have invalid values of eta"
+(let* ((link (send self :link))
+       (varfun (send self :varfun))
+       )
+  (null (if (send link :valideta eta) (send varfun :validmu (send link :means eta)) nil))))
+
+
+(defmeth gee-proto :initialize-search ()
+  (let* (
+	 (p (second (array-dimensions (send self :x-matrix))))
+	 )
+  (send self :alpha nil)
+  (cond ( (null (send self :domain-error 0)) (send self :set-beta (repeat 0 p)))
+	( (send self :intercept) (send self :set-beta (append (list 0.5) (repeat 0 (- p 1)))))
+	(t (let* ((y (send self :y))
+		  (x (column-list (send self :x-matrix)))
+		  (ybar (mean y))
+		  (link (send self :link))
+		  (etabar (if (send link :validmu ybar) (send link :eta ybar) (error "I need help. Please specify starting values using :init-beta~%")))
+		  (beta0 (send self :set-beta (/ etabar (* p (mapcar #'mean x)))))
+		  (eta0 (send self :set-eta))
+		  )
+	     (if (send self :domain-error eta0) 
+		 (error "I need help. Please specify starting values using :init-beta~%") )
+	     ))
+	)
+  )
+  (send self :set-eta)
+)
+
+(defmeth gee-proto :fit-means (&optional (eta (send self :eta)))
+"Message args: (&optional (eta (send self :eta)))
+Retruns mean values for current or supplied ETA."
+  (send (send self :link) :means eta))
+
+;;;
+;;; :COMPUTE method -- does all the work
+;;;
+
+(defmeth gee-proto :compute ()
+"Refits the model"
+(let* ((epsilon (send self :epsilon))
+       (epsilon-dev (send self :epsilon-dev))
+       (maxcount (send self :count-limit))
+       (low-lim (* 2 (/ machine-epsilon epsilon)))
+       (verbose (send self :verbose)))
+  (unless (and (send self :eta) (send self :recycle))
+	  (send self :initialize-search))
+  (do ((count 1 (+ count 1))
+       (beta 0 (send self :beta))
+       (last-beta -1 beta)
+       (dev  0 (send self :quasideviance))
+       (last-dev  -1 dev))
+	((or (> count maxcount) 
+	     (< (max (abs (/ (- beta last-beta)
+			     (pmax (abs last-beta) low-lim))))
+		epsilon)
+	     (< (abs (- dev last-dev)) epsilon-dev)) (if (> count maxcount) (format t "~%~%Failed to converge in ~d iterations~%Treat results with caution ~%" maxcount)))
+	(send self :compute-step-alpha)
+	(send self :compute-step-beta)
+	(if verbose 
+	    (format t "Iteration ~d: quasideviance = ~,6g~%" 
+		    count (send self :quasideviance)))
+	)
+  )
+(send self :needs-computing nil)
+)
+
+
+(defmeth gee-proto :compute-step-beta (&optional (save-scores *gee-diagnostics-while-fitting*))
+"Does one step of quasi-scoring: called by :compute
+  updates beta, quasideviance  and covariance matrix "
+  (let* ((y (send self :y))
+	 (eta (send self :eta))
+	 (mu (send self :fit-means eta))
+	 (pw (send self :pweights))
+	 (grouplist (unique (send self :group)))
+	 (timelist (unique (send self :times)))
+	 (ntimes (length timelist))
+	 (alpha (send self :alpha))
+	 (phi (/ (send self :scale)))
+	 (beta (send self :beta)) 
+	 (p (length beta))
+	 (x (row-list (send self :x-matrix)))
+	 (cov (zero-matrix p))
+         (scores nil)
+	 (working-residuals nil)
+	 (Hi nil)
+	 (Wi-gp nil)
+	 (DVS (repeat 0 p))
+	 (DVD (zero-matrix p))
+	 (junk (dolist (g (coerce grouplist 'list))
+	    (let* (
+		(thisgroup (argselect (send self :group) g))
+		(thesetimes (if (null timelist) nil (select (send self :times) thisgroup)))
+		(ni (length thisgroup))
+		(Rinv  (send (send self :corr-structure) :rinv ni alpha thesetimes))
+		(mui  (select mu thisgroup))
+		(Si  (- (select y thisgroup) mui))
+		(sqinvAi  (diagonal (/ (sqrt (* (select pw thisgroup)  (send (send self :varfun) :varweight mui))))))
+		(derivi  (/ (send (send self :link) :derivs mui)))
+		(Vinvi  (* phi (matmult sqinvAi Rinv sqinvAi)))
+		(Xi (apply #'bind-rows (select x thisgroup)))
+		(Di  (matmult (diagonal derivi) Xi))
+		(DVi (matmult (transpose Di)  Vinvi))
+		(DVSi (matmult DVi Si))
+		(DVDi (matmult DVi Di))
+		 )
+		(setf cov  (+ cov (outer-product DVSi DVSi)))
+		(setf DVS  (+ DVS DVSi))
+		(setf DVD  (+ DVD DVDi))
+		(when save-scores 
+		      ; compute all sorts of useful diagnostic
+		      ; components only as needed.
+		      (setf scores (cons (cons g (list DVSi)) scores))
+		      (setf working-residuals (cons (cons g (list (* (/ derivi) Si))) working-residuals))
+		      (setf Hi  (cons (list  g thisgroup  (matmult Xi (send self :naive-covariance-matrix) (transpose Di) Vinvi (diagonal derivi))) Hi))
+		      (setf Wi-gp (cons (list g thisgroup  (matmult (diagonal derivi) Vinvi (diagonal derivi))) Wi-gp))
+		      )
+		)))
+	 (Linv-DVD (inverse (first (chol-decomp DVD))))
+	 (DVDinv (matmult (transpose Linv-DVD) Linv-DVD))
+	 ;; new value of beta -- needs to be tested for domain errors
+	 (newbeta (+ beta (matmult DVDinv DVS )))
+	 (neweta  (+ (send self :offset) (matmult (send self :x-matrix) newbeta)))	 
+	 )
+    ;; try new value of beta, halve step size if it is out of range.
+    ;;
+    (send self :set-beta 
+	  (do* ( 
+		(beta1 newbeta (/ (+ beta beta1) 2))
+		(eta1 neweta  (+ (send self :offset) (matmult (send self :x-matrix) beta1)))
+		)
+	       ( (null (send self :domain-error eta1)) beta1)
+	        (format t "Step size reduced ~%")
+		(if (send self :verbose) (format t "beta: ~a~%" beta1))
+	       )
+	  )
+    ;; update everything else
+    (send self :set-naive-covariance-matrix DVDinv)
+    (send self :set-covariance-matrix (matmult  DVDinv cov DVDinv))
+    (send self :set-eta)
+    (send self :scores scores)
+    (send self :cluster-influences Hi)
+    (send self :working-residuals working-residuals)
+    (send self :weight-blocks Wi-gp)
+    (send self :set-deviances (send (send self :varfun) :quasi-deviance y mu))
+  
+ )
+)
+
+
+
+(defmeth gee-proto :compute-step-alpha ()
+"Updates the estimates of the correlation parameters
+ Called by :compute"
+(let* ( (ri (* (send self :pweights) (send (send self :varfun) :pearson-resid (send self :y) (send self :fit-means))))
+	
+	(corrthings (send (send self :corr-structure) :estimate ri (send self :group) (send self :times) (send self :allow-missing) ))
+	)
+  (send self :alpha corrthings)
+  (send self :scale (/ (second corrthings)))
+))
+
+
+;;;
+;;; DISPLAY method 
+;;;
+
+(defmeth gee-proto :display ()
+"Prints the model summary"
+   (if (send self :needs-computing) (send self :compute))
+  (let ((coefs (coerce (send self :coef-estimates) 'list))
+	(se-s (send self :coef-standard-errors))
+	(n-se-s (send self :naive-coef-standard-errors))
+	(x (send self :x))
+	(p-names (send self :predictor-names)))
+    (format t "~%GEE Estimates:~2%")
+    (format t "~25tCoefficient~40t Std Error~60t Naive Std Error~%")
+    (when (send self :intercept)
+	  (format t "Constant~25t~13,6g~40t(~,6g)~60t(~,6g)~%" (car coefs) (car se-s) (car n-se-s))
+	  (setf coefs (cdr coefs))
+	  (setf n-se-s (cdr n-se-s))
+	  (setf se-s (cdr se-s)))
+    (dotimes (i (array-dimension x 1)) 
+	     (format t "~a~25t~13,6g~40t(~,6g)~60t(~,6g)~%"
+		     (select p-names i) (car coefs) (car se-s) (car n-se-s))
+	     (setf coefs (cdr coefs) se-s (cdr se-s) n-se-s (cdr n-se-s)))
+    (format t "~%")
+    (format t "Scale Estimate:~25t~13,6g~%" (send self :scale))
+    (format t "Independence model deviance:~25t~13,6g~%" (send self :quasideviance))
+    (format t "Number of cases:~25t~9d~%" (send self :num-cases))
+    (format t "Link:~25t") (send (send self :link) :print)
+    (send (send self :varfun) :prettyprint)
+    (send (send self :corr-structure) :prettyprint (send self :alpha))
+ ))
+ 
+(defmeth gee-proto :display-with-formula (&key (block-only *gee-display-block-only*))
+"Arguments: &key (block-only *gee-display-block-only*)
+Prints the model summary based on a model formula"
+(cond ( (null (send self :formula)) (error "No formula present"))
+      (t 
+       (if (send self :needs-computing) (send self :compute))
+       (let* ((beta (coerce (send self :coef-estimates) 'list))
+	     (formula (send self :formula))
+	     (cov-mat (send self :covariance-matrix))
+	     (xintercept (if (send self :intercept) 1 0))
+	     (nblocks (length (send formula :block-indices)))
+	     (block-indices (+ xintercept (send formula :block-indices)))
+	     (varnames (if (send self :intercept) (cons "Intercept" (send self :predictor-names)) (send self :predictor-names)))
+	     )
+	 (format t "~%GEE Estimates:~2%")
+	 (format t "~a~20t~a~35t~a~%" "Block" "Wald Chisq" "p-value")
+	 (block-test (list 0) beta cov-mat :names varnames :blockname "Intercept" :block-only block-only) 
+;;	 (dolist (i (iseq (- nblocks 1) 0))
+	 (dolist (i (iseq 0 (- nblocks 1)))
+		 (block-test (elt block-indices i) beta cov-mat :names varnames :blockname  (elt (send formula :block-names) i) :block-only block-only))
+	 (format t "~%")
+	 (format t "Scale Estimate:~25t~13,6g~%" (send self :scale))
+	 (format t "Independence model deviance:~25t~13,6g~%" (send self :quasideviance))
+	 (format t "Number of cases:~25t~9d~%" (send self :num-cases))
+	 (format t "Link:~25t") (send (send self :link) :print)
+	 (send (send self :varfun) :prettyprint)
+	 (send (send self :corr-structure) :prettyprint (send self :alpha))
+	 )
+       )
+))
+
+;;;;
+;;;; :ISNEW method
+;;;;
+
+(defmeth gee-proto :isnew (&key x 
+				 y
+				 group
+				 (times nil)
+				 link
+				 varfun
+				 (corr-structure *gee-default-correlation*)
+				 (offset 0)
+				 (intercept t)
+				 (formula nil)
+				 pweights
+				 (allow-missing nil)
+				 (verbose t)
+				 predictor-names
+				 response-name
+				 (recycle nil)
+				 case-labels
+				 init-beta
+				 init-alpha
+				 count-limit
+				 (print-summary nil)
+				 (print t))
+  (send self :x x)
+  (send self :y y)
+  (send self :group (coerce group 'list))
+  (send self :varfun varfun)
+  (send self :corr-structure corr-structure)
+  (send self :link link)
+  (send self :offset offset)
+  (send self :times times)
+  (send self :intercept intercept)
+  (if pweights (send self :pweights pweights) (send self :pweights (repeat 1 (length y))))
+  (send self :allow-missing allow-missing)
+  (send self :formula formula)
+  (send self :recycle recycle)
+  (send self :verbose verbose)
+;;  (if included (send self :included included))
+  (if predictor-names (send self :predictor-names predictor-names))
+  (if response-name (send self :response-name response-name))
+  (if (or y case-labels) (send self :case-labels case-labels)) ; needs fixing
+(send self :epsilon *gee-tolerance*) 
+(send self :epsilon-dev  *gee-tolerance*)
+(if (null count-limit) (send self :count-limit *gee-count-limit*) (send self :count-limit count-limit))
+ (if print (send self :display))
+ (if print-summary (send self :display-with-formula))
+)
+
+;;;;;
+;;;;; Nice friendly function to construct these models
+;;;;;
+
+
+(defun gee-model (&key x y g (times nil)
+		             (error nil error-given) 
+		             (link nil link-given)
+			     (correlation *gee-default-correlation* corr-given)
+			     (offset 0)
+			     (intercept t) 
+			     (verbose *gee-verbose*)
+			     (print nil has-print)
+			     (print-summary t)
+			     (allow-missing *gee-allow-missing*)
+			     (init-beta nil)
+			     (init-alpha nil)
+			     (count-limit *gee-count-limit*)
+			     (prior-weights nil)
+			     (predictor-names nil has-names)
+			     )
+  (if (null (and x y g (or link-given error-given))) (error "You must supply :x :y :g and at least one of :link and :error~%"))
+  (if (and verbose (null corr-given)) (format t "No correlation specified, using *gee-default-correlation*~%"))
+  (if (and verbose (null link-given)) (format t "No link specified - canonical link used~%"))
+  (if (and verbose (null error-given)) (format t "No error function specified - using default for this link~%"))
+  (cond ((objectp x) 
+	 (send gee-proto :new :x (send x :design-matrix) :y y :group (coerce g 'list)
+	       :times times :corr-structure correlation 
+	       :link (if link-given link  (eval (cdr (assoc error default-link)))) 
+	       :varfun (if error-given error (eval (cdr (assoc link default-error))))
+	       :intercept intercept :verbose verbose  
+	       :offset offset 
+	       :allow-missing allow-missing
+	       :init-beta init-beta
+	       :count-limit count-limit
+	       :pweights prior-weights
+	       :predictor-names (if has-names predictor-names (send x :name-list))
+	       :formula x
+	       :print print
+	       :print-summary print-summary
+	       ))
+	(t  (send gee-proto :new :x x :y y :group (coerce g 'list) 
+	       :times times :corr-structure correlation 
+	       :link (if link-given link  (eval (cdr (assoc error default-link)))) 
+	       :varfun (if error-given error (eval (cdr (assoc link default-error))))
+	       :intercept intercept :verbose verbose  
+	       :offset offset 
+	       :allow-missing allow-missing
+	       :init-beta init-beta
+	       :count-limit count-limit
+	       :pweights prior-weights
+	       :predictor-names predictor-names
+	       :print (if has-print print print-summary)
+	       )
+	    )
+	)
+)
+
+;;;
+;;; control variables. They need to be after the definition of the correlation
+;;; structures
+;;;
+
+;default value for :verbose
+(defvar *gee-verbose* t)
+
+;default value for :count-limit (number of iterations)
+(defvar *gee-count-limit* 30)
+
+;t to give only Wald tests for blocks by default
+;nil to display all parameter estimates
+(defvar *gee-display-block-only* nil)
+
+;default value of :allow-missing
+(defvar *gee-allow-missing* nil)
+
+;default working correlation 
+;(eg for compatability with SPIDA which uses exchangeable-corr
+; as the default)
+(defvar *gee-default-correlation* independence-corr)
+
+; default convergence tolerance
+(defvar *gee-tolerance* (sqrt (sqrt machine-epsilon)))
+
+; save diagnostic information while fitting the model
+; (slower fitting, but faster diagnostics, if t)
+(defvar *gee-diagnostics-while-fitting* nil)
+
+;number of digits for printing out correlations
+(defvar *gee-corr-digits* 2)
+
+
+
+
+
+
+

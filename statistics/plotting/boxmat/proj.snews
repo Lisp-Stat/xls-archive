@@ -1,0 +1,66 @@
+From owner-S-news@stat.wisc.edu Thu Jun 11 17:46 EDT 1992
+Received: from jupiter.stat.wisc.edu by astro.ocis.temple.edu (5.61/1.34) id AA19595; Thu, 11 Jun 92 17:46:31 -0400
+Resent-Date: Thu, 11 Jun 92 16:42:18 -0400
+Resent-From: owner-S-news@stat.wisc.edu
+Resent-Message-Id: <9206112146.AA19595@astro.ocis.temple.edu>
+Received: by jupiter.stat.wisc.edu; Thu, 11 Jun 92 15:44:07 -0500
+Received: from hermes.stat.wisc.edu by jupiter.stat.wisc.edu; Thu, 11 Jun 92 15:43:47 -0500
+Received: from astro.ocis.temple.edu by hermes.stat.wisc.edu; Thu, 11 Jun 92 15:43:43 -0500
+Received: by astro.ocis.temple.edu (5.61/1.34) id AA18932; Thu, 11 Jun 92 16:42:18 -0400
+Date: Thu, 11 Jun 92 16:42:18 -0400
+From: rmh@astro.ocis.temple.edu (Richard M. Heiberger)
+Message-Id: <9206112042.AA18932@astro.ocis.temple.edu>
+To: S-news@stat.wisc.edu
+Subject: correction to proj()
+Errors-To: owner-S-news@stat.wisc.edu
+Resent-To: S-news-list@stat.wisc.edu
+Resent-Reply-To: rmh@astro.ocis.temple.edu (Richard M. Heiberger)
+Status: R
+
+In a note on 19 Mar 92, Colin Goodall noted that proj() for unbalanced
+and incomplete data depends on the detail of the design matrix.  The
+problem occurs when the design matrix has excess columns.
+
+Here is an illustration of the problem:
+
+> y <- rnorm(5)
+> a <- factor(c(1,2,2,3,3))
+> b <- factor(c(2,1,2,1,1))
+> out <- aov( y~a/b, qr=T)
+> ssq <- function(x) apply(as.matrix(x)^2 , 2, sum)
+> summary(out)
+          Df Sum of Sq Mean Sq F Value    Pr(F) 
+        a  2   3.22410 1.61205 2.98383 0.378841
+ b %in% a  1   0.45914 0.45914 0.84984 0.525867
+Residuals  1   0.54026 0.54026                 
+
+The result of the ssq() of proj() is not the same as the "Sum of Sq"
+column:
+
+> ssq(proj(out))
+ (Intercept)        a  b %in% a Residuals 
+   0.2802443 3.224095 0.5402609 0.5402609
+
+The problem occurs in the untangling of the pivots in the qr
+decomposition.  By replacing proj.default with the following:
+
+proj.default <- function(object, onedf = T)
+{
+	if(!is.qr(object$qr))
+		stop("Argument does not include a qr component")
+	if(is.null(object$effects))
+		stop("Argument does not include an effects component")
+	RB <- c(object$effects[seq(object$rank)], rep(0, nrow(object$
+		qr$qr) - object$rank))
+	prj <- qr.Q(object$qr, Dvec = RB)
+	DN <- dimnames(object$qr$qr)
+	dimnames(prj) <- list(DN[[1]], DN[[2]][seq(ncol(prj))])
+	prj
+}
+
+the difficulty is fixed.
+
+> ssq(proj(out))
+ (Intercept)        a  b %in% a Residuals 
+   0.2802443 3.224095 0.4591365 0.5402609
+

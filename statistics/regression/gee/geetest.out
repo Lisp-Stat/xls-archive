@@ -1,0 +1,350 @@
+; loading "gee.1.0.lsp"
+No correlation specified, using *gee-default-correlation*
+No link specified - canonical link used
+Iteration 1: quasideviance = 200751.
+Iteration 2: quasideviance = 1438.21
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                  0.810741      (0.769056)          (0.751187)
+Variable 0                 2.29331      (4.589797E-2)       (4.527940E-2)
+Variable 1                -1.18068      (6.847056E-2)       (5.950974E-2)
+Variable 2                 1.44152      (3.153448E-2)       (3.141870E-2)
+
+Scale Estimate:            2.87643    
+Independence model deviance:   1438.21    
+Number of cases:               500
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+No link specified - canonical link used
+Iteration 1: quasideviance = 1.018527E+6
+Iteration 2: quasideviance = 100600.
+Iteration 3: quasideviance = 100573.
+Iteration 4: quasideviance = 100574.
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                  -21.6763      (3.50060)           (3.69343)
+Variable 0                 4.67632      (0.333656)          (0.377534)
+Variable 1                 3.05753      (0.225118)          (0.262428)
+
+Scale Estimate:            201.147    
+Independence model deviance:   100574.    
+Number of cases:               500
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Exchangeable Working Model:  correlation = -0.0104
+No correlation specified, using *gee-default-correlation*
+No error function specified - using default for this link
+Iteration 1: quasideviance = 200751.
+Iteration 2: quasideviance = 8444.57
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   33.0180      (3.03683)           (3.37751)
+Variable 0                 1.23556      (0.445290)          (0.265558)
+Variable 1                -12.0339      (1.33256)           (1.42965)
+Variable 2                 1.50048      (6.166767E-2)       (7.607986E-2)
+
+Scale Estimate:            16.8891    
+Independence model deviance:   8444.57    
+Number of cases:               500
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+No correlation specified, using *gee-default-correlation*
+No link specified - canonical link used
+Iteration 1: quasideviance = 693.147
+Iteration 2: quasideviance = 593.304
+Iteration 3: quasideviance = 591.380
+Iteration 4: quasideviance = 591.373
+Iteration 5: quasideviance = 591.373
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   4.72921      (0.863233)          (1.02797)
+Variable 0               -0.347479      (5.004796E-2)       (6.276129E-2)
+Variable 1               -0.219400      (7.725222E-2)       (7.920163E-2)
+Variable 2                -7.103635E-2  (3.167549E-2)       (4.135409E-2)
+
+Scale Estimate:            1.00151    
+Independence model deviance:   591.373    
+Number of cases:               500
+Link:                    #<Glim Link Object: LOGIT-LINK>
+Variance function:       Binomial error
+Independence Working Model
+No error function specified - using default for this link
+Iteration 1: quasideviance = 693.147
+Iteration 2: quasideviance = 637.186
+Iteration 3: quasideviance = 636.606
+Iteration 4: quasideviance = 636.601
+Iteration 5: quasideviance = 636.601
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   6.37021      (0.822239)          (1.01444)
+Variable 0               -0.258068      (6.430749E-2)       (5.807396E-2)
+Variable 1               -0.279287      (5.877232E-2)       (7.607652E-2)
+Variable 2               -0.145790      (2.733043E-2)       (3.983994E-2)
+
+Scale Estimate:           0.999974    
+Independence model deviance:   636.601    
+Number of cases:               500
+Link:                    #<Glim Link Object: LOGIT-LINK>
+Variance function:       Binomial error
+Exchangeable Working Model:  correlation = -0.0206
+No link specified - canonical link used
+Iteration 1: quasideviance = 693.147
+Iteration 2: quasideviance = 640.102
+Iteration 3: quasideviance = 638.526
+Iteration 4: quasideviance = 638.396
+Iteration 5: quasideviance = 638.384
+Iteration 6: quasideviance = 638.383
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   5.40907      (0.708999)          (0.836954)
+Variable 0               -0.206972      (5.089092E-2)       (4.849892E-2)
+Variable 1               -0.246980      (4.953161E-2)       (6.368643E-2)
+Variable 2               -0.119358      (2.800741E-2)       (3.371644E-2)
+
+Scale Estimate:           0.970885    
+Independence model deviance:   638.383    
+Number of cases:               500
+Link:                    #<Glim Link Object: LOGIT-LINK>
+Variance function:       Binomial error
+Stationary  1 - dependence Working Model: 
+ correlation matrix =
+#2a(
+    ( 1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    (-0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00    )
+   )
+No link specified - canonical link used
+Iteration 1: quasideviance = 693.147
+Iteration 2: quasideviance = 640.102
+Iteration 3: quasideviance = 638.526
+Iteration 4: quasideviance = 638.396
+Iteration 5: quasideviance = 638.384
+Iteration 6: quasideviance = 638.383
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   5.40907      (0.708999)          (0.836954)
+Variable 0               -0.206972      (5.089092E-2)       (4.849892E-2)
+Variable 1               -0.246980      (4.953161E-2)       (6.368643E-2)
+Variable 2               -0.119358      (2.800741E-2)       (3.371644E-2)
+
+Scale Estimate:           0.970885    
+Independence model deviance:   638.383    
+Number of cases:               500
+Link:                    #<Glim Link Object: LOGIT-LINK>
+Variance function:       Binomial error
+Stationary  1 - dependence Working Model: 
+ correlation matrix =
+#2a(
+    ( 1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    (-0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33      0.00    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00     -0.33    )
+    ( 0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     -0.33      1.00    )
+   )
+No correlation specified, using *gee-default-correlation*
+No error function specified - using default for this link
+Iteration 1: quasideviance = 693.147
+Iteration 2: quasideviance = 637.060
+Iteration 3: quasideviance = 636.705
+Iteration 4: quasideviance = 636.704
+Iteration 5: quasideviance = 636.704
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   3.92614      (0.537552)          (0.609690)
+Variable 0               -0.165977      (4.006791E-2)       (3.568297E-2)
+Variable 1               -0.165039      (3.848564E-2)       (4.647063E-2)
+Variable 2                -9.214252E-2  (1.654858E-2)       (2.447911E-2)
+
+Scale Estimate:            1.00667    
+Independence model deviance:   636.704    
+Number of cases:               500
+Link:                    #<Glim Link Object: PROBIT-LINK>
+Variance function:       Binomial error
+Independence Working Model
+No link specified - canonical link used
+Iteration 1: quasideviance = 1333.98
+Iteration 2: quasideviance = 40467.1
+Iteration 3: quasideviance = 13625.7
+Iteration 4: quasideviance = 4352.58
+Iteration 5: quasideviance = 1397.55
+Iteration 6: quasideviance = 544.885
+Iteration 7: quasideviance = 331.031
+Iteration 8: quasideviance = 305.986
+Iteration 9: quasideviance = 305.174
+Iteration 10: quasideviance = 305.179
+Iteration 11: quasideviance = 305.179
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   3.02621      (0.349301)          (0.241974)
+Variable 0               -0.100587      (4.687742E-2)       (2.285996E-2)
+Variable 1                -6.504078E-2  (3.434576E-2)       (2.061821E-2)
+
+Scale Estimate:            1.00000    
+Independence model deviance:   305.179    
+Number of cases:               100
+Link:                    #<Glim Link Object: LOG-LINK>
+Variance function:       Poisson error
+Known Correlation  Working Model: 
+ correlation matrix =
+#2a(
+    (  1.0      0.20      0.30      0.10    )
+    ( 0.20       1.0      0.20      0.30    )
+    ( 0.30      0.20       1.0      0.20    )
+    ( 0.10      0.30      0.20       1.0    )
+   )
+No link specified - canonical link used
+Iteration 1: quasideviance = 1333.98
+Iteration 2: quasideviance = 34653.5
+Iteration 3: quasideviance = 11172.2
+Iteration 4: quasideviance = 3340.87
+Iteration 5: quasideviance = 1121.05
+Iteration 6: quasideviance = 488.565
+Iteration 7: quasideviance = 323.076
+Iteration 8: quasideviance = 305.371
+Iteration 9: quasideviance = 304.493
+Iteration 10: quasideviance = 304.462
+Iteration 11: quasideviance = 304.461
+Iteration 12: quasideviance = 304.461
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   2.82993      (0.305884)          (0.424266)
+Variable 0                -8.510832E-2  (4.353495E-2)       (3.941535E-2)
+Variable 1                -5.398050E-2  (3.036900E-2)       (3.564486E-2)
+
+Scale Estimate:            3.06250    
+Independence model deviance:   304.461    
+Number of cases:               100
+Link:                    #<Glim Link Object: LOG-LINK>
+Variance function:       Poisson error
+Saturated Working Model: 
+ correlation matrix =
+#2a(
+    (  1.0      0.16      0.24      -9.09E-2)
+    ( 0.16       1.0     -0.21      -3.97E-2)
+    ( 0.24     -0.21       1.0      -3.07E-2)
+    ( -9.09E-2  -3.97E-2  -3.07E-2   1.0    )
+   )
+No link specified - canonical link used
+Iteration 1: quasideviance = 1333.98
+Iteration 2: quasideviance = 27623.3
+Iteration 3: quasideviance = 8901.29
+Iteration 4: quasideviance = 2714.22
+Iteration 5: quasideviance = 930.081
+Iteration 6: quasideviance = 425.888
+Iteration 7: quasideviance = 316.398
+Iteration 8: quasideviance = 305.868
+Iteration 9: quasideviance = 305.394
+Iteration 10: quasideviance = 305.361
+Iteration 11: quasideviance = 305.357
+Iteration 12: quasideviance = 305.356
+Iteration 13: quasideviance = 305.356
+Iteration 14: quasideviance = 305.356
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   2.97474      (0.312407)          (0.386038)
+Variable 0               -0.103476      (4.205993E-2)       (3.840649E-2)
+Variable 1                -5.957996E-2  (3.029447E-2)       (3.558169E-2)
+
+Scale Estimate:            3.18481    
+Independence model deviance:   305.356    
+Number of cases:               100
+Link:                    #<Glim Link Object: LOG-LINK>
+Variance function:       Poisson error
+Saturated Working Model (Normal-ML): 
+ correlation matrix =
+#2a(
+    ( 0.61      0.16      0.26     -0.11    )
+    ( 0.16      0.77     -0.18      -3.57E-2)
+    ( 0.26     -0.18       1.7      -3.43E-2)
+    (-0.11      -3.57E-2  -3.43E-2  0.95    )
+   )
+No link specified - canonical link used
+Iteration 1: quasideviance = 1333.98
+Iteration 2: quasideviance = 46076.3
+Iteration 3: quasideviance = 15396.6
+Iteration 4: quasideviance = 4837.49
+Iteration 5: quasideviance = 1585.74
+Iteration 6: quasideviance = 635.620
+Iteration 7: quasideviance = 347.975
+Iteration 8: quasideviance = 306.588
+Iteration 9: quasideviance = 304.472
+Iteration 10: quasideviance = 304.406
+Iteration 11: quasideviance = 304.401
+Iteration 12: quasideviance = 304.401
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                   2.88171      (0.351747)          (0.433978)
+Variable 0                -9.501059E-2  (4.775023E-2)       (4.132247E-2)
+Variable 1                -5.288876E-2  (3.076723E-2)       (3.680058E-2)
+
+Scale Estimate:            3.09771    
+Independence model deviance:   304.401    
+Number of cases:               100
+Link:                    #<Glim Link Object: LOG-LINK>
+Variance function:       Poisson error
+Stationary  3 - dependence Working Model: 
+ correlation matrix =
+#2a(
+    (  1.0      -2.47E-2  0.10      -9.83E-2)
+    ( -2.47E-2   1.0      -2.47E-2  0.10    )
+    ( 0.10      -2.47E-2   1.0      -2.47E-2)
+    ( -9.83E-2  0.10      -2.47E-2   1.0    )
+   )

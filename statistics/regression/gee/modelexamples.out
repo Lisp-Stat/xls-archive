@@ -1,0 +1,197 @@
+No correlation specified, using *gee-default-correlation*
+No link specified - canonical link used
+Iteration 1: quasideviance = 71.1765
+Iteration 2: quasideviance = 58.3501
+
+GEE Estimates:
+
+Block               Wald Chisq     p-value
+Intercept              4.12187E-2  0.8391
+      Variable            Estimate       Std.Err.       p-value
+     Intercept            -0.21394      (1.05376)      0.8391
+SMOKING                4.8059      0.0904
+      Variable            Estimate       Std.Err.       p-value
+     (SMOKING never)      -0.56057      (0.263294)     0.0332
+     (SMOKING past)       -0.39333      (0.327468)     0.2297
+SEX                   0.32319      0.5697
+      Variable            Estimate       Std.Err.       p-value
+     (SEX M)               0.13361      (0.235020)     0.5697
+AGE                   0.57381      0.4487
+      Variable            Estimate       Std.Err.       p-value
+     AGE                    2.14165E-2  (2.827250E-2)  0.4487
+
+Scale Estimate:           0.972502    
+Independence model deviance:   58.3501    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                 -0.213938      (1.05376)           (1.07343)
+(SMOKING never)          -0.560570      (0.263294)          (0.319709)
+(SMOKING past)           -0.393331      (0.327468)          (0.313473)
+(SEX M)                   0.133609      (0.235020)          (0.254739)
+AGE                        2.141651E-2  (2.827250E-2)       (2.679979E-2)
+
+Scale Estimate:           0.972502    
+Independence model deviance:   58.3501    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+
+GEE Estimates:
+
+Block               Wald Chisq     p-value
+Intercept              4.12187E-2  0.8391
+      Variable            Estimate       Std.Err.       p-value
+     Intercept            -0.21394      (1.05376)      0.8391
+SMOKING                4.8059      0.0904
+      Variable            Estimate       Std.Err.       p-value
+     (SMOKING never)      -0.56057      (0.263294)     0.0332
+     (SMOKING past)       -0.39333      (0.327468)     0.2297
+SEX                   0.32319      0.5697
+      Variable            Estimate       Std.Err.       p-value
+     (SEX M)               0.13361      (0.235020)     0.5697
+AGE                   0.57381      0.4487
+      Variable            Estimate       Std.Err.       p-value
+     AGE                    2.14165E-2  (2.827250E-2)  0.4487
+
+Scale Estimate:           0.972502    
+Independence model deviance:   58.3501    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+
+GEE Estimates:
+
+Block               Wald Chisq     p-value
+Intercept              4.12187E-2  0.8391
+      Variable            Estimate       Std.Err.       p-value
+     Intercept            -0.21394      (1.05376)      0.8391
+SMOKING                4.8059      0.0904
+      Variable            Estimate       Std.Err.       p-value
+     (SMOKING never)      -0.56057      (0.263294)     0.0332
+     (SMOKING past)       -0.39333      (0.327468)     0.2297
+SEX                   0.32319      0.5697
+      Variable            Estimate       Std.Err.       p-value
+     (SEX M)               0.13361      (0.235020)     0.5697
+AGE                   0.57381      0.4487
+      Variable            Estimate       Std.Err.       p-value
+     AGE                    2.14165E-2  (2.827250E-2)  0.4487
+
+Scale Estimate:           0.972502    
+Independence model deviance:   58.3501    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+No correlation specified, using *gee-default-correlation*
+No link specified - canonical link used
+Iteration 1: quasideviance = 71.1765
+Iteration 2: quasideviance = 58.2709
+
+GEE Estimates:
+
+Block               Wald Chisq     p-value
+Intercept              2.24691E-3  0.9622
+      Variable            Estimate       Std.Err.       p-value
+     Intercept             0.10557      (2.22711)      0.9622
+SMOKING                9.15652E-2  0.9552
+      Variable            Estimate       Std.Err.       p-value
+     (SMOKING never)       -1.0725      (3.74942)      0.7748
+     (SMOKING past)       -0.81247      (3.29364)      0.8052
+SEX                    5.18214E-2  0.8199
+      Variable            Estimate       Std.Err.       p-value
+     (SEX M)               0.10194      (0.447810)     0.8199
+AGE                    6.08005E-2  0.8052
+      Variable            Estimate       Std.Err.       p-value
+     AGE                    1.35834E-2  (5.508790E-2)  0.8052
+(INTERACTION SMOKING SEX)    4.33146E-2 0.9786
+      Variable            Estimate       Std.Err.       p-value
+     ((SMOKING never) (SEX M))    9.96389E-2 (0.734710) 0.8921
+     ((SMOKING past) (SEX M))   -4.29275E-2 (0.701861) 0.9512
+(INTERACTION SMOKING AGE)    2.40605E-2 0.9880
+      Variable            Estimate       Std.Err.       p-value
+     ((SMOKING never) AGE)    1.16614E-2 (8.667569E-2) 0.8930
+     ((SMOKING past) AGE)    1.12601E-2 (8.077865E-2)  0.8891
+
+Scale Estimate:           0.971182    
+Independence model deviance:   58.2709    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+
+GEE Estimates:
+
+                         Coefficient     Std Error           Naive Std Error
+Constant                  0.105568      (2.22711)           (2.18004)
+(SMOKING never)           -1.07254      (3.74942)           (3.11882)
+(SMOKING past)           -0.812475      (3.29364)           (2.71551)
+(SEX M)                   0.101941      (0.447810)          (0.481456)
+AGE                        1.358344E-2  (5.508790E-2)       (5.315583E-2)
+((SMOKING never) (SEX M))   9.963892E-2 (0.734710)          (0.653109)
+((SMOKING past) (SEX M))  -4.292749E-2  (0.701861)          (0.659882)
+((SMOKING never) AGE)      1.166142E-2  (8.667569E-2)       (7.550451E-2)
+((SMOKING past) AGE)       1.126014E-2  (8.077865E-2)       (6.711661E-2)
+
+Scale Estimate:           0.971182    
+Independence model deviance:   58.2709    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+
+GEE Estimates:
+
+Block               Wald Chisq     p-value
+Intercept              2.24691E-3  0.9622
+      Variable            Estimate       Std.Err.       p-value
+     Intercept             0.10557      (2.22711)      0.9622
+SMOKING                9.15652E-2  0.9552
+      Variable            Estimate       Std.Err.       p-value
+     (SMOKING never)       -1.0725      (3.74942)      0.7748
+     (SMOKING past)       -0.81247      (3.29364)      0.8052
+SEX                    5.18214E-2  0.8199
+      Variable            Estimate       Std.Err.       p-value
+     (SEX M)               0.10194      (0.447810)     0.8199
+AGE                    6.08005E-2  0.8052
+      Variable            Estimate       Std.Err.       p-value
+     AGE                    1.35834E-2  (5.508790E-2)  0.8052
+(INTERACTION SMOKING SEX)    4.33146E-2 0.9786
+      Variable            Estimate       Std.Err.       p-value
+     ((SMOKING never) (SEX M))    9.96389E-2 (0.734710) 0.8921
+     ((SMOKING past) (SEX M))   -4.29275E-2 (0.701861) 0.9512
+(INTERACTION SMOKING AGE)    2.40605E-2 0.9880
+      Variable            Estimate       Std.Err.       p-value
+     ((SMOKING never) AGE)    1.16614E-2 (8.667569E-2) 0.8930
+     ((SMOKING past) AGE)    1.12601E-2 (8.077865E-2)  0.8891
+
+Scale Estimate:           0.971182    
+Independence model deviance:   58.2709    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model
+
+GEE Estimates:
+
+Block               Wald Chisq     p-value
+Intercept              2.24691E-3  0.9622
+SMOKING                9.15652E-2  0.9552
+SEX                    5.18214E-2  0.8199
+AGE                    6.08005E-2  0.8052
+(INTERACTION SMOKING SEX)    4.33146E-2 0.9786
+(INTERACTION SMOKING AGE)    2.40605E-2 0.9880
+
+Scale Estimate:           0.971182    
+Independence model deviance:   58.2709    
+Number of cases:                60
+Link:                    #<Glim Link Object: IDENTITY-LINK>
+Variance function:       Normal error
+Independence Working Model

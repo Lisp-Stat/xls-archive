@@ -1,0 +1,181 @@
+;;Graph Windows
+(setf w (send graph-window-proto :new))
+
+(let ((width (send w :canvas-width))
+      (height (send w :canvas-height))
+      (mode (send w :draw-mode)))
+  (send w :draw-mode 'xor)
+  (dotimes (i (min width height))
+    (send w :draw-symbol 'disk t i i)
+    (pause 1)
+    (send w :draw-symbol 'disk t i i))
+  (send w :draw-mode mode))
+
+(let ((width (send w :canvas-width))
+      (height (send w :canvas-height)))
+  (dotimes (i (min width height))
+    (send w :start-buffering)
+    (send w :erase-window)
+    (send w :draw-symbol 'disk t i i)
+    (send w :buffer-to-screen)))
+
+(send w :add-slot 'x (round (/ (send w :canvas-width) 2)))
+(send w :add-slot 'y (round (/ (send w :canvas-height) 2)))
+
+(defmeth w :x (&optional (val nil set))
+  (if set (setf (slot-value 'x) (round val)))
+  (slot-value 'x))
+
+(defmeth w :y (&optional (val nil set))
+  (if set (setf (slot-value 'y) (round val)))
+  (slot-value 'y))
+
+(defmeth w :resize ()
+  (let ((width (send self :canvas-width))
+        (height (send self :canvas-height)))
+    (send self :x (/ width 2))
+    (send self :y (/ height 2))))
+
+(defmeth w :redraw ()
+  (let ((x (send self :x))
+        (y (send self :y)))
+    (send self :erase-window)
+    (send self :draw-symbol 'disk t x y)))
+
+(defmeth w :do-click (x y m1 m2)
+  (flet ((set-sym (x y)
+           (send self :x x)
+           (send self :y y)
+           (send self :redraw)))
+    (set-sym x y)
+    (send self :while-button-down #'set-sym)))
+
+(defmeth w :do-idle ()
+  (let ((x (send self :x))
+        (y (send self :y)))
+    (case (random 4)
+      (0 (send self :x (- x 5)))
+      (1 (send self :x (+ x 5)))
+      (2 (send self :y (- y 5)))
+      (3 (send self :y (+ y 5))))
+    (send self :redraw)))
+
+(send w :idle-on t)
+(send w :idle-on nil)
+
+(setf run-item
+      (send menu-item-proto :new "Run"
+            :action #'(lambda () (send w :idle-on (not (send w :idle-on))))))
+
+(defmeth run-item :update () (send self :mark (send w :idle-on)))
+
+(setf restart-item
+      (send menu-item-proto :new "Restart"
+            :action #'(lambda () (send w :restart))))
+
+(defmeth w :restart ()
+  (let ((width (send self :canvas-width))
+        (height (send self :canvas-height)))
+    (send self :x (/ width 2))
+    (send self :y (/ height 2))
+    (send self :redraw)))
+
+(setf menu (send menu-proto :new "Random Walk"))
+(send menu :append-items restart-item run-item)
+
+(send w :menu menu)
+
+(defmeth w :redraw ()
+  (let ((x (round (send self :x)))
+        (y (round (send self :y))))
+    (send self :start-buffering)
+    (send self :erase-window)
+    (send self :draw-symbol 'disk t x y)
+    (send self :buffer-to-screen)))
+
+;; Statistical Graphs
+(setf w (send graph-proto :new 4))
+(send w :add-points (list air temp conc loss))
+(send w :adjust-to-data)
+(send w :add-lines (list air temp conc loss))
+
+(send w :x-axis t)
+(send w :range 0)
+(send w :range 1)
+(send w :range 1 15 30)
+(get-nice-range 17 27 4)
+(send w :x-axis nil)
+
+(send w :current-variables)
+(send w :current-variables 2 3)
+(send w :current-variables 0 1)
+
+(send w :clear-points)
+(send w :clear-lines)
+(send w :clear)
+(send w :add-points (list air temp conc loss))
+(send w :add-lines (list air temp conc loss))
+
+(send w :scale-type)
+(send w :range 0)
+(send w :scaled-range 0)
+(send w :scale-type 'variable)
+(send w :range 0)
+(send w :scaled-range 0)
+
+(send w :transformation)
+(send w :transformation '#2A((0  0 -1  0)
+                             (0  0  0 -1)
+                             (1  0  0  0)
+                             (0  1  0  0)))
+(send w :transformation nil)
+
+(let* ((c (cos (/ pi 20)))
+       (s (sin (/ pi 20)))
+       (m (+ (* c (identity-matrix 4))
+             (* s '#2A((0  0 -1  0)
+                       (0  0  0 -1)
+                       (1  0  0  0)
+                       (0  1  0  0))))))
+  (dotimes (i 10)
+    (send w :apply-transformation m)))
+
+(dotimes (i 10)
+  (send w :rotate-2 0 2 (/ pi 20) :draw nil)
+  (send w :rotate-2 1 3 (/ pi 20)))
+
+(send w :add-mouse-mode 'identify
+      :title "Identify"
+      :click :do-identify
+      :cursor 'finger)
+
+(defmeth w :do-identify (x y m1 m2)
+  (let* ((cr (send self :click-range))
+         (p (first (send self :points-in-rect (- x 2) (- y 2) 4 4))))
+    (if p
+        (let ((mode (send self :draw-mode))
+              (lbl (send self :point-label p)))
+          (send self :draw-mode 'xor)
+          (send self :draw-string lbl x y)
+          (send self :while-button-down #'(lambda (x y) nil))
+          (send self :draw-string lbl x y)
+          (send self :draw-mode mode)))))
+
+(defmeth w :do-identify (x y m1 m2)
+  (let* ((cr (send self :click-range))
+         (p (first (send self :points-in-rect (- x 2) (- y 2) 4 4))))
+    (if p
+        (let ((mode (send self :draw-mode))
+              (lbl (send self :point-label p)))
+          (send self :draw-mode 'xor)
+          (send self :draw-string lbl x y)
+          (send self :while-button-down
+                #'(lambda (new-x new-y)
+                    (send self :draw-string lbl x y)
+                    (setf x new-x)
+                    (setf y new-y)
+                    (send self :draw-string lbl x y)))
+          (send self :draw-string lbl x y)
+          (send self :draw-mode mode)))))
+
+(send w :fixed-aspect t)

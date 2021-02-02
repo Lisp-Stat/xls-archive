@@ -1,0 +1,111 @@
+Consider the following transition matrix:
+\begin{center}
+\[ {\bf P} = \left[ \begin{array}{ccc}
+                        .5 & .3 & .2 \\
+                        .1 & .8 & .1 \\
+                        .7 & .2 & .1 \\
+               		\end{array} \right] \]
+\end{center}
+If this matrix is raised to successive powers, an interesting thing happens:
+\begin{center}
+\[ {\bf P}^{(5)} = \left[ \begin{array}{ccc}
+                        .313 & .554 & .133 \\
+                        .283 & .590 & .127 \\
+                        .318 & .549 & .134 \\
+                        \end{array} \right] \]
+\[{\bf P}^{(10)} = \left[ \begin{array}{ccc}
+                        .297 & .573 & .130 \\
+                        .296 & .575 & .130 \\
+                        .297 & .573 & .130 \\
+                        \end{array} \right] \]
+\end{center}
+It seems that the entries in each column are approaching the same value.    
+
+To better explain what this result means, a few more terms must be
+explained. A state has {\em period d} if $P_{ii}^{n}=0$ if $n$ is not
+divisible by $d$. For example, if the process starts in state $i$ and
+it is possible for the  process to enter that state only at times 3,
+6, 9,\ldots, then state $i$ has period 3.  Any state with period 1 is
+{\em aperiodic}.  A state $i$ is  {\em positive recurrent} if,
+starting in $i$, the process is expected to return to $i$ in a finite
+amount of time.  A positive recurrent, aperiodic state is  called an
+{\em ergodic} state.  A Markov chain is said to be {\em irreducible}
+if all its states communicate, or, given any state $i$, it is possible
+to reach state $j$ within a finite  time, and vice versa. 
+
+We can now state what is known as The Ergodic Theorem:
+
+For an irreducible ergodic Markov chain \( \lim_{n \rightarrow \infty}
+P_{ij}^{n} \) exists and is independent of $i$, and is denoted by 
+\begin{center}
+\[ \pi_{j}=\lim_{n \rightarrow \infty} P_{ij}^{n}
+ \]
+\end{center}
+
+Furthermore, $\pi_{j}$ is the unique nonnegative solution to
+\[ \pi_{j} = \sum_{i=0}^{\infty} \pi_{i}P_{ij},  j \geq 0, 
+\mbox{ with } \sum_{j=0}^{\infty} \pi_{j} = 1 \]
+
+The value $\pi_{j}$ is called the {\em limiting probability} that the
+process will be in state $j$ at time $n$.  It can also be shown that
+this value is  also the proportion of time that the process will be in
+state $j$ in the long run. 
+
+Because {\tt dmc.lsp} is designed to calculate the proportion of time that 
+the Markov chain is in each state for the time that the process has
+run, we  can graphically illustrate the validity of this theorem.
+
+The file {\tt thm.lsp} contains the following code:
+\begin{verbatim}
+(def n 15)
+(def m (random-stochastic-matrix n))
+(def initial-state 7)
+(setf z (send dmc-proto :new m initial-state))
+\end{verbatim}
+In a sample run, the following transition matrix was created for a
+5-state Markov chain by the {\tt random-stochastic-matrix} function:
+\[ \left[ \begin{array}{ccccc}
+	0.209948  & 0.197941  & 0.0526538 & 0.465235 & 0.0742217 \\
+	0.217497  & 0.234188  & 0.311191  & 0.222549 & 0.0145759 \\
+	0.029961  & 0.0702461 & 0.0834497 & 0.440806 & 0.375538  \\
+	0.206709  & 0.172418  & 0.258068  & 0.169594 & 0.193211  \\
+	0.0142226 & 0.178653  & 0.117397  & 0.366932 & 0.322796  
+	  \end{array} \right] \]
+Using {\tt dmc.lsp}, the Markov chain was run for one million steps.
+The following results were obtained:
+\begin{verbatim}
+> (send z :run-dmc-silently 1000000)
+NIL
+> (send z :describe)
+-------------------------------------------
+
+State    No of visits  Proportion
+-------------------------------------------
+0           137858       0.13786
+1           169561       0.16956
+2           178713       0.17871
+3           308272       0.30827
+4           205597       0.20560
+-------------------------------------------
+\end{verbatim}
+A calculation of the limiting probabilities for the transition matrix
+above yielded:
+\[ \begin{array}{c}
+	\pi_{0}=0.13780 \\ 
+   	\pi_{1}=0.16943 \\
+   	\pi_{2}=0.17862 \\
+   	\pi_{3}=0.30836 \\
+   	\pi_{4}=0.20578
+   \end{array} \]
+The proportion of time that the Markov chain spent in each state is
+remarkably close to the limiting probability for each state, as
+predicted by the theorem.
+
+
+
+
+
+
+
+
+

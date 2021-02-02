@@ -1,3 +1,3 @@
-This directory is under construction. No guarantees.
-
---- Jan --- 03-07-95
+This directory contains the code from the Lawson and Hanson book
+on least squares, translated with f2cl, tweaked for Xlisp-Stat
+by Jan de Leeuw.

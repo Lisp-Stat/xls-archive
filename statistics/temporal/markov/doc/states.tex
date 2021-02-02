@@ -1,0 +1,247 @@
+The file {\tt states.lsp} contains the code for the state button
+objects.  These buttons are slightly different from the control
+buttons because they are oval in shape, and moreover, they perform
+different actions. It is possible to have one object prototype for
+both the control and the state buttons and distinguish between them
+using a slot that indicates the nature of the button, but we decided
+to do it separately. When the user clicks the mouse on any 
+state button, the user gets a summary of the number of visits to that
+state. 
+
+\begin{verbatim}
+(defproto state-proto '(title state-no loc-and-size no-of-visits 
+                              pvec))
+\end{verbatim}
+The {\tt state-proto} prototype is defined with slot names {\tt
+  title}, to hold the name of the state, {\tt state-no}, to hold the
+number corresponding to the state, {\tt loc-and-size}, to hold the
+location and size of the state button in the {\tt dmc-proto} window,
+{\tt no-of-visits}, to hold the number of times the Markov chain has
+been to the state, and {\tt pvec}, to hold the list of transition
+probabilities in each state.  The location and size are stored as a
+list of four values $x$, $y$, width and height. Recall the $x$ value
+increases horizontally to the right while the $y$ value increases
+vertically down in a graph window.  
+
+\subsubsection{The {\tt :isnew} method}
+\label{subsubsec:state-isnew}
+\begin{verbatim}
+(defmeth state-proto :isnew (name sno vec)
+  (let ((n (length vec)))
+    (dolist (j (iseq 1 (- n 1)))
+            (setf (elt vec j) (+ (elt vec (- j 1)) (elt vec j))))
+    (setf (slot-value 'pvec) vec)
+    (setf (elt (slot-value 'pvec) (- n 1)) 1))
+  (setf (slot-value 'no-of-visits) 0)
+  (setf (slot-value 'title) name)
+  (setf (slot-value 'state-no) sno))
+\end{verbatim}
+A new instance of {\tt state-proto} is returned by this method.  The
+method is called with arguments {\tt name}, a title, {\tt sno}, the
+state number and {\tt vec}, the transition probability vector.
+To make it easier for us to generate the states to go to from this
+state, we store the distribution function.  Since we are dealing with
+floating point numbers, a precautionary measure is taken by setting
+the last entry to $1$. 
+
+\subsubsection{The {\tt :loc-and-size} method}
+\label{subsubsec:states-loc-and-size}
+\begin{verbatim}
+(defmeth state-proto :loc-and-size (&optional loc-size)
+  (if loc-size
+      (setf (slot-value 'loc-and-size) loc-size)
+    (slot-value 'loc-and-size)))
+\end{verbatim}
+This method can be used to set or retrieve the location and size of
+the state in the window where it resides.
+
+\subsubsection{The {\tt prob-vec} method}
+\label{subsubsec:prob-vec}
+\begin{verbatim}
+(defmeth state-proto :prob-vec ()
+  (let ((n (length (slot-value 'pvec)))
+        (tmp (copy-vector (slot-value 'pvec))))
+    (dolist (j (iseq (- n 1) 1))
+            (setf (elt tmp j) (- (elt tmp j) (elt tmp (- j 1)))))
+    tmp))
+\end{verbatim}
+This method recreates the transition probability vector from the
+distribution function.  The method is usually used only for
+printing the transition matrix when the user so desires.
+
+
+\subsubsection{The {\tt :no-of-visits} method}
+\label{subsubsec:no-of-visits}
+\begin{verbatim}
+(defmeth state-proto :no-of-visits ()
+  (slot-value 'no-of-visits))
+\end{verbatim}
+This is an accessor method for the {\tt no-of-visits} slot.
+
+\subsubsection{The {\tt :you-are-current-state} method}
+\label{subsubsec:you-are-current-state}
+\begin{verbatim}
+(defmeth state-proto :you-are-current-state (w)
+  (let ((nv (slot-value 'no-of-visits)))
+    (setf (slot-value 'no-of-visits) (+ nv 1)))
+  (send self :redraw w))
+\end{verbatim}
+When the Markov chain goes to a new state, that state is sent this
+message.  Therefore, this method increments the number of visits and
+asks itself to be redrawn. The net effect of this is to highlight this
+state as the current state in the window.
+
+
+\subsubsection{The {\tt you-are-not-current-state} method}
+\label{subsubsec:you-are-not-current-state}
+\begin{verbatim}
+(defmeth state-proto :you-are-not-current-state (w)
+  (send self :redraw w))
+\end{verbatim}
+When the markov chain makes a transition from state $l$ to state $k$,
+the state $l$ is sent this message.  Thus, this message restores the
+state to a normal state color.  This is accomplished by just sending
+itself a {\tt :redraw} message, since the {\tt :redraw} method checks
+whether a state is the current state or not before drawing.
+
+\subsubsection{The {\tt :redraw} method}
+\label{subsubsec:state-redraw}
+\begin{verbatim}
+(defmeth state-proto :redraw (window)
+  (let* ((dc (send window :draw-color))
+         (cs (eql (send window :current-state) 
+                  (slot-value 'state-no)))
+         (tc (if cs
+                 *current-state-text-color*
+               *normal-state-text-color*))
+         (bc (if cs
+                 *current-state-color*
+               *normal-state-color*))
+defmeth         (ls (send self :loc-and-size))
+         (x (first ls))
+         (y (second ls))
+         (w (third ls))
+         (h (fourth ls))
+         (cx (+ x (round (* .5 w))))
+         (cy (+ y (round (* .5 h)))))
+    (send window :draw-color bc)
+    (send window :paint-oval x y w h)
+    (send window :draw-color tc)
+    (send window :draw-text 
+          (format nil "~d" (slot-value 'state-no))
+          cx (+ cy (round (* .5 (send window :text-ascent))))
+          1 0)
+    (send window :draw-color dc)
+    (send window :frame-oval x y w h)
+    nil))
+\end{verbatim}
+This method is in charge of redrawing the state button in the window
+appropriately. We have to determine whether the state is the current
+state or not.  If it is the current state, then the state has to be
+redrawn with its proper colors. Otherwise, it has to be redrawn with
+the usual colors.  The appropriate drawing color is chosen and an oval
+is painted at the location in the window where the state button
+resides. The state title, which is usually the state number,  is also
+redrawn in the appropriate text color in the center of the state
+button.  The default drawing color is restored afterwards.  
+
+
+\subsubsection{The {\tt :my-click} method}
+\label{subsubsec:my-click}
+\begin{verbatim}
+( state-proto :my-click (x y m1 m2)
+  (let* ((ls (send self :loc-and-size))
+         (left-x (first ls))
+         (bot-y (second ls))
+         (rt-x (+ left-x (third ls)))
+         (top-y (+ bot-y (fourth ls))))
+    (if (and (< left-x x rt-x) (< bot-y y top-y))
+        t
+      nil)))
+\end{verbatim}
+The method {\tt :my-click} checks if the mouse was clicked returns
+{\tt t} if the mouse is clicked in a state's button.  The coordinates
+of where the mouse click occurred are passed as {\tt x} and {\tt y}.
+The method merely checks whether the click was in a rectangle
+encompassing the state button by using information about its location
+and size in the window.  If so, it returns {\tt t} else it returns
+{\tt nil}. 
+
+
+\subsubsection{The {\tt :do-click} method}
+\label{subsubsec:states-do-click}
+\begin{verbatim}
+(defmeth state-proto :do-click (w)
+  (let ((nv (send self :no-of-visits))
+        (time (send w :time)))
+    (if (eql time 0)
+        (message-dialog (format nil 
+                                "State ~s~%No. of visits ~d~%"
+                                (send self :title) nv))
+      (message-dialog (format nil 
+                              "State ~s~%No. of visits ~d~%~
+                                Proportion ~7,5f~%"
+                                (send self :title) 
+                                nv (/ nv time))))))
+\end{verbatim}
+If the mouse is clicked on a state button, a message dialog pops up
+informing the user of the number of visits to the state. The user has
+to dismiss the message dialog before he or she can continue further.
+
+\subsubsection{The {\tt :reset} method}
+\label{subsubsec:states-reset}
+\begin{verbatim}
+(defmeth state-proto :reset ()
+  (setf (slot-value 'no-of-visits) 0))
+\end{verbatim}
+This method resets the state to its original state at the start of the
+simulation, which only involves setting the slot value {\tt
+  no-of-visits} to zero. 
+
+\subsubsection{The {\tt :title} method}
+\label{subsubsec:states-title}
+\begin{verbatim}
+(defmeth state-proto :title (&optional title)
+  (if title 
+      (setf (slot-value 'title) title)
+  (slot-value 'title)))
+\end{verbatim}
+This method sets or retrieves the title of the state.
+
+
+\subsubsection{The {\tt :describe} method}
+\label{subsubsec:states-describe}
+\begin{verbatim}
+(defmeth state-proto :describe (&optional time)
+   (let ((nv (send self :no-of-visits)))
+    (if (> nv 0)
+        (if time
+            (format t "~3d         ~7d       ~1,5f~%"
+                    (slot-value 'title) nv (/ nv time))
+          (format t "State ~a, No of visits: ~g~%" 
+                  (slot-value 'state-no) nv)))))
+ \end{verbatim}
+This method prints the number of visits to the state and the
+proportion of time the markov chain spent in the state if time is
+greater than 0.  Note that if the state has not been visited yet, this
+method prints nothing.
+
+
+\subsubsection{The {\tt :next-state} method}
+\label{subsubsec:next-state}
+\begin{verbatim}
+(defmeth state-proto :next-state ()
+  (let* ((u (select (uniform-rand 1) 0))
+         (pvec (slot-value 'pvec))
+         (state (catch 'index
+                  (dotimes (j n)
+                           (if (< u (select pvec j))
+                               (throw 'index j))))))
+    state))
+\end{verbatim}
+This method will return the next state that the Markov chain will go to from
+this state.  A uniform random variable, {\tt u}, is generated.  Then each
+element of {\tt pvec} is checked to see if it is less than {\tt u}.  
+The first item that is corresponds to the next state that the Markov chain 
+will go to.  This algorithm is quite naive, but to use more efficient
+algorithms, one just needs to modify this method suitably. 

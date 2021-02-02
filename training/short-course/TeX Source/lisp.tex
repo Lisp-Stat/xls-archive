@@ -1,0 +1,826 @@
+\begin{slide}{}
+\chapter{Some Lisp Programming}
+\end{slide}
+
+\begin{slide}{}
+\section{Conditional Evaluation and Predicates}
+The basic Lisp conditional evaluation construct is \dcode{cond}.
+{\Large
+\begin{verbatim}
+> (defun my-abs (x)
+    (cond ((> x 0) x)
+          ((= x 0) 0)
+          ((< x 0) (- x))))
+MY-ABS
+> (my-abs -2)
+2
+\end{verbatim}}
+Several simplified versions exist, including \dcode{if}, \dcode{unless} and
+\dcode{when}
+{\Large
+\begin{verbatim}
+(defun my-abs (x) (if (>= x 0) x (- x)))
+\end{verbatim}}
+Another simplified version of \dcode{cond} is \dcode{case}:
+{\Large
+\begin{verbatim}
+> (defun f (i)
+    (case i
+      (1 'one)
+      (2 'two)
+      (t (error "out of range"))))
+> (f 1)
+ONE
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Logical expressions can be combined using \dcode{and}, \dcode{or}, and
+\dcode{not}.
+{\Large
+\begin{verbatim}
+> (defun in-range (x) (and (< 3 x) (< x 5)))
+IN-RANGE
+> (in-range 2)
+NIL
+> (in-range 4)
+T
+
+> (defun not-in-range (x)
+    (or (>= 3 x) (>= x 5)))
+NOT-IN-RANGE
+> (not-in-range 2)
+T
+
+> (defun in-range (x) (< 3 x 5))
+IN-RANGE
+> (in-range 2)
+NIL
+> (in-range 4)
+T
+> (defun not-in-range (x) (not (in-range x)))
+NOT-IN-RANGE
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\section{More on Functions}
+\subsection{Function as Data}
+Suppose we want a function \dcode{num-deriv} to compute a numerical
+derivative.
+
+If we define
+{\Large
+\begin{verbatim}
+(defun f (x) (+ x (^ x 2)))
+\end{verbatim}}
+then we want to get
+{\Large
+\begin{verbatim}
+> (num-deriv #'f 1)
+3
+\end{verbatim}}
+Defining \dcode{num-deriv} as
+{\Large
+\begin{verbatim}
+(defun num-deriv (fun x)
+  (let ((h 0.00001))
+    (/ (- (fun (+ x h))
+          (fun (- x h)))
+       (* 2 h))))
+\end{verbatim}}
+will not work -- our function is the {\em value} of \dcode{fun},
+not its {\em function definition}:
+{\Large
+\begin{verbatim}
+> (num-deriv #'f 1)
+error: unbound function - FUN
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+We need a function that calls the value of \dcode{fun} with an
+argument:
+{\Large
+\begin{verbatim}
+> (funcall #'+ 1 2)
+3
+\end{verbatim}}
+A correct definition of \dcode{num-deriv} is
+{\Large
+\begin{verbatim}
+(defun num-deriv (fun x)
+  (let ((h 0.00001))
+    (/ (- (funcall fun (+ x h))
+          (funcall fun (- x h)))
+       (* 2 h))))
+\end{verbatim}}
+Another useful function is \dcode{apply}:
+{\Large
+\begin{verbatim}
+> (apply #'+ '(1 2 3))
+6
+> (apply #'+ 1 2 '(3 4))
+10
+> (apply #'+ 1 '(2 3))
+6
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Anonymous Functions}
+Defining and naming throw-away functions like \dcode{f} is awkward.
+
+The same problem exists in mathematics.
+
+Logicians developed the {\em lambda calculus}:
+\begin{displaymath}
+\lambda(x)(x + x^{2})
+\end{displaymath}
+is ``the function that returns $x + x^{2}$ for the argument x.''
+
+Lisp uses this idea:
+{\Large
+\begin{verbatim}
+(lambda (x) (+ x (^ x 2)))
+\end{verbatim}}
+is a {\em lambda expression} for our function.
+\end{slide}
+
+\begin{slide}{}
+Lambda expressions are not yet Lisp functions.
+
+To make them into functions, you need to use \dcode{function} or
+\verb+#'+:
+{\Large
+\begin{verbatim}
+#'(lambda (x) (+ x (^ x 2)))
+\end{verbatim}}
+To take our derivative:
+{\Large
+\begin{verbatim}
+> (num-deriv #'(lambda (x) (+ x (^ x 2)))
+             1)
+3
+\end{verbatim}}
+To plot $2x+x^{2}$ over the range $[-2,4]$,
+{\Large
+\begin{verbatim}
+(plot-function #'(lambda (x)
+                 (+ (* 2 x) (^ x 2)))
+               -2
+               3)
+\end{verbatim}}
+
+Functions can also use lambda expressions to make new functions and
+return them as the value of the function.
+
+We will see a few examples of this a bit later.
+\end{slide}
+
+\begin{slide}{}
+\section{Local Variables and Environments}
+\subsection{Variables and Scoping}
+A pairing of a variable symbol with a value is called a {\em binding}
+
+Collections of bindings are called an {\em environment}.
+
+Bindings can be global or they can be local to a group of expressions.
+
+\dcode{let} and \dcode{let*} expressions and function definitions
+set up local bindings.
+\end{slide}
+
+\begin{slide}{}
+Consider the lambda expression
+{\Large
+\begin{verbatim}
+(lambda (x) (+ x a))
+\end{verbatim}}
+The meaning of \dcode{x} in the body is clear -- it is bound to the
+calling argument.
+
+The meaning of \dcode{a} is not so clear -- it is a {\em free variable}.
+\end{slide}
+
+\begin{slide}{}
+We need a convention for determining the bindings of free variables.
+
+This is the reason we need to use \dcode{function} on lambda expressions:
+
+\begin{itemize}
+\item[]
+Free variables in a function are bound to their values in the
+environment where the function is created
+\end{itemize}
+This is called the {\em lexical}\/ or {\em static}\/ scoping rule.
+
+Other scoping rules are possible.
+\end{slide}
+
+\begin{slide}{}
+An example: making a derivative function:
+{\Large
+\begin{verbatim}
+> (defun make-num-deriv (fun)
+    (let ((h 0.00001))
+      #'(lambda (x)
+        (/ (- (funcall fun (+ x h))
+              (funcall fun (- x h)))
+           (* 2 h)))))
+MAKE-NUM-DERIV
+> (setf f (make-num-deriv
+           #'(lambda (x) (+ x (^ x 2)))))
+#<Closure: #120cbe80>
+> (funcall f 1)
+3
+> (funcall f 3)
+7
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Another example: making a normal log likelihood:
+
+The log likelihood of a sample from a normal distribution is
+\begin{displaymath}
+-\frac{n}{2}\left[\log \sigma^{2}
++ \frac{(\overline{x}-\mu)^{2}}{\sigma^{2}}
++ \frac{s^{2}}{\sigma^{2}}\right]
+\end{displaymath}
+A function for evaluating this expression as a function of $\mu$
+and $\sigma^{2}$ is returned by
+{\Large
+\begin{verbatim}
+(defun make-norm-log-lik (x)
+  (let ((n (length x))
+        (x-bar (mean x))
+        (s-2 (^ (standard-deviation x) 2)))
+    #'(lambda (mu sigma-2)
+      (* -0.5
+         n
+         (+ (log sigma-2)
+            (/ (^ (- x-bar mu) 2) sigma-2)
+            (/ s-2 sigma-2))))))
+\end{verbatim}}
+The result returned by this function can be maximized, or it can be
+plotted with \dcode{spin-function} or \dcode{contour-function}.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Local Functions}
+It is also possible to set up local functions using \dcode{flet}:
+{\Large
+\begin{verbatim}
+> (defun f (x)
+    (flet ((add-1 (x) (+ x 1)))
+      (add-1 x)))
+F
+> (f 2)
+3
+> (add-1 2)
+error: unbound function - ADD-1
+\end{verbatim}}
+\dcode{flet} sets up bindings in parallel, like \dcode{let}
+
+\dcode{flet} cannot be used to define local recursive functions.
+
+\dcode{labels} is like \dcode{flet} but allows mutually recursive function
+definitions.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Optional, Keyword and Rest Arguments}
+A number of functions used so far take optional arguments, keyword
+arguments, or variable numbers of arguments.
+
+A function taking an optional argument is defined one of three ways:
+{\Large
+\begin{verbatim}
+(defun f (x &optional y) ...)
+(defun f (x &optional (y 1)) ...)
+(defun f (x &optional (y 1 z)) ...)
+\end{verbatim}}
+In the second and third forms, the default value is 1; in the first
+form it is \dcode{nil}
+
+In the third form, \dcode{z} is \dcode{t} if the optional argument is
+supplied; otherwise \dcode{z} is \dcode{nil}.
+
+We can add an optional argument for the step size to
+\dcode{num-deriv}:
+{\Large
+\begin{verbatim}
+(defun num-deriv (fun x &optional (h 0.00001))
+  (/ (- (funcall fun (+ x h))
+        (funcall fun (- x h)))
+     (* 2 h)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Keyword arguments are defined similarly to optional arguments:
+{\Large
+\begin{verbatim}
+(defun f (x &key y) ...)
+(defun f (x &key (y 1)) ...)
+(defun f (x &key (y 1 z)) ...)
+\end{verbatim}}
+The function is then called as
+{\Large
+\begin{verbatim}
+(f 1 :y 2)
+\end{verbatim}}
+Using a keyword argument in \dcode{num-deriv}:
+{\Large
+\begin{verbatim}
+(defun num-deriv (fun x &key (h 0.00001))
+  (/ (- (funcall fun (+ x h))
+        (funcall fun (- x h)))
+     (* 2 h)))
+\end{verbatim}}
+With a keyword argument, \dcode{num-deriv} is called as
+{\Large
+\begin{verbatim}
+(num-deriv #'f 1 :h 0.001)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+A function with a variable number of arguments is defined as
+{\Large
+\begin{verbatim}
+(defun f (x &rest y) ...)
+\end{verbatim}}
+All arguments beyond the first are made into a list and bound to
+\dcode{y}.
+
+For example:
+{\Large
+\begin{verbatim}
+> (defun my-plus (&rest x) (apply #'+ x))
+MY-PLUS
+> (my-plus 1 2 3)
+6
+\end{verbatim}}
+If more than one of these modifications is used, they must appear in
+the order \verb+&optional+, \verb+&rest+, \verb+&key+.
+
+There is an upper limit on the number of arguments a function can receive.
+\end{slide}
+
+\begin{slide}{}
+\section{Mapping}
+{\em Mapping}\/ is the process of applying a function elementwise to a
+list.
+
+The primary mapping function is \dcode{mapcar}:
+{\Large
+\begin{verbatim}
+> (setf x (normal-rand '(2 3 2)))
+((0.27397 3.5358) (-0.11065 1.2178 1.050) 
+ (0.78268 0.95955))
+> (mapcar #'mean x)
+(1.904895 0.71913 0.8711149)
+\end{verbatim}}
+Mapcar can take several lists as arguments:
+{\Large
+\begin{verbatim}
+> (mapcar #'+ '(1 2 3) '(4 5 6))
+(5 7 9)
+\end{verbatim}}
+Using \dcode{mapcar}, we can define a simple numerical integrator
+for functions on $[0,1]$:
+{\Large
+\begin{verbatim}
+> (defun integrate (f &optional (n 100))
+    (let* ((x (rseq 0 1 n))
+           (fv (mapcar f x)))
+      (mean fv)))
+INTEGRATE
+> (integrate #'(lambda (x) (^ x 2)))
+0.335017
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\section{More on Compound Data}
+\subsection{Lists}
+Lists are the most important compound data type.
+
+Lists can be empty:
+{\Large
+\begin{verbatim}
+> (list)
+NIL
+> '()
+NIL
+> ()
+NIL
+\end{verbatim}}
+They can be used to represent sets:
+{\Large
+\begin{verbatim}
+> (union '(1 2 3) '(3 4 5))
+(5 4 1 2 3)
+> (intersection '(1 2 3) '(3 4 5))
+(3)
+> (set-difference '(1 2 3) '(3 4 5))
+(2 1)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+In addition to using \dcode{select}, you can get pieces of a list with
+{\Large
+\begin{verbatim}
+> (first '(1 2 3))
+1
+> (second '(1 2 3))
+2
+> (rest '(1 2 3))
+(2 3)
+\end{verbatim}}
+Two other useful functions are \dcode{remove-duplicates}
+{\Large
+\begin{verbatim}
+> (remove-duplicates '(1 1 2 3 3))
+(1 2 3)
+\end{verbatim}}
+and \dcode{count}:
+{\Large
+\begin{verbatim}
+> (count 2 '(1 2 3 4) :test #'=)
+1
+> (count 2 '(1 2 3 4) :test #'<=)
+3
+\end{verbatim}}
+\dcode{remove-duplicates} also accepts a \dcode{:test} argument.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Vectors}
+Vectors are a second form of compound data.
+
+A vector is constructed with the \dcode{vector} function
+{\Large
+\begin{verbatim}
+> (vector 1 2 3)
+#(1 2 3)
+\end{verbatim}}
+or by typing its printed representation:
+{\Large
+\begin{verbatim}
+> (setf x '#(1 2 3))
+#(1 2 3)
+> x
+#(1 2 3)
+\end{verbatim}}
+Elements of vectors can be extracted and changed with \dcode{select}:
+{\Large
+\begin{verbatim}
+> (select x 1)
+2
+> (setf (select x 1) 5)
+5
+> x
+#(1 5 3)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Vectors can be copied with \dcode{copy-vector}.
+
+Vectors are usually stored more efficiently than lists, and their
+elements can be accessed more rapidly.
+
+But there are fewer functions for operating on vectors than on lists:
+{\Large
+\begin{verbatim}
+> (first x)
+error: bad argument type - #(1 5 3)
+> (rest x)
+error: bad argument type - #(1 5 3)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Sequences}
+Lists, vectors, and strings are sequences.
+
+Several functions operate on any sequence:
+{\Large
+\begin{verbatim}
+> (length '(1 2 3))
+3
+> (length '#(1 2 3))
+3
+> (length "abc")
+3
+> (select '(1 2 3) 0)
+1
+> (select '#(1 2 3) 0)
+1
+> (select "abc" 0)
+#\a
+\end{verbatim}}
+Sequences can be coerced to different types with \dcode{coerce}:
+{\Large
+\begin{verbatim}
+> (coerce '(1 2 3) 'vector)
+#(1 2 3)
+> (coerce "abc" 'list)
+(#\a #\b #\c)
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Arrays}
+The \dcode{matrix} function constructs a two-dimensional array:
+{\Large
+\begin{verbatim}
+> (matrix '(2 3) '(1 2 3 4 5 6))
+#2A((1 2 3) (4 5 6))
+\end{verbatim}}
+Again you can type the printed representation
+{\Large
+\begin{verbatim}
+> (setf m '#2A((1 2 3) (4 5 6)))
+#2A((1 2 3) (4 5 6))
+\end{verbatim}}
+and \dcode{select} extracts and modifies elements:
+{\Large
+\begin{verbatim}
+> (select m 1 1)
+5
+> (select m 1 '(0 1))
+#2A((4 5))
+> (select m '(0 1) '(0 1))
+#2A((1 2) (4 5))
+> (setf (select m 1 1) 'a)
+A
+> m
+#2A((1 2 3) (4 A 6))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+\section{Format}
+\dcode{format} is a very flexible output function.
+
+It prints to {\em output streams} or to strings.
+
+The default output stream is \dcode{*standard-output*}; it can be
+abbreviated to \dcode{t}:
+{\Large
+\begin{verbatim}
+> (format *standard-output* "Hello~%")
+Hello
+NIL
+> (format t "Hello~%")
+Hello
+NIL
+> (format nil "Hello")
+"Hello"
+\end{verbatim}}
+\verb+~%+ is the {\em format directive} for a new line.
+\end{slide}
+
+\begin{slide}{}
+Other useful format directives are \verb+~a+ and \verb+~s+:
+{\Large
+\begin{verbatim}
+> (format t "Examples: ~a ~s~%" '(1 2) '(3 4))
+Examples: (1 2) (3 4)
+NIL
+> (format t "Examples: ~a ~s~%" "ab" "cd")
+Examples: ab "cd"
+\end{verbatim}}
+These two directives differ in their handling of {\em escape characters}.
+
+There are many other format directives.
+\end{slide}
+
+\begin{slide}{}
+\section{Some Statistical Functions}
+\subsection{Some Basic Functions}
+\begin{verbatim}
+> (difference '(1 3 6 10))
+(2 3 4)
+> (pmax '(1 2 3) 2)
+(2 2 3)
+> (split-list '(1 2 3 4 5 6) 3)
+((1 2 3) (4 5 6))
+> (cumsum '(1 2 3 4))
+(1 3 6 10)
+> (accumulate #'* '(1 2 3 4))
+(1 2 6 24)
+\end{verbatim}
+
+\subsection{Sorting Functions}
+\begin{verbatim}
+> (sort-data '(14 10 12 11))
+(10 11 12 14)
+> (rank '(14 10 12 11))
+(3 0 2 1)
+> (order '(14 10 12 11))
+(1 3 2 0)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\subsection{Interpolation and Smoothing}
+\begin{verbatim}
+(spline x y :xvals xv)
+(lowess x y)
+(kernel-smooth x y :width w)
+(kernel-dens x)
+\end{verbatim}
+
+\subsection{Linear Algebra Functions}
+\begin{verbatim}
+(identity-matrix 4)
+(diagonal '(1 2 3))
+(diagonal '#2a((1 2)(3 4)))
+(transpose '#2a((1 2)(3 4)))
+(transpose '((1 2)(3 4)))
+(matmult a b)
+(make-rotation '(1 0 0) '(0 1 0) 0.05)
+\end{verbatim}
+
+\begin{verbatim}
+(lu-decomp a)
+(inverse a)
+(determinant a)
+(chol-decomp a)
+(qr-decomp a)
+(sv-decomp a)
+\end{verbatim}
+\end{slide}
+
+\begin{slide}{}
+\section{Odds and Ends}
+\subsection{Errors}
+The \dcode{error} functions signals an error:
+{\Large
+\begin{verbatim}
+> (error "bad value")
+error: bad value
+> (error "bad value: ~s" "A")
+error: bad value: "A"
+\end{verbatim}}
+
+\subsection{Debugging}
+Several debugging functions are available:
+\begin{description}
+\item[]
+\dcode{debug}/\dcode{nodebug} -- toggle debug mode; in debug mode,
+an error puts you into a break loop.
+\item[]
+\dcode{break} -- called within a function to enter a break loop
+\item[]
+\dcode{baktrace} -- prints traceback in a beak loop.
+\item[]
+\dcode{step} -- single steps through an evaluation.
+\end{description}
+\end{slide}
+
+\begin{slide}{}
+\section{Example}
+\subsection{Estimating a Survival Function}
+Suppose the variable \dcode{times} contains survival times and
+\dcode{status} contains status values, with 1 representing death and 0
+censoring.
+
+To compute a Kaplan-Meier or Fleming-Harrington estimator, we first
+need the death times and the unique death times:
+{\Large
+\begin{verbatim}
+(setf dt-list
+      (coerce (select times
+                      (which (= 1 status)))
+              'list))
+(setf udt
+      (sort-data
+       (remove-duplicates dt-list :test #'=)))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Next, we need the number of deaths and the number at risk at each
+death time:
+{\Large
+\begin{verbatim}
+(setf d (mapcar #'(lambda (x)
+                  (count x dt-list :test #'=))
+                udt))
+(setf r (mapcar #'(lambda (x)
+                  (count x times :test #'<=))
+                udt))
+\end{verbatim}}
+Using these values, we can compute the Kaplan-Meier estimator at the
+death times as
+{\Large
+\begin{verbatim}
+(setf km (accumulate #'* (/ (- r d) r)))
+\end{verbatim}}
+The Fleming-Harrington estimator is
+{\Large
+\begin{verbatim}
+(setf fh (exp (- (cumsum (/ d r)))))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Greenwood's formula for the variance is
+{\Large
+\begin{verbatim}
+(* (^ km 2) (cumsum (/ d r (pmax (- r d) 1))))
+\end{verbatim}}
+The \dcode{pmax} expression prevents a division by zero.
+
+Tsiatis' formula leads to
+{\Large
+\begin{verbatim}
+(* (^ km 2) (cumsum (/ d (^ r 2))))
+\end{verbatim}}
+
+To construct a plot we need a function that builds the consecutive
+corners of a step function:
+{\Large
+\begin{verbatim}
+(defun make-steps (x y)
+  (let* ((n (length x))
+         (i (iseq (+ (* 2 n) 1))))
+    (list (append '(0) (repeat x (repeat 2 n)))
+          (select (repeat (append '(1) y)
+                          (repeat 2 (+ n 1)))
+                  i))))
+\end{verbatim}}
+Then
+{\Large
+\begin{verbatim}
+(plot-lines (make-steps udt km))
+\end{verbatim}}
+produces a plot of the Kaplan-Meier estimator.
+\end{slide}
+
+\begin{slide}{}
+\subsection{Weibull Regression}
+Suppose \dcode{times} are survival times, \dcode{status} contains
+death/censoring indicators, and \dcode{x} contains a matrix of
+covariates, including a column of ones.
+
+A Weibull model for these data has a log likelihood of the form
+\begin{displaymath}
+\sum s_{i} \log \alpha + \sum (s_{i}\log \mu_{i}-\mu_{i})
+\end{displaymath}
+where
+\begin{eqnarray*}
+\log \mu_{i} & = & \alpha \log t_{i} + \eta_{i}\\
+\eta_{i} & = & x_{i} \beta
+\end{eqnarray*}
+and $\alpha$ is the Weibull exponent, $\beta$ is a vector of
+parameters.
+
+A function to compute this log likelihood is
+{\Large
+\begin{verbatim}
+(defun llw (x y s log-a b)
+  (let* ((a (exp log-a))
+         (eta (matmult x b))
+         (log-mu (+ (* a (log y)) eta)))
+    (+ (* (sum s) log-a)
+       (sum (- (* s log-mu) (exp log-mu))))))
+\end{verbatim}}
+\end{slide}
+
+\begin{slide}{}
+Reasonable initial estimates for the parameters might be
+$\alpha=1$,
+\begin{displaymath}
+\beta_{0} =\frac{\sum s_{i}}{\sum t_{i}}
+\end{displaymath}
+for the constant term, and $\beta_{i}=0$ for all other $i$.
+
+For a single covariate:
+{\Large
+\begin{verbatim}
+> (newtonmax
+   #'(lambda (theta)
+     (llw x
+          times
+          status 
+          (first theta)
+          (rest theta)))
+   (list 0 (/ (sum status) (sum times)) 0))
+maximizing...
+Iteration 0.
+Criterion value = -510.668
+...
+Iteration 8.
+Criterion value = -47.0641
+Reason for termination: gradient size ...
+(0.311709 -4.80158 1.73087)
+\end{verbatim}}
+\end{slide}
